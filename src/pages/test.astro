@@ -1,0 +1,186 @@
+---
+import { wpQuery } from "../lib/graphql";
+
+type GeneralSettingsData = {
+  generalSettings: {
+    title: string;
+    description: string;
+    url: string;
+  };
+};
+
+type SongsData = {
+  songs: {
+    nodes: Array<{
+      title: string;
+      date: string;
+      issues: { nodes: Array<{ name: string }> };
+      songwriters: { nodes: Array<{ name: string }> };
+      gaggles: { nodes: Array<{ name: string }> };
+      tunes: { nodes: Array<{ name: string }> };
+    }>;
+  };
+};
+
+type PortlandPostsData = {
+  posts: {
+    nodes: Array<{
+      title: string;
+      date: string;
+    }>;
+  };
+};
+
+const endpoint = import.meta.env.PUBLIC_WP_GRAPHQL_ENDPOINT;
+const portlandEndpoint = endpoint.replace("/graphql", "/portland/graphql");
+
+let siteInfo: GeneralSettingsData | null = null;
+let siteError: string | null = null;
+let songs: SongsData | null = null;
+let songsError: string | null = null;
+let portlandPosts: PortlandPostsData | null = null;
+let portlandError: string | null = null;
+
+try {
+  siteInfo = await wpQuery<GeneralSettingsData>({
+    query: `query SiteInfo {
+      generalSettings {
+        title
+        description
+        url
+      }
+    }`,
+  });
+} catch (e) {
+  siteError = e instanceof Error ? e.message : String(e);
+}
+
+try {
+  songs = await wpQuery<SongsData>({
+    query: `query Songs {
+      songs(first: 10) {
+        nodes {
+          title
+          date
+          issues { nodes { name } }
+          songwriters { nodes { name } }
+          gaggles { nodes { name } }
+          tunes { nodes { name } }
+        }
+      }
+    }`,
+  });
+} catch (e) {
+  songsError = e instanceof Error ? e.message : String(e);
+}
+
+try {
+  portlandPosts = await wpQuery<PortlandPostsData>({
+    query: `query PortlandPosts {
+      posts(first: 10) {
+        nodes {
+          title
+          date
+        }
+      }
+    }`,
+    endpoint: portlandEndpoint,
+  });
+} catch (e) {
+  portlandError = e instanceof Error ? e.message : String(e);
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WP → GraphQL → Astro Connection Test</title>
+    <style>
+      body { font-family: system-ui, sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+      h1 { border-bottom: 2px solid #333; padding-bottom: 0.5rem; }
+      h2 { margin-top: 2rem; }
+      .success { color: green; }
+      .error { color: red; background: #fee; padding: 1rem; border-radius: 4px; }
+      .card { background: #f5f5f5; padding: 1rem; border-radius: 4px; margin: 0.5rem 0; }
+      .tag { display: inline-block; background: #e0e0e0; padding: 0.1rem 0.5rem; border-radius: 3px; font-size: 0.85rem; margin: 0.1rem; }
+      code { background: #eee; padding: 0.1rem 0.3rem; border-radius: 2px; }
+      .meta { color: #666; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <h1>WP → GraphQL → Astro Connection Test</h1>
+    <p class="meta">Endpoint: <code>{endpoint}</code></p>
+
+    <h2>1. Main Site — General Settings</h2>
+    {siteError ? (
+      <p class="error">❌ {siteError}</p>
+    ) : siteInfo ? (
+      <div class="card">
+        <p class="success">✓ Connected</p>
+        <p><strong>Title:</strong> {siteInfo.generalSettings.title}</p>
+        <p><strong>Description:</strong> {siteInfo.generalSettings.description}</p>
+        <p><strong>URL:</strong> {siteInfo.generalSettings.url}</p>
+      </div>
+    ) : (
+      <p>No data returned.</p>
+    )}
+
+    <h2>2. Main Site — Songs (CPT + Taxonomies)</h2>
+    {songsError ? (
+      <p class="error">❌ {songsError}</p>
+    ) : songs && songs.songs.nodes.length > 0 ? (
+      <div>
+        <p class="success">✓ {songs.songs.nodes.length} song(s) found</p>
+        {songs.songs.nodes.map((song) => (
+          <div class="card">
+            <p><strong>{song.title}</strong></p>
+            {song.issues.nodes.length > 0 && (
+              <p>Issues: {song.issues.nodes.map((t) => <span class="tag">{t.name}</span>)}</p>
+            )}
+            {song.songwriters.nodes.length > 0 && (
+              <p>Songwriters: {song.songwriters.nodes.map((t) => <span class="tag">{t.name}</span>)}</p>
+            )}
+            {song.gaggles.nodes.length > 0 && (
+              <p>Gaggles: {song.gaggles.nodes.map((t) => <span class="tag">{t.name}</span>)}</p>
+            )}
+            {song.tunes.nodes.length > 0 && (
+              <p>Tunes: {song.tunes.nodes.map((t) => <span class="tag">{t.name}</span>)}</p>
+            )}
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="card">
+        <p class="success">✓ Songs query succeeded (no songs published yet — add one in WP admin to test)</p>
+      </div>
+    )}
+
+    <h2>3. Portland Subsite — Posts</h2>
+    <p class="meta">Endpoint: <code>{portlandEndpoint}</code></p>
+    {portlandError ? (
+      <p class="error">❌ {portlandError}</p>
+    ) : portlandPosts && portlandPosts.posts.nodes.length > 0 ? (
+      <div>
+        <p class="success">✓ {portlandPosts.posts.nodes.length} post(s) found</p>
+        {portlandPosts.posts.nodes.map((post) => (
+          <div class="card">
+            <p><strong>{post.title}</strong></p>
+            <p class="meta">{post.date}</p>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="card">
+        <p class="success">✓ Portland query succeeded (no posts published yet)</p>
+      </div>
+    )}
+
+    <h2>Summary</h2>
+    <ul>
+      <li>Main site settings: {siteError ? "❌ Failed" : "✓ OK"}</li>
+      <li>Songs CPT + taxonomies: {songsError ? "❌ Failed" : "✓ OK"}</li>
+      <li>Portland subsite: {portlandError ? "❌ Failed" : "✓ OK"}</li>
+    </ul>
+  </body>
+</html>

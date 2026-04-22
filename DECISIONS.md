@@ -138,6 +138,46 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Rationale**: Sitemap is essential for SEO from day one. RSS will serve the song archive and gaggle action feeds. `astro-icon` provides a clean SVG icon system. All three are low-overhead and won't need to be removed. Additional integrations (MDX, image optimization) can be added later as needed.
 - **Revisit if**: Any of these integrations become unmaintained or incompatible with Astro 6+.
 
+## D012 — Custom WP plugin (irg-core) for content model
+
+- **Status**: Decided
+- **Date**: 2026-04-21
+- **Context**: The Songs CPT and its custom taxonomies need to be registered in WordPress with WPGraphQL exposure. This logic could live in the theme's `functions.php`, in a mu-plugin, or in a standalone plugin.
+- **Options considered**:
+  - Theme `functions.php` (couples content model to theme; lost if theme changes)
+  - Must-use plugin (auto-activated, no UI to disable — good for infra, but harder to install via WP admin)
+  - Standard plugin with `Network: true` header (installable via zip upload in WP admin, network-activatable)
+- **Choice**: Standard plugin (`irg-core`) with `Network: true`.
+- **Rationale**: Content model is site infrastructure, not theme presentation — it should survive theme changes. A standard plugin is the easiest to install (zip upload via WP admin) and manage (network activate/deactivate). The `Network: true` header ensures it loads on all subsites. The plugin registers Songs CPT + taxonomies on the main site only (`is_main_site()` guard) and relabels Posts → Actions on subsites.
+- **Revisit if**: The plugin grows complex enough to warrant splitting into separate plugins, or if mu-plugin auto-activation becomes preferable.
+
+## D013 — Relabel "Posts" to "Actions" on gaggle subsites
+
+- **Status**: Decided
+- **Date**: 2026-04-21
+- **Context**: Gaggle subsites use standard WP Posts for documenting protests, demonstrations, and community actions. "Posts" is a generic label that doesn't communicate the content purpose to granny editors.
+- **Options considered**:
+  - Keep default "Posts" label (no code needed, but confusing in context)
+  - Relabel to "Actions" via the irg-core plugin (matches how gaggles talk about their activities)
+  - Create a custom "Actions" CPT (unnecessary complexity; standard posts work fine, just need a label change)
+- **Choice**: Relabel Posts → Actions on non-main subsites via `irg-core`.
+- **Rationale**: Zero structural change — still standard posts with all built-in WP features (categories, tags, REST/GraphQL). Just changes the admin UI labels so grannies see "Add New Action" instead of "Add New Post." The relabeling only applies to subsites (`!is_main_site()`), leaving the main site's Posts untouched for potential hub news.
+- **Revisit if**: Gaggles need genuinely different post types for different content (unlikely).
+
+## D014 — GraphQL client as a thin fetch wrapper
+
+- **Status**: Decided
+- **Date**: 2026-04-21
+- **Context**: Astro needs to fetch data from WPGraphQL endpoints at build time. Options range from raw `fetch` calls to full GraphQL client libraries.
+- **Options considered**:
+  - Raw `fetch` in each page (duplicated boilerplate)
+  - `graphql-request` library (lightweight, but an npm dependency for a thin wrapper)
+  - Custom `wpQuery()` wrapper around `fetch` (no dependency, typed, handles errors)
+  - `urql` or `apollo-client` (heavy, designed for client-side apps with caching)
+- **Choice**: Custom `wpQuery<T>()` function in `src/lib/graphql.ts`.
+- **Rationale**: At build time, Astro makes one-shot requests — no caching, no subscriptions, no client-side state. A typed wrapper around `fetch` is all that's needed. The generic `<T>` parameter gives per-query type safety. The `endpoint` parameter supports querying different subsites. Adding a dependency for this would be overhead without benefit.
+- **Revisit if**: Query complexity grows to need fragments, persisted queries, or code generation (e.g., `graphql-codegen`).
+
 ---
 
 ## Open decisions (not yet resolved)
