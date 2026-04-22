@@ -214,6 +214,30 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Rationale**: The tags add no information beyond what the Issue taxonomy already covers. Importing them would create a junk Songwriter or Tune taxonomy. The actual songwriter and tune data is already captured in custom fields. Seattle tags are different — those are songwriter names and are extracted to the `songwriter` field.
 - **Revisit if**: The song librarian identifies tags that carry unique information worth preserving.
 
+## D018 — ACF field group for Songs CPT, registered in plugin code
+
+- **Status**: Decided
+- **Date**: 2026-04-22
+- **Context**: The Songs CPT needs structured fields for lyrics, tune, songwriter, and other metadata. ACF and WPGraphQL for ACF are both installed on the multisite. Fields can be registered via the ACF GUI (stored in the database) or via `acf_add_local_field_group()` in PHP (stored in code).
+- **Options considered**:
+  - ACF GUI (easy to edit in WP admin, but field config lives in the database — not version-controlled, lost if database is reset, not portable)
+  - `acf_add_local_field_group()` in `irg-core.php` (version-controlled, portable, deploys with the plugin, but requires code changes to modify fields)
+- **Choice**: Register via `acf_add_local_field_group()` in the irg-core plugin.
+- **Rationale**: The song data model is finalized. Keeping field definitions in code means they're version-controlled, deploy automatically with the plugin, and survive database resets. The ACF GUI still shows them as read-only for reference. All 8 fields have `show_in_graphql => true` for WPGraphQL for ACF exposure. The field group's `graphql_field_name` is `songDetails`, so queries use `song { songDetails { lyrics tune songwriter ... } }`.
+- **Fields**: lyrics (wysiwyg), tune (text), songwriter (text), key_or_starting_note (text), youtube_link (url), youtube_link_2 (url), date_written_or_updated (date_picker), source_notes (text).
+- **Note**: The default WP `editor` was removed from the CPT `supports` array since lyrics now live in the ACF WYSIWYG field. The standard editor would be redundant and confusing for granny editors.
+- **Revisit if**: The song librarian needs additional fields, or if ACF GUI editing becomes necessary for non-developer contributors.
+
+## D019 — Issue taxonomy seeded with 17 default terms on activation
+
+- **Status**: Decided
+- **Date**: 2026-04-22
+- **Context**: The 17 issue categories need to exist in WordPress as taxonomy terms before songs can be imported. Manually creating 17 terms is error-prone.
+- **Choice**: The irg-core plugin seeds the 17 Issue terms on first activation via `wp_insert_term()`, guarded by an `irg_issue_terms_seeded` option flag so it only runs once.
+- **Terms**: Business & Economy, Education, Environment & Energy, Gender Equity, Government & Politics, Granny Life, Guns & Violence, Healthcare, Holiday & Celebrations, Human & Civil Rights, Immigration, Labor & Worker Rights, Local Issues, Racism & Social Justice, Reproductive Rights, Soldiers & Veterans, War & Peace.
+- **Rationale**: Seeding from code ensures exact spelling and completeness. The option flag prevents duplicate insertion on subsequent page loads. Terms can still be edited or added via WP admin after seeding.
+- **Revisit if**: The taxonomy changes and new terms need to be added (update the array and delete the option flag to re-seed).
+
 ---
 
 ## Open decisions (not yet resolved)
