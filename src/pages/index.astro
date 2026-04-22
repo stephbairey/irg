@@ -1,14 +1,26 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>International Raging Grannies</title>
-  </head>
-  <body>
-    <h1>International Raging Grannies</h1>
-  </body>
-</html>
+<BaseLayout title="Home">
+  <div class="text-center py-16">
+    <img
+      src="/logo-full.png"
+      alt="Raging Grannies"
+      class="mx-auto h-48 mb-8"
+      style="filter: brightness(0) saturate(100%) invert(14%) sepia(89%) saturate(3963%) hue-rotate(267deg) brightness(87%) contrast(101%);"
+    />
+    <h1 class="font-display text-dark-purple text-5xl sm:text-6xl mb-4">
+      International Raging Grannies
+    </h1>
+    <p class="text-xl text-text/80 max-w-2xl mx-auto mb-8">
+      Singing out for peace and social justice since 1987.
+    </p>
+    <a
+      href="/songs/"
+      class="inline-block bg-dark-red text-light-text font-display text-xl px-8 py-3 rounded-lg hover:bg-dark-purple transition-colors no-underline"
+    >
+      Browse the Song Library
+    </a>
+  </div>
+</BaseLayout>

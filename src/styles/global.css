@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  /* IRG brand tokens — populate when brand colors are finalized */
+  --color-dark-red: #E22A2C;
+  --color-dark-purple: #57228C;
+  --color-light-red: #C48689;
+  --color-light-purple: #947FA8;
+  --color-light-bg: #F5F4E6;
+  --color-text: #444343;
+  --color-light-text: #E0E0E0;
+
+  --font-display: "Rum Raisin", cursive;
+  --font-body: "Nunito Sans", sans-serif;
 }

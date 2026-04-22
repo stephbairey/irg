@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Singing out for peace and social justice" } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title} — Raging Grannies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Rum+Raisin&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="/logo-cropped.png" />
+  </head>
+  <body class="bg-light-bg text-text font-body min-h-screen flex flex-col">
+    <header class="bg-dark-purple text-light-text">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+        <a href="/" class="flex items-center gap-3 no-underline">
+          <img
+            src="/logo-cropped.png"
+            alt=""
+            class="h-10 brightness-0 invert"
+          />
+          <span class="font-display text-2xl text-light-text tracking-wide"
+            >Raging Grannies</span
+          >
+        </a>
+        <nav class="ml-auto flex gap-6 font-display text-lg">
+          <a href="/songs/" class="text-light-text hover:text-dark-red no-underline">Songs</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-6xl mx-auto px-4 py-8 w-full">
+      <slot />
+    </main>
+
+    <footer class="bg-dark-purple text-light-text mt-auto">
+      <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center gap-4">
+        <img
+          src="/logo-full.png"
+          alt="Raging Grannies"
+          class="h-16 brightness-0 invert opacity-80"
+        />
+        <p class="text-sm opacity-80">
+          &copy; {year} International Raging Grannies. Singing out for peace and social justice.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,126 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { fetchAllSongs } from "../../lib/songs";
+
+const songs = await fetchAllSongs();
+
+const allIssues = [
+  ...new Set(songs.flatMap((s) => s.issues.nodes.map((i) => i.name))),
+].sort();
+
+const songsData = songs.map((s) => ({
+  title: s.title,
+  slug: s.slug,
+  gaggle: s.gaggles.nodes[0]?.name ?? "",
+  tune: s.tunes.nodes[0]?.name ?? "",
+  songwriter: s.songwriters.nodes[0]?.name ?? "",
+  issues: s.issues.nodes.map((i) => i.name),
+}));
+---
+
+<BaseLayout title="Song Library">
+  <h1 class="font-display text-dark-purple text-4xl mb-2">Song Library</h1>
+  <p class="text-lg mb-6">
+    {songs.length} songs from gaggles across North America.
+  </p>
+
+  <div class="mb-6 flex flex-col sm:flex-row gap-4">
+    <input
+      type="text"
+      id="search"
+      placeholder="Search by title..."
+      class="border border-light-purple rounded-lg px-4 py-2 w-full sm:w-80 bg-white focus:outline-none focus:ring-2 focus:ring-dark-purple"
+    />
+    <select
+      id="issue-filter"
+      class="border border-light-purple rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-dark-purple"
+    >
+      <option value="">All Issues</option>
+      {allIssues.map((issue) => <option value={issue}>{issue}</option>)}
+    </select>
+  </div>
+
+  <div id="song-count" class="text-sm text-text/70 mb-4"></div>
+
+  <div id="song-list" class="grid gap-3">
+    {
+      songsData.map((song) => (
+        <a
+          href={`/songs/${song.slug}/`}
+          class="song-card block bg-white rounded-lg px-5 py-4 border border-light-purple/30 hover:border-dark-purple/50 hover:shadow-sm transition-all no-underline"
+          data-title={song.title.toLowerCase()}
+          data-issues={song.issues.join("|")}
+        >
+          <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+            <h2 class="font-display text-dark-purple text-xl leading-tight">
+              {song.title}
+            </h2>
+            {song.tune && (
+              <span class="text-sm text-text/60 italic shrink-0">
+                tune: {song.tune}
+              </span>
+            )}
+          </div>
+          <div class="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+            {song.gaggle && <span class="text-text/70">{song.gaggle}</span>}
+            {song.songwriter && (
+              <span class="text-text/70">by {song.songwriter}</span>
+            )}
+          </div>
+          {song.issues.length > 0 && (
+            <div class="mt-2 flex flex-wrap gap-1.5">
+              {song.issues.map((issue) => (
+                <span class="inline-block bg-light-purple/20 text-dark-purple text-xs font-semibold px-2 py-0.5 rounded-full">
+                  {issue}
+                </span>
+              ))}
+            </div>
+          )}
+        </a>
+      ))
+    }
+  </div>
+
+  <p id="no-results" class="hidden text-center text-text/60 py-12 text-lg">
+    No songs match your search.
+  </p>
+</BaseLayout>
+
+<script>
+  const searchInput = document.getElementById("search") as HTMLInputElement;
+  const issueFilter = document.getElementById("issue-filter") as HTMLSelectElement;
+  const cards = document.querySelectorAll<HTMLElement>(".song-card");
+  const noResults = document.getElementById("no-results")!;
+  const songCount = document.getElementById("song-count")!;
+
+  function filter() {
+    const query = searchInput.value.toLowerCase().trim();
+    const issue = issueFilter.value;
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const title = card.dataset.title ?? "";
+      const issues = card.dataset.issues ?? "";
+
+      const matchesSearch = !query || title.includes(query);
+      const matchesIssue = !issue || issues.split("|").includes(issue);
+
+      if (matchesSearch && matchesIssue) {
+        card.classList.remove("hidden");
+        visible++;
+      } else {
+        card.classList.add("hidden");
+      }
+    });
+
+    noResults.classList.toggle("hidden", visible > 0);
+    songCount.textContent =
+      query || issue
+        ? `Showing ${visible} of ${cards.length} songs`
+        : `${cards.length} songs`;
+  }
+
+  searchInput.addEventListener("input", filter);
+  issueFilter.addEventListener("change", filter);
+  filter();
+</script>

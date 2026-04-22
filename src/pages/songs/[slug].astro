@@ -1,0 +1,150 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { fetchAllSongs, getYouTubeEmbedUrl } from "../../lib/songs";
+import type { Song } from "../../lib/songs";
+
+export async function getStaticPaths() {
+  const songs = await fetchAllSongs();
+  return songs.map((song) => ({
+    params: { slug: song.slug },
+    props: { song },
+  }));
+}
+
+interface Props {
+  song: Song;
+}
+
+const { song } = Astro.props;
+
+const gaggle = song.gaggles.nodes[0]?.name;
+const tune = song.tunes.nodes[0]?.name;
+const songwriter = song.songwriters.nodes[0]?.name;
+const issues = song.issues.nodes.map((i) => i.name);
+const lyrics = song.songDetails.lyrics;
+const key = song.songDetails.keyOrStartingNote;
+const sourceNotes = song.songDetails.sourceNotes;
+const dateWritten = song.songDetails.dateWrittenOrUpdated;
+
+const youtubeEmbed = song.songDetails.youtubeLink
+  ? getYouTubeEmbedUrl(song.songDetails.youtubeLink)
+  : null;
+const youtubeEmbed2 = song.songDetails.youtubeLink2
+  ? getYouTubeEmbedUrl(song.songDetails.youtubeLink2)
+  : null;
+---
+
+<BaseLayout title={song.title}>
+  <a
+    href="/songs/"
+    class="inline-block text-dark-red hover:text-dark-purple font-semibold mb-6 no-underline"
+  >
+    &larr; Back to Song Library
+  </a>
+
+  <article class="bg-white rounded-xl p-6 sm:p-8 border border-light-purple/30">
+    <h1 class="font-display text-dark-purple text-3xl sm:text-4xl mb-4">
+      {song.title}
+    </h1>
+
+    <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm mb-6 border-b border-light-purple/20 pb-4">
+      {tune && (
+        <div>
+          <span class="font-semibold text-dark-purple">Tune:</span>{" "}
+          <span class="italic">{tune}</span>
+        </div>
+      )}
+      {songwriter && (
+        <div>
+          <span class="font-semibold text-dark-purple">Songwriter:</span> {songwriter}
+        </div>
+      )}
+      {gaggle && (
+        <div>
+          <span class="font-semibold text-dark-purple">Gaggle:</span> {gaggle}
+        </div>
+      )}
+      {key && (
+        <div>
+          <span class="font-semibold text-dark-purple">Key:</span> {key}
+        </div>
+      )}
+      {dateWritten && (
+        <div>
+          <span class="font-semibold text-dark-purple">Written:</span>{" "}
+          {new Date(dateWritten).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </div>
+      )}
+    </div>
+
+    {issues.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-6">
+        {issues.map((issue) => (
+          <span class="inline-block bg-light-purple/20 text-dark-purple text-sm font-semibold px-3 py-1 rounded-full">
+            {issue}
+          </span>
+        ))}
+      </div>
+    )}
+
+    {lyrics && (
+      <div
+        class="lyrics prose prose-lg max-w-none mb-8 leading-relaxed"
+        set:html={lyrics}
+      />
+    )}
+
+    {sourceNotes && (
+      <p class="text-sm text-text/60 italic mb-6">Source: {sourceNotes}</p>
+    )}
+
+    {(youtubeEmbed || youtubeEmbed2) && (
+      <div class="space-y-4">
+        <h2 class="font-display text-dark-purple text-xl">Listen</h2>
+        {youtubeEmbed && (
+          <div class="aspect-video max-w-xl">
+            <iframe
+              src={youtubeEmbed}
+              title={`${song.title} — performance video`}
+              class="w-full h-full rounded-lg"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            />
+          </div>
+        )}
+        {youtubeEmbed2 && (
+          <div class="aspect-video max-w-xl">
+            <iframe
+              src={youtubeEmbed2}
+              title={`${song.title} — alternate performance`}
+              class="w-full h-full rounded-lg"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            />
+          </div>
+        )}
+      </div>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .lyrics :global(p) {
+    margin-bottom: 1em;
+  }
+  .lyrics :global(strong),
+  .lyrics :global(b) {
+    font-weight: 700;
+  }
+  .lyrics :global(em),
+  .lyrics :global(i) {
+    font-style: italic;
+  }
+  .lyrics :global(u) {
+    text-decoration: underline;
+  }
+</style>
