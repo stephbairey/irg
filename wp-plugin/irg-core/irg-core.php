@@ -2,7 +2,7 @@
 /**
  * Plugin Name: IRG Core
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 2.0.0
+ * Version: 2.1.0
  * Author: Maya Bairey
  * Network: true
  * Requires PHP: 8.0
@@ -200,24 +200,6 @@ function irg_register_acf_fields(): void {
 				'tabs'              => 'all',
 				'toolbar'           => 'basic',
 				'media_upload'      => 0,
-				'show_in_graphql'   => 1,
-			],
-			[
-				'key'               => 'field_irg_tune',
-				'label'             => 'Tune',
-				'name'              => 'tune',
-				'type'              => 'text',
-				'instructions'      => 'The melody this song is sung to (e.g., "Old MacDonald Had a Farm").',
-				'required'          => 0,
-				'show_in_graphql'   => 1,
-			],
-			[
-				'key'               => 'field_irg_songwriter',
-				'label'             => 'Songwriter',
-				'name'              => 'songwriter',
-				'type'              => 'text',
-				'instructions'      => 'Individual songwriter credit for display.',
-				'required'          => 0,
 				'show_in_graphql'   => 1,
 			],
 			[
