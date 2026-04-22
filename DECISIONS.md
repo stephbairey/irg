@@ -239,6 +239,16 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Rationale**: Seeding from code ensures exact spelling and completeness. The option flag prevents duplicate insertion on subsequent page loads. Terms can still be edited or added via WP admin after seeding.
 - **Revisit if**: The taxonomy changes and new terms need to be added (update the array and delete the option flag to re-seed).
 
+## D020 — Temporary song import tool in irg-core plugin
+
+- **Status**: Active (temporary — remove after migration)
+- **Date**: 2026-04-22
+- **Context**: 1493 songs (1591 minus 98 flagged duplicates) need to be imported from `songs-consolidated.json` into the Songs CPT on the WP multisite. WP's built-in importer can't target a CPT with ACF fields and custom taxonomies.
+- **Choice**: Add a temporary admin page (Songs → Import Songs) to irg-core that accepts a JSON file upload and creates Song posts with all fields and taxonomy assignments.
+- **Implementation**: The importer reads `songs-consolidated.json`, skips entries where `duplicate_of` is not null, creates each song as a published Song CPT post, sets ACF fields via `update_field()`, and assigns Issue/Songwriter/Gaggle/Tune taxonomy terms (creating new terms as needed). Shows progress during import and a summary at the end. Warns if songs already exist in the database to prevent accidental double-import.
+- **Rationale**: A one-time admin tool is simpler and more auditable than a WP-CLI script or direct database manipulation. It runs inside the WP context so all hooks, sanitization, and ACF field registration work correctly. It will be removed from the plugin after migration is verified.
+- **Revisit if**: Import fails or needs to be re-run — the safety check warns but allows re-import with a confirmation checkbox.
+
 ---
 
 ## Open decisions (not yet resolved)

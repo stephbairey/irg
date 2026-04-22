@@ -1,9 +1,11 @@
 <?php
 /**
  * Plugin Name: IRG Core
+ * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 2.1.0
- * Author: Maya Bairey
+ * Version: 3.0.0
+ * Author: Lingua Ink Media
+ * Author URI: https://linguainkmedia.com
  * Network: true
  * Requires PHP: 8.0
  * License: GPL-2.0-or-later
@@ -18,6 +20,7 @@ add_action( 'init', 'irg_register_song_taxonomies' );
 add_action( 'init', 'irg_relabel_posts_on_subsites' );
 add_action( 'init', 'irg_seed_issue_terms' );
 add_action( 'acf/include_fields', 'irg_register_acf_fields' );
+add_action( 'admin_menu', 'irg_add_import_page' );
 
 function irg_register_song_cpt(): void {
 	if ( ! is_main_site() ) {
@@ -270,6 +273,263 @@ function irg_register_acf_fields(): void {
 		'graphql_field_name'    => 'songDetails',
 	] );
 }
+
+// ---------------------------------------------------------------------------
+// Temporary song import tool — remove after migration is complete.
+// ---------------------------------------------------------------------------
+
+function irg_add_import_page(): void {
+	if ( ! is_main_site() ) {
+		return;
+	}
+
+	add_submenu_page(
+		'edit.php?post_type=song',
+		'Import Songs',
+		'Import Songs',
+		'manage_options',
+		'irg-import-songs',
+		'irg_render_import_page'
+	);
+}
+
+function irg_render_import_page(): void {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( 'Unauthorized.' );
+	}
+
+	echo '<div class="wrap">';
+	echo '<h1>Import Songs from JSON</h1>';
+
+	// Handle form submission.
+	if ( isset( $_POST['irg_import_nonce'] ) && wp_verify_nonce( $_POST['irg_import_nonce'], 'irg_import_songs' ) ) {
+		irg_handle_import();
+		echo '</div>';
+		return;
+	}
+
+	// Safety check: count existing songs.
+	$existing = wp_count_posts( 'song' );
+	$existing_count = ( $existing->publish ?? 0 ) + ( $existing->draft ?? 0 ) + ( $existing->trash ?? 0 );
+
+	if ( $existing_count > 0 ) {
+		echo '<div class="notice notice-warning"><p>';
+		echo '<strong>Warning:</strong> There are already <strong>' . (int) $existing_count . '</strong> songs in the database. ';
+		echo 'Importing again will create duplicates. Only proceed if you have cleared the existing songs.';
+		echo '</p></div>';
+	}
+
+	echo '<form method="post" enctype="multipart/form-data">';
+	wp_nonce_field( 'irg_import_songs', 'irg_import_nonce' );
+	echo '<table class="form-table"><tr>';
+	echo '<th><label for="irg_json_file">JSON File</label></th>';
+	echo '<td><input type="file" name="irg_json_file" id="irg_json_file" accept=".json" required>';
+	echo '<p class="description">Upload songs-consolidated.json. Songs with duplicate_of set will be skipped.</p>';
+	echo '</td></tr></table>';
+
+	if ( $existing_count > 0 ) {
+		echo '<p><label><input type="checkbox" name="irg_confirm_reimport" value="1" required> ';
+		echo 'I understand there are existing songs and want to proceed anyway.</label></p>';
+	}
+
+	submit_button( 'Import Songs' );
+	echo '</form>';
+	echo '</div>';
+}
+
+function irg_handle_import(): void {
+	if ( empty( $_FILES['irg_json_file']['tmp_name'] ) ) {
+		echo '<div class="notice notice-error"><p>No file uploaded.</p></div>';
+		return;
+	}
+
+	$json_string = file_get_contents( $_FILES['irg_json_file']['tmp_name'] );
+	$songs = json_decode( $json_string, true );
+
+	if ( ! is_array( $songs ) ) {
+		echo '<div class="notice notice-error"><p>Invalid JSON file.</p></div>';
+		return;
+	}
+
+	// Filter out duplicates.
+	$to_import = array_filter( $songs, fn( $s ) => empty( $s['duplicate_of'] ) );
+	$skipped_dupes = count( $songs ) - count( $to_import );
+
+	$total        = count( $to_import );
+	$imported     = 0;
+	$errors       = [];
+	$terms_created = [
+		'issue'      => 0,
+		'songwriter' => 0,
+		'gaggle'     => 0,
+		'tune'       => 0,
+	];
+
+	echo '<h2>Import Progress</h2>';
+	echo '<div id="irg-import-log" style="background:#f0f0f0;padding:12px;max-height:400px;overflow-y:auto;font-family:monospace;font-size:13px;margin-bottom:20px;">';
+
+	// Flush output so the browser renders progressively.
+	if ( ob_get_level() ) {
+		ob_end_flush();
+	}
+	flush();
+
+	foreach ( $to_import as $song ) {
+		$imported++;
+		$title = $song['title'] ?? '(untitled)';
+
+		// Build post_date from date_published.
+		$post_date = '';
+		if ( ! empty( $song['date_published'] ) ) {
+			$post_date = $song['date_published'] . ' 00:00:00';
+		}
+
+		$post_args = [
+			'post_type'   => 'song',
+			'post_title'  => sanitize_text_field( $title ),
+			'post_status' => 'publish',
+		];
+
+		if ( $post_date ) {
+			$post_args['post_date']     = $post_date;
+			$post_args['post_date_gmt'] = get_gmt_from_date( $post_date );
+		}
+
+		$post_id = wp_insert_post( $post_args, true );
+
+		if ( is_wp_error( $post_id ) ) {
+			$errors[] = "#{$imported} \"{$title}\": " . $post_id->get_error_message();
+			echo esc_html( "ERROR {$imported}/{$total}: \"{$title}\" — {$post_id->get_error_message()}" ) . "<br>";
+			flush();
+			continue;
+		}
+
+		// ACF fields.
+		if ( function_exists( 'update_field' ) ) {
+			if ( ! empty( $song['lyrics'] ) ) {
+				update_field( 'field_irg_lyrics', wp_kses_post( $song['lyrics'] ), $post_id );
+			}
+			if ( ! empty( $song['key_or_starting_note'] ) ) {
+				update_field( 'field_irg_key_or_starting_note', sanitize_text_field( $song['key_or_starting_note'] ), $post_id );
+			}
+			if ( ! empty( $song['youtube_link'] ) ) {
+				update_field( 'field_irg_youtube_link', esc_url_raw( $song['youtube_link'] ), $post_id );
+			}
+			if ( ! empty( $song['youtube_link_2'] ) ) {
+				update_field( 'field_irg_youtube_link_2', esc_url_raw( $song['youtube_link_2'] ), $post_id );
+			}
+			if ( ! empty( $song['date_written_or_updated'] ) ) {
+				update_field( 'field_irg_date_written_or_updated', sanitize_text_field( $song['date_written_or_updated'] ), $post_id );
+			}
+			if ( ! empty( $song['source_notes'] ) ) {
+				update_field( 'field_irg_source_notes', sanitize_text_field( $song['source_notes'] ), $post_id );
+			}
+		}
+
+		// Issue taxonomy.
+		if ( ! empty( $song['issues'] ) && is_array( $song['issues'] ) ) {
+			$term_ids = [];
+			foreach ( $song['issues'] as $issue_name ) {
+				$term = term_exists( $issue_name, 'issue' );
+				if ( ! $term ) {
+					$term = wp_insert_term( $issue_name, 'issue' );
+					if ( ! is_wp_error( $term ) ) {
+						$terms_created['issue']++;
+					}
+				}
+				if ( ! is_wp_error( $term ) ) {
+					$term_ids[] = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+				}
+			}
+			if ( $term_ids ) {
+				wp_set_object_terms( $post_id, $term_ids, 'issue' );
+			}
+		}
+
+		// Songwriter taxonomy.
+		if ( ! empty( $song['songwriter'] ) ) {
+			$sw_name = trim( $song['songwriter'] );
+			$term    = term_exists( $sw_name, 'songwriter' );
+			if ( ! $term ) {
+				$term = wp_insert_term( $sw_name, 'songwriter' );
+				if ( ! is_wp_error( $term ) ) {
+					$terms_created['songwriter']++;
+				}
+			}
+			if ( ! is_wp_error( $term ) ) {
+				$tid = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+				wp_set_object_terms( $post_id, [ $tid ], 'songwriter' );
+			}
+		}
+
+		// Gaggle taxonomy.
+		if ( ! empty( $song['gaggle'] ) ) {
+			$g_name = trim( $song['gaggle'] );
+			$term   = term_exists( $g_name, 'gaggle' );
+			if ( ! $term ) {
+				$term = wp_insert_term( $g_name, 'gaggle' );
+				if ( ! is_wp_error( $term ) ) {
+					$terms_created['gaggle']++;
+				}
+			}
+			if ( ! is_wp_error( $term ) ) {
+				$tid = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+				wp_set_object_terms( $post_id, [ $tid ], 'gaggle' );
+			}
+		}
+
+		// Tune taxonomy.
+		if ( ! empty( $song['tune'] ) ) {
+			$t_name = trim( $song['tune'] );
+			$term   = term_exists( $t_name, 'tune' );
+			if ( ! $term ) {
+				$term = wp_insert_term( $t_name, 'tune' );
+				if ( ! is_wp_error( $term ) ) {
+					$terms_created['tune']++;
+				}
+			}
+			if ( ! is_wp_error( $term ) ) {
+				$tid = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+				wp_set_object_terms( $post_id, [ $tid ], 'tune' );
+			}
+		}
+
+		echo esc_html( "Imported {$imported} of {$total}: \"{$title}\"" ) . "<br>";
+
+		if ( $imported % 50 === 0 ) {
+			flush();
+		}
+	}
+
+	echo '</div>';
+
+	// Summary.
+	$error_count = count( $errors );
+	echo '<h2>Import Summary</h2>';
+	echo '<table class="widefat" style="max-width:500px;"><tbody>';
+	echo "<tr><td>Total in file</td><td><strong>" . count( $songs ) . "</strong></td></tr>";
+	echo "<tr><td>Skipped (flagged duplicates)</td><td><strong>{$skipped_dupes}</strong></td></tr>";
+	echo "<tr><td>Imported</td><td><strong>{$imported}</strong></td></tr>";
+	echo "<tr><td>Errors</td><td><strong>{$error_count}</strong></td></tr>";
+	echo "<tr><td colspan='2'><strong>Terms created:</strong></td></tr>";
+	echo "<tr><td>&nbsp;&nbsp;Issues</td><td>{$terms_created['issue']}</td></tr>";
+	echo "<tr><td>&nbsp;&nbsp;Songwriters</td><td>{$terms_created['songwriter']}</td></tr>";
+	echo "<tr><td>&nbsp;&nbsp;Gaggles</td><td>{$terms_created['gaggle']}</td></tr>";
+	echo "<tr><td>&nbsp;&nbsp;Tunes</td><td>{$terms_created['tune']}</td></tr>";
+	echo '</tbody></table>';
+
+	if ( $errors ) {
+		echo '<h3>Errors</h3><ul>';
+		foreach ( $errors as $err ) {
+			echo '<li>' . esc_html( $err ) . '</li>';
+		}
+		echo '</ul>';
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Subsite label customization.
+// ---------------------------------------------------------------------------
 
 function irg_relabel_posts_on_subsites(): void {
 	if ( is_main_site() ) {
