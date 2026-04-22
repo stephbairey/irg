@@ -1,0 +1,120 @@
+SONG ARCHIVE CONSOLIDATION — STATS REPORT
+==========================================
+Total songs parsed: 1591
+  Main site: 1057
+  Seattle: 534
+
+Gaggle distribution:
+  Seattle: 552
+  Tucson: 189
+  Kingston: 151
+  New York City Metro: 74
+  New Mexico: 74
+  Triangle: 61
+  San Francisco Bay Area: 41
+  Victoria: 39
+  Piedmont: 35
+  Madison: 32
+  Davis: 30
+  Rochester: 22
+  Multiple (Rochester, South Florida, Triangle): 20
+  Santa Fe: 17
+  Unknown: 15
+  Multiple (Rochester, South Florida): 14
+  Montreal: 14
+  South Florida: 12
+  St. John: 11
+  Tuolumne & Calaveras Counties: 11
+  Boston: 10
+  Calgary: 10
+  Guelph: 10
+  Metro Detroit: 9
+  Tompkins County: 8
+  Greater Westerly RI: 7
+  Peterborough: 7
+  Wolfville: 6
+  Multiple (Various): 5
+  Multiple (Vancouver, Montreal): 5
+  WOWW: 5
+  Fresno: 5
+  Olympia: 5
+  Sacramento: 5
+  Toronto: 4
+  Regina: 4
+  Santa Cruz: 4
+  Green Bay: 4
+  Grant County: 4
+  New Jersey: 3
+  Central Florida: 3
+  Milwaukee: 3
+  Multiple (New York City Metro, WOWW): 2
+  Multiple (Santa Cruz, South Florida, Rochester): 2
+  Westchester: 2
+  Pittsburgh: 2
+  Portland: 2
+  Gray's Harbor: 2
+  Multiple (Triangle, Tucson): 2
+  Bowling Green: 2
+  Rossmoor/Walnut Creek: 2
+  Kentuckiana: 2
+  Multiple (New York City Metro, Rochester): 1
+  Halifax: 1
+  St. Paul: 1
+  Vancouver: 1
+  Halton: 1
+  Ottawa: 1
+  Simcoe-Grey: 1
+  Woodstock: 1
+  Multiple (Vancouver, Rochester): 1
+  Unknown (California): 1
+  Barrie: 1
+  Multiple (Metro Detroit, New York City Metro): 1
+  Multiple (Tucson, Triangle): 1
+  Multiple (Victoria, Seattle, Rochester): 1
+  Western Massachusetts: 1
+  Multiple (Gray's Harbor, Rochester): 1
+  Multiple (Fresno, Rochester): 1
+  Multiple (Kingston, Tucson, Triangle): 1
+  Multiple (Ottawa, Montreal): 1
+  Multiple (Rochester, Triangle): 1
+  Multiple (Boston, Triangle): 1
+  Multiple (Metro Detroit, Triangle): 1
+  Multiple (Triangle, Central Florida): 1
+  San Jose & Santa Clara County: 1
+  Multiple (Triangle, Metro Detroit): 1
+  Multiple (San Jose & Santa Clara County, Tucson): 1
+  Multiple (San Francisco Bay Area, Tucson): 1
+  Winnipeg: 1
+  Multiple (Triangle, El Dorado County West Slope): 1
+  Charlotte: 1
+  Mendocino: 1
+
+Issue distribution (main site only — Seattle pending approval):
+  Government & Politics: 554
+  Human & Civil Rights: 417
+  War & Peace: 260
+  World Issues: 237
+  Business & Economy: 233
+  Environment & Energy: 232
+  Local Issues: 188
+  Women's Issues: 177
+  Health Care/Healthcare: 169
+  Labor & Worker Rights: 127
+  Soldiers & Veterans: 114
+  Education: 85
+  Holiday & Celebrations: 73
+
+Metadata extraction:
+  Songs with tune extracted: 1504 / 1591
+  Songs with songwriter extracted: 1298 / 1591
+  Songs with YouTube link: 714 / 1591
+  Songs with key/starting note: 221 / 1591
+  Songs with date written: 497 / 1591
+
+Data quality:
+  Songs needing review: 106
+  Duplicate pairs found: 99
+  Songs from Web Granny accounts (gaggle unresolved): 0
+  Songs with no category/issue: 546
+
+Seattle category mapping: PENDING APPROVAL (see data/seattle-category-mapping.json)

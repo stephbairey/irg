@@ -20,6 +20,10 @@ dist/
 *.tar.gz
 *.zip
 
+# WP XML exports (contain PII — email addresses in author fields)
+data/sources/*.xml
+docs/sources/
+
 # os
 .DS_Store
 Thumbs.db

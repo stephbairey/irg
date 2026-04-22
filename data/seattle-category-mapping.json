@@ -1,0 +1,154 @@
+{
+  "Business & Economy": {
+    "maps_to": "Business & Economy",
+    "notes": ""
+  },
+  "Children & Youth": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "Covid": {
+    "maps_to": "Health Care/Healthcare",
+    "notes": ""
+  },
+  "Crime & Punishment": {
+    "maps_to": "Government & Politics",
+    "notes": ""
+  },
+  "Education": {
+    "maps_to": "Education",
+    "notes": ""
+  },
+  "Environment & Energy": {
+    "maps_to": "Environment & Energy",
+    "notes": ""
+  },
+  "GLBT": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "George W Bush": {
+    "maps_to": "Government & Politics",
+    "notes": ""
+  },
+  "Government & Politics": {
+    "maps_to": "Government & Politics",
+    "notes": ""
+  },
+  "Grannies": {
+    "maps_to": null,
+    "notes": "Proposed: discard (not an issue category)"
+  },
+  "Guns & Violence": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "Health": {
+    "maps_to": "Health Care/Healthcare",
+    "notes": ""
+  },
+  "Healthcare": {
+    "maps_to": "Health Care/Healthcare",
+    "notes": ""
+  },
+  "Holiday Tunes": {
+    "maps_to": "Holiday & Celebrations",
+    "notes": ""
+  },
+  "Homelessness": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "Housing": {
+    "maps_to": "Local Issues",
+    "notes": ""
+  },
+  "Human & Civil Rights": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "Immigration": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "Labor": {
+    "maps_to": "Labor & Worker Rights",
+    "notes": ""
+  },
+  "Local Issues": {
+    "maps_to": "Local Issues",
+    "notes": ""
+  },
+  "Mental Health": {
+    "maps_to": "Health Care/Healthcare",
+    "notes": ""
+  },
+  "Police Brutality": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "Poverty": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "Racism": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "Religious Issues": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "Reproductive Rights": {
+    "maps_to": "Women's Issues",
+    "notes": ""
+  },
+  "Schools": {
+    "maps_to": "Education",
+    "notes": ""
+  },
+  "Self-care": {
+    "maps_to": null,
+    "notes": "Proposed: discard (not an issue category)"
+  },
+  "Sexism": {
+    "maps_to": "Women's Issues",
+    "notes": ""
+  },
+  "Sexuality": {
+    "maps_to": "Human & Civil Rights",
+    "notes": ""
+  },
+  "Soldiers & Veterans": {
+    "maps_to": "Soldiers & Veterans",
+    "notes": ""
+  },
+  "Trump": {
+    "maps_to": "Government & Politics",
+    "notes": ""
+  },
+  "Uncategorized": {
+    "maps_to": null,
+    "notes": "Proposed: discard (not an issue category)"
+  },
+  "Voting": {
+    "maps_to": "Government & Politics",
+    "notes": ""
+  },
+  "WTO": {
+    "maps_to": "World Issues",
+    "notes": ""
+  },
+  "War & Peace": {
+    "maps_to": "War & Peace",
+    "notes": ""
+  },
+  "Women": {
+    "maps_to": "Women's Issues",
+    "notes": ""
+  },
+  "older- revamp?": {
+    "maps_to": null,
+    "notes": "Proposed: discard (not an issue category)"
+  }
+}

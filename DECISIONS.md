@@ -178,14 +178,44 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Rationale**: At build time, Astro makes one-shot requests — no caching, no subscriptions, no client-side state. A typed wrapper around `fetch` is all that's needed. The generic `<T>` parameter gives per-query type safety. The `endpoint` parameter supports querying different subsites. Adding a dependency for this would be overhead without benefit.
 - **Revisit if**: Query complexity grows to need fragments, persisted queries, or code generation (e.g., `graphql-codegen`).
 
+## D015 — Song archive consolidation approach
+
+- **Status**: Decided
+- **Date**: 2026-04-22
+- **Context**: Two WP XML exports need to be consolidated: the main song site (raginggrannies.net, 1057 songs) and the Seattle gaggle site (534 songs). These overlap (99 potential duplicates). The main site has rich custom fields (tune, lyrics_by, gaggle, youtube_link, key_or_starting_note, date_written_or_updated). Seattle has songwriter names in tags and metadata embedded in content body HTML.
+- **Options considered**:
+  - Import directly into WP and sort it out there (fast, but no QA before import)
+  - Parse to intermediate JSON, generate review spreadsheet, get song librarian approval, then import (slower, but data quality is verified before anything touches WP)
+- **Choice**: Intermediate JSON consolidation with review spreadsheet.
+- **Rationale**: 1591 songs with inconsistent metadata, 99 duplicates, and 129 variant gaggle names need human review before import. The consolidated JSON normalizes gaggles, extracts embedded metadata from content, detects duplicates, and preserves musical formatting tags in lyrics. The review spreadsheet gives the song librarian a single artifact to audit. Seattle category mapping is held separate pending Maya's approval. Nothing imports to WP until the data is clean.
+- **Revisit if**: The song librarian wants to work directly in WP admin instead of a spreadsheet.
+
+## D016 — Seattle category mapping held for approval
+
+- **Status**: Pending
+- **Date**: 2026-04-22
+- **Context**: Seattle uses 38 categories vs. the main site's 13 issue taxonomy. A proposed mapping was generated (`data/seattle-category-mapping.json`) consolidating Seattle's fine-grained categories into the main site's taxonomy.
+- **Choice**: Seattle songs have `issues` left empty in the consolidated data. The mapping exists as a proposal but is not applied until Maya approves it.
+- **Rationale**: Several Seattle categories (Guns & Violence, Police Brutality, Racism, Homelessness) could reasonably map to different main-site issues depending on IRG's taxonomy philosophy. Maya and the song librarian should review before mapping is burned in.
+- **Revisit if**: Maya approves the mapping — then re-run the script to apply it.
+
+## D017 — Main site tags discarded, not mapped to taxonomy
+
+- **Status**: Decided
+- **Date**: 2026-04-22
+- **Context**: The main song site has 678 unique tags, mostly topic keywords that duplicate the category system (e.g., "fracking" alongside the "Environment & Energy" category).
+- **Choice**: Store in `original_tags` for reference. Do not map to any taxonomy during import.
+- **Rationale**: The tags add no information beyond what the Issue taxonomy already covers. Importing them would create a junk Songwriter or Tune taxonomy. The actual songwriter and tune data is already captured in custom fields. Seattle tags are different — those are songwriter names and are extracted to the `songwriter` field.
+- **Revisit if**: The song librarian identifies tags that carry unique information worth preserving.
+
 ---
 
 ## Open decisions (not yet resolved)
 
-- **Song taxonomy**: categories and tags TBD with song librarian before migration.
+- **Song taxonomy structure**: Final taxonomy categories TBD with song librarian. Current 13 issues from main site are a starting point. Seattle mapping pending approval.
 - **Brand colors and visual identity**: need to document from existing IRG materials.
 - **Gallery plugin/approach**: needs to be granny-friendly in WP admin.
 - **Contact form handling**: email routing, form service choice.
 - **DNS cutover plan**: how to move raginggrannies.org without downtime.
 - **Image hosting strategy**: WP media library vs. Cloudflare Images vs. other.
-- **Song deduplication strategy**: handling overlapping archives from gaggle subsites.
+- **Song deduplication resolution**: 99 duplicate pairs identified. Song librarian decides which version to keep per pair.
