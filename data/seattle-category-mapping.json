@@ -1,4 +1,20 @@
 {
+  "_taxonomy_changes": {
+    "description": "These changes apply to the ENTIRE song archive, not just Seattle. Apply them to main site songs too.",
+    "new_categories": [
+      "Guns & Violence",
+      "Immigration",
+      "Racism & Social Justice",
+      "Reproductive Rights"
+    ],
+    "renamed": {
+      "Women's Issues": "Gender Equity",
+      "Health Care/Healthcare": "Healthcare"
+    },
+    "eliminated": {
+      "World Issues": "Redistribute songs to best-fit categories from the remaining 16. Flag any that are ambiguous for review."
+    }
+  },
   "Business & Economy": {
     "maps_to": "Business & Economy",
     "notes": ""
@@ -8,7 +24,7 @@
     "notes": ""
   },
   "Covid": {
-    "maps_to": "Health Care/Healthcare",
+    "maps_to": "Healthcare",
     "notes": ""
   },
   "Crime & Punishment": {
@@ -37,18 +53,18 @@
   },
   "Grannies": {
     "maps_to": null,
-    "notes": "Proposed: discard (not an issue category)"
+    "notes": "Discard — not an issue category"
   },
   "Guns & Violence": {
-    "maps_to": "Human & Civil Rights",
-    "notes": ""
+    "maps_to": "Guns & Violence",
+    "notes": "New top-level category"
   },
   "Health": {
-    "maps_to": "Health Care/Healthcare",
+    "maps_to": "Healthcare",
     "notes": ""
   },
   "Healthcare": {
-    "maps_to": "Health Care/Healthcare",
+    "maps_to": "Healthcare",
     "notes": ""
   },
   "Holiday Tunes": {
@@ -60,7 +76,7 @@
     "notes": ""
   },
   "Housing": {
-    "maps_to": "Local Issues",
+    "maps_to": "Human & Civil Rights",
     "notes": ""
   },
   "Human & Civil Rights": {
@@ -68,8 +84,8 @@
     "notes": ""
   },
   "Immigration": {
-    "maps_to": "Human & Civil Rights",
-    "notes": ""
+    "maps_to": "Immigration",
+    "notes": "New top-level category"
   },
   "Labor": {
     "maps_to": "Labor & Worker Rights",
@@ -80,11 +96,11 @@
     "notes": ""
   },
   "Mental Health": {
-    "maps_to": "Health Care/Healthcare",
+    "maps_to": "Healthcare",
     "notes": ""
   },
   "Police Brutality": {
-    "maps_to": "Human & Civil Rights",
+    "maps_to": "Racism & Social Justice",
     "notes": ""
   },
   "Poverty": {
@@ -92,16 +108,16 @@
     "notes": ""
   },
   "Racism": {
-    "maps_to": "Human & Civil Rights",
-    "notes": ""
+    "maps_to": "Racism & Social Justice",
+    "notes": "New top-level category"
   },
   "Religious Issues": {
     "maps_to": "Human & Civil Rights",
     "notes": ""
   },
   "Reproductive Rights": {
-    "maps_to": "Women's Issues",
-    "notes": ""
+    "maps_to": "Reproductive Rights",
+    "notes": "New top-level category"
   },
   "Schools": {
     "maps_to": "Education",
@@ -109,11 +125,11 @@
   },
   "Self-care": {
     "maps_to": null,
-    "notes": "Proposed: discard (not an issue category)"
+    "notes": "Discard — not an issue category"
   },
   "Sexism": {
-    "maps_to": "Women's Issues",
-    "notes": ""
+    "maps_to": "Gender Equity",
+    "notes": "Renamed from Women's Issues"
   },
   "Sexuality": {
     "maps_to": "Human & Civil Rights",
@@ -129,26 +145,26 @@
   },
   "Uncategorized": {
     "maps_to": null,
-    "notes": "Proposed: discard (not an issue category)"
+    "notes": "Discard"
   },
   "Voting": {
     "maps_to": "Government & Politics",
     "notes": ""
   },
   "WTO": {
-    "maps_to": "World Issues",
-    "notes": ""
+    "maps_to": "Business & Economy",
+    "notes": "Was mapped to World Issues which is now eliminated. Trade/globalization fits Business & Economy."
   },
   "War & Peace": {
     "maps_to": "War & Peace",
     "notes": ""
   },
   "Women": {
-    "maps_to": "Women's Issues",
-    "notes": ""
+    "maps_to": "Gender Equity",
+    "notes": "Renamed from Women's Issues"
   },
   "older- revamp?": {
     "maps_to": null,
-    "notes": "Proposed: discard (not an issue category)"
+    "notes": "Discard"
   }
 }

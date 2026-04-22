@@ -190,14 +190,20 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Rationale**: 1591 songs with inconsistent metadata, 99 duplicates, and 129 variant gaggle names need human review before import. The consolidated JSON normalizes gaggles, extracts embedded metadata from content, detects duplicates, and preserves musical formatting tags in lyrics. The review spreadsheet gives the song librarian a single artifact to audit. Seattle category mapping is held separate pending Maya's approval. Nothing imports to WP until the data is clean.
 - **Revisit if**: The song librarian wants to work directly in WP admin instead of a spreadsheet.
 
-## D016 — Seattle category mapping held for approval
+## D016 — Issue taxonomy overhaul (approved 2026-04-22)
 
-- **Status**: Pending
+- **Status**: Decided (applied)
 - **Date**: 2026-04-22
-- **Context**: Seattle uses 38 categories vs. the main site's 13 issue taxonomy. A proposed mapping was generated (`data/seattle-category-mapping.json`) consolidating Seattle's fine-grained categories into the main site's taxonomy.
-- **Choice**: Seattle songs have `issues` left empty in the consolidated data. The mapping exists as a proposal but is not applied until Maya approves it.
-- **Rationale**: Several Seattle categories (Guns & Violence, Police Brutality, Racism, Homelessness) could reasonably map to different main-site issues depending on IRG's taxonomy philosophy. Maya and the song librarian should review before mapping is burned in.
-- **Revisit if**: Maya approves the mapping — then re-run the script to apply it.
+- **Context**: Seattle uses 38 categories vs. the main site's original 13 issue taxonomy. During review, Maya decided to restructure the entire taxonomy — not just map Seattle into the existing system.
+- **Changes applied**:
+  - **Renamed**: "Women's Issues" → "Gender Equity", "Health Care/Healthcare" → "Healthcare"
+  - **New categories**: Guns & Violence, Immigration, Racism & Social Justice, Reproductive Rights
+  - **Eliminated**: "World Issues" — 228 songs had other categories and simply dropped WI; 9 songs were World Issues-only and were manually redistributed (7 → Human & Civil Rights, 2 → War & Peace, 1 → Healthcare). 1 ambiguous song flagged for review.
+  - **Discarded**: Grannies, Self-care, Uncategorized, older- revamp? (meta-categories, not issues)
+  - **Seattle mapping**: 38 Seattle categories consolidated into the 16 issue categories
+- **Final taxonomy (16 categories)**: Business & Economy, Education, Environment & Energy, Gender Equity, Government & Politics, Guns & Violence, Healthcare, Holiday & Celebrations, Human & Civil Rights, Immigration, Labor & Worker Rights, Local Issues, Racism & Social Justice, Reproductive Rights, Soldiers & Veterans, War & Peace
+- **Rationale**: The original 13-category system was too coarse. "World Issues" was a catch-all that diluted specificity. Renaming "Women's Issues" to "Gender Equity" better reflects the scope. Splitting out Guns & Violence, Immigration, Racism & Social Justice, and Reproductive Rights from Human & Civil Rights gives songs more precise classification. These are issues the grannies sing about frequently enough to warrant their own categories.
+- **Revisit if**: The song librarian identifies additional categories needed, or finds the 16-category system too granular.
 
 ## D017 — Main site tags discarded, not mapped to taxonomy
 
@@ -212,7 +218,7 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 
 ## Open decisions (not yet resolved)
 
-- **Song taxonomy structure**: Final taxonomy categories TBD with song librarian. Current 13 issues from main site are a starting point. Seattle mapping pending approval.
+- **Song taxonomy structure**: 16 issue categories finalized (D016). Song librarian may request additions.
 - **Brand colors and visual identity**: need to document from existing IRG materials.
 - **Gallery plugin/approach**: needs to be granny-friendly in WP admin.
 - **Contact form handling**: email routing, form service choice.

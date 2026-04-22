@@ -847,7 +847,7 @@ def generate_stats(all_songs, main_songs, seattle_songs, duplicate_pairs):
     for g, c in sorted(gaggle_counts.items(), key=lambda x: -x[1]):
         lines.append(f"  {g}: {c}")
     lines.append("")
-    lines.append("Issue distribution (main site only — Seattle pending approval):")
+    lines.append("Issue distribution:")
     for iss, c in sorted(issue_counts.items(), key=lambda x: -x[1]):
         lines.append(f"  {iss}: {c}")
     lines.append("")
@@ -864,9 +864,21 @@ def generate_stats(all_songs, main_songs, seattle_songs, duplicate_pairs):
     lines.append(f"  Songs from Web Granny accounts (gaggle unresolved): {web_granny_unresolved}")
     lines.append(f"  Songs with no category/issue: {no_issues}")
     lines.append("")
-    lines.append(
-        "Seattle category mapping: PENDING APPROVAL (see data/seattle-category-mapping.json)"
+    seattle_unmapped = sum(
+        1 for s in all_songs if s["source"] == "seattle" and not s["issues"]
     )
+    seattle_has_any = any(s["issues"] for s in all_songs if s["source"] == "seattle")
+    if seattle_has_any:
+        if seattle_unmapped > 0:
+            lines.append(
+                f"Seattle category mapping: APPLIED ({seattle_unmapped} songs have no issue — original categories were all discarded)"
+            )
+        else:
+            lines.append("Seattle category mapping: APPLIED")
+    else:
+        lines.append(
+            "Seattle category mapping: PENDING APPROVAL (see data/seattle-category-mapping.json)"
+        )
 
     return "\n".join(lines)
 

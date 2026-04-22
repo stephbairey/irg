@@ -24,6 +24,9 @@ dist/
 data/sources/*.xml
 docs/sources/
 
+# python
+__pycache__/
+
 # os
 .DS_Store
 Thumbs.db

@@ -89,20 +89,23 @@ Gaggle distribution:
   Charlotte: 1
   Mendocino: 1
 
-Issue distribution (main site only — Seattle pending approval):
-  Government & Politics: 554
-  Human & Civil Rights: 417
-  War & Peace: 260
-  World Issues: 237
-  Business & Economy: 233
-  Environment & Energy: 232
-  Local Issues: 188
-  Women's Issues: 177
-  Health Care/Healthcare: 169
-  Labor & Worker Rights: 127
-  Soldiers & Veterans: 114
-  Education: 85
-  Holiday & Celebrations: 73
+Issue distribution:
+  Government & Politics: 715
+  Human & Civil Rights: 503
+  War & Peace: 388
+  Environment & Energy: 358
+  Business & Economy: 302
+  Local Issues: 221
+  Gender Equity: 209
+  Healthcare: 208
+  Labor & Worker Rights: 136
+  Soldiers & Veterans: 117
+  Holiday & Celebrations: 109
+  Education: 94
+  Guns & Violence: 13
+  Reproductive Rights: 10
+  Immigration: 7
+  Racism & Social Justice: 7
 
 Metadata extraction:
   Songs with tune extracted: 1504 / 1591
@@ -112,9 +115,9 @@ Metadata extraction:
   Songs with date written: 497 / 1591
 
 Data quality:
-  Songs needing review: 106
-  Duplicate pairs found: 99
+  Songs needing review: 107
+  Duplicate pairs found: 98
   Songs from Web Granny accounts (gaggle unresolved): 0
-  Songs with no category/issue: 546
+  Songs with no category/issue: 44
 
-Seattle category mapping: PENDING APPROVAL (see data/seattle-category-mapping.json)
+Seattle category mapping: APPLIED (32 songs have no issue — original categories were all discarded)
