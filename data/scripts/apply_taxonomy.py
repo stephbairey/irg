@@ -100,8 +100,7 @@ WORLD_ISSUES_ONLY_REDISTRIBUTION = {
     },
     "main-0808": {
         "issues": ["Healthcare"],
-        "notes": "Ambiguous: COVID recovery song with social justice themes. Healthcare chosen as primary since the song centers on post-pandemic life.",
-        "ambiguous": True,
+        "notes": "",
     },
     "main-0839": {
         "issues": ["War & Peace", "Human & Civil Rights"],
@@ -115,6 +114,7 @@ VALID_ISSUES = {
     "Environment & Energy",
     "Gender Equity",
     "Government & Politics",
+    "Granny Life",
     "Guns & Violence",
     "Healthcare",
     "Holiday & Celebrations",

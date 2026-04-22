@@ -201,9 +201,9 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
   - **Eliminated**: "World Issues" — 228 songs had other categories and simply dropped WI; 9 songs were World Issues-only and were manually redistributed (7 → Human & Civil Rights, 2 → War & Peace, 1 → Healthcare). 1 ambiguous song flagged for review.
   - **Discarded**: Grannies, Self-care, Uncategorized, older- revamp? (meta-categories, not issues)
   - **Seattle mapping**: 38 Seattle categories consolidated into the 16 issue categories
-- **Final taxonomy (16 categories)**: Business & Economy, Education, Environment & Energy, Gender Equity, Government & Politics, Guns & Violence, Healthcare, Holiday & Celebrations, Human & Civil Rights, Immigration, Labor & Worker Rights, Local Issues, Racism & Social Justice, Reproductive Rights, Soldiers & Veterans, War & Peace
-- **Rationale**: The original 13-category system was too coarse. "World Issues" was a catch-all that diluted specificity. Renaming "Women's Issues" to "Gender Equity" better reflects the scope. Splitting out Guns & Violence, Immigration, Racism & Social Justice, and Reproductive Rights from Human & Civil Rights gives songs more precise classification. These are issues the grannies sing about frequently enough to warrant their own categories.
-- **Revisit if**: The song librarian identifies additional categories needed, or finds the 16-category system too granular.
+- **Final taxonomy (17 categories)**: Business & Economy, Education, Environment & Energy, Gender Equity, Government & Politics, Granny Life, Guns & Violence, Healthcare, Holiday & Celebrations, Human & Civil Rights, Immigration, Labor & Worker Rights, Local Issues, Racism & Social Justice, Reproductive Rights, Soldiers & Veterans, War & Peace
+- **Rationale**: The original 13-category system was too coarse. "World Issues" was a catch-all that diluted specificity. Renaming "Women's Issues" to "Gender Equity" better reflects the scope. Splitting out Guns & Violence, Immigration, Racism & Social Justice, and Reproductive Rights from Human & Civil Rights gives songs more precise classification. "Granny Life" was added for the 44 meta-songs (intro songs, birthday songs, recruitment songs) that aren't about a political issue but about being a granny. All 1591 songs now have at least one issue category.
+- **Revisit if**: The song librarian identifies additional categories needed, or finds the 17-category system too granular.
 
 ## D017 — Main site tags discarded, not mapped to taxonomy
 
@@ -218,7 +218,7 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 
 ## Open decisions (not yet resolved)
 
-- **Song taxonomy structure**: 16 issue categories finalized (D016). Song librarian may request additions.
+- **Song taxonomy structure**: 17 issue categories finalized (D016). Song librarian may request additions.
 - **Brand colors and visual identity**: need to document from existing IRG materials.
 - **Gallery plugin/approach**: needs to be granny-friendly in WP admin.
 - **Contact form handling**: email routing, form service choice.

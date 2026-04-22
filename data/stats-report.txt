@@ -102,6 +102,7 @@ Issue distribution:
   Soldiers & Veterans: 117
   Holiday & Celebrations: 109
   Education: 94
+  Granny Life: 44
   Guns & Violence: 13
   Reproductive Rights: 10
   Immigration: 7
@@ -115,9 +116,9 @@ Metadata extraction:
   Songs with date written: 497 / 1591
 
 Data quality:
-  Songs needing review: 107
+  Songs needing review: 106
   Duplicate pairs found: 98
   Songs from Web Granny accounts (gaggle unresolved): 0
-  Songs with no category/issue: 44
+  Songs with no category/issue: 0
 
-Seattle category mapping: APPLIED (32 songs have no issue — original categories were all discarded)
+Seattle category mapping: APPLIED
