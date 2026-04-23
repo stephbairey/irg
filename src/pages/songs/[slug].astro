@@ -25,6 +25,7 @@ const lyrics = song.songDetails.lyrics;
 const key = song.songDetails.keyOrStartingNote;
 const sourceNotes = song.songDetails.sourceNotes;
 const dateWritten = song.songDetails.dateWrittenOrUpdated;
+const hasVideo = !!song.songDetails.youtubeLink;
 
 const youtubeEmbed = song.songDetails.youtubeLink
   ? getYouTubeEmbedUrl(song.songDetails.youtubeLink)
@@ -32,119 +33,242 @@ const youtubeEmbed = song.songDetails.youtubeLink
 const youtubeEmbed2 = song.songDetails.youtubeLink2
   ? getYouTubeEmbedUrl(song.songDetails.youtubeLink2)
   : null;
+
+const formattedDate = dateWritten
+  ? new Date(dateWritten).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+  : null;
 ---
 
 <BaseLayout title={song.title}>
-  <a
-    href="/songs/"
-    class="inline-block text-dark-red hover:text-dark-purple font-semibold mb-6 no-underline"
-  >
-    &larr; Back to Song Library
-  </a>
+  <div class="max-w-[1200px] mx-auto px-8">
+    <!-- Breadcrumb -->
+    <a href="/songs/" class="inline-flex items-center gap-1.5 font-[800] text-sm text-red no-underline tracking-[.02em] pt-8 hover:underline">
+      <svg viewBox="0 0 24 24" class="w-[16px] h-[16px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><path d="m11 5-7 7 7 7"/></svg>
+      Back to the Song Library
+    </a>
 
-  <article class="bg-white rounded-xl p-6 sm:p-8 border border-light-purple/30">
-    <h1 class="font-display text-dark-purple text-3xl sm:text-4xl mb-4">
-      {song.title}
-    </h1>
+    <!-- Header -->
+    <section class="pt-8 pb-14 border-b border-rule">
+      <div class="grid grid-cols-[1.4fr_1fr] gap-14 items-start">
+        <!-- Left: metadata -->
+        <div>
+          {issues.length > 0 && (
+            <div class="flex flex-wrap gap-2 mb-4">
+              {issues.map((issue) => (
+                <span class="chip">{issue}</span>
+              ))}
+            </div>
+          )}
 
-    <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm mb-6 border-b border-light-purple/20 pb-4">
-      {tune && (
-        <div>
-          <span class="font-semibold text-dark-purple">Tune:</span>{" "}
-          <span class="italic">{tune}</span>
-        </div>
-      )}
-      {songwriter && (
-        <div>
-          <span class="font-semibold text-dark-purple">Songwriter:</span> {songwriter}
-        </div>
-      )}
-      {gaggle && (
-        <div>
-          <span class="font-semibold text-dark-purple">Gaggle:</span> {gaggle}
-        </div>
-      )}
-      {key && (
-        <div>
-          <span class="font-semibold text-dark-purple">Key:</span> {key}
-        </div>
-      )}
-      {dateWritten && (
-        <div>
-          <span class="font-semibold text-dark-purple">Written:</span>{" "}
-          {new Date(dateWritten).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </div>
-      )}
-    </div>
+          <h1 class="font-display text-ink leading-[.96] mb-7 tracking-tight" style="font-size:clamp(56px,7vw,92px)">
+            {song.title}
+          </h1>
 
-    {issues.length > 0 && (
-      <div class="flex flex-wrap gap-2 mb-6">
-        {issues.map((issue) => (
-          <span class="inline-block bg-light-purple/20 text-dark-purple text-sm font-semibold px-3 py-1 rounded-full">
-            {issue}
-          </span>
-        ))}
+          <dl class="grid grid-cols-2 gap-x-10 gap-y-6 py-6 my-0 border-t border-b border-rule mb-7">
+            {tune && (
+              <div>
+                <dt class="kicker mb-1.5">Sung to</dt>
+                <dd class="text-[17px] text-ink font-semibold italic text-ink-soft m-0">{tune}</dd>
+              </div>
+            )}
+            {songwriter && (
+              <div>
+                <dt class="kicker mb-1.5">Written by</dt>
+                <dd class="text-[17px] text-ink font-semibold m-0">{songwriter}</dd>
+              </div>
+            )}
+            {gaggle && (
+              <div>
+                <dt class="kicker mb-1.5">Gaggle</dt>
+                <dd class="text-[17px] text-ink font-semibold m-0">{gaggle}</dd>
+              </div>
+            )}
+            {formattedDate && (
+              <div>
+                <dt class="kicker mb-1.5">Filed</dt>
+                <dd class="text-[17px] text-ink font-semibold m-0">{formattedDate}</dd>
+              </div>
+            )}
+          </dl>
+
+          {sourceNotes && (
+            <div class="py-[18px] px-[22px] bg-paper-2 border-l-[3px] border-red rounded-r-[10px] mb-7">
+              <div class="kicker text-red mb-1">Source</div>
+              <p class="text-[17px] leading-relaxed text-text italic m-0">{sourceNotes}</p>
+            </div>
+          )}
+
+          <div class="flex gap-3 flex-wrap">
+            <a href="#lyrics" class="btn btn-primary">Jump to lyrics</a>
+            <button onclick="window.print()" class="btn btn-ghost">
+              <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M6 9V2h12v7"/><rect x="3" y="9" width="18" height="10" rx="1"/><path d="M6 14h12v8H6z"/></svg>
+              Print songsheet
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: aside card -->
+        <div class="grid gap-6">
+          {hasVideo && youtubeEmbed ? (
+            <div class="p-6 bg-ink text-on-dark rounded-[10px]">
+              <div class="kicker text-mustard mb-3">Listen</div>
+              <div class="aspect-video rounded-lg overflow-hidden mt-3.5">
+                <iframe
+                  src={youtubeEmbed}
+                  title={`${song.title} — performance`}
+                  class="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                />
+              </div>
+              {youtubeEmbed2 && (
+                <div class="aspect-video rounded-lg overflow-hidden mt-3.5">
+                  <iframe
+                    src={youtubeEmbed2}
+                    title={`${song.title} — alternate`}
+                    class="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  />
+                </div>
+              )}
+              <p class="text-sm text-ink-lilac mt-4 leading-normal">
+                Familiar with the tune? Grab a hat, gather some friends, and sing it at your next action.
+              </p>
+            </div>
+          ) : (
+            <div class="p-6 bg-ink text-on-dark rounded-[10px] grid gap-1.5">
+              <div class="kicker text-mustard">No recording on file</div>
+              <h3 class="font-display text-on-dark text-2xl leading-snug mt-1">
+                {tune ? (
+                  <>Know the tune <em class="text-mustard italic font-normal">{tune}</em>? You're ready.</>
+                ) : (
+                  <>This song is waiting for a voice.</>
+                )}
+              </h3>
+              <p class="text-sm text-ink-lilac mt-2 leading-normal">
+                Record your gaggle singing it and we'll feature it here.
+              </p>
+            </div>
+          )}
+
+          {key && (
+            <div class="p-3.5 px-[18px] bg-card border border-rule rounded-lg">
+              <b class="block font-display text-ink text-[22px] leading-none mb-1.5">{key}</b>
+              <span class="font-bold text-xs tracking-[.06em] uppercase text-muted">Key / Starting Note</span>
+            </div>
+          )}
+        </div>
       </div>
-    )}
+    </section>
 
+    <!-- Lyrics -->
     {lyrics && (
-      <div
-        class="lyrics prose prose-lg max-w-none mb-8 leading-relaxed"
-        set:html={lyrics}
-      />
-    )}
+      <section id="lyrics" class="py-[72px]">
+        <div class="grid grid-cols-[240px_1fr] gap-12 items-start">
+          <!-- Legend sidebar -->
+          <div class="sticky top-[120px] text-sm text-text-soft">
+            <div class="kicker text-ink mb-3">How to read the marks</div>
+            <div class="flex gap-3.5 items-baseline py-2 border-b border-dotted border-rule">
+              <strong class="text-ink text-[17px]">Bold word</strong>
+              <span class="text-muted text-[13px]">Strong beat</span>
+            </div>
+            <div class="flex gap-3.5 items-baseline py-2 border-b border-dotted border-rule">
+              <em class="text-ink-soft text-[17px]">Italic word</em>
+              <span class="text-muted text-[13px]">Inflection / stress</span>
+            </div>
+            <div class="flex gap-3.5 items-baseline py-2 border-b border-dotted border-rule">
+              <span class="font-mono text-[13px] text-ink bg-paper-2 px-2 py-0.5 rounded">[Chorus]</span>
+              <span class="text-muted text-[13px]">Section label</span>
+            </div>
 
-    {sourceNotes && (
-      <p class="text-sm text-text/60 italic mb-6">Source: {sourceNotes}</p>
-    )}
+            <hr class="rule my-6" />
 
-    {(youtubeEmbed || youtubeEmbed2) && (
-      <div class="space-y-4">
-        <h2 class="font-display text-dark-purple text-xl">Listen</h2>
-        {youtubeEmbed && (
-          <div class="aspect-video max-w-xl">
-            <iframe
-              src={youtubeEmbed}
-              title={`${song.title} — performance video`}
-              class="w-full h-full rounded-lg"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            />
+            <div class="kicker text-ink mb-3">Tips from the gaggle</div>
+            <ul class="list-none p-0 m-0 grid gap-2.5 text-sm leading-normal mt-3">
+              <li class="pl-[18px] relative before:content-['✱'] before:absolute before:left-0 before:top-0 before:text-red">
+                Read the lyrics through once silently before singing.
+              </li>
+              <li class="pl-[18px] relative before:content-['✱'] before:absolute before:left-0 before:top-0 before:text-red">
+                If the original tune is unfamiliar, look it up first.
+              </li>
+              <li class="pl-[18px] relative before:content-['✱'] before:absolute before:left-0 before:top-0 before:text-red">
+                Modify freely — every gaggle adapts songs to local issues.
+              </li>
+            </ul>
           </div>
-        )}
-        {youtubeEmbed2 && (
-          <div class="aspect-video max-w-xl">
-            <iframe
-              src={youtubeEmbed2}
-              title={`${song.title} — alternate performance`}
-              class="w-full h-full rounded-lg"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            />
+
+          <!-- Lyrics card -->
+          <div class="lyrics-card bg-card border border-rule rounded-2xl p-[48px_56px_40px] relative" style="box-shadow:var(--shadow-card)">
+            <!-- Top stripe -->
+            <div class="absolute top-0 left-10 right-10 h-1 rounded-b-sm" style="background:repeating-linear-gradient(90deg,var(--color-red) 0 20px,var(--color-ink) 20px 40px,var(--color-mustard) 40px 60px)"></div>
+
+            <div class="flex items-center gap-5 mb-8 flex-wrap">
+              <span class="sign-tag">SING IT</span>
+              <span class="text-[15px] text-muted">
+                {tune && <>to the tune of <em class="text-ink-soft italic">{tune}</em></>}
+              </span>
+            </div>
+
+            <div class="lyrics-body font-body text-xl leading-[1.75] text-text max-w-[640px]" set:html={lyrics} />
+
+            <div class="font-display text-red text-[28px] mt-8" style="letter-spacing:12px">♦ ♦ ♦</div>
+
+            <!-- Footer -->
+            <div class="mt-12 pt-6 border-t border-dashed border-rule grid grid-cols-4 gap-6 items-center">
+              {songwriter && (
+                <div>
+                  <div class="kicker mb-1">Written by</div>
+                  <div class="text-ink font-semibold">{songwriter}</div>
+                </div>
+              )}
+              {gaggle && (
+                <div>
+                  <div class="kicker mb-1">For the</div>
+                  <div class="text-ink font-semibold">{gaggle} Gaggle</div>
+                </div>
+              )}
+              {formattedDate && (
+                <div>
+                  <div class="kicker mb-1">Filed</div>
+                  <div class="text-ink font-semibold">{formattedDate}</div>
+                </div>
+              )}
+              <div class="text-right">
+                <button onclick="window.print()" class="btn-mini mr-1.5">
+                  <svg viewBox="0 0 24 24" class="w-4 h-4 inline -mt-0.5" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M6 9V2h12v7"/><rect x="3" y="9" width="18" height="10" rx="1"/><path d="M6 14h12v8H6z"/></svg>
+                  Print
+                </button>
+              </div>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      </section>
     )}
-  </article>
+  </div>
 </BaseLayout>
 
 <style>
-  .lyrics :global(p) {
-    margin-bottom: 1em;
+  .lyrics-body :global(p) {
+    margin-bottom: 14px;
   }
-  .lyrics :global(strong),
-  .lyrics :global(b) {
-    font-weight: 700;
+  .lyrics-body :global(strong),
+  .lyrics-body :global(b) {
+    color: var(--color-ink);
+    font-weight: 800;
   }
-  .lyrics :global(em),
-  .lyrics :global(i) {
+  .lyrics-body :global(em),
+  .lyrics-body :global(i) {
+    color: var(--color-ink-soft);
     font-style: italic;
+    font-weight: 500;
   }
-  .lyrics :global(u) {
+  .lyrics-body :global(u) {
     text-decoration: underline;
+  }
+
+  @media print {
+    header, footer, .sticky, [href="/songs/"] { display: none !important; }
+    .lyrics-card { box-shadow: none !important; border: 1px solid #ccc !important; }
   }
 </style>

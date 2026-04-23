@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raging Grannies — Homepage, Song Library & Detail</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* DC overrides so the canvas background reads warmer */
+  body { background: #e8e3d4; }
+  .dc-artboard-scrollwrap { background: var(--paper); }
+
+  /* the artboards are a fixed design width; we render in a scroll wrapper */
+  .rg-board { width: 1440px; min-height: 100%; }
+  .rg-board-tall { width: 1440px; }
+
+  /* tweaks panel */
+  .tw-panel {
+    position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+    width: 300px; background: var(--card); border: 1.5px solid var(--ink);
+    border-radius: var(--radius-lg); box-shadow: 0 12px 40px rgba(0,0,0,.2);
+    font-family: var(--font-body); font-size: 14px; color: var(--text);
+    overflow: hidden; display: none;
+  }
+  .tw-panel.open { display: block; }
+  .tw-head { padding: 14px 18px; background: var(--ink); color: var(--on-dark); display: flex; justify-content: space-between; align-items: center; }
+  .tw-head h3 { font-family: var(--font-display); font-size: 20px; color: var(--on-dark); margin: 0; }
+  .tw-head button { background: transparent; border: 0; color: var(--on-dark); cursor: pointer; font-size: 22px; line-height: 1; }
+  .tw-body { padding: 16px 18px; max-height: 60vh; overflow-y: auto; }
+  .tw-group + .tw-group { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--rule); }
+  .tw-label { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .tw-options { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tw-options button {
+    padding: 8px 12px; border: 1.5px solid var(--rule); background: var(--card);
+    border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px;
+    color: var(--text); font-family: var(--font-body);
+  }
+  .tw-options button.on { border-color: var(--ink); background: var(--ink); color: var(--on-dark); }
+  .tw-swatches { display: flex; gap: 8px; }
+  .tw-swatches button { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--rule); padding: 0; cursor: pointer; }
+  .tw-swatches button.on { border-color: var(--ink); transform: scale(1.1); }
+  .tw-slider { width: 100%; }
+</style>
+
+<!-- React + Babel (pinned) -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="shared.jsx"></script>
+<script type="text/babel" src="home-a.jsx"></script>
+<script type="text/babel" src="home-b.jsx"></script>
+<script type="text/babel" src="home-c.jsx"></script>
+<script type="text/babel" src="song-library.jsx"></script>
+<script type="text/babel" src="song-detail.jsx"></script>
+<script type="text/babel" src="gaggle-map.jsx"></script>
+<script type="text/babel" src="press.jsx"></script>
+<script type="text/babel" src="inner-pages.jsx"></script>
+
+<script type="text/babel">
+/* global React, ReactDOM, DesignCanvas, DCSection, DCArtboard,
+          HomepageSongbook, HomepageBulletin, HomepageMarquee,
+          SongLibrary, SongDetail */
+
+// Wrap an artboard's content in a 1440-wide frame and a scrollable window.
+function Board({ children, height = 2400, bg }) {
+  return (
+    <div style={{
+      width: '100%', height: '100%', overflow: 'auto',
+      background: bg || 'var(--paper)',
+    }}>
+      <div style={{ width: 1440, minHeight: height }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentMode": "balanced",
+  "density": "comfortable",
+  "headingFont": "rum-raisin",
+  "baseSize": 18
+}/*EDITMODE-END*/;
+
+function TweakPanel({ open, onClose, values, setValues }) {
+  const set = (k, v) => {
+    const next = { ...values, [k]: v };
+    setValues(next);
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [k]: v } }, '*');
+  };
+  if (!open) return null;
+  return (
+    <div className="tw-panel open">
+      <div className="tw-head">
+        <h3>Tweaks</h3>
+        <button onClick={onClose} aria-label="Close">×</button>
+      </div>
+      <div className="tw-body">
+
+        <div className="tw-group">
+          <div className="tw-label">Accent balance</div>
+          <div className="tw-options">
+            {[['purple-forward','Purple-forward'],['balanced','Balanced'],['red-forward','Red-forward']].map(([k, l]) => (
+              <button key={k} className={values.accentMode === k ? 'on' : ''} onClick={() => set('accentMode', k)}>{l}</button>
+            ))}
+          </div>
+        </div>
+
+        <div className="tw-group">
+          <div className="tw-label">Song list density</div>
+          <div className="tw-options">
+            {[['compact','Compact'],['comfortable','Comfortable'],['rich','Rich']].map(([k, l]) => (
+              <button key={k} className={values.density === k ? 'on' : ''} onClick={() => set('density', k)}>{l}</button>
+            ))}
+          </div>
+        </div>
+
+        <div className="tw-group">
+          <div className="tw-label">Display font</div>
+          <div className="tw-options">
+            {[
+              ['rum-raisin','Rum Raisin'],
+              ['alfa-slab','Alfa Slab'],
+              ['abril','Abril Fatface'],
+              ['amatic','Amatic SC'],
+            ].map(([k, l]) => (
+              <button key={k} className={values.headingFont === k ? 'on' : ''} onClick={() => set('headingFont', k)}>{l}</button>
+            ))}
+          </div>
+        </div>
+
+        <div className="tw-group">
+          <div className="tw-label">Base font size · <b>{values.baseSize}px</b></div>
+          <input className="tw-slider" type="range" min="16" max="22" step="1"
+            value={values.baseSize} onChange={e => set('baseSize', +e.target.value)} />
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+function applyTweaks(values) {
+  const r = document.documentElement;
+  r.style.setProperty('--base-size', values.baseSize + 'px');
+  // accent balance swaps primary CTA hue
+  if (values.accentMode === 'purple-forward') {
+    r.style.setProperty('--red', '#57228C');
+    r.style.setProperty('--ink', '#2A1847');
+  } else if (values.accentMode === 'red-forward') {
+    r.style.setProperty('--red', '#E22A2C');
+    r.style.setProperty('--ink', '#8A1F1F');
+  } else {
+    r.style.setProperty('--red', '#E22A2C');
+    r.style.setProperty('--ink', '#2A1847');
+  }
+  // heading font
+  const FONT_LINKS = {
+    'alfa-slab': 'https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap',
+    'abril': 'https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap',
+    'amatic': 'https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap',
+  };
+  if (FONT_LINKS[values.headingFont] && !document.getElementById('tw-font-' + values.headingFont)) {
+    const l = document.createElement('link'); l.rel = 'stylesheet';
+    l.href = FONT_LINKS[values.headingFont]; l.id = 'tw-font-' + values.headingFont;
+    document.head.appendChild(l);
+  }
+  const FONT_STACK = {
+    'rum-raisin': `'Rum Raisin', sans-serif`,
+    'alfa-slab': `'Alfa Slab One', serif`,
+    'abril': `'Abril Fatface', serif`,
+    'amatic': `'Amatic SC', sans-serif`,
+  };
+  r.style.setProperty('--font-display', FONT_STACK[values.headingFont] || FONT_STACK['rum-raisin']);
+}
+
+function App() {
+  const [tweaks, setTweaks] = React.useState(TWEAK_DEFAULTS);
+  const [panelOpen, setPanelOpen] = React.useState(false);
+
+  React.useEffect(() => { applyTweaks(tweaks); }, [tweaks]);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const d = e.data;
+      if (!d || typeof d !== 'object') return;
+      if (d.type === '__activate_edit_mode') setPanelOpen(true);
+      if (d.type === '__deactivate_edit_mode') setPanelOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  return (
+    <>
+      <DesignCanvas>
+        <DCSection id="overview" title="Raging Grannies · Homepage + Song Pages"
+          subtitle="Three homepage directions and the two song-page layouts they share. Scroll inside any artboard; click ⤢ to view full-screen. Turn on Tweaks (toolbar) to change accents, density, and display font.">
+        </DCSection>
+
+        <DCSection id="homepages" title="Homepage — The Bulletin (selected)"
+          subtitle="Newsprint front page treatment. Maya's notes addressed: title reads 'Raging Grannies', masthead uses 'The International Disorganization' / Welcome, tagline is 'Using creative and humorous protests for political education.' Lead column now shows actual lyrics instead of a generated summary. No newsletter references anywhere.">
+          <DCArtboard id="home-bulletin" label="Homepage · The Bulletin"
+            width={1440} height={900}>
+            <Board height={4800}><HomepageBulletin /></Board>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="press" title="Press"
+          subtitle="Auto-populated by Google Alerts. Newsprint 'clippings desk' treatment — sticky search + topic filter + date-grouped list. Press-kit card for journalists. Each row is a link out to the source article.">
+          <DCArtboard id="press" label="Press — auto-updated media clippings"
+            width={1440} height={900}>
+            <Board height={3800}><PressPage /></Board>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="song-library" title="Song Library"
+          subtitle="Left-rail filters (issue, gaggle, songwriter, tune) + sticky search. Comfortable rows — scannable at 1,493 items.">
+          <DCArtboard id="lib" label="Song Library — browse, search, filter 1,493 songs"
+            width={1440} height={900}>
+            <Board height={3400}><SongLibrary /></Board>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="song-detail" title="Song Detail"
+          subtitle="Context-first: tune, songwriter, gaggle, songwriter's note, and YouTube embed sit above the lyrics. Printable lyrics card. Graceful fallback when no YouTube link is on file.">
+          <DCArtboard id="detail" label="Song Detail — with YouTube recording"
+            width={1440} height={900}>
+            <Board height={3200}><SongDetail /></Board>
+          </DCArtboard>
+          <DCArtboard id="detail-novideo" label="Song Detail — no recording on file (graceful fallback)"
+            width={1440} height={900}>
+            <Board height={3200}><SongDetail hasVideo={false} /></Board>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="gaggle-map" title="Gaggle Map"
+          subtitle="Auto-populated from a list of 54 North American gaggles. US pins in red, Canadian in ink purple. Click-through to each gaggle's subsite.">
+          <DCArtboard id="map" label="Gaggle Map — US + Canada with click-through pins"
+            width={1440} height={900}>
+            <Board height={1600}><GaggleMap /></Board>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="about" title="About"
+          subtitle="The 'who we are' page. Standard inner-page shell that all content pages share.">
+          <DCArtboard id="about" label="About"
+            width={1440} height={900}>
+            <Board height={2800}><AboutPage /></Board>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="herstory" title="Herstory"
+          subtitle="Our backstory — a longer-form piece anchored on 1987 Victoria, BC and the spread across the continent.">
+          <DCArtboard id="herstory" label="Herstory — our backstory"
+            width={1440} height={900}>
+            <Board height={3000}><HerstoryPage /></Board>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="philosophy" title="Philosophy"
+          subtitle="Why satirical song, why old women, why flowered hats. The principles page.">
+          <DCArtboard id="philosophy" label="Philosophy — why we do it this way"
+            width={1440} height={900}>
+            <Board height={2800}><PhilosophyPage /></Board>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="faq" title="FAQ"
+          subtitle="Full FAQ page — the same questions that come up at every action, answered.">
+          <DCArtboard id="faq" label="FAQ — the full list"
+            width={1440} height={900}>
+            <Board height={2800}><FAQPage /></Board>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="contact" title="Contact"
+          subtitle="Contact form + routed-inbox directory (join a gaggle, start one, press, general).">
+          <DCArtboard id="contact" label="Contact"
+            width={1440} height={900}>
+            <Board height={2400}><ContactPage /></Board>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="homepages-alt" title="Homepage alternates (archive)"
+          subtitle="Kept for reference only — we're going with The Bulletin. A = Songbook (editorial), C = Marquee (loud poster).">
+          <DCArtboard id="home-songbook" label="A · Songbook (alternate)"
+            width={1440} height={900}>
+            <Board height={4200}><HomepageSongbook /></Board>
+          </DCArtboard>
+          <DCArtboard id="home-marquee" label="C · Marquee (alternate)"
+            width={1440} height={900}>
+            <Board height={4800}><HomepageMarquee /></Board>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      <TweakPanel open={panelOpen} onClose={() => setPanelOpen(false)} values={tweaks} setValues={setTweaks} />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

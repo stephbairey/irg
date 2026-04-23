@@ -6,8 +6,9 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Singing out for peace and social justice" } = Astro.props;
+const { title, description = "Using creative and humorous protests for political education." } = Astro.props;
 const year = new Date().getFullYear();
+const path = Astro.url.pathname;
 ---
 
 <html lang="en">
@@ -19,44 +20,82 @@ const year = new Date().getFullYear();
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Rum+Raisin&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Rum+Raisin&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/png" href="/logo-cropped.png" />
+    <link rel="icon" type="image/svg+xml" href="/logo-cropped.svg" />
   </head>
-  <body class="bg-light-bg text-text font-body min-h-screen flex flex-col">
-    <header class="bg-dark-purple text-light-text">
-      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
-        <a href="/" class="flex items-center gap-3 no-underline">
-          <img
-            src="/logo-cropped.png"
-            alt=""
-            class="h-10 brightness-0 invert"
-          />
-          <span class="font-display text-2xl text-light-text tracking-wide"
-            >Raging Grannies</span
-          >
+  <body>
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b-[1.5px] border-rule bg-paper" style="backdrop-filter:saturate(1.1)">
+      <div class="flex justify-between items-center max-w-[1400px] mx-auto px-8 py-4">
+        <a href="/" class="flex items-center gap-3 no-underline text-ink">
+          <img src="/logo-cropped.svg" alt="" class="w-[38px] h-[38px] object-contain" />
+          <div>
+            <span class="font-display text-2xl leading-none text-ink block">Raging Grannies</span>
+            <span class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-muted block mt-1">International Network · Est. 1987</span>
+          </div>
         </a>
-        <nav class="ml-auto flex gap-6 font-display text-lg">
-          <a href="/songs/" class="text-light-text hover:text-dark-red no-underline">Songs</a>
+        <nav aria-label="Main" class="flex items-center gap-7">
+          <a href="/songs/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/songs") ? "text-red" : "text-text"]}>Songs</a>
+          <a href="#" class="font-bold text-[15px] no-underline text-text hover:text-red transition-colors">Find a Gaggle</a>
+          <a href="#" class="font-bold text-[15px] no-underline text-text hover:text-red transition-colors">Start One</a>
+          <a href="#" class="font-bold text-[15px] no-underline text-text hover:text-red transition-colors">Press</a>
+          <a href="#" class="font-bold text-[15px] no-underline text-text hover:text-red transition-colors">About</a>
+          <a href="#" class="text-white bg-ink px-[18px] py-[10px] rounded-full text-sm font-bold no-underline hover:bg-red transition-colors">The Map</a>
         </nav>
       </div>
     </header>
 
-    <main class="flex-1 max-w-6xl mx-auto px-4 py-8 w-full">
-      <slot />
-    </main>
+    <slot />
 
-    <footer class="bg-dark-purple text-light-text mt-auto">
-      <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center gap-4">
-        <img
-          src="/logo-full.png"
-          alt="Raging Grannies"
-          class="h-16 brightness-0 invert opacity-80"
-        />
-        <p class="text-sm opacity-80">
-          &copy; {year} International Raging Grannies. Singing out for peace and social justice.
-        </p>
+    <!-- Footer -->
+    <footer class="mt-24 bg-ink text-on-dark pt-14 pb-8">
+      <div class="grid grid-cols-[2fr_1fr_1fr_1fr] gap-12 max-w-[1200px] mx-auto px-8">
+        <!-- Brand column -->
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <img src="/logo-full.svg" alt="" class="h-[54px] brightness-0 invert opacity-90" />
+            <span class="font-display text-2xl text-on-dark">Raging Grannies</span>
+          </div>
+          <p class="text-[15px] text-ink-lilac leading-relaxed max-w-[340px]">
+            A network of women over 50, singing satire into the face of injustice since a damp Tuesday in Victoria, BC, 1987.
+          </p>
+        </div>
+        <!-- Songs column -->
+        <div>
+          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">The Songs</h4>
+          <ul class="space-y-2 text-[15px]">
+            <li><a href="/songs/" class="text-on-dark no-underline hover:text-red">Browse</a></li>
+            <li><a href="/songs/" class="text-on-dark no-underline hover:text-red">By issue</a></li>
+            <li><a href="/songs/" class="text-on-dark no-underline hover:text-red">By tune</a></li>
+            <li><a href="#" class="text-on-dark no-underline hover:text-red">Submit</a></li>
+          </ul>
+        </div>
+        <!-- Movement column -->
+        <div>
+          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">The Movement</h4>
+          <ul class="space-y-2 text-[15px]">
+            <li><a href="#" class="text-on-dark no-underline hover:text-red">Find a gaggle</a></li>
+            <li><a href="#" class="text-on-dark no-underline hover:text-red">Start a gaggle</a></li>
+            <li><a href="#" class="text-on-dark no-underline hover:text-red">Herstory</a></li>
+            <li><a href="#" class="text-on-dark no-underline hover:text-red">Philosophy</a></li>
+          </ul>
+        </div>
+        <!-- Contact column -->
+        <div>
+          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">Get in touch</h4>
+          <ul class="space-y-2 text-[15px]">
+            <li><a href="#" class="text-on-dark no-underline hover:text-red">Contact</a></li>
+            <li><a href="#" class="text-on-dark no-underline hover:text-red">Press</a></li>
+            <li><a href="#" class="text-on-dark no-underline hover:text-red">FAQ</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- Bottom bar -->
+      <div class="max-w-[1200px] mx-auto mt-10 pt-6 px-8 border-t border-white/15 flex justify-between text-[13px] text-ink-lilac">
+        <span>&copy; {year} International Raging Grannies</span>
+        <span>Made with satire, by volunteers.</span>
       </div>
     </footer>
   </body>

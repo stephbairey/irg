@@ -2,125 +2,320 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { fetchAllSongs } from "../../lib/songs";
 
-const songs = await fetchAllSongs();
+const allSongs = await fetchAllSongs();
 
 const allIssues = [
-  ...new Set(songs.flatMap((s) => s.issues.nodes.map((i) => i.name))),
+  ...new Set(allSongs.flatMap((s) => s.issues.nodes.map((i) => i.name))),
 ].sort();
 
-const songsData = songs.map((s) => ({
-  title: s.title,
-  slug: s.slug,
-  gaggle: s.gaggles.nodes[0]?.name ?? "",
-  tune: s.tunes.nodes[0]?.name ?? "",
-  songwriter: s.songwriters.nodes[0]?.name ?? "",
-  issues: s.issues.nodes.map((i) => i.name),
-}));
+const allGaggles = [
+  ...new Set(allSongs.flatMap((s) => s.gaggles.nodes.map((g) => g.name))),
+].sort();
+
+const allTunes = [
+  ...new Set(allSongs.flatMap((s) => s.tunes.nodes.map((t) => t.name))),
+].sort();
+
+const songsJson = JSON.stringify(
+  allSongs.map((s) => ({
+    t: s.title,
+    s: s.slug,
+    g: s.gaggles.nodes[0]?.name ?? "",
+    w: s.songwriters.nodes[0]?.name ?? "",
+    n: s.tunes.nodes[0]?.name ?? "",
+    i: s.issues.nodes.map((i) => i.name),
+    y: s.date?.slice(0, 4) ?? "",
+  })),
+);
 ---
 
-<BaseLayout title="Song Library">
-  <h1 class="font-display text-dark-purple text-4xl mb-2">Song Library</h1>
-  <p class="text-lg mb-6">
-    {songs.length} songs from gaggles across North America.
-  </p>
+<BaseLayout title="The Song Library">
+  <!-- Header -->
+  <section class="pt-14 pb-6 max-w-[1200px] mx-auto px-8">
+    <div class="grid grid-cols-[1fr_auto] gap-12 items-end">
+      <div>
+        <div class="kicker text-red mb-3">The Songbook · 1987 – 2026</div>
+        <h1 class="font-display text-ink leading-[.98] mb-4" style="font-size:clamp(56px,7vw,96px)">The Song Library</h1>
+        <p class="text-[19px] text-text-soft max-w-[640px] leading-normal">
+          Every song catalogued by gaggles across four continents — searchable, filterable, printable, and <em class="text-ink">yours to sing</em>.
+        </p>
+      </div>
+      <div class="p-[22px_28px] bg-ink text-on-dark rounded-[10px] text-right" style="transform:rotate(1.5deg);box-shadow:var(--shadow-lift)">
+        <div class="font-display text-mustard text-[56px] leading-none">{allSongs.length.toLocaleString()}</div>
+        <div class="font-[800] text-xs tracking-[.1em] uppercase text-ink-lilac mt-2">Songs & counting</div>
+      </div>
+    </div>
+  </section>
 
-  <div class="mb-6 flex flex-col sm:flex-row gap-4">
-    <input
-      type="text"
-      id="search"
-      placeholder="Search by title..."
-      class="border border-light-purple rounded-lg px-4 py-2 w-full sm:w-80 bg-white focus:outline-none focus:ring-2 focus:ring-dark-purple"
-    />
-    <select
-      id="issue-filter"
-      class="border border-light-purple rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-dark-purple"
-    >
-      <option value="">All Issues</option>
-      {allIssues.map((issue) => <option value={issue}>{issue}</option>)}
-    </select>
-  </div>
-
-  <div id="song-count" class="text-sm text-text/70 mb-4"></div>
-
-  <div id="song-list" class="grid gap-3">
-    {
-      songsData.map((song) => (
-        <a
-          href={`/songs/${song.slug}/`}
-          class="song-card block bg-white rounded-lg px-5 py-4 border border-light-purple/30 hover:border-dark-purple/50 hover:shadow-sm transition-all no-underline"
-          data-title={song.title.toLowerCase()}
-          data-issues={song.issues.join("|")}
-        >
-          <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-            <h2 class="font-display text-dark-purple text-xl leading-tight">
-              {song.title}
-            </h2>
-            {song.tune && (
-              <span class="text-sm text-text/60 italic shrink-0">
-                tune: {song.tune}
-              </span>
-            )}
+  <!-- Search bar (sticky) -->
+  <section class="sticky top-[73px] z-40 bg-paper border-b border-rule py-5">
+    <div class="max-w-[1200px] mx-auto px-8">
+      <div class="flex items-center gap-3.5 px-5 py-3.5 bg-card border-2 border-ink rounded-full" style="box-shadow:var(--shadow-card)">
+        <svg viewBox="0 0 24 24" class="w-[18px] h-[18px] text-ink flex-none" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+        <input
+          type="text"
+          id="lib-search"
+          placeholder="Search by title, tune, or a line in the lyrics..."
+          class="flex-1 border-0 bg-transparent text-lg text-ink outline-none placeholder:text-muted"
+        />
+        <button id="lib-search-clear" class="hidden font-[800] text-red text-[13px] px-2.5 py-1 bg-transparent border-0 cursor-pointer">Clear</button>
+      </div>
+      <!-- Active filters + result count -->
+      <div id="lib-activebar" class="flex justify-between items-center mt-4 gap-4 flex-wrap">
+        <div id="lib-result-count" class="text-sm text-text-soft flex items-center gap-2.5 flex-wrap"></div>
+        <div class="flex items-center gap-2.5">
+          <label class="font-[800] text-xs tracking-[.1em] uppercase text-muted">Sort</label>
+          <div class="relative">
+            <select id="lib-sort" class="appearance-none px-3.5 py-2.5 pr-9 text-sm font-bold bg-card text-ink border-[1.5px] border-ink-lilac rounded-lg cursor-pointer min-h-[40px]">
+              <option value="a-z">A → Z</option>
+              <option value="z-a">Z → A</option>
+              <option value="newest">Newest</option>
+            </select>
+            <svg viewBox="0 0 24 24" class="absolute right-3 top-1/2 -translate-y-1/2 w-[14px] h-[14px] text-ink pointer-events-none" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
           </div>
-          <div class="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
-            {song.gaggle && <span class="text-text/70">{song.gaggle}</span>}
-            {song.songwriter && (
-              <span class="text-text/70">by {song.songwriter}</span>
-            )}
-          </div>
-          {song.issues.length > 0 && (
-            <div class="mt-2 flex flex-wrap gap-1.5">
-              {song.issues.map((issue) => (
-                <span class="inline-block bg-light-purple/20 text-dark-purple text-xs font-semibold px-2 py-0.5 rounded-full">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body: filters + results -->
+  <section class="max-w-[1200px] mx-auto px-8 py-8 pb-20">
+    <div class="grid grid-cols-[280px_1fr] gap-12 items-start">
+      <!-- Left rail filters -->
+      <aside id="lib-filters" class="sticky top-[220px] grid gap-7 pr-3 max-h-[calc(100vh-240px)] overflow-y-auto" style="scrollbar-width:thin">
+        <!-- Issue filter -->
+        <div class="border-b border-rule pb-5">
+          <h3 class="font-display text-ink text-[22px] mb-3">Issue</h3>
+          <ul class="list-none p-0 m-0 grid gap-0.5">
+            {allIssues.map((issue) => (
+              <li>
+                <button
+                  class="lib-filter-btn w-full flex justify-between items-center gap-2.5 px-3 py-2 bg-transparent border-0 rounded-lg text-[15px] text-text text-left cursor-pointer leading-snug hover:bg-ink-soft/[.06] hover:text-ink transition-colors"
+                  data-type="issue"
+                  data-value={issue}
+                >
                   {issue}
-                </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Gaggle filter -->
+        <div class="border-b border-rule pb-5">
+          <h3 class="font-display text-ink text-[22px] mb-3">Gaggle</h3>
+          <div class="max-h-[260px] overflow-y-auto">
+            <ul class="list-none p-0 m-0 grid gap-0.5">
+              {allGaggles.slice(0, 30).map((gaggle) => (
+                <li>
+                  <button
+                    class="lib-filter-btn w-full flex justify-between items-center gap-2.5 px-3 py-2 bg-transparent border-0 rounded-lg text-[15px] text-text text-left cursor-pointer leading-snug hover:bg-ink-soft/[.06] hover:text-ink transition-colors"
+                    data-type="gaggle"
+                    data-value={gaggle}
+                  >
+                    {gaggle}
+                  </button>
+                </li>
               ))}
-            </div>
-          )}
-        </a>
-      ))
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tune filter -->
+        <div class="pb-5">
+          <h3 class="font-display text-ink text-[22px] mb-3">Tune</h3>
+          <div class="max-h-[260px] overflow-y-auto">
+            <ul class="list-none p-0 m-0 grid gap-0.5">
+              {allTunes.slice(0, 30).map((tune) => (
+                <li>
+                  <button
+                    class="lib-filter-btn w-full flex justify-between items-center gap-2.5 px-3 py-2 bg-transparent border-0 rounded-lg text-[15px] text-text text-left cursor-pointer leading-snug hover:bg-ink-soft/[.06] hover:text-ink transition-colors"
+                    data-type="tune"
+                    data-value={tune}
+                  >
+                    <span class="truncate">{tune}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <button id="lib-reset" class="px-4 py-2.5 bg-transparent border-[1.5px] border-rule rounded-lg font-[800] text-red cursor-pointer text-[13px] hover:border-red hover:bg-red/[.05]">
+          Reset all filters
+        </button>
+      </aside>
+
+      <!-- Results -->
+      <div>
+        <div id="lib-results" class="grid gap-0"></div>
+        <p id="lib-no-results" class="hidden text-center text-text-soft py-16 text-lg">No songs match your filters.</p>
+        <!-- Pagination -->
+        <div id="lib-pager" class="flex justify-between items-center mt-10 gap-4 flex-wrap">
+          <span id="lib-pager-info" class="text-sm text-muted"></span>
+          <div class="flex gap-2">
+            <button id="lib-prev" class="btn-mini" disabled>← Previous</button>
+            <button id="lib-next" class="btn-mini">Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script define:vars={{ songsJson }}>
+    const ALL = JSON.parse(songsJson);
+    const PER_PAGE = 50;
+
+    let filters = { q: "", issue: "", gaggle: "", tune: "" };
+    let sort = "a-z";
+    let page = 1;
+
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => document.querySelectorAll(s);
+
+    const searchInput = $("#lib-search");
+    const clearBtn = $("#lib-search-clear");
+    const sortSelect = $("#lib-sort");
+    const resultCount = $("#lib-result-count");
+    const resultsDiv = $("#lib-results");
+    const noResults = $("#lib-no-results");
+    const pagerInfo = $("#lib-pager-info");
+    const prevBtn = $("#lib-prev");
+    const nextBtn = $("#lib-next");
+    const resetBtn = $("#lib-reset");
+
+    function applyFilters() {
+      const q = filters.q.toLowerCase();
+      return ALL.filter((s) => {
+        if (q && !s.t.toLowerCase().includes(q) && !s.n.toLowerCase().includes(q)) return false;
+        if (filters.issue && !s.i.includes(filters.issue)) return false;
+        if (filters.gaggle && s.g !== filters.gaggle) return false;
+        if (filters.tune && s.n !== filters.tune) return false;
+        return true;
+      });
     }
-  </div>
 
-  <p id="no-results" class="hidden text-center text-text/60 py-12 text-lg">
-    No songs match your search.
-  </p>
-</BaseLayout>
+    function sortSongs(songs) {
+      const s = [...songs];
+      if (sort === "a-z") s.sort((a, b) => a.t.localeCompare(b.t));
+      else if (sort === "z-a") s.sort((a, b) => b.t.localeCompare(a.t));
+      else if (sort === "newest") s.sort((a, b) => (b.y || "0").localeCompare(a.y || "0"));
+      return s;
+    }
 
-<script>
-  const searchInput = document.getElementById("search") as HTMLInputElement;
-  const issueFilter = document.getElementById("issue-filter") as HTMLSelectElement;
-  const cards = document.querySelectorAll<HTMLElement>(".song-card");
-  const noResults = document.getElementById("no-results")!;
-  const songCount = document.getElementById("song-count")!;
+    function renderRow(s) {
+      const chips = s.i.map((i) => `<span class="chip" style="font-size:12px;padding:3px 9px">${i}</span>`).join("");
+      return `<a href="/songs/${s.s}/" class="grid grid-cols-[1fr_auto] gap-8 py-[22px] px-1 border-b border-rule text-text items-center no-underline transition-all hover:bg-paper-2 hover:pl-5 hover:pr-5 group">
+        <div>
+          <div class="font-display text-ink text-[30px] leading-none mb-2 group-hover:text-red transition-colors">${s.t}</div>
+          <div class="text-sm text-text-soft mb-2.5">
+            ${s.n ? `<em class="text-ink-soft italic">${s.n}</em>` : ""}
+            ${s.n && s.g ? '<span class="text-ink-lilac mx-1.5">·</span>' : ""}
+            ${s.g || ""}
+            ${s.w ? '<span class="text-ink-lilac mx-1.5">·</span>' + s.w : ""}
+          </div>
+          <div class="flex gap-2 items-center flex-wrap">${chips}</div>
+        </div>
+        <div class="font-display text-muted text-[28px]">${s.y}</div>
+      </a>`;
+    }
 
-  function filter() {
-    const query = searchInput.value.toLowerCase().trim();
-    const issue = issueFilter.value;
-    let visible = 0;
+    function render() {
+      const filtered = sortSongs(applyFilters());
+      const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+      if (page > totalPages) page = totalPages;
+      const start = (page - 1) * PER_PAGE;
+      const pageItems = filtered.slice(start, start + PER_PAGE);
 
-    cards.forEach((card) => {
-      const title = card.dataset.title ?? "";
-      const issues = card.dataset.issues ?? "";
+      resultsDiv.innerHTML = pageItems.map(renderRow).join("");
+      noResults.classList.toggle("hidden", pageItems.length > 0);
 
-      const matchesSearch = !query || title.includes(query);
-      const matchesIssue = !issue || issues.split("|").includes(issue);
+      const countHtml = `<b class="font-display text-ink text-xl">${filtered.length}</b> of ${ALL.length} songs`;
+      const chipHtml = [
+        filters.issue ? chipRm("issue", filters.issue) : "",
+        filters.gaggle ? chipRm("gaggle", filters.gaggle) : "",
+        filters.tune ? chipRm("tune", filters.tune) : "",
+      ].filter(Boolean).join("");
+      resultCount.innerHTML = countHtml + chipHtml;
 
-      if (matchesSearch && matchesIssue) {
-        card.classList.remove("hidden");
-        visible++;
-      } else {
-        card.classList.add("hidden");
+      pagerInfo.textContent = `Page ${page} of ${totalPages}`;
+      prevBtn.disabled = page <= 1;
+      nextBtn.disabled = page >= totalPages;
+
+      clearBtn.classList.toggle("hidden", !filters.q);
+
+      // Update active filter buttons
+      $$(".lib-filter-btn").forEach((btn) => {
+        const type = btn.dataset.type;
+        const val = btn.dataset.value;
+        const active = filters[type] === val;
+        btn.classList.toggle("!bg-ink", active);
+        btn.classList.toggle("!text-on-dark", active);
+        btn.classList.toggle("!font-bold", active);
+      });
+    }
+
+    function chipRm(type, val) {
+      return ` <button class="lib-chip-rm inline-flex gap-1.5 px-2.5 py-1 bg-mustard rounded-full text-ink font-[800] cursor-pointer text-[13px] border-0 ml-2 hover:bg-red hover:text-white" data-type="${type}">
+        ${val} ✕
+      </button>`;
+    }
+
+    let debounceTimer;
+    searchInput.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        filters.q = searchInput.value;
+        page = 1;
+        render();
+      }, 200);
+    });
+
+    clearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      filters.q = "";
+      page = 1;
+      render();
+    });
+
+    sortSelect.addEventListener("change", () => {
+      sort = sortSelect.value;
+      page = 1;
+      render();
+    });
+
+    document.addEventListener("click", (e) => {
+      const filterBtn = e.target.closest(".lib-filter-btn");
+      if (filterBtn) {
+        const type = filterBtn.dataset.type;
+        const val = filterBtn.dataset.value;
+        filters[type] = filters[type] === val ? "" : val;
+        page = 1;
+        render();
+        return;
+      }
+      const chipRm = e.target.closest(".lib-chip-rm");
+      if (chipRm) {
+        filters[chipRm.dataset.type] = "";
+        page = 1;
+        render();
       }
     });
 
-    noResults.classList.toggle("hidden", visible > 0);
-    songCount.textContent =
-      query || issue
-        ? `Showing ${visible} of ${cards.length} songs`
-        : `${cards.length} songs`;
-  }
+    prevBtn.addEventListener("click", () => { page--; render(); window.scrollTo(0, 300); });
+    nextBtn.addEventListener("click", () => { page++; render(); window.scrollTo(0, 300); });
+    resetBtn.addEventListener("click", () => {
+      filters = { q: "", issue: "", gaggle: "", tune: "" };
+      searchInput.value = "";
+      sort = "a-z";
+      sortSelect.value = "a-z";
+      page = 1;
+      render();
+    });
 
-  searchInput.addEventListener("input", filter);
-  issueFilter.addEventListener("change", filter);
-  filter();
-</script>
+    // Init from URL params
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("issue")) filters.issue = params.get("issue");
+    render();
+  </script>
+</BaseLayout>

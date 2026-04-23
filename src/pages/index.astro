@@ -1,26 +1,295 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { wpQuery } from "../lib/graphql";
+
+interface SongsData {
+  songs: {
+    nodes: Array<{
+      title: string;
+      slug: string;
+      songDetails: { lyrics: string | null };
+      songwriters: { nodes: Array<{ name: string }> };
+      gaggles: { nodes: Array<{ name: string }> };
+      tunes: { nodes: Array<{ name: string }> };
+      issues: { nodes: Array<{ name: string }> };
+    }>;
+  };
+}
+
+interface IssuesData {
+  issues: {
+    nodes: Array<{
+      name: string;
+      count: number;
+    }>;
+  };
+}
+
+const issuesData = await wpQuery<IssuesData>({
+  query: `{ issues(first:100) { nodes { name count } } }`,
+});
+
+const featuredData = await wpQuery<SongsData>({
+  query: `{ songs(first:6, where:{orderby:{field:DATE,order:DESC}}) {
+    nodes {
+      title slug
+      songDetails { lyrics }
+      songwriters { nodes { name } }
+      gaggles { nodes { name } }
+      tunes { nodes { name } }
+      issues { nodes { name } }
+    }
+  }}`,
+});
+
+const issues = issuesData.issues.nodes
+  .filter((i) => i.count > 0)
+  .sort((a, b) => b.count - a.count);
+const totalSongs = issues.reduce((sum, i) => sum + i.count, 0);
+const featured = featuredData.songs.nodes[0];
+const picks = featuredData.songs.nodes.slice(1, 5);
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, " ").trim();
+}
+const featuredLyrics = featured?.songDetails?.lyrics
+  ? stripHtml(featured.songDetails.lyrics).split("\n").filter(Boolean).slice(0, 8).join("\n")
+  : "";
 ---
 
 <BaseLayout title="Home">
-  <div class="text-center py-16">
-    <img
-      src="/logo-full.png"
-      alt="Raging Grannies"
-      class="mx-auto h-48 mb-8"
-      style="filter: brightness(0) saturate(100%) invert(14%) sepia(89%) saturate(3963%) hue-rotate(267deg) brightness(87%) contrast(101%);"
-    />
-    <h1 class="font-display text-dark-purple text-5xl sm:text-6xl mb-4">
-      International Raging Grannies
-    </h1>
-    <p class="text-xl text-text/80 max-w-2xl mx-auto mb-8">
-      Singing out for peace and social justice since 1987.
-    </p>
-    <a
-      href="/songs/"
-      class="inline-block bg-dark-red text-light-text font-display text-xl px-8 py-3 rounded-lg hover:bg-dark-purple transition-colors no-underline"
-    >
-      Browse the Song Library
-    </a>
-  </div>
+  <!-- Masthead -->
+  <section class="bg-paper pt-12 pb-8 border-b-[3px] border-double border-ink">
+    <div class="max-w-[1200px] mx-auto px-8">
+      <div class="flex justify-between text-muted font-bold text-xs tracking-[.1em] uppercase border-b border-rule pb-3 mb-5">
+        <span>Welcome, friend</span>
+        <span>The International Disorganization</span>
+        <span>Est. Victoria, BC · 1987</span>
+      </div>
+      <h1 class="font-display text-center text-ink leading-[.9] tracking-tight" style="font-size:clamp(72px,11vw,160px)">
+        Raging Grannies
+      </h1>
+      <p class="text-center text-[19px] text-text-soft mt-6 italic">
+        Using <em class="text-ink not-italic font-semibold">creative and humorous</em> protests for political education.
+      </p>
+    </div>
+  </section>
+
+  <!-- Front Page Grid -->
+  <section class="max-w-[1200px] mx-auto px-8">
+    <div class="grid grid-cols-[1.5fr_1fr_1fr_1fr] border-t border-l border-rule" style="grid-template-rows:auto auto">
+      <!-- Lead story (left, spans 2 rows) -->
+      <div class="row-span-2 p-7 border-r-2 border-b border-ink border-r-ink">
+        <div class="kicker text-red mb-3.5">The lead · from today's songbook</div>
+        {featured && (
+          <>
+            <h2 class="font-display text-ink text-[56px] leading-[.98] mb-2.5">{featured.title}</h2>
+            <p class="text-sm text-text-soft pb-4 border-b border-rule mb-5">
+              By <strong class="text-ink">{featured.songwriters.nodes[0]?.name}</strong>
+              {featured.gaggles.nodes[0] && <> · {featured.gaggles.nodes[0].name} Gaggle</>}
+              {featured.tunes.nodes[0] && <> · to the tune of <em class="text-ink-soft">{featured.tunes.nodes[0].name}</em></>}
+            </p>
+            <div class="text-[17px] leading-relaxed text-text whitespace-pre-line mb-4">{featuredLyrics}</div>
+            <a href={`/songs/${featured.slug}/`} class="inline-flex items-center gap-1.5 font-[800] text-red no-underline hover:underline">
+              Read full lyrics →
+            </a>
+          </>
+        )}
+      </div>
+
+      <!-- On The Streets (top middle) -->
+      <div class="p-7 border-r border-b border-rule">
+        <div class="kicker text-red mb-3.5">On the streets</div>
+        <h3 class="font-display text-ink text-[28px] leading-tight mb-4">Dispatches</h3>
+        <p class="text-sm text-text-soft italic">Gaggle action reports coming soon. This section will feature dispatches from gaggles in the field.</p>
+      </div>
+
+      <!-- Also in the songbook (top right) -->
+      <div class="p-7 border-r border-b border-rule">
+        <div class="kicker text-red mb-3.5">Also in the songbook</div>
+        <div>
+          {picks.map((song) => (
+            <a href={`/songs/${song.slug}/`} class="block py-3 border-b border-dotted border-rule no-underline hover:bg-red/[.04] hover:pl-1.5 transition-all">
+              <div class="font-display text-ink text-[22px] leading-none mb-1">{song.title}</div>
+              <div class="text-[13px] text-text-soft leading-snug">
+                {song.gaggles.nodes[0]?.name}
+                {song.tunes.nodes[0] && <> · <em class="text-ink-soft">{song.tunes.nodes[0].name}</em></>}
+              </div>
+            </a>
+          ))}
+        </div>
+        <a href="/songs/" class="inline-flex items-center gap-1.5 font-[800] text-red text-sm mt-4 no-underline hover:underline">
+          Browse all {totalSongs} songs →
+        </a>
+      </div>
+
+      <!-- Herstory (bottom middle, dark, spans 2 cols) -->
+      <div class="col-span-2 p-7 border-r border-b border-rule bg-ink text-on-dark">
+        <div class="kicker text-mustard mb-3.5">From the archive</div>
+        <h3 class="font-display text-on-dark text-[28px] leading-tight mb-4">The Origin Story</h3>
+        <figure class="my-3.5 p-2 pb-0 bg-on-dark inline-block" style="transform:rotate(-1.2deg);box-shadow:0 8px 20px rgba(0,0,0,.25);max-width:420px">
+          <img src="/granny-photo-1.jpg" alt="Raging Grannies in action" class="w-full h-[180px] object-cover" style="filter:saturate(.85) contrast(1.02)" />
+          <figcaption class="font-bold text-[11px] tracking-[.08em] uppercase text-ink text-center py-2.5 px-1 italic">Placeholder — client photography pending</figcaption>
+        </figure>
+        <div class="font-display text-red text-[120px] leading-none my-2.5">1987</div>
+        <p class="text-[17px] leading-relaxed text-on-dark max-w-[540px] mb-4">
+          It started on a <em class="text-mustard not-italic">damp Tuesday in Victoria, BC</em> when a handful of older women decided the best way to get attention for peace was to put on flowered hats and sing.
+        </p>
+        <a href="#" class="inline-flex items-center gap-1.5 font-[800] text-mustard text-sm no-underline hover:underline">
+          Read the full herstory →
+        </a>
+      </div>
+
+      <!-- Mission + stats sidebar (right, spans 2 rows) -->
+      <div class="row-span-2 p-7 border-r border-b border-rule bg-paper-2">
+        <div class="kicker text-red mb-3.5">Who we are</div>
+        <p class="text-[17px] leading-normal mb-3.5">
+          <strong class="text-ink">The Raging Grannies</strong> are a loose international network of women over fifty who use satirical song as a tool for political education.
+        </p>
+        <p class="text-[17px] leading-normal mb-3.5">
+          There is no membership card. No dues. No central committee. Just gaggles — autonomous local groups who write songs, don flowered hats, and show up.
+        </p>
+
+        <div class="mt-7 pt-7 border-t border-dashed border-ink-lilac">
+          <div class="kicker text-red mb-3.5">By the numbers</div>
+          <dl>
+            <div class="flex justify-between py-2 border-b border-dotted border-ink-lilac">
+              <dt class="text-[15px] text-text-soft">Active gaggles</dt>
+              <dd class="font-display text-ink text-[26px] leading-none">80+</dd>
+            </div>
+            <div class="flex justify-between py-2 border-b border-dotted border-ink-lilac">
+              <dt class="text-[15px] text-text-soft">Songs archived</dt>
+              <dd class="font-display text-ink text-[26px] leading-none">1,493</dd>
+            </div>
+            <div class="flex justify-between py-2 border-b border-dotted border-ink-lilac">
+              <dt class="text-[15px] text-text-soft">Issue categories</dt>
+              <dd class="font-display text-ink text-[26px] leading-none">17</dd>
+            </div>
+            <div class="flex justify-between py-2">
+              <dt class="text-[15px] text-text-soft">Years singing</dt>
+              <dd class="font-display text-ink text-[26px] leading-none">39</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Issues Grid -->
+  <section class="py-20 bg-paper-2">
+    <div class="max-w-[1200px] mx-auto px-8">
+      <div class="text-center mb-10">
+        <div class="kicker text-red mb-3">The songbook · by issue</div>
+        <h2 class="font-display text-ink text-[44px] leading-none">What We Sing About</h2>
+      </div>
+      <div class="grid grid-cols-3 border-t border-l border-ink">
+        {issues.map((issue) => (
+          <a
+            href={`/songs/?issue=${encodeURIComponent(issue.name)}`}
+            class="flex items-baseline justify-between gap-4 px-6 py-[22px] border-r border-b border-ink bg-paper text-ink no-underline hover:bg-red hover:text-on-dark transition-colors group"
+          >
+            <span class="font-bold text-[16px] text-right">{issue.name}</span>
+            <span class="font-display text-[40px] leading-none text-red group-hover:text-on-dark transition-colors">{issue.count}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Gaggle Map Teaser -->
+  <section class="py-24">
+    <div class="max-w-[1200px] mx-auto px-8 grid grid-cols-[1fr_1.4fr] gap-16 items-center">
+      <div>
+        <div class="kicker text-red mb-3">The network</div>
+        <h2 class="font-display text-ink text-[56px] leading-[.98] mb-5">Find Your Gaggle</h2>
+        <p class="text-[19px] text-text-soft leading-normal mb-8">
+          Eighty-plus gaggles across the US and Canada, from Victoria to Halifax. Find one near you — or start your own.
+        </p>
+        <div class="flex gap-3 flex-wrap">
+          <a href="#" class="btn btn-primary">Find a gaggle</a>
+          <a href="#" class="btn btn-ghost">Start a gaggle</a>
+        </div>
+      </div>
+      <div class="ph-image aspect-[16/10] rounded-xl text-center">
+        Interactive gaggle map — coming soon
+      </div>
+    </div>
+  </section>
+
+  <!-- About Strip -->
+  <section class="py-[72px] bg-paper-2 border-t border-b border-rule">
+    <div class="max-w-[1200px] mx-auto px-8 grid grid-cols-[0.9fr_1.1fr] gap-14 items-center">
+      <figure class="p-3.5 pt-3.5 pb-0 bg-on-dark" style="transform:rotate(-1.5deg);box-shadow:0 14px 36px rgba(0,0,0,.18);border:1px solid rgba(0,0,0,.04)">
+        <img src="/granny-photo-1.jpg" alt="Raging Grannies" class="w-full aspect-[4/3] object-cover" style="filter:saturate(.9) contrast(1.02)" />
+        <figcaption class="font-bold text-xs tracking-[.04em] text-ink text-center py-3.5 px-1.5 italic">Placeholder — client photography pending</figcaption>
+      </figure>
+      <div>
+        <div class="kicker text-red mb-3">About the movement</div>
+        <h2 class="font-display text-ink text-[56px] leading-[1.05] mb-5 tracking-tight">
+          Older women, flowered hats, <em class="text-red italic">sharp lyrics.</em>
+        </h2>
+        <p class="text-[18px] leading-relaxed text-text max-w-[52ch] mb-5">
+          We are not a club, a party, or an organization. We are a loose network of autonomous gaggles united by a shared method: writing satirical songs about the issues that matter and singing them in public.
+        </p>
+        <div class="flex gap-6 flex-wrap">
+          <a href="#" class="font-[800] text-red no-underline hover:underline">Read more about us →</a>
+          <a href="#" class="font-[800] text-red no-underline hover:underline">Our philosophy →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Teaser -->
+  <section class="py-24">
+    <div class="max-w-[1200px] mx-auto px-8 grid grid-cols-[340px_1fr] gap-16 items-start">
+      <div class="sticky top-6">
+        <figure class="mb-6 p-2.5 pt-2.5 pb-0 bg-on-dark inline-block max-w-[300px]" style="transform:rotate(1.5deg);box-shadow:0 10px 28px rgba(0,0,0,.18)">
+          <img src="/granny-photo-1.jpg" alt="" class="w-full h-[220px] object-cover" style="filter:saturate(.9)" />
+        </figure>
+        <h2 class="font-display text-ink text-[52px] leading-[.95] mt-2.5 mb-3.5">FAQ</h2>
+        <p class="text-[16px] text-text-soft leading-relaxed max-w-[32ch] mb-4">
+          The questions we get most — and a few you haven't thought of yet.
+        </p>
+        <a href="#" class="font-[800] text-red no-underline hover:underline text-sm">See all questions →</a>
+      </div>
+      <div>
+        <details open class="border-b border-rule py-5 group">
+          <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight">
+            <span>Do I have to be a grandmother?</span>
+            <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
+          </summary>
+          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] font-serif text-[17px]">
+            No. You have to be a woman (broadly defined) willing to put on a hat and sing in public. Many Grannies are grandmothers, but it's not a requirement.
+          </p>
+        </details>
+        <details class="border-b border-rule py-5 group">
+          <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight">
+            <span>Is there a central organization?</span>
+            <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
+          </summary>
+          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] font-serif text-[17px]">
+            No. Each gaggle is autonomous. The international network is deliberately disorganized — there are no dues, no bylaws, and no central committee.
+          </p>
+        </details>
+        <details class="border-b border-rule py-5 group">
+          <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight">
+            <span>How do I start a gaggle?</span>
+            <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
+          </summary>
+          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] font-serif text-[17px]">
+            Find two or more like-minded women, pick an issue, write a song (or borrow one from the songbook), put on hats, and show up somewhere. That's it.
+          </p>
+        </details>
+        <details class="border-b border-rule py-5 group">
+          <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight">
+            <span>Can men join?</span>
+            <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
+          </summary>
+          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] font-serif text-[17px]">
+            The Raging Grannies are a women's movement. Men are welcome to support, cheer, carry signs, and start their own groups — but the gaggles are for women.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
