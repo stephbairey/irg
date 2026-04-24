@@ -40,9 +40,10 @@ export async function fetchLatestActions(limit = 3): Promise<Action[]> {
             }
           }`,
         });
+        const gaggle = site.name.replace(/\s+Raging\s+Grannies\s*$/i, "").trim() || site.name;
         return data.posts.nodes.map((p) => ({
           ...p,
-          gaggle: site.name,
+          gaggle,
           gaggleSlug: site.slug,
         }));
       } catch (err) {
