@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.0.0
+ * Version: 3.1.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -21,6 +21,12 @@ add_action( 'init', 'irg_relabel_posts_on_subsites' );
 add_action( 'init', 'irg_seed_issue_terms' );
 add_action( 'acf/include_fields', 'irg_register_acf_fields' );
 add_action( 'admin_menu', 'irg_add_import_page' );
+
+add_filter( 'manage_song_posts_columns', 'irg_song_admin_columns' );
+add_action( 'manage_song_posts_custom_column', 'irg_song_admin_column_content', 10, 2 );
+add_filter( 'manage_edit-song_sortable_columns', 'irg_song_admin_sortable_columns' );
+add_action( 'pre_get_posts', 'irg_song_admin_sort_by_taxonomy' );
+add_action( 'restrict_manage_posts', 'irg_song_admin_filter_dropdowns' );
 
 function irg_register_song_cpt(): void {
 	if ( ! is_main_site() ) {
@@ -556,4 +562,114 @@ function irg_relabel_posts_on_subsites(): void {
 	$wp_post_types['post']->labels->all_items           = 'All Actions';
 	$wp_post_types['post']->labels->menu_name           = 'Actions';
 	$wp_post_types['post']->labels->name_admin_bar      = 'Action';
+}
+
+// ---------------------------------------------------------------------------
+// Songs admin list table — custom columns, sorting, filter dropdowns.
+// ---------------------------------------------------------------------------
+
+const IRG_SONG_ADMIN_TAXONOMIES = [
+	'issue'      => 'Issue',
+	'gaggle'     => 'Gaggle',
+	'songwriter' => 'Songwriter',
+	'tune'       => 'Tune',
+];
+
+function irg_song_admin_columns( array $columns ): array {
+	$new = [];
+	foreach ( $columns as $key => $label ) {
+		if ( $key === 'date' ) {
+			foreach ( IRG_SONG_ADMIN_TAXONOMIES as $tax => $tax_label ) {
+				$new[ $tax ] = $tax_label;
+			}
+		}
+		$new[ $key ] = $label;
+	}
+	return $new;
+}
+
+function irg_song_admin_column_content( string $column, int $post_id ): void {
+	if ( ! array_key_exists( $column, IRG_SONG_ADMIN_TAXONOMIES ) ) {
+		return;
+	}
+
+	$terms = get_the_terms( $post_id, $column );
+	if ( is_wp_error( $terms ) || ! $terms ) {
+		echo '<span style="color:#a7aaad">—</span>';
+		return;
+	}
+
+	$links = [];
+	foreach ( $terms as $term ) {
+		$url = add_query_arg(
+			[
+				'post_type' => 'song',
+				$column     => $term->slug,
+			],
+			admin_url( 'edit.php' )
+		);
+		$links[] = '<a href="' . esc_url( $url ) . '">' . esc_html( $term->name ) . '</a>';
+	}
+	echo implode( ', ', $links );
+}
+
+function irg_song_admin_sortable_columns( array $columns ): array {
+	foreach ( array_keys( IRG_SONG_ADMIN_TAXONOMIES ) as $tax ) {
+		$columns[ $tax ] = $tax;
+	}
+	return $columns;
+}
+
+function irg_song_admin_sort_by_taxonomy( WP_Query $query ): void {
+	if ( ! is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+	if ( $query->get( 'post_type' ) !== 'song' ) {
+		return;
+	}
+
+	$orderby = $query->get( 'orderby' );
+	if ( ! is_string( $orderby ) || ! array_key_exists( $orderby, IRG_SONG_ADMIN_TAXONOMIES ) ) {
+		return;
+	}
+
+	add_filter( 'posts_clauses', function ( array $clauses ) use ( $orderby ) {
+		global $wpdb;
+
+		$tax   = $orderby;
+		$order = isset( $_GET['order'] ) && strtoupper( (string) $_GET['order'] ) === 'DESC' ? 'DESC' : 'ASC';
+
+		$clauses['join']    .= " LEFT JOIN {$wpdb->term_relationships} AS irg_tr ON ( irg_tr.object_id = {$wpdb->posts}.ID )";
+		$clauses['join']    .= $wpdb->prepare(
+			" LEFT JOIN {$wpdb->term_taxonomy} AS irg_tt ON ( irg_tt.term_taxonomy_id = irg_tr.term_taxonomy_id AND irg_tt.taxonomy = %s )",
+			$tax
+		);
+		$clauses['join']    .= " LEFT JOIN {$wpdb->terms} AS irg_t ON ( irg_t.term_id = irg_tt.term_id )";
+		$clauses['groupby']  = "{$wpdb->posts}.ID";
+		$clauses['orderby']  = "MIN(irg_t.name) {$order}, {$wpdb->posts}.post_title ASC";
+
+		return $clauses;
+	} );
+}
+
+function irg_song_admin_filter_dropdowns( string $post_type ): void {
+	if ( $post_type !== 'song' ) {
+		return;
+	}
+
+	foreach ( IRG_SONG_ADMIN_TAXONOMIES as $tax => $label ) {
+		$selected = isset( $_GET[ $tax ] ) ? sanitize_text_field( wp_unslash( $_GET[ $tax ] ) ) : '';
+		wp_dropdown_categories( [
+			'show_option_all' => "All {$label}s",
+			'taxonomy'        => $tax,
+			'name'            => $tax,
+			'orderby'         => 'name',
+			'value_field'     => 'slug',
+			'selected'        => $selected,
+			'hierarchical'    => is_taxonomy_hierarchical( $tax ),
+			'show_count'      => true,
+			'hide_empty'      => true,
+			'depth'           => 3,
+		] );
+	}
 }
