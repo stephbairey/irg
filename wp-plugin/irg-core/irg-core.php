@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.1.0
+ * Version: 3.2.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -27,6 +27,8 @@ add_action( 'manage_song_posts_custom_column', 'irg_song_admin_column_content', 
 add_filter( 'manage_edit-song_sortable_columns', 'irg_song_admin_sortable_columns' );
 add_action( 'pre_get_posts', 'irg_song_admin_sort_by_taxonomy' );
 add_action( 'restrict_manage_posts', 'irg_song_admin_filter_dropdowns' );
+
+add_action( 'rest_api_init', 'irg_register_deploy_endpoint' );
 
 function irg_register_song_cpt(): void {
 	if ( ! is_main_site() ) {
@@ -672,4 +674,84 @@ function irg_song_admin_filter_dropdowns( string $post_type ): void {
 			'depth'           => 3,
 		] );
 	}
+}
+
+// ---------------------------------------------------------------------------
+// Plugin self-deploy endpoint — upload a new irg-core.zip via REST.
+// Requires Application Password + super admin. Refuses any zip whose filename
+// doesn't start with "irg-core".
+// ---------------------------------------------------------------------------
+
+function irg_register_deploy_endpoint(): void {
+	register_rest_route( 'irg/v1', '/plugin-upload', [
+		'methods'             => 'POST',
+		'callback'            => 'irg_handle_plugin_upload',
+		'permission_callback' => function () {
+			return is_multisite() ? is_super_admin() : current_user_can( 'install_plugins' );
+		},
+	] );
+}
+
+function irg_handle_plugin_upload( WP_REST_Request $req ) {
+	$files = $req->get_file_params();
+	if ( empty( $files['plugin'] ) ) {
+		return new WP_Error( 'irg_no_file', 'No plugin file uploaded (expected multipart field "plugin").', [ 'status' => 400 ] );
+	}
+
+	$file = $files['plugin'];
+	if ( ( $file['error'] ?? UPLOAD_ERR_OK ) !== UPLOAD_ERR_OK ) {
+		return new WP_Error( 'irg_upload_error', 'Upload error code ' . (int) $file['error'], [ 'status' => 400 ] );
+	}
+
+	$name = (string) ( $file['name'] ?? '' );
+	if ( strpos( $name, 'irg-core' ) !== 0 || substr( $name, -4 ) !== '.zip' ) {
+		return new WP_Error( 'irg_bad_name', 'Expected filename starting with "irg-core" and ending in ".zip".', [ 'status' => 400 ] );
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/misc.php';
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+	$skin     = new WP_Ajax_Upgrader_Skin();
+	$upgrader = new Plugin_Upgrader( $skin );
+	$result   = $upgrader->install( $file['tmp_name'], [ 'overwrite_package' => true ] );
+
+	if ( is_wp_error( $result ) ) {
+		return $result;
+	}
+	if ( $result === false ) {
+		$errors = $skin->get_errors();
+		return new WP_Error(
+			'irg_install_failed',
+			'Plugin install returned false.',
+			[
+				'status' => 500,
+				'errors' => is_wp_error( $errors ) ? $errors->get_error_messages() : [],
+			]
+		);
+	}
+
+	$plugin_file = 'irg-core/irg-core.php';
+	if ( is_multisite() && ! is_plugin_active_for_network( $plugin_file ) ) {
+		$activate = activate_plugin( $plugin_file, '', true );
+		if ( is_wp_error( $activate ) ) {
+			return $activate;
+		}
+	} elseif ( ! is_multisite() && ! is_plugin_active( $plugin_file ) ) {
+		$activate = activate_plugin( $plugin_file );
+		if ( is_wp_error( $activate ) ) {
+			return $activate;
+		}
+	}
+
+	$data = get_plugin_data( WP_PLUGIN_DIR . '/' . $plugin_file, false, false );
+
+	return [
+		'ok'          => true,
+		'name'        => $name,
+		'version'     => $data['Version'] ?? null,
+		'network'     => is_multisite(),
+		'active'      => is_multisite() ? is_plugin_active_for_network( $plugin_file ) : is_plugin_active( $plugin_file ),
+	];
 }
