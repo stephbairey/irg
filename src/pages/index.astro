@@ -1,20 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { wpQuery } from "../lib/graphql";
-
-interface SongsData {
-  songs: {
-    nodes: Array<{
-      title: string;
-      slug: string;
-      songDetails: { lyrics: string | null };
-      songwriters: { nodes: Array<{ name: string }> };
-      gaggles: { nodes: Array<{ name: string }> };
-      tunes: { nodes: Array<{ name: string }> };
-      issues: { nodes: Array<{ name: string }> };
-    }>;
-  };
-}
+import { fetchAllSongs } from "../lib/songs";
 
 interface IssuesData {
   issues: {
@@ -29,38 +16,56 @@ const issuesData = await wpQuery<IssuesData>({
   query: `{ issues(first:100) { nodes { name count } } }`,
 });
 
-const featuredData = await wpQuery<SongsData>({
-  query: `{ songs(first:6, where:{orderby:{field:DATE,order:DESC}}) {
-    nodes {
-      title slug
-      songDetails { lyrics }
-      songwriters { nodes { name } }
-      gaggles { nodes { name } }
-      tunes { nodes { name } }
-      issues { nodes { name } }
-    }
-  }}`,
-});
+const allSongs = await fetchAllSongs();
 
 const issues = issuesData.issues.nodes
   .filter((i) => i.count > 0)
   .sort((a, b) => b.count - a.count);
-const totalSongs = issues.reduce((sum, i) => sum + i.count, 0);
-const featured = featuredData.songs.nodes[0];
-const picks = featuredData.songs.nodes.slice(1, 5);
+const totalSongs = allSongs.length;
+
+const shortTitled = allSongs.filter(
+  (s) => s.title.length <= 12 && s.songDetails?.lyrics,
+);
+const featured = shortTitled.length
+  ? shortTitled[Math.floor(Math.random() * shortTitled.length)]
+  : null;
+
+const gaggleNames = new Set<string>();
+for (const s of allSongs) for (const g of s.gaggles.nodes) gaggleNames.add(g.name);
+const gagglesCount = gaggleNames.size;
+
+const yearsSinging = new Date().getFullYear() - 1987;
 
 function stripHtml(html: string): string {
-  return html.replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, " ").trim();
+  return html
+    .replace(/&amp;/gi, "&")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&#8217;|&#8216;|&rsquo;|&lsquo;/gi, "'")
+    .replace(/&#8220;|&#8221;|&ldquo;|&rdquo;/gi, '"')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#0?39;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&[a-z#0-9]+;/gi, "")
+    .trim();
 }
 const featuredLyrics = featured?.songDetails?.lyrics
-  ? stripHtml(featured.songDetails.lyrics).split("\n").filter(Boolean).slice(0, 8).join("\n")
+  ? stripHtml(featured.songDetails.lyrics)
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean)
+      .slice(0, 16)
+      .join("\n")
   : "";
 ---
 
 <BaseLayout title="Home">
   <!-- Masthead -->
-  <section class="bg-paper pt-12 pb-8 border-b-[3px] border-double border-ink">
-    <div class="max-w-[1200px] mx-auto px-8">
+  <section class="bg-paper pt-12 pb-8 border-b border-muted">
+    <div class="max-w-[1400px] mx-auto px-8">
       <div class="flex justify-between text-muted font-bold text-xs tracking-[.1em] uppercase border-b border-rule pb-3 mb-5">
         <span>Welcome, friend</span>
         <span>The International Disorganization</span>
@@ -69,21 +74,23 @@ const featuredLyrics = featured?.songDetails?.lyrics
       <h1 class="font-display text-center text-ink leading-[.9] tracking-tight" style="font-size:clamp(72px,11vw,160px)">
         Raging Grannies
       </h1>
-      <p class="text-center text-[19px] text-text-soft mt-6 italic">
-        Using <em class="text-ink not-italic font-semibold">creative and humorous</em> protests for political education.
+      <p class="text-center text-[19px] text-text-soft mt-10 italic">
+        Using <em class="text-ink">creative and humorous</em> protests for political education.
       </p>
     </div>
   </section>
 
   <!-- Front Page Grid -->
-  <section class="max-w-[1200px] mx-auto px-8">
-    <div class="grid grid-cols-[1.5fr_1fr_1fr_1fr] border-t border-l border-rule" style="grid-template-rows:auto auto">
-      <!-- Lead story (col 1, rows 1-2) -->
-      <div class="p-7 border-r-2 border-b border-ink border-r-ink" style="grid-column:1;grid-row:1/3">
-        <div class="kicker text-red mb-3.5">The lead · from today's songbook</div>
+  <section class="max-w-[1400px] mx-auto px-8">
+    <div class="grid grid-cols-[3fr_4fr_3fr] border-l border-rule">
+      <!-- Lead story -->
+      <div class="p-7 border-r border-b border-muted">
+        <div class="kicker text-red mb-3.5">From the Songbook</div>
         {featured && (
           <>
-            <h2 class="font-display text-ink text-[56px] leading-[.98] mb-2.5">{featured.title}</h2>
+            <h2 class="font-display text-ink text-[56px] leading-[.98] mb-2.5">
+              <a href={`/songs/${featured.slug}/`} class="text-ink no-underline hover:text-red transition-colors">{featured.title}</a>
+            </h2>
             <p class="text-sm text-text-soft pb-4 border-b border-rule mb-5">
               By <strong class="text-ink">{featured.songwriters.nodes[0]?.name}</strong>
               {featured.gaggles.nodes[0] && <> · {featured.gaggles.nodes[0].name} Gaggle</>}
@@ -97,81 +104,64 @@ const featuredLyrics = featured?.songDetails?.lyrics
         )}
       </div>
 
-      <!-- On The Streets (col 2, row 1) -->
-      <div class="p-7 border-r border-b border-rule" style="grid-column:2;grid-row:1">
+      <!-- Who we are + From the archive -->
+      <div class="border-r border-b border-muted">
+        <div class="p-7 bg-paper-2">
+          <div class="kicker text-red mb-3.5">Who we are</div>
+          <p class="text-[17px] leading-normal mb-3.5">
+            <strong class="text-ink">The Raging Grannies</strong> are a loose international network of women over fifty who use satirical song and street theater as a tool for political education.
+          </p>
+          <p class="text-[17px] leading-normal mb-3.5">
+            Our autonomous gaggles across North America don flowered hats and show up to sing pointed songs about what the powerful would rather keep quiet. We care about peace and justice and human rights and this battered planet, and use a well-aimed song on the steps of city hall to open ears.
+          </p>
+
+          <div class="mt-7 pt-7 border-t border-dashed border-muted">
+            <div class="kicker text-red mb-3.5">By the numbers</div>
+            <dl>
+              <div class="flex justify-between py-2 border-b border-dotted border-muted">
+                <dt class="text-[15px] text-text-soft">Active gaggles</dt>
+                <dd class="font-display text-ink text-[26px] leading-none">{gagglesCount}</dd>
+              </div>
+              <div class="flex justify-between py-2 border-b border-dotted border-muted">
+                <dt class="text-[15px] text-text-soft">Songs archived</dt>
+                <dd class="font-display text-ink text-[26px] leading-none">{totalSongs.toLocaleString()}</dd>
+              </div>
+              <div class="flex justify-between py-2 border-b border-dotted border-muted">
+                <dt class="text-[15px] text-text-soft">Issue categories</dt>
+                <dd class="font-display text-ink text-[26px] leading-none">{issues.length}</dd>
+              </div>
+              <div class="flex justify-between py-2">
+                <dt class="text-[15px] text-text-soft">Years singing</dt>
+                <dd class="font-display text-ink text-[26px] leading-none">{yearsSinging}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="p-7 bg-ink text-on-dark">
+          <div class="kicker text-mustard mb-3.5">From the archive</div>
+          <h3 class="font-display text-on-dark text-[28px] leading-tight mb-4">The Origin Story</h3>
+          <figure class="my-3.5 p-2 pb-0 bg-on-dark inline-block" style="transform:rotate(-1.2deg);box-shadow:0 8px 20px rgba(0,0,0,.25);max-width:420px">
+            <img src="/granny-origin.png" alt="The Raging Grannies" class="w-full h-[180px] object-cover" style="filter:saturate(.85) contrast(1.02)" />
+            <figcaption class="font-bold text-[11px] tracking-[.08em] uppercase text-ink text-center py-2.5 px-1 italic">The Raging Grannies</figcaption>
+          </figure>
+          <div class="font-display text-red text-[120px] leading-none my-2.5">1987</div>
+          <p class="text-[17px] leading-relaxed text-on-dark max-w-[540px] mb-4">
+            It started on a <em class="text-mustard not-italic">damp Tuesday in Victoria, BC</em> when a handful of older women decided the best way to get attention for peace was to put on flowered hats and sing.
+          </p>
+          <a href="#" class="inline-flex items-center gap-1.5 font-[800] text-mustard text-sm no-underline hover:underline">
+            Read the full herstory →
+          </a>
+        </div>
+      </div>
+
+      <!-- On The Streets -->
+      <div class="p-7 border-r border-b border-muted">
         <div class="kicker text-red mb-3.5">On the streets</div>
         <h3 class="font-display text-ink text-[28px] leading-tight mb-4">Dispatches</h3>
         <p class="text-sm text-text-soft italic">Gaggle action reports coming soon. This section will feature dispatches from gaggles in the field.</p>
       </div>
 
-      <!-- Also in the songbook (col 3, row 1) -->
-      <div class="p-7 border-r border-b border-rule" style="grid-column:3;grid-row:1">
-        <div class="kicker text-red mb-3.5">Also in the songbook</div>
-        <div>
-          {picks.map((song) => (
-            <a href={`/songs/${song.slug}/`} class="block py-3 border-b border-dotted border-rule no-underline hover:bg-red/[.04] hover:pl-1.5 transition-all">
-              <div class="font-display text-ink text-[22px] leading-none mb-1">{song.title}</div>
-              <div class="text-[13px] text-text-soft leading-snug">
-                {song.gaggles.nodes[0]?.name}
-                {song.tunes.nodes[0] && <> · <em class="text-ink-soft">{song.tunes.nodes[0].name}</em></>}
-              </div>
-            </a>
-          ))}
-        </div>
-        <a href="/songs/" class="inline-flex items-center gap-1.5 font-[800] text-red text-sm mt-4 no-underline hover:underline">
-          Browse all {totalSongs} songs →
-        </a>
-      </div>
-
-      <!-- Herstory (cols 2-3, row 2) -->
-      <div class="p-7 border-r border-b border-rule bg-ink text-on-dark" style="grid-column:2/4;grid-row:2">
-        <div class="kicker text-mustard mb-3.5">From the archive</div>
-        <h3 class="font-display text-on-dark text-[28px] leading-tight mb-4">The Origin Story</h3>
-        <figure class="my-3.5 p-2 pb-0 bg-on-dark inline-block" style="transform:rotate(-1.2deg);box-shadow:0 8px 20px rgba(0,0,0,.25);max-width:420px">
-          <img src="/granny-photo-1.jpg" alt="Raging Grannies in action" class="w-full h-[180px] object-cover" style="filter:saturate(.85) contrast(1.02)" />
-          <figcaption class="font-bold text-[11px] tracking-[.08em] uppercase text-ink text-center py-2.5 px-1 italic">Placeholder — client photography pending</figcaption>
-        </figure>
-        <div class="font-display text-red text-[120px] leading-none my-2.5">1987</div>
-        <p class="text-[17px] leading-relaxed text-on-dark max-w-[540px] mb-4">
-          It started on a <em class="text-mustard not-italic">damp Tuesday in Victoria, BC</em> when a handful of older women decided the best way to get attention for peace was to put on flowered hats and sing.
-        </p>
-        <a href="#" class="inline-flex items-center gap-1.5 font-[800] text-mustard text-sm no-underline hover:underline">
-          Read the full herstory →
-        </a>
-      </div>
-
-      <!-- Mission + stats sidebar (col 4, rows 1-2) -->
-      <div class="p-7 border-r border-b border-rule bg-paper-2" style="grid-column:4;grid-row:1/3">
-        <div class="kicker text-red mb-3.5">Who we are</div>
-        <p class="text-[17px] leading-normal mb-3.5">
-          <strong class="text-ink">The Raging Grannies</strong> are a loose international network of women over fifty who use satirical song as a tool for political education.
-        </p>
-        <p class="text-[17px] leading-normal mb-3.5">
-          There is no membership card. No dues. No central committee. Just gaggles — autonomous local groups who write songs, don flowered hats, and show up.
-        </p>
-
-        <div class="mt-7 pt-7 border-t border-dashed border-ink-lilac">
-          <div class="kicker text-red mb-3.5">By the numbers</div>
-          <dl>
-            <div class="flex justify-between py-2 border-b border-dotted border-ink-lilac">
-              <dt class="text-[15px] text-text-soft">Active gaggles</dt>
-              <dd class="font-display text-ink text-[26px] leading-none">80+</dd>
-            </div>
-            <div class="flex justify-between py-2 border-b border-dotted border-ink-lilac">
-              <dt class="text-[15px] text-text-soft">Songs archived</dt>
-              <dd class="font-display text-ink text-[26px] leading-none">1,493</dd>
-            </div>
-            <div class="flex justify-between py-2 border-b border-dotted border-ink-lilac">
-              <dt class="text-[15px] text-text-soft">Issue categories</dt>
-              <dd class="font-display text-ink text-[26px] leading-none">17</dd>
-            </div>
-            <div class="flex justify-between py-2">
-              <dt class="text-[15px] text-text-soft">Years singing</dt>
-              <dd class="font-display text-ink text-[26px] leading-none">39</dd>
-            </div>
-          </dl>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -182,11 +172,11 @@ const featuredLyrics = featured?.songDetails?.lyrics
         <div class="kicker text-red mb-3">The songbook · by issue</div>
         <h2 class="font-display text-ink text-[44px] leading-none">What We Sing About</h2>
       </div>
-      <div class="grid grid-cols-3 border-t border-l border-ink">
+      <div class="grid grid-cols-3 border-t border-l border-muted">
         {issues.map((issue) => (
           <a
             href={`/songs/?issue=${encodeURIComponent(issue.name)}`}
-            class="flex items-baseline justify-between gap-4 px-6 py-[22px] border-r border-b border-ink bg-paper text-ink no-underline hover:bg-red hover:text-on-dark transition-colors group"
+            class="flex items-baseline justify-between gap-4 px-6 py-[22px] border-r border-b border-muted bg-paper text-ink no-underline hover:bg-red hover:text-on-dark transition-colors group"
           >
             <span class="font-bold text-[16px] text-right">{issue.name}</span>
             <span class="font-display text-[40px] leading-none text-red group-hover:text-on-dark transition-colors">{issue.count}</span>
@@ -220,8 +210,8 @@ const featuredLyrics = featured?.songDetails?.lyrics
   <section class="py-[72px] bg-paper-2 border-t border-b border-rule">
     <div class="max-w-[1200px] mx-auto px-8 grid grid-cols-[0.9fr_1.1fr] gap-14 items-center">
       <figure class="p-3.5 pt-3.5 pb-0 bg-on-dark" style="transform:rotate(-1.5deg);box-shadow:0 14px 36px rgba(0,0,0,.18);border:1px solid rgba(0,0,0,.04)">
-        <img src="/granny-photo-1.jpg" alt="Raging Grannies" class="w-full aspect-[4/3] object-cover" style="filter:saturate(.9) contrast(1.02)" />
-        <figcaption class="font-bold text-xs tracking-[.04em] text-ink text-center py-3.5 px-1.5 italic">Placeholder — client photography pending</figcaption>
+        <img src="/granny-movement.jpg" alt="Raging Grannies of Madison" class="w-full aspect-[4/3] object-cover" style="filter:saturate(.9) contrast(1.02)" />
+        <figcaption class="font-bold text-xs tracking-[.04em] text-ink text-center py-3.5 px-1.5 italic">Raging Grannies of Madison</figcaption>
       </figure>
       <div>
         <div class="kicker text-red mb-3">About the movement</div>
@@ -244,7 +234,8 @@ const featuredLyrics = featured?.songDetails?.lyrics
     <div class="max-w-[1200px] mx-auto px-8 grid grid-cols-[340px_1fr] gap-16 items-start">
       <div class="sticky top-6">
         <figure class="mb-6 p-2.5 pt-2.5 pb-0 bg-on-dark inline-block max-w-[300px]" style="transform:rotate(1.5deg);box-shadow:0 10px 28px rgba(0,0,0,.18)">
-          <img src="/granny-photo-1.jpg" alt="" class="w-full h-[220px] object-cover" style="filter:saturate(.9)" />
+          <img src="/granny-faq.jpg" alt="" class="w-full h-[220px] object-cover" style="filter:saturate(.9)" />
+          <figcaption class="font-bold text-[11px] tracking-[.08em] uppercase text-ink text-center py-2.5 px-1 italic">&nbsp;</figcaption>
         </figure>
         <h2 class="font-display text-ink text-[52px] leading-[.95] mt-2.5 mb-3.5">FAQ</h2>
         <p class="text-[16px] text-text-soft leading-relaxed max-w-[32ch] mb-4">
@@ -258,7 +249,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
             <span>Do I have to be a grandmother?</span>
             <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
           </summary>
-          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] font-serif text-[17px]">
+          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] text-[17px]">
             No. You have to be a woman (broadly defined) willing to put on a hat and sing in public. Many Grannies are grandmothers, but it's not a requirement.
           </p>
         </details>
@@ -267,7 +258,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
             <span>Is there a central organization?</span>
             <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
           </summary>
-          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] font-serif text-[17px]">
+          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] text-[17px]">
             No. Each gaggle is autonomous. The international network is deliberately disorganized — there are no dues, no bylaws, and no central committee.
           </p>
         </details>
@@ -276,7 +267,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
             <span>How do I start a gaggle?</span>
             <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
           </summary>
-          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] font-serif text-[17px]">
+          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] text-[17px]">
             Find two or more like-minded women, pick an issue, write a song (or borrow one from the songbook), put on hats, and show up somewhere. That's it.
           </p>
         </details>
@@ -285,7 +276,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
             <span>Can men join?</span>
             <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
           </summary>
-          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] font-serif text-[17px]">
+          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] text-[17px]">
             The Raging Grannies are a women's movement. Men are welcome to support, cheer, carry signs, and start their own groups — but the gaggles are for women.
           </p>
         </details>
