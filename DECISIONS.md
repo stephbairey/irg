@@ -239,6 +239,16 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Rationale**: Seeding from code ensures exact spelling and completeness. The option flag prevents duplicate insertion on subsequent page loads. Terms can still be edited or added via WP admin after seeding.
 - **Revisit if**: The taxonomy changes and new terms need to be added (update the array and delete the option flag to re-seed).
 
+## D020 — Temporary song import tool in irg-core plugin
+
+- **Status**: Active (temporary — remove after migration)
+- **Date**: 2026-04-22
+- **Context**: 1493 songs (1591 minus 98 flagged duplicates) need to be imported from `songs-consolidated.json` into the Songs CPT on the WP multisite. WP's built-in importer can't target a CPT with ACF fields and custom taxonomies.
+- **Choice**: Add a temporary admin page (Songs → Import Songs) to irg-core that accepts a JSON file upload and creates Song posts with all fields and taxonomy assignments.
+- **Implementation**: The importer reads `songs-consolidated.json`, skips entries where `duplicate_of` is not null, creates each song as a published Song CPT post, sets ACF fields via `update_field()`, and assigns Issue/Songwriter/Gaggle/Tune taxonomy terms (creating new terms as needed). Shows progress during import and a summary at the end. Warns if songs already exist in the database to prevent accidental double-import.
+- **Rationale**: A one-time admin tool is simpler and more auditable than a WP-CLI script or direct database manipulation. It runs inside the WP context so all hooks, sanitization, and ACF field registration work correctly. It will be removed from the plugin after migration is verified.
+- **Revisit if**: Import fails or needs to be re-run — the safety check warns but allows re-import with a confirmation checkbox.
+
 ## D021 — Split "Government & Politics" into "Elections & Democracy" and "Government & Power"
 
 - **Status**: Decided
@@ -251,24 +261,68 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Plugin seed list updated**: `irg_seed_issue_terms()` in `irg-core.php` now lists the two new terms in place of the old one. Harmless on existing installs (guarded by the `irg_issue_terms_seeded` option), but correct for any fresh activation.
 - **Revisit if**: The song librarian reviews classifications and wants a re-split, or the E&D/G&P boundary needs further subdivision (e.g. separating "specific politicians" from "systemic critique").
 
-## D020 — Temporary song import tool in irg-core plugin
+## D022 — Plugin self-deploy via REST endpoint
 
-- **Status**: Active (temporary — remove after migration)
-- **Date**: 2026-04-22
-- **Context**: 1493 songs (1591 minus 98 flagged duplicates) need to be imported from `songs-consolidated.json` into the Songs CPT on the WP multisite. WP's built-in importer can't target a CPT with ACF fields and custom taxonomies.
-- **Choice**: Add a temporary admin page (Songs → Import Songs) to irg-core that accepts a JSON file upload and creates Song posts with all fields and taxonomy assignments.
-- **Implementation**: The importer reads `songs-consolidated.json`, skips entries where `duplicate_of` is not null, creates each song as a published Song CPT post, sets ACF fields via `update_field()`, and assigns Issue/Songwriter/Gaggle/Tune taxonomy terms (creating new terms as needed). Shows progress during import and a summary at the end. Warns if songs already exist in the database to prevent accidental double-import.
-- **Rationale**: A one-time admin tool is simpler and more auditable than a WP-CLI script or direct database manipulation. It runs inside the WP context so all hooks, sanitization, and ACF field registration work correctly. It will be removed from the plugin after migration is verified.
-- **Revisit if**: Import fails or needs to be re-run — the safety check warns but allows re-import with a confirmation checkbox.
+- **Status**: Decided
+- **Date**: 2026-04-24
+- **Context**: Before v3.2.0, updating the irg-core plugin meant deactivate → delete → reinstall from WP admin. Even after D021 established the REST + App Password pattern for data ops, plugin code updates were still manual. With active development on the plugin (admin columns, subsites endpoint, future features), that friction slowed iteration.
+- **Options considered**:
+  - Keep manual zip upload in WP admin (status quo — friction).
+  - SFTP/SSH deploy (requires server access; varies by host).
+  - WP-CLI (requires CLI install on the server).
+  - Custom REST endpoint that accepts a zip upload and runs WP's `Plugin_Upgrader`.
+- **Choice**: `POST /wp-json/irg/v1/plugin-upload`. Paired with `scripts/deploy-plugin.mjs`, which builds a fresh zip and POSTs it using Basic Auth (the same Application Password from D021).
+- **Safeguards**: filename must start with `irg-core` and end in `.zip` (rejects uploads of arbitrary plugins); permission_callback requires `is_super_admin()` on multisite, `install_plugins` otherwise; uses core's `Plugin_Upgrader` with `overwrite_package` so the install is atomic and the plugin is reactivated network-wide afterward.
+- **Bootstrap**: v3.2.0 itself had to be uploaded manually once to install the endpoint. Every update after that uses the script. Same story for any future plugin that wants this capability: ship the endpoint in v1, deploy via script from v2.
+- **Revisit if**: We need to deploy other plugins or themes, or ship multiple plugin packages. At that point the endpoint should become generic (accept plugin slug parameter) or live in a separate "ops" plugin.
+
+## D023 — Cross-subsite aggregation via per-site GraphQL endpoints
+
+- **Status**: Decided
+- **Date**: 2026-04-24
+- **Context**: The homepage "On the Streets" section shows the N most-recent Actions (Posts, relabeled per D013) across all gaggle subsites. Subsites are separate WP installs within the multisite; each has its own GraphQL endpoint at `{base}/{slug}/graphql`.
+- **Options considered**:
+  - Single aggregated GraphQL query via the main site (WPGraphQL does not natively expose other subsites' content in one query; would require custom schema additions with `switch_to_blog()`).
+  - WP REST federation plugin (extra dependency, another moving piece).
+  - N parallel GraphQL calls, one per subsite, merged and sorted in Astro.
+- **Choice**: N parallel calls at build time. `src/lib/actions.ts` uses `Promise.all()` over the subsite list (D024), tags each post with the source gaggle's name, merges, sorts by date, and slices the top N.
+- **Rationale**: Simple, transparent, and resilient — any subsite that fails or is offline is logged and skipped (one gaggle's outage never breaks the homepage build). Cost scales linearly with gaggle count, but at 80 subsites × sub-second per request, still fine for static builds.
+- **Revisit if**: Parallel fan-out becomes slow (e.g. 200+ subsites, or if we move to incremental rebuilds where each call matters more). At that point, a precomputed aggregation endpoint on the main site would be worth the complexity.
+
+## D024 — Subsite list via auto-discovery endpoint (replaces env var)
+
+- **Status**: Decided
+- **Date**: 2026-04-24
+- **Context**: Initial implementation of D023 read the subsite list from an env var (`PUBLIC_WP_SUBSITES=portland:Portland,seattle:Seattle`). With ~80 gaggles planned over time, every new gaggle would have required a code/config change and a redeploy — friction that scales badly and duplicates information already in the WP network.
+- **Options considered**:
+  - Continue with env var / hardcoded list (friction).
+  - GraphQL multisite query (WPGraphQL does not natively expose the sites table; would need custom schema additions).
+  - Custom REST endpoint that enumerates the WP network.
+- **Choice**: `GET /wp-json/irg/v1/subsites` in irg-core v3.3.0, fetched by `src/lib/subsites.ts` at build time. Returns `{id, slug, name, url}` for every non-main, public, non-archived, non-spam, non-deleted site in the network.
+- **Rationale**: New gaggle created in Network Admin → appears in the next build automatically. Zero code or config change. Public endpoint — site membership is already discoverable by URL probing, so no new info is exposed. Astro falls back to `[]` (and the UI renders empty-state copy) if the endpoint 404s, so a plugin downgrade or outage never hard-fails the build.
+- **Revisit if**: We want to exclude specific subsites from the frontend (e.g. inactive gaggles, internal-only sites) — could add a site-meta flag consulted by the endpoint, or an opt-out via site option.
+
+## D025 — Admin edit links on the frontend (deferred nice-to-have)
+
+- **Status**: Deferred
+- **Date**: 2026-04-24
+- **Context**: Admins (webgranny, songlibrarian) would benefit from "Edit" links rendered alongside content on the frontend — e.g. below "Read full lyrics →" on the featured song — so they can jump directly to the WP edit screen for whatever they're browsing. The frontend is static (Cloudflare Pages) at a different origin from WP (`cms.raginggrannies.international`), so visibility can't be keyed to WP session cookies without non-trivial glue.
+- **Options considered**:
+  - **A. Client-side WP session check via CORS.** Add `/wp-json/irg/v1/me` that returns the current user; frontend fetches it with `credentials: "include"` and reveals the edit link if username matches. **Cost**: cookies need `SameSite=None; Secure` to be sent cross-site (today they're `Lax`), which broadens CSRF surface. WP nonces already protect write actions, so impact is small but non-zero.
+  - **B. Separate app-password login on the frontend.** UI collects WP username + app password once, stored in `sessionStorage` or `localStorage`. No cookie changes; authenticated via HTTP Basic to `/wp/v2/users/me`. **Cost**: a second "login" UX to maintain, credentials in browser storage.
+  - **C. Always-visible edit link.** Everyone sees "Edit"; WP login gates the actual edit page. Functionally safe but defeats the "hide from public" intent.
+- **Choice**: Deferred. All three paths work; none feels right for a single edit link in isolation. Revisit when a second admin-only surface appears so the cost of the chosen mechanism is amortized.
+- **Revisit if**: The song librarian starts using the frontend heavily and wants inline edit affordances; OR we add another admin-only UI (gaggle page editing, inline action updates); OR Maya's workflow changes such that jumping from public page → edit screen becomes a bottleneck.
 
 ---
 
 ## Open decisions (not yet resolved)
 
-- **Song taxonomy structure**: 17 issue categories finalized (D016). Song librarian may request additions.
+- **Song taxonomy structure**: 17 issue categories finalized (D016, split in D021). Song librarian may still refine E&D/G&P boundaries or request additions.
 - **Brand colors and visual identity**: need to document from existing IRG materials.
 - **Gallery plugin/approach**: needs to be granny-friendly in WP admin.
 - **Contact form handling**: email routing, form service choice.
 - **DNS cutover plan**: how to move raginggrannies.org without downtime.
 - **Image hosting strategy**: WP media library vs. Cloudflare Images vs. other.
 - **Song deduplication resolution**: 99 duplicate pairs identified. Song librarian decides which version to keep per pair.
+- **Admin edit links**: see D025. Deferred pending a second use case.
