@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.2.0
+ * Version: 3.3.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -29,6 +29,7 @@ add_action( 'pre_get_posts', 'irg_song_admin_sort_by_taxonomy' );
 add_action( 'restrict_manage_posts', 'irg_song_admin_filter_dropdowns' );
 
 add_action( 'rest_api_init', 'irg_register_deploy_endpoint' );
+add_action( 'rest_api_init', 'irg_register_subsites_endpoint' );
 
 function irg_register_song_cpt(): void {
 	if ( ! is_main_site() ) {
@@ -754,4 +755,58 @@ function irg_handle_plugin_upload( WP_REST_Request $req ) {
 		'network'     => is_multisite(),
 		'active'      => is_multisite() ? is_plugin_active_for_network( $plugin_file ) : is_plugin_active( $plugin_file ),
 	];
+}
+
+// ---------------------------------------------------------------------------
+// Subsites discovery endpoint — lets the Astro frontend enumerate gaggle
+// subsites without any env-var config. Public (network membership is already
+// discoverable by trying URLs). Excludes the main site since it's the hub,
+// not a gaggle.
+// ---------------------------------------------------------------------------
+
+function irg_register_subsites_endpoint(): void {
+	register_rest_route( 'irg/v1', '/subsites', [
+		'methods'             => 'GET',
+		'callback'            => 'irg_handle_subsites',
+		'permission_callback' => '__return_true',
+	] );
+}
+
+function irg_handle_subsites() {
+	if ( ! is_multisite() ) {
+		return [];
+	}
+
+	$sites = get_sites( [
+		'number'   => 500,
+		'archived' => 0,
+		'spam'     => 0,
+		'deleted'  => 0,
+		'public'   => 1,
+		'orderby'  => 'path',
+	] );
+
+	$out = [];
+	foreach ( $sites as $site ) {
+		$id = (int) $site->blog_id;
+		if ( is_main_site( $id ) ) {
+			continue;
+		}
+		$details = get_blog_details( $id );
+		if ( ! $details ) {
+			continue;
+		}
+		$slug = trim( (string) $details->path, '/' );
+		if ( $slug === '' ) {
+			continue;
+		}
+		$out[] = [
+			'id'   => $id,
+			'slug' => $slug,
+			'name' => html_entity_decode( (string) $details->blogname, ENT_QUOTES, 'UTF-8' ),
+			'url'  => rtrim( (string) $details->siteurl, '/' ),
+		];
+	}
+
+	return $out;
 }

@@ -1,29 +1,46 @@
 export interface Subsite {
+  id: number;
   slug: string;
   name: string;
+  url: string;
   graphqlEndpoint: string;
-  baseUrl: string;
 }
 
 const WP_URL = (import.meta.env.PUBLIC_WP_URL ?? "").replace(/\/$/, "");
-const RAW = (import.meta.env.PUBLIC_WP_SUBSITES ?? "") as string;
 
-export function getSubsites(): Subsite[] {
-  if (!WP_URL || !RAW) return [];
+interface SubsitePayload {
+  id: number;
+  slug: string;
+  name: string;
+  url: string;
+}
 
-  return RAW.split(",")
-    .map((entry) => entry.trim())
-    .filter(Boolean)
-    .map((entry) => {
-      const colon = entry.indexOf(":");
-      const slug = (colon === -1 ? entry : entry.slice(0, colon)).trim();
-      const name = colon === -1 ? slug : entry.slice(colon + 1).trim() || slug;
-      return {
-        slug,
-        name,
-        graphqlEndpoint: `${WP_URL}/${slug}/graphql`,
-        baseUrl: `${WP_URL}/${slug}/`,
-      };
-    })
-    .filter((s) => s.slug);
+export async function getSubsites(): Promise<Subsite[]> {
+  if (!WP_URL) return [];
+
+  const endpoint = `${WP_URL}/wp-json/irg/v1/subsites`;
+  try {
+    const res = await fetch(endpoint);
+    if (!res.ok) {
+      console.warn(`[subsites] ${res.status} ${res.statusText} from ${endpoint}`);
+      return [];
+    }
+    const sites = (await res.json()) as SubsitePayload[];
+    if (!Array.isArray(sites)) {
+      console.warn(`[subsites] unexpected response shape from ${endpoint}`);
+      return [];
+    }
+    return sites
+      .filter((s) => s && s.slug)
+      .map((s) => ({
+        id: s.id,
+        slug: s.slug,
+        name: s.name || s.slug,
+        url: s.url || `${WP_URL}/${s.slug}`,
+        graphqlEndpoint: `${s.url || `${WP_URL}/${s.slug}`}/graphql`,
+      }));
+  } catch (err) {
+    console.warn(`[subsites] fetch failed: ${(err as Error).message}`);
+    return [];
+  }
 }

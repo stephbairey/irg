@@ -24,7 +24,7 @@ interface PostsData {
 }
 
 export async function fetchLatestActions(limit = 3): Promise<Action[]> {
-  const subsites = getSubsites();
+  const subsites = await getSubsites();
   if (subsites.length === 0) return [];
 
   const perSite = Math.max(limit, 3);
