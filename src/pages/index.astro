@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { wpQuery } from "../lib/graphql";
 import { fetchAllSongs } from "../lib/songs";
+import { fetchLatestActions } from "../lib/actions";
 
 interface IssuesData {
   issues: {
@@ -16,7 +17,34 @@ const issuesData = await wpQuery<IssuesData>({
   query: `{ issues(first:100) { nodes { name count } } }`,
 });
 
-const allSongs = await fetchAllSongs();
+const [allSongs, latestActions] = await Promise.all([
+  fetchAllSongs(),
+  fetchLatestActions(3),
+]);
+
+const dateFmt = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+function formatActionDate(iso: string): string {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? "" : dateFmt.format(d);
+}
+function truncateExcerpt(html: string, maxLen = 140): string {
+  const stripped = html
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&#8217;|&rsquo;/gi, "'")
+    .replace(/&#8220;|&#8221;|&ldquo;|&rdquo;/gi, '"')
+    .replace(/&amp;/gi, "&")
+    .replace(/&hellip;/gi, "…")
+    .replace(/&[a-z#0-9]+;/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (stripped.length <= maxLen) return stripped;
+  return stripped.slice(0, maxLen).replace(/\s\S*$/, "") + "…";
+}
 
 const issues = issuesData.issues.nodes
   .filter((i) => i.count > 0)
@@ -159,7 +187,21 @@ const featuredLyrics = featured?.songDetails?.lyrics
       <div class="p-7 border-r border-b border-muted">
         <div class="kicker text-red mb-3.5">On the streets</div>
         <h3 class="font-display text-ink text-[28px] leading-tight mb-4">Dispatches</h3>
-        <p class="text-sm text-text-soft italic">Gaggle action reports coming soon. This section will feature dispatches from gaggles in the field.</p>
+        {latestActions.length === 0 ? (
+          <p class="text-sm text-text-soft italic">Gaggle action reports coming soon.</p>
+        ) : (
+          <ul class="list-none p-0 m-0 grid gap-5">
+            {latestActions.map((a) => (
+              <li class="pb-4 border-b border-dotted border-muted last:border-b-0 last:pb-0">
+                <div class="kicker text-muted mb-1.5">{a.gaggle} · {formatActionDate(a.date)}</div>
+                <a href={a.link} class="block font-display text-ink text-[20px] leading-tight no-underline hover:text-red transition-colors mb-2">
+                  {a.title}
+                </a>
+                <p class="text-[14px] text-text-soft leading-snug">{truncateExcerpt(a.excerpt)}</p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
     </div>
