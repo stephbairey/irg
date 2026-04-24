@@ -235,9 +235,21 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Date**: 2026-04-22
 - **Context**: The 17 issue categories need to exist in WordPress as taxonomy terms before songs can be imported. Manually creating 17 terms is error-prone.
 - **Choice**: The irg-core plugin seeds the 17 Issue terms on first activation via `wp_insert_term()`, guarded by an `irg_issue_terms_seeded` option flag so it only runs once.
-- **Terms**: Business & Economy, Education, Environment & Energy, Gender Equity, Government & Politics, Granny Life, Guns & Violence, Healthcare, Holiday & Celebrations, Human & Civil Rights, Immigration, Labor & Worker Rights, Local Issues, Racism & Social Justice, Reproductive Rights, Soldiers & Veterans, War & Peace.
+- **Terms**: Business & Economy, Education, Elections & Democracy, Environment & Energy, Gender Equity, Government & Power, Granny Life, Guns & Violence, Healthcare, Holiday & Celebrations, Human & Civil Rights, Immigration, Labor & Worker Rights, Local Issues, Racism & Social Justice, Reproductive Rights, Soldiers & Veterans, War & Peace. (Originally seeded with a single "Government & Politics" term; split into "Elections & Democracy" + "Government & Power" per D021.)
 - **Rationale**: Seeding from code ensures exact spelling and completeness. The option flag prevents duplicate insertion on subsequent page loads. Terms can still be edited or added via WP admin after seeding.
 - **Revisit if**: The taxonomy changes and new terms need to be added (update the array and delete the option flag to re-seed).
+
+## D021 — Split "Government & Politics" into "Elections & Democracy" and "Government & Power"
+
+- **Status**: Decided
+- **Date**: 2026-04-24
+- **Context**: The seeded Issue term "Government & Politics" accumulated 685 songs — by far the largest bucket and too broad to be useful for browsing. The songs split cleanly into two distinct themes: electoral process (voting, voter suppression, gerrymandering, GOTV) and power/accountability (specific politicians, corruption, executive overreach, corporate influence).
+- **Choice**: Replace the single "Government & Politics" term with two narrower terms — "Elections & Democracy" and "Government & Power" — and reclassify every song.
+- **Method**: Node migration script (`scripts/reclassify-gov-politics.mjs`) using the WP REST API with an Application Password. Keyword-based heuristic over title + lyrics: elections keywords (vote, election, ballot, poll, democracy, register, gerrymander, suffrage) route to E&D; power keywords (politician names, corruption, Congress, Senate, White House, president, impeach, executive order, capitol, oligarch, dictator) route to G&P. Songs matching both get both terms. Songs matching neither default to G&P (broader catch-all for systemic critique).
+- **Results**: 688 songs reclassified — 576 in G&P, 181 in E&D (73 in both). Old term deleted. Classification is a quick heuristic; the song librarian can refine assignments later.
+- **REST access model**: WP Application Password on Maya's super-admin user, stored in `.env.local` as `WP_USERNAME` / `WP_APP_PASSWORD`, used with HTTP Basic Auth. This is the canonical path for one-off data migrations going forward — no more plugin-reinstall dance for maintenance tasks. Revocable per-app from WP admin → Users → Profile → Application Passwords.
+- **Plugin seed list updated**: `irg_seed_issue_terms()` in `irg-core.php` now lists the two new terms in place of the old one. Harmless on existing installs (guarded by the `irg_issue_terms_seeded` option), but correct for any fresh activation.
+- **Revisit if**: The song librarian reviews classifications and wants a re-split, or the E&D/G&P boundary needs further subdivision (e.g. separating "specific politicians" from "systemic critique").
 
 ## D020 — Temporary song import tool in irg-core plugin
 

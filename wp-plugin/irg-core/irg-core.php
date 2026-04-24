@@ -154,9 +154,10 @@ function irg_seed_issue_terms(): void {
 	$terms = [
 		'Business & Economy',
 		'Education',
+		'Elections & Democracy',
 		'Environment & Energy',
 		'Gender Equity',
-		'Government & Politics',
+		'Government & Power',
 		'Granny Life',
 		'Guns & Violence',
 		'Healthcare',
