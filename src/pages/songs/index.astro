@@ -154,15 +154,59 @@ const songsJson = JSON.stringify(
       tune: $("#lib-tune"),
     };
 
-    function applyFilters() {
+    // Filter ALL songs by an arbitrary subset of filter keys. Pass `excluding`
+    // to drop one filter from the constraint — used by the cascading
+    // dropdowns to compute "what's still selectable".
+    function filterSongs(excluding) {
       const q = filters.q.toLowerCase();
       return ALL.filter((s) => {
         if (q && !s.t.toLowerCase().includes(q) && !s.n.toLowerCase().includes(q)) return false;
-        if (filters.issue && !s.i.includes(filters.issue)) return false;
-        if (filters.gaggle && s.g !== filters.gaggle) return false;
-        if (filters.tune && s.n !== filters.tune) return false;
+        if (excluding !== "issue" && filters.issue && !s.i.includes(filters.issue)) return false;
+        if (excluding !== "gaggle" && filters.gaggle && s.g !== filters.gaggle) return false;
+        if (excluding !== "tune" && filters.tune && s.n !== filters.tune) return false;
         return true;
       });
+    }
+
+    function applyFilters() {
+      return filterSongs(null);
+    }
+
+    function availableTerms(key) {
+      const songs = filterSongs(key);
+      const set = new Set();
+      if (key === "issue") for (const s of songs) for (const v of s.i) set.add(v);
+      else if (key === "gaggle") for (const s of songs) if (s.g) set.add(s.g);
+      else if (key === "tune") for (const s of songs) if (s.n) set.add(s.n);
+      return [...set].sort((a, b) => a.localeCompare(b));
+    }
+
+    function rebuildDropdown(key, placeholder) {
+      const select = taxSelects[key];
+      if (!select) return;
+      const available = availableTerms(key);
+      const current = filters[key];
+      // Keep the active selection visible even if it now yields zero matches.
+      const values = current && !available.includes(current) ? [current, ...available] : available;
+      const frag = document.createDocumentFragment();
+      const ph = document.createElement("option");
+      ph.value = "";
+      ph.textContent = placeholder;
+      frag.appendChild(ph);
+      for (const v of values) {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v;
+        frag.appendChild(opt);
+      }
+      select.replaceChildren(frag);
+      select.value = current;
+    }
+
+    function syncDropdowns() {
+      rebuildDropdown("issue", "All issues");
+      rebuildDropdown("gaggle", "All gaggles");
+      rebuildDropdown("tune", "All tunes");
     }
 
     function sortSongs(songs) {
@@ -220,12 +264,7 @@ const songsJson = JSON.stringify(
 
       clearBtn.classList.toggle("hidden", !filters.q);
 
-      // Sync dropdown values with state
-      for (const key of ["issue", "gaggle", "tune"]) {
-        if (taxSelects[key] && taxSelects[key].value !== filters[key]) {
-          taxSelects[key].value = filters[key];
-        }
-      }
+      syncDropdowns();
     }
 
     function chipRm(type, val) {
