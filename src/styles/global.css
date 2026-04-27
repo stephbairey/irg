@@ -57,10 +57,20 @@ body {
   padding: 5px 11px;
   font-size: 13px;
   font-weight: 700;
+  font-family: inherit;
   border-radius: 999px;
   background: rgba(87, 34, 140, 0.08);
   color: var(--color-ink-soft);
   border: 1.5px solid rgba(87, 34, 140, 0.18);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+a.chip:hover,
+button.chip:hover {
+  background: var(--color-ink-soft);
+  color: var(--color-on-dark);
+  border-color: var(--color-ink-soft);
 }
 .chip-red {
   background: rgba(226, 42, 44, 0.08);

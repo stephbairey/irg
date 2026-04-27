@@ -203,11 +203,17 @@ const songsJson = JSON.stringify(
       return s;
     }
 
+    function escAttr(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
     function renderRow(s) {
-      const chips = s.i.map((i) => `<span class="chip" style="font-size:12px;padding:3px 9px">${i}</span>`).join("");
-      return `<a href="/songs/${s.s}/" class="grid grid-cols-[1fr_auto] gap-8 py-[22px] px-1 border-b border-rule text-text items-center no-underline transition-all hover:bg-paper-2 hover:pl-5 hover:pr-5 group">
+      const chips = s.i
+        .map((i) => `<button type="button" class="chip lib-result-chip" data-issue="${escAttr(i)}" style="font-size:12px;padding:3px 9px">${escAttr(i)}</button>`)
+        .join("");
+      return `<div class="grid grid-cols-[1fr_auto] gap-8 py-[22px] px-1 border-b border-rule text-text items-center transition-all hover:bg-paper-2 hover:pl-5 hover:pr-5 group">
         <div>
-          <div class="font-display text-ink text-[30px] leading-none mb-2 group-hover:text-red transition-colors">${s.t}</div>
+          <a href="/songs/${s.s}/" class="block font-display text-ink text-[30px] leading-none mb-2 no-underline hover:text-red transition-colors">${s.t}</a>
           <div class="text-sm text-text-soft mb-2.5">
             ${s.n ? `<em class="text-ink-soft italic">${s.n}</em>` : ""}
             ${s.n && s.g ? '<span class="text-ink-lilac mx-1.5">·</span>' : ""}
@@ -217,7 +223,7 @@ const songsJson = JSON.stringify(
           <div class="flex gap-2 items-center flex-wrap">${chips}</div>
         </div>
         <div class="font-display text-muted text-[28px]">${s.y}</div>
-      </a>`;
+      </div>`;
     }
 
     function render() {
@@ -292,6 +298,14 @@ const songsJson = JSON.stringify(
         filters[type] = filters[type] === val ? "" : val;
         page = 1;
         render();
+        return;
+      }
+      const resultChip = e.target.closest(".lib-result-chip");
+      if (resultChip) {
+        filters.issue = resultChip.dataset.issue;
+        page = 1;
+        render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
       const chipRm = e.target.closest(".lib-chip-rm");
