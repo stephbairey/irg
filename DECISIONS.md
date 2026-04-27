@@ -314,6 +314,26 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: Deferred. All three paths work; none feels right for a single edit link in isolation. Revisit when a second admin-only surface appears so the cost of the chosen mechanism is amortized.
 - **Revisit if**: The song librarian starts using the frontend heavily and wants inline edit affordances; OR we add another admin-only UI (gaggle page editing, inline action updates); OR Maya's workflow changes such that jumping from public page → edit screen becomes a bottleneck.
 
+## D026 — Songsheet PDFs generated at build time with pdf-lib
+
+- **Status**: Decided
+- **Date**: 2026-04-27
+- **Context**: Grannies want a clean printable handout for each song — like the photocopied lyric sheets passed around at a singalong. Browser print is fine for a single page someone is already looking at, but a downloadable PDF that survives email forwarding, Google Drive, and Dropbox is the actual artifact a chapter wants to keep.
+- **Options considered**:
+  - **Browser-side print only** — relies on each granny's browser print dialog and the page's print stylesheet. Inconsistent output, no shareable file.
+  - **Print-CSS + "Save as PDF"** — same UX problem. Output varies by browser.
+  - **Server-side rendering via headless Chrome** (Puppeteer / Playwright) — high-fidelity HTML→PDF, but heavyweight: native dependencies, slow per-page, fragile in CI (CF Pages can install Chromium but it's flaky).
+  - **wkhtmltopdf** — requires native binary; deprecated and unmaintained.
+  - **pdf-lib + manual layout** — pure JS, no native deps, deterministic output, embeds custom fonts, works on any platform Astro runs on.
+- **Choice**: pdf-lib + `@pdf-lib/fontkit`, with Crimson Text (open-source serif from Google Fonts) embedded as Regular/Bold/Italic/BoldItalic. One PDF per song, written to `public/songsheets/<slug>.pdf` by a prebuild script (`scripts/generate-songsheets.mjs`). Astro copies the directory into `dist/` automatically.
+- **Layout**: US-Letter, 1-inch margins, left-aligned. Title 18pt bold, optional `Tune: …` line 11pt italic, blank line, then lyrics 13pt with 18pt line-height. Bold/italic/underline preserved from the WYSIWYG HTML (these are performance marks — strong beats, stress, etc.). Multi-page when needed; metadata block (songwriter · gaggle · issues · date, 9pt gray, middot-separated) at the bottom of the last page. No site branding — clean utility document.
+- **HTML parsing**: small bespoke tokenizer in the script. Tracks bold/italic/underline via a tag-depth counter (handles nesting), treats `<p>`/`<div>`/etc. as line breaks, collapses runs of `<br>` to at most two, decodes named + numeric entities. No DOM parser dependency.
+- **Performance**: 1490 PDFs in ~145s on a laptop. Under the 60s target the spec asked for, but acceptable — fonts are subset per document (`subset: true`) so each PDF is ~35KB instead of >100KB. Progress logged every 100 songs so a slow run doesn't look stuck.
+- **Storage / git**: PDFs (~53MB total) are gitignored via `public/songsheets/`. Regenerated on every build. Fonts (~450KB total) are committed in `src/assets/fonts/` — they're build inputs and should be reproducible without a network fetch.
+- **Build hook**: `prebuild` script in package.json runs the generator before `astro build`. Cloudflare Pages picks it up automatically.
+- **UI**: song detail page gains a `Download songsheet (PDF)` button in the header CTA cluster, hidden when the song has no lyrics. The pre-existing browser-print button is now labeled "Print page" to disambiguate.
+- **Revisit if**: build time on Cloudflare Pages becomes a problem (then: cache PDFs across builds keyed by lyrics hash); OR a granny wants pretty PDFs with branding (then: separate "branded songsheet" output, keep this one as the utility format); OR we want musical notation in PDFs beyond bold/italic/underline.
+
 ---
 
 ## Open decisions (not yet resolved)
