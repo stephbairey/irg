@@ -82,66 +82,30 @@ const songsJson = JSON.stringify(
   <section class="max-w-[1200px] mx-auto px-8 py-8 pb-20">
     <div class="grid grid-cols-[280px_1fr] gap-12 items-start">
       <!-- Left rail filters -->
-      <aside id="lib-filters" class="sticky top-[220px] grid gap-7 pr-3 max-h-[calc(100vh-240px)] overflow-y-auto" style="scrollbar-width:thin">
-        <!-- Issue filter -->
-        <div class="border-b border-rule pb-5">
-          <h3 class="font-display text-ink text-[22px] mb-3">Issue</h3>
-          <ul class="list-none p-0 m-0 grid gap-0.5">
-            {allIssues.map((issue) => (
-              <li>
-                <button
-                  class="lib-filter-btn w-full flex justify-between items-center gap-2.5 px-3 py-2 bg-transparent border-0 rounded-lg text-[15px] text-text text-left cursor-pointer leading-snug hover:bg-ink-soft/[.06] hover:text-ink transition-colors"
-                  data-type="issue"
-                  data-value={issue}
-                >
-                  {issue}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <!-- Gaggle filter -->
-        <div class="border-b border-rule pb-5">
-          <h3 class="font-display text-ink text-[22px] mb-3">Gaggle</h3>
-          <div class="max-h-[260px] overflow-y-auto">
-            <ul class="list-none p-0 m-0 grid gap-0.5">
-              {allGaggles.slice(0, 30).map((gaggle) => (
-                <li>
-                  <button
-                    class="lib-filter-btn w-full flex justify-between items-center gap-2.5 px-3 py-2 bg-transparent border-0 rounded-lg text-[15px] text-text text-left cursor-pointer leading-snug hover:bg-ink-soft/[.06] hover:text-ink transition-colors"
-                    data-type="gaggle"
-                    data-value={gaggle}
-                  >
-                    {gaggle}
-                  </button>
-                </li>
-              ))}
-            </ul>
+      <aside id="lib-filters" class="sticky top-[220px] grid gap-5">
+        {[
+          { id: "lib-issue", label: "Issue", placeholder: "All issues", options: allIssues },
+          { id: "lib-gaggle", label: "Gaggle", placeholder: "All gaggles", options: allGaggles },
+          { id: "lib-tune", label: "Tune", placeholder: "All tunes", options: allTunes },
+        ].map(({ id, label, placeholder, options }) => (
+          <div>
+            <label for={id} class="kicker text-ink mb-2 block">{label}</label>
+            <div class="relative">
+              <select
+                id={id}
+                class="lib-tax-select appearance-none w-full pl-3.5 pr-10 py-2.5 text-sm font-bold bg-card text-ink border-[1.5px] border-muted rounded-lg cursor-pointer min-h-[40px] focus:outline-none focus:border-red"
+              >
+                <option value="">{placeholder}</option>
+                {options.map((opt) => (
+                  <option value={opt}>{opt}</option>
+                ))}
+              </select>
+              <svg viewBox="0 0 24 24" class="absolute right-3 top-1/2 -translate-y-1/2 w-[14px] h-[14px] text-ink pointer-events-none" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
           </div>
-        </div>
+        ))}
 
-        <!-- Tune filter -->
-        <div class="pb-5">
-          <h3 class="font-display text-ink text-[22px] mb-3">Tune</h3>
-          <div class="max-h-[260px] overflow-y-auto">
-            <ul class="list-none p-0 m-0 grid gap-0.5">
-              {allTunes.slice(0, 30).map((tune) => (
-                <li>
-                  <button
-                    class="lib-filter-btn w-full flex justify-between items-center gap-2.5 px-3 py-2 bg-transparent border-0 rounded-lg text-[15px] text-text text-left cursor-pointer leading-snug hover:bg-ink-soft/[.06] hover:text-ink transition-colors"
-                    data-type="tune"
-                    data-value={tune}
-                  >
-                    <span class="truncate">{tune}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <button id="lib-reset" class="px-4 py-2.5 bg-transparent border-[1.5px] border-rule rounded-lg font-[800] text-red cursor-pointer text-[13px] hover:border-red hover:bg-red/[.05]">
+        <button id="lib-reset" class="px-4 py-2.5 bg-transparent border-[1.5px] border-rule rounded-lg font-[800] text-red cursor-pointer text-[13px] hover:border-red hover:bg-red/[.05] mt-1">
           Reset all filters
         </button>
       </aside>
@@ -183,6 +147,12 @@ const songsJson = JSON.stringify(
     const prevBtn = $("#lib-prev");
     const nextBtn = $("#lib-next");
     const resetBtn = $("#lib-reset");
+
+    const taxSelects = {
+      issue: $("#lib-issue"),
+      gaggle: $("#lib-gaggle"),
+      tune: $("#lib-tune"),
+    };
 
     function applyFilters() {
       const q = filters.q.toLowerCase();
@@ -250,15 +220,12 @@ const songsJson = JSON.stringify(
 
       clearBtn.classList.toggle("hidden", !filters.q);
 
-      // Update active filter buttons
-      $$(".lib-filter-btn").forEach((btn) => {
-        const type = btn.dataset.type;
-        const val = btn.dataset.value;
-        const active = filters[type] === val;
-        btn.classList.toggle("!bg-ink", active);
-        btn.classList.toggle("!text-on-dark", active);
-        btn.classList.toggle("!font-bold", active);
-      });
+      // Sync dropdown values with state
+      for (const key of ["issue", "gaggle", "tune"]) {
+        if (taxSelects[key] && taxSelects[key].value !== filters[key]) {
+          taxSelects[key].value = filters[key];
+        }
+      }
     }
 
     function chipRm(type, val) {
@@ -290,16 +257,15 @@ const songsJson = JSON.stringify(
       render();
     });
 
-    document.addEventListener("click", (e) => {
-      const filterBtn = e.target.closest(".lib-filter-btn");
-      if (filterBtn) {
-        const type = filterBtn.dataset.type;
-        const val = filterBtn.dataset.value;
-        filters[type] = filters[type] === val ? "" : val;
+    for (const key of ["issue", "gaggle", "tune"]) {
+      taxSelects[key]?.addEventListener("change", () => {
+        filters[key] = taxSelects[key].value;
         page = 1;
         render();
-        return;
-      }
+      });
+    }
+
+    document.addEventListener("click", (e) => {
       const resultChip = e.target.closest(".lib-result-chip");
       if (resultChip) {
         filters.issue = resultChip.dataset.issue;
