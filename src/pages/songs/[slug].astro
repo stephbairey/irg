@@ -106,10 +106,6 @@ const formattedDate = dateWritten
                 Download songsheet (PDF)
               </a>
             )}
-            <button onclick="window.print()" class="btn btn-ghost">
-              <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M6 9V2h12v7"/><rect x="3" y="9" width="18" height="10" rx="1"/><path d="M6 14h12v8H6z"/></svg>
-              Print page
-            </button>
           </div>
         </div>
 
@@ -221,7 +217,7 @@ const formattedDate = dateWritten
             <div class="font-display text-red text-[28px] mt-8" style="letter-spacing:12px">♦ ♦ ♦</div>
 
             <!-- Footer -->
-            <div class="mt-12 pt-6 border-t border-dashed border-rule grid grid-cols-4 gap-6 items-center">
+            <div class="mt-12 pt-6 border-t border-dashed border-rule grid grid-cols-3 gap-6 items-center">
               {songwriter && (
                 <div>
                   <div class="kicker mb-1">Written by</div>
@@ -240,12 +236,6 @@ const formattedDate = dateWritten
                   <div class="text-ink font-semibold">{formattedDate}</div>
                 </div>
               )}
-              <div class="text-right">
-                <button onclick="window.print()" class="btn-mini mr-1.5">
-                  <svg viewBox="0 0 24 24" class="w-4 h-4 inline -mt-0.5" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M6 9V2h12v7"/><rect x="3" y="9" width="18" height="10" rx="1"/><path d="M6 14h12v8H6z"/></svg>
-                  Print
-                </button>
-              </div>
             </div>
           </div>
         </div>
