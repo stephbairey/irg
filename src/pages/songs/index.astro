@@ -175,9 +175,16 @@ const songsJson = JSON.stringify(
     function availableTerms(key) {
       const songs = filterSongs(key);
       const set = new Set();
-      if (key === "issue") for (const s of songs) for (const v of s.i) set.add(v);
-      else if (key === "gaggle") for (const s of songs) if (s.g) set.add(s.g);
-      else if (key === "tune") for (const s of songs) if (s.n) set.add(s.n);
+      // NOTE: the inner `if` bodies need braces. Without them, dangling-else
+      // attachment binds the next `else if` to the inner `if (s.g)` rather
+      // than the outer `if (key === ...)`, silently eating the next branch.
+      if (key === "issue") {
+        for (const s of songs) for (const v of s.i) set.add(v);
+      } else if (key === "gaggle") {
+        for (const s of songs) if (s.g) set.add(s.g);
+      } else if (key === "tune") {
+        for (const s of songs) if (s.n) set.add(s.n);
+      }
       return [...set].sort((a, b) => a.localeCompare(b));
     }
 
