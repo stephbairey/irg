@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.5.0
+ * Version: 3.6.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -37,6 +37,7 @@ add_action( 'rest_api_init', 'irg_register_subsites_endpoint' );
 
 add_filter( 'upload_size_limit', 'irg_upload_size_limit' );
 add_filter( 'pre_site_option_fileupload_maxk', 'irg_multisite_upload_maxk' );
+add_filter( 'big_image_size_threshold', 'irg_press_photo_no_big_image', 10, 4 );
 
 function irg_register_song_cpt(): void {
 	if ( ! is_main_site() ) {
@@ -998,4 +999,38 @@ function irg_upload_size_limit( $size ) {
 function irg_multisite_upload_maxk( $value ) {
 	$floor_kb = (int) ( IRG_UPLOAD_FLOOR_BYTES / 1024 );
 	return max( (int) $value, $floor_kb );
+}
+
+// ---------------------------------------------------------------------------
+// Disable WP's "big image" auto-scaling (default: 2560px longest side) for
+// uploads attached to a press_photo post. Editorial download links need the
+// original full-resolution file, not the WP-scaled stand-in.
+//
+// Detection: media-library uploads pass the parent post id in $_REQUEST as
+// `post_id`. Falls back to wp_get_post_parent_id() if the attachment has
+// already been linked. Non-press uploads keep the default behaviour so blog
+// images / song featured photos still get auto-shrunk for performance.
+// ---------------------------------------------------------------------------
+
+function irg_press_photo_no_big_image( $threshold, $imagesize = [], $file = '', $attachment_id = 0 ) {
+	if ( irg_upload_is_for_press_photo( (int) $attachment_id ) ) {
+		return false;
+	}
+	return $threshold;
+}
+
+function irg_upload_is_for_press_photo( int $attachment_id ): bool {
+	if ( ! empty( $_REQUEST['post_id'] ) ) {
+		$parent_id = (int) $_REQUEST['post_id'];
+		if ( $parent_id && get_post_type( $parent_id ) === 'press_photo' ) {
+			return true;
+		}
+	}
+	if ( $attachment_id ) {
+		$linked = (int) wp_get_post_parent_id( $attachment_id );
+		if ( $linked && get_post_type( $linked ) === 'press_photo' ) {
+			return true;
+		}
+	}
+	return false;
 }
