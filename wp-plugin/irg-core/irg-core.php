@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.4.0
+ * Version: 3.5.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -34,6 +34,9 @@ add_action( 'restrict_manage_posts', 'irg_song_admin_filter_dropdowns' );
 
 add_action( 'rest_api_init', 'irg_register_deploy_endpoint' );
 add_action( 'rest_api_init', 'irg_register_subsites_endpoint' );
+
+add_filter( 'upload_size_limit', 'irg_upload_size_limit' );
+add_filter( 'pre_site_option_fileupload_maxk', 'irg_multisite_upload_maxk' );
 
 function irg_register_song_cpt(): void {
 	if ( ! is_main_site() ) {
@@ -973,4 +976,26 @@ function irg_register_press_photo_acf_fields(): void {
 		'show_in_graphql'       => 1,
 		'graphql_field_name'    => 'pressPhotoDetails',
 	] );
+}
+
+// ---------------------------------------------------------------------------
+// Upload size — WP defaults the multisite cap to 1500 KB (~1.5 MB) and the
+// per-request cap to whatever PHP allows. Press photos and granny photography
+// routinely exceed that. Raise WP's logical floor to 10 MB so admins can
+// upload reasonably sized images without bumping into the multisite cap.
+//
+// PHP's own `upload_max_filesize` and `post_max_size` are server-controlled
+// and not affected by these filters; if PHP is capped below 10 MB the host's
+// PHP settings (php.ini / .user.ini / cPanel) need a matching bump.
+// ---------------------------------------------------------------------------
+
+const IRG_UPLOAD_FLOOR_BYTES = 10 * 1024 * 1024; // 10 MB
+
+function irg_upload_size_limit( $size ) {
+	return max( (int) $size, IRG_UPLOAD_FLOOR_BYTES );
+}
+
+function irg_multisite_upload_maxk( $value ) {
+	$floor_kb = (int) ( IRG_UPLOAD_FLOOR_BYTES / 1024 );
+	return max( (int) $value, $floor_kb );
 }
