@@ -59,7 +59,8 @@ const countries = Object.keys(byCountry).sort((a, b) => {
   return a.localeCompare(b);
 });
 
-// Send only what the map needs.
+// Send only what the map needs. JSON-escape "<" so the embedded
+// <script type="application/json"> block can never break out.
 const mapPayload = JSON.stringify(
   gaggles.map((g) => ({
     name: g.name,
@@ -68,7 +69,7 @@ const mapPayload = JSON.stringify(
     lat: g.lat,
     lng: g.lng,
   })),
-);
+).replace(/</g, "\\u003c");
 ---
 
 <BaseLayout title="Find a Gaggle">
@@ -151,11 +152,24 @@ const mapPayload = JSON.stringify(
     </section>
   </article>
 
-  <script define:vars={{ mapPayload }}>
-    // Map init runs only on this page — Leaflet is bundled into a page-scoped chunk.
-    import("leaflet/dist/leaflet.css");
-    import("leaflet").then(({ default: L }) => {
-      const gaggles = JSON.parse(mapPayload);
+  {/* Data block: read by the bundled script below. type=application/json keeps it inert. */}
+  <script type="application/json" id="gaggle-data" set:html={mapPayload}></script>
+
+  <script>
+    // Map init runs only on this page — Astro bundles Leaflet into a page-scoped chunk.
+    import L from "leaflet";
+    import "leaflet/dist/leaflet.css";
+
+    (() => {
+      const dataEl = document.getElementById("gaggle-data");
+      if (!dataEl) return;
+      let gaggles = [];
+      try {
+        gaggles = JSON.parse(dataEl.textContent || "[]");
+      } catch {
+        return;
+      }
+
       const el = document.getElementById("gaggle-map");
       if (!el) return;
 
@@ -208,7 +222,7 @@ const mapPayload = JSON.stringify(
         m.on("mouseover", () => m.setStyle({ radius: 9, fillOpacity: 1 }));
         m.on("mouseout", () => m.setStyle({ radius: 7, fillOpacity: 0.9 }));
       }
-    });
+    })();
   </script>
 
   <style is:global>
