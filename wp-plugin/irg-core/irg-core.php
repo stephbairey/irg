@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.6.0
+ * Version: 3.7.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -34,6 +34,8 @@ add_action( 'restrict_manage_posts', 'irg_song_admin_filter_dropdowns' );
 
 add_action( 'rest_api_init', 'irg_register_deploy_endpoint' );
 add_action( 'rest_api_init', 'irg_register_subsites_endpoint' );
+add_action( 'rest_api_init', 'irg_register_contact_endpoint' );
+add_filter( 'rest_pre_serve_request', 'irg_contact_cors_headers', 10, 4 );
 
 add_filter( 'upload_size_limit', 'irg_upload_size_limit' );
 add_filter( 'pre_site_option_fileupload_maxk', 'irg_multisite_upload_maxk' );
@@ -1033,4 +1035,118 @@ function irg_upload_is_for_press_photo( int $attachment_id ): bool {
 		}
 	}
 	return false;
+}
+
+// ---------------------------------------------------------------------------
+// Contact form endpoint — receives the /contact/ form, verifies Cloudflare
+// Turnstile server-side, and forwards to press@raginggrannies.org via
+// wp_mail. Public endpoint; Turnstile + a honeypot field are the gates.
+//
+// Required server-side config: define( 'IRG_TURNSTILE_SECRET', '...' ) in
+// wp-config.php (set via SSH). The matching public site key lives in
+// PUBLIC_TURNSTILE_SITEKEY in the Astro env vars.
+// ---------------------------------------------------------------------------
+
+const IRG_CONTACT_TO       = 'press@raginggrannies.org';
+const IRG_CONTACT_MAX_NAME = 200;
+const IRG_CONTACT_MAX_MSG  = 8000;
+
+function irg_register_contact_endpoint(): void {
+	register_rest_route( 'irg/v1', '/contact', [
+		'methods'             => 'POST',
+		'callback'            => 'irg_handle_contact',
+		'permission_callback' => '__return_true',
+	] );
+}
+
+function irg_contact_origin_allowed( string $origin ): bool {
+	$allowlist = [
+		'https://raginggrannies.org',
+		'https://www.raginggrannies.org',
+	];
+	if ( in_array( $origin, $allowlist, true ) ) {
+		return true;
+	}
+	if ( preg_match( '#^http://localhost(:\d+)?$#', $origin ) ) {
+		return true;
+	}
+	if ( preg_match( '#^https?://[a-z0-9-]+\.pages\.dev$#i', $origin ) ) {
+		return true;
+	}
+	return false;
+}
+
+function irg_contact_cors_headers( $served, $result, $request, $server ) {
+	if ( strpos( $request->get_route(), '/irg/v1/contact' ) !== 0 ) {
+		return $served;
+	}
+	$origin = isset( $_SERVER['HTTP_ORIGIN'] ) ? (string) $_SERVER['HTTP_ORIGIN'] : '';
+	if ( $origin && irg_contact_origin_allowed( $origin ) ) {
+		header( "Access-Control-Allow-Origin: {$origin}" );
+		header( 'Access-Control-Allow-Methods: POST, OPTIONS' );
+		header( 'Access-Control-Allow-Headers: Content-Type' );
+		header( 'Vary: Origin' );
+	}
+	return $served;
+}
+
+function irg_handle_contact( WP_REST_Request $req ) {
+	$name    = sanitize_text_field( (string) $req->get_param( 'name' ) );
+	$email   = sanitize_email( (string) $req->get_param( 'email' ) );
+	$message = trim( (string) $req->get_param( 'message' ) );
+	$hp      = (string) $req->get_param( 'hp' );
+	$token   = (string) $req->get_param( 'cf-turnstile-response' );
+
+	// Honeypot: real browsers never fill this. Silent success so bots don't learn.
+	if ( $hp !== '' ) {
+		return [ 'ok' => true ];
+	}
+
+	if ( $name === '' || $message === '' ) {
+		return new WP_Error( 'irg_required', 'Name and message are required.', [ 'status' => 400 ] );
+	}
+	if ( ! is_email( $email ) ) {
+		return new WP_Error( 'irg_email', 'A valid email is required.', [ 'status' => 400 ] );
+	}
+	if ( strlen( $name ) > IRG_CONTACT_MAX_NAME || strlen( $message ) > IRG_CONTACT_MAX_MSG ) {
+		return new WP_Error( 'irg_too_long', 'That message is longer than we accept here. Please email us directly.', [ 'status' => 400 ] );
+	}
+
+	$secret = defined( 'IRG_TURNSTILE_SECRET' ) ? (string) IRG_TURNSTILE_SECRET : '';
+	if ( $secret === '' ) {
+		return new WP_Error( 'irg_turnstile_unset', 'Spam protection is misconfigured. Please email us directly.', [ 'status' => 503 ] );
+	}
+	if ( $token === '' ) {
+		return new WP_Error( 'irg_turnstile_missing', 'Spam check did not load. Please refresh and try again.', [ 'status' => 400 ] );
+	}
+
+	$verify = wp_remote_post( 'https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+		'timeout' => 10,
+		'body'    => [
+			'secret'   => $secret,
+			'response' => $token,
+			'remoteip' => isset( $_SERVER['REMOTE_ADDR'] ) ? (string) $_SERVER['REMOTE_ADDR'] : '',
+		],
+	] );
+	if ( is_wp_error( $verify ) ) {
+		return new WP_Error( 'irg_turnstile_net', 'Could not verify the spam check. Please try again.', [ 'status' => 502 ] );
+	}
+	$vbody = json_decode( (string) wp_remote_retrieve_body( $verify ), true );
+	if ( ! is_array( $vbody ) || empty( $vbody['success'] ) ) {
+		return new WP_Error( 'irg_turnstile_fail', 'Spam check failed. Please refresh and try again.', [ 'status' => 400 ] );
+	}
+
+	$subject = '[Contact form] from ' . wp_strip_all_tags( $name );
+	$body    = "Name:    {$name}\nEmail:   {$email}\n\n— Message —\n{$message}\n\n---\nSent via the contact form on raginggrannies.org\n";
+	$headers = [
+		'Content-Type: text/plain; charset=UTF-8',
+		'Reply-To: ' . sprintf( '%s <%s>', $name, $email ),
+	];
+
+	$sent = wp_mail( IRG_CONTACT_TO, $subject, $body, $headers );
+	if ( ! $sent ) {
+		return new WP_Error( 'irg_mail_fail', 'Could not send the message. Please email us directly.', [ 'status' => 500 ] );
+	}
+
+	return [ 'ok' => true ];
 }

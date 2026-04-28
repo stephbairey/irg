@@ -383,6 +383,31 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Empty-state behaviour**: missing/invalid `gaggle-locations.json` → hero subtitle softens, directory shows a "loading" placeholder, map renders an empty world view. Build never fails.
 - **Revisit if**: marker count grows past ~150 and visual overlap forces clustering (add `leaflet.markercluster`); OR Maya wants editor-managed locations (promote to a `gaggle` CPT in irg-core with a location ACF field — already on the open-questions list); OR we add per-gaggle pages/links and the popup needs an outbound URL.
 
+## D030 — Contact form via WP endpoint + Cloudflare Turnstile
+
+- **Status**: Decided
+- **Date**: 2026-04-27
+- **Context**: The Contact page needed a form (name / email / message) that visitors can use without their own email client. Spam protection is non-negotiable — public web forms attract bots within hours. The site is static (Cloudflare Pages), so the form needs a server-side handler somewhere.
+- **Options considered**:
+  - **Cloudflare Pages Function → transactional email service (Resend / Mailgun)**. Clean and modern. Adds a second vendor (email API) with sending-domain verification, DMARC config, free-tier limits.
+  - **Pages Function → WP endpoint**. A double hop with no real benefit since CORS lets the form talk to WP directly.
+  - **Direct form → WP REST endpoint** (the `wp_mail()` path). Single hop. Reuses Nixihost's existing outbound mail. No new vendor.
+  - **Third-party form host (Formspree / Web3Forms)**. Branded "Powered by" footers; vendor lock-in; less control over the message body and sender.
+- **Choice**: form posts directly to `POST /wp-json/irg/v1/contact` (irg-core v3.7.0) with `Content-Type: application/x-www-form-urlencoded` (a "simple" CORS request, no preflight). The plugin endpoint validates length / email shape, runs Cloudflare Turnstile server-side via the siteverify API, sanitises input, and forwards to `press@raginggrannies.org` via `wp_mail()` with the visitor's address as `Reply-To`. Returns JSON; the page handles success / error inline.
+- **Spam protection** (belt + suspenders):
+  - **Cloudflare Turnstile** widget renders client-side; visitor solves the (usually invisible) challenge; Turnstile returns a token; WP verifies the token server-side against `https://challenges.cloudflare.com/turnstile/v0/siteverify` using `IRG_TURNSTILE_SECRET` (defined in wp-config.php). Free, replaces reCAPTCHA, native to the CF account we already have.
+  - **Honeypot field** (visually hidden, screen-reader hidden, `tabindex=-1`) — bots that fill every input get caught. The endpoint silently returns `{ ok: true }` so they don't learn which field tripped them.
+  - **Hard limits**: name ≤ 200 chars, message ≤ 8000 chars; `is_email()` validation; `sanitize_text_field()` on name; `wp_strip_all_tags()` on subject; trimmed message body.
+- **CORS**: `rest_pre_serve_request` filter sets `Access-Control-Allow-Origin` only for `raginggrannies.org` (and `www.`), `*.pages.dev` previews, and `localhost`. Other origins get no header (browser blocks the response).
+- **Destination**: hardcoded `IRG_CONTACT_TO = press@raginggrannies.org`. Prevents the endpoint from being repurposed as an open relay. When per-topic addresses arrive, the constant becomes a routing table.
+- **Setup checklist** (one-time, by Maya):
+  1. Cloudflare dashboard → Turnstile → Add site (domains: `raginggrannies.org`, plus the `*.pages.dev` preview and `localhost` for dev). Mode: Managed.
+  2. Copy the **site key** into `PUBLIC_TURNSTILE_SITEKEY` in `.env.local` and Cloudflare Pages → project → Settings → Environment Variables.
+  3. Copy the **secret** into `wp-config.php` on the IRG Nixihost: `define( 'IRG_TURNSTILE_SECRET', '...' );`. Add it under the existing constants, before the `ABSPATH` block.
+  4. Redeploy (push triggers CF rebuild; WP picks up the constant on next request).
+- **Graceful degradation**: if `PUBLIC_TURNSTILE_SITEKEY` is unset at build time, the page renders a friendly fallback ("the form is being set up — email us at press@") instead of a broken widget. Same fallback if the WP URL isn't configured. Once both are present, the form appears.
+- **Revisit if**: spam volume punches through Turnstile (add rate-limiting per IP / Origin); OR we want delivery confirmation / queueing (move to Resend + Cloudflare Queues); OR we need separate destinations per topic (introduce a `category` field on the form and route in the WP endpoint).
+
 ---
 
 ## Open decisions (not yet resolved)

@@ -4,6 +4,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 // Single source of truth for the address. Swap when separate aliases exist.
 const EMAIL = "press@raginggrannies.org";
 
+const TURNSTILE_SITEKEY = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? "";
+const WP_BASE = (import.meta.env.PUBLIC_WP_URL ?? "").replace(/\/$/, "");
+const CONTACT_ENDPOINT = WP_BASE ? `${WP_BASE}/wp-json/irg/v1/contact` : "";
+const formAvailable = !!TURNSTILE_SITEKEY && !!CONTACT_ENDPOINT;
+
 const cards = [
   {
     title: "Send us a press mention",
@@ -40,13 +45,61 @@ const cards = [
       </p>
     </header>
 
-    {/* Main email feature */}
+    {/* Form */}
+    <section class="max-w-[760px] mx-auto mb-16">
+      <div class="kicker text-red mb-2">Drop us a line</div>
+      <h2 class="font-display text-ink text-[40px] leading-tight mb-6">Send a message</h2>
+
+      {formAvailable ? (
+        <form id="contact-form" class="contact-form" novalidate>
+          <label class="cf-field">
+            <span class="cf-label">Your name</span>
+            <input type="text" name="name" required maxlength="200" autocomplete="name" />
+          </label>
+
+          <label class="cf-field">
+            <span class="cf-label">Email</span>
+            <input type="email" name="email" required maxlength="200" autocomplete="email" />
+          </label>
+
+          <label class="cf-field">
+            <span class="cf-label">Message</span>
+            <textarea name="message" required minlength="10" maxlength="8000" rows="6"></textarea>
+          </label>
+
+          {/* Honeypot — hidden from real users; bots fill it in. */}
+          <div class="cf-hp" aria-hidden="true">
+            <label>
+              Don't fill this in if you're human
+              <input type="text" name="hp" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+
+          {/* Turnstile widget renders here when api.js loads. */}
+          <div class="cf-turnstile" data-sitekey={TURNSTILE_SITEKEY} data-theme="light"></div>
+
+          <div class="cf-actions">
+            <button type="submit" class="cf-submit">Send message</button>
+            <span id="contact-status" class="cf-status" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      ) : (
+        <div class="cf-disabled">
+          <p class="m-0 text-[15px] text-text-soft">
+            The contact form is being set up. In the meantime, please email us at <a href={`mailto:${EMAIL}`} class="contact-inline-link">{EMAIL}</a>.
+          </p>
+        </div>
+      )}
+    </section>
+
+    {/* Main email feature — kept as the canonical address for anyone who'd
+        rather use their own mail client. */}
     <section class="max-w-[760px] mx-auto mb-20">
       <div class="contact-feature">
-        <div class="kicker text-red mb-3">Email</div>
+        <div class="kicker text-red mb-3">Or write directly</div>
         <a href={`mailto:${EMAIL}`} class="contact-feature-email">{EMAIL}</a>
         <p class="text-[17px] leading-[1.6] text-text mt-4 max-w-[60ch]">
-          For everything — questions, interview requests, song clearances, fact checks, friend mail. Whatever brought you here, this is the address. We're a small group of volunteers, so we may take a few days, but every email gets read.
+          Whatever brought you here, this address gets it. We're a small group of volunteers, so we may take a few days, but every email gets read.
         </p>
       </div>
     </section>
@@ -76,7 +129,130 @@ const cards = [
     </section>
   </article>
 
+  {formAvailable && (
+    <>
+      <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+      <script define:vars={{ CONTACT_ENDPOINT }}>
+        (() => {
+          const form = document.getElementById("contact-form");
+          const status = document.getElementById("contact-status");
+          if (!form || !status) return;
+
+          form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            status.dataset.state = "sending";
+            status.textContent = "Sending…";
+
+            const fd = new FormData(form);
+            const body = new URLSearchParams();
+            for (const [k, v] of fd) body.set(k, String(v));
+
+            try {
+              const res = await fetch(CONTACT_ENDPOINT, {
+                method: "POST",
+                body,
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              });
+              let data = {};
+              try { data = await res.json(); } catch {}
+
+              if (res.ok && data.ok) {
+                status.dataset.state = "ok";
+                status.textContent = "Sent. A granny will write back.";
+                form.reset();
+                if (window.turnstile) window.turnstile.reset();
+                return;
+              }
+              const msg = (data && (data.message || (data[0] && data[0].message))) ||
+                "Something went wrong. Please try again, or email us directly.";
+              status.dataset.state = "err";
+              status.textContent = msg;
+              if (window.turnstile) window.turnstile.reset();
+            } catch (err) {
+              status.dataset.state = "err";
+              status.textContent = "Network error. Please try again, or email us directly.";
+            }
+          });
+        })();
+      </script>
+    </>
+  )}
+
   <style>
+    /* Form */
+    .contact-form {
+      display: grid;
+      gap: 18px;
+    }
+    .cf-field { display: grid; gap: 6px; }
+    .cf-label {
+      font: 800 11px/1.2 var(--font-body);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--color-card);
+      border: 1.5px solid var(--color-rule);
+      border-radius: 8px;
+      font: 400 16px/1.5 var(--font-body);
+      color: var(--color-text);
+      outline: 0;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--color-red);
+      box-shadow: 0 0 0 3px rgba(226, 42, 44, 0.15);
+    }
+    .contact-form textarea { resize: vertical; min-height: 140px; }
+    .cf-hp {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .cf-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .cf-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      background: var(--color-red);
+      color: var(--color-on-dark);
+      font: 800 15px/1 var(--font-body);
+      letter-spacing: 0.02em;
+      border: 0;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .cf-submit:hover { background: #c82022; }
+    .cf-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .cf-status {
+      font: 600 14px/1.4 var(--font-body);
+    }
+    .cf-status[data-state="sending"] { color: var(--color-text-soft); }
+    .cf-status[data-state="ok"] { color: var(--color-ink-soft); font-weight: 700; }
+    .cf-status[data-state="err"] { color: var(--color-red); font-weight: 700; }
+    .cf-disabled {
+      padding: 18px 22px;
+      background: var(--color-paper-2);
+      border-left: 3px solid var(--color-muted);
+      border-radius: 0 10px 10px 0;
+    }
+
     .contact-feature {
       background: var(--color-paper-2);
       border-left: 3px solid var(--color-red);
