@@ -37,12 +37,11 @@ const path = Astro.url.pathname;
           </div>
         </a>
         <nav aria-label="Main" class="flex items-center gap-7">
-          <a href="/songs/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/songs") ? "text-red" : "text-text"]}>Songs</a>
+          <a href="/about/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/about") ? "text-red" : "text-text"]}>About</a>
+          <a href="/in-the-news/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/in-the-news") || path.startsWith("/photos") ? "text-red" : "text-text"]}>In the News</a>
           <a href="/find-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/find-a-gaggle") ? "text-red" : "text-text"]}>Find a Gaggle</a>
           <a href="/start-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/start-a-gaggle") ? "text-red" : "text-text"]}>Start One</a>
-          <a href="/in-the-news/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/in-the-news") || path.startsWith("/photos") ? "text-red" : "text-text"]}>In the News</a>
-          <a href="/about/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/about") ? "text-red" : "text-text"]}>About</a>
-          <a href="#" class="text-white bg-ink px-[18px] py-[10px] rounded-full text-sm font-bold no-underline hover:bg-red transition-colors">The Map</a>
+          <a href="/songs/" class:list={["px-[18px] py-[10px] rounded-full text-sm font-bold no-underline transition-colors", path.startsWith("/songs") ? "text-white bg-red" : "text-white bg-ink hover:bg-red"]}>Songs</a>
         </nav>
       </div>
     </header>
