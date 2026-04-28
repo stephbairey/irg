@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Spokesperson Directory">
+  <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
+    <header class="text-center pb-10 border-b border-muted mb-12">
+      <div class="kicker text-red mb-4">Press &amp; Coverage</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(48px,7vw,84px)">
+        Spokesperson Directory
+      </h1>
+      <p class="text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+        Still in the works. We're putting together a list of grannies happy to chat with the press by gaggle and topic.
+      </p>
+    </header>
+
+    <section class="max-w-[760px] mx-auto">
+      <div class="bg-paper-2 border-l-[3px] border-red rounded-r-[10px] py-6 px-7 mb-12">
+        <div class="kicker text-red mb-2">In the meantime</div>
+        <p class="text-[17px] leading-[1.6] text-text m-0">
+          Email <a href="mailto:press@raginggrannies.org" class="sp-link">press@raginggrannies.org</a> with your outlet, deadline, and what you're working on. We'll route you to a granny who can speak to the topic and gaggle you need.
+        </p>
+      </div>
+
+      <div class="kicker text-red mb-2">While you're here</div>
+      <h2 class="font-display text-ink text-[36px] leading-tight mb-6">Other things journalists usually need</h2>
+
+      <ul class="sp-links list-none p-0 m-0 grid gap-4">
+        <li>
+          <a href="/fact-sheet/" class="sp-card">
+            <div>
+              <div class="font-display text-ink text-[24px] leading-tight mb-1.5">Fact sheet &amp; timeline</div>
+              <p class="text-[15px] text-text-soft m-0 leading-snug">Quick reference: who, what, when, the founding story, key dates from 1987 to today.</p>
+            </div>
+            <span class="sp-arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="/photos/" class="sp-card">
+            <div>
+              <div class="font-display text-ink text-[24px] leading-tight mb-1.5">Press photos</div>
+              <p class="text-[15px] text-text-soft m-0 leading-snug">High-resolution images free for editorial use with credit. Filterable by category.</p>
+            </div>
+            <span class="sp-arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="mailto:press@raginggrannies.org" class="sp-card">
+            <div>
+              <div class="font-display text-ink text-[24px] leading-tight mb-1.5">press@raginggrannies.org</div>
+              <p class="text-[15px] text-text-soft m-0 leading-snug">For everything else — interview requests, fact checks, song clearances, custom shots.</p>
+            </div>
+            <span class="sp-arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </article>
+
+  <style>
+    .sp-link {
+      color: var(--color-red);
+      border-bottom: 1.5px solid var(--color-red);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .sp-link:hover {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+    .sp-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 22px 26px;
+      background: var(--color-card);
+      border: 1px solid var(--color-rule);
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .sp-card:hover {
+      border-color: var(--color-red);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(42, 24, 71, 0.08);
+    }
+    .sp-card:hover .sp-arrow { color: var(--color-red); transform: translateX(2px); }
+    .sp-arrow {
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: var(--color-muted);
+      transition: color 0.15s, transform 0.15s;
+    }
+  </style>
+</BaseLayout>
