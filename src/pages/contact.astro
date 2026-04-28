@@ -1,0 +1,147 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// Single source of truth for the address. Swap when separate aliases exist.
+const EMAIL = "press@raginggrannies.org";
+
+const cards = [
+  {
+    title: "Send us a press mention",
+    blurb: "We got covered somewhere? Drop the link and we'll add it to the In the News page.",
+    href: `mailto:${EMAIL}?subject=${encodeURIComponent("Press mention")}&body=${encodeURIComponent("Link:\n\nGaggle (if relevant):\n\nAnything else we should know:\n")}`,
+    cta: "Email a clipping",
+  },
+  {
+    title: "Web Granny help",
+    blurb: "Starting a gaggle and want a website link, a Facebook nudge, or a slot on the directory map? Pass the keyboard to a granny.",
+    href: `mailto:${EMAIL}?subject=${encodeURIComponent("Web Granny — new gaggle")}&body=${encodeURIComponent("Gaggle (working name):\n\nCity / region:\n\nPrimary contact:\n\nWhat we need help with:\n")}`,
+    cta: "Email the Web Granny",
+  },
+  {
+    title: "Press kit & photos",
+    blurb: "High-resolution photography free for editorial use, plus a fact sheet and timeline. No need to email — it's all on one page.",
+    href: "/in-the-news/",
+    cta: "Open the press kit",
+    internal: true,
+  },
+];
+---
+
+<BaseLayout title="Contact">
+  <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-10 border-b border-muted mb-12">
+      <div class="kicker text-red mb-4">Get in touch</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(56px,8vw,112px)">
+        Contact
+      </h1>
+      <p class="text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+        We'd love to hear from you. Drop us a line — a granny on the other end will write back.
+      </p>
+    </header>
+
+    {/* Main email feature */}
+    <section class="max-w-[760px] mx-auto mb-20">
+      <div class="contact-feature">
+        <div class="kicker text-red mb-3">Email</div>
+        <a href={`mailto:${EMAIL}`} class="contact-feature-email">{EMAIL}</a>
+        <p class="text-[17px] leading-[1.6] text-text mt-4 max-w-[60ch]">
+          For everything — questions, interview requests, song clearances, fact checks, friend mail. Whatever brought you here, this is the address. We're a small group of volunteers, so we may take a few days, but every email gets read.
+        </p>
+      </div>
+    </section>
+
+    {/* Use-case cards */}
+    <section class="max-w-[1080px] mx-auto">
+      <div class="kicker text-red mb-2">Or, for specific things</div>
+      <h2 class="font-display text-ink text-[40px] leading-tight mb-8">What might bring you here</h2>
+
+      <div class="contact-grid">
+        {cards.map((c) => (
+          <a href={c.href} class="contact-card" {...(!c.internal ? {} : {})}>
+            <div>
+              <h3 class="font-display text-ink text-[26px] leading-tight mb-2.5">{c.title}</h3>
+              <p class="text-[15px] text-text-soft leading-snug m-0">{c.blurb}</p>
+            </div>
+            <div class="contact-card-cta">
+              {c.cta} <span aria-hidden="true">→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="text-center text-[14px] text-muted mt-12 italic max-w-[60ch] mx-auto">
+        Looking for a specific gaggle? <a href="/find-a-gaggle/" class="contact-inline-link">Find them on the map</a>. Per-gaggle contacts aren't published here to keep individual grannies' inboxes from drowning, but the map will get you to their corner of the network.
+      </p>
+    </section>
+  </article>
+
+  <style>
+    .contact-feature {
+      background: var(--color-paper-2);
+      border-left: 3px solid var(--color-red);
+      border-radius: 0 12px 12px 0;
+      padding: 28px 32px;
+    }
+    .contact-feature-email {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4.4vw, 44px);
+      line-height: 1;
+      color: var(--color-ink);
+      text-decoration: none;
+      border-bottom: 2px solid var(--color-red);
+      padding-bottom: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .contact-feature-email:hover {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+      border-bottom-color: var(--color-red);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+
+    .contact-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px 26px;
+      background: var(--color-card);
+      border: 1px solid var(--color-rule);
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+      min-height: 200px;
+    }
+    .contact-card:hover {
+      border-color: var(--color-red);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(42, 24, 71, 0.08);
+    }
+    .contact-card-cta {
+      font: 800 13px/1 var(--font-body);
+      letter-spacing: 0.04em;
+      color: var(--color-red);
+    }
+    .contact-card:hover .contact-card-cta { color: var(--color-red); }
+
+    .contact-inline-link {
+      color: var(--color-red);
+      border-bottom: 1.5px solid var(--color-red);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .contact-inline-link:hover {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+  </style>
+</BaseLayout>
