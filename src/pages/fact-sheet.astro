@@ -1,0 +1,281 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+interface Fact {
+  label: string;
+  body: string; // may contain inline <em> markup
+}
+interface TimelineEntry {
+  when: string;
+  body: string;
+}
+
+const facts: Fact[] = [
+  {
+    label: "Name",
+    body: "International Raging Grannies (IRG)",
+  },
+  {
+    label: "Founded",
+    body: "February 14, 1987, Victoria, British Columbia, Canada",
+  },
+  {
+    label: "What they are",
+    body: "A network of autonomous social justice activist groups (“gaggles”) composed primarily of women over 50 who use satirical songs, humor, costumes, and street theater to advocate for peace, environmental protection, social justice, and economic equality.",
+  },
+  {
+    label: "How many",
+    body: "Approximately 80 active gaggles across Canada, the United States, and internationally.",
+  },
+  {
+    label: "Structure",
+    body: "No centralized administration. Each gaggle is fully autonomous and makes its own decisions about local actions and issues. Gaggles are connected through the international website, a shared song archive of 1,490+ protest songs, and a members-only email listserv called the “E-Vine.”",
+  },
+  {
+    label: "The method",
+    body: "Grannies write satirical protest lyrics set to the melodies of well-known songs. They perform at rallies, government hearings, recruitment centers, corporate headquarters, and public spaces, wearing exaggerated “granny” costumes including flowered hats, shawls, and colorful mismatched clothing to parody cultural expectations of older women.",
+  },
+  {
+    label: "The philosophy",
+    body: "By appearing as “innocent little old ladies,” the Grannies claim public space in a society that often dismisses older women. They turn their identity, which society treats as a liability, into a resource for political engagement. They are strictly nonviolent and emphasize fact-based activism.",
+  },
+  {
+    label: "Origin story",
+    body: "The founding members were women aged 52 to 67 in Victoria, BC: an anthropologist, teachers, a businesswoman, a counselor, artists, homemakers, and a librarian. They were reacting to nuclear threats from US Navy warships in Victoria Harbour and to sexism and ageism within the peace groups they belonged to, where they were relegated to making coffee and stuffing envelopes. They originally called themselves NERT (Nuclear Emergency Response Team). Their first action as the “Raging Grannies” was presenting an Un-Valentine, a broken chocolate heart, to their Member of Parliament on Valentine’s Day 1987, accompanied by satirical songs performed under an umbrella full of holes, symbolizing the absurdity of sheltering under a nuclear umbrella.",
+  },
+  {
+    label: "Membership",
+    body: "You don’t need to be a biological grandmother. You need to be old enough to be one, and hold true to Granny values. Some gaggles welcome men, trans, and nonbinary members. As the Halifax Grannies say: “If your heart is in the right place, don’t worry about where your vocal pitch is.”",
+  },
+  {
+    label: "Notable publications",
+    body: "<em>Off Our Rockers and into Trouble</em> by Alison Acker and Betty Brightwell (2004); <em>The Raging Grannies: Wild Hats, Cheeky Songs, and Witty Actions for a Better World</em> by Carole Roy (2004). Films include <em>Granny Power</em> and <em>Two Raging Grannies</em>.",
+  },
+  {
+    label: "Media contact",
+    body: '<a href="mailto:press@raginggrannies.org" class="fact-link">press@raginggrannies.org</a>',
+  },
+  {
+    label: "Website",
+    body: '<a href="https://raginggrannies.org" class="fact-link">raginggrannies.org</a>',
+  },
+  {
+    label: "Press photos",
+    body: '<a href="/photos/" class="fact-link">raginggrannies.org/photos</a> (high-resolution images free for editorial use with credit)',
+  },
+];
+
+const timeline: TimelineEntry[] = [
+  {
+    when: "1986–87",
+    body: "A group of peace activists in Victoria, BC form NERT (Nuclear Emergency Response Team) to protest US Navy nuclear vessels in Esquimalt Harbour. Frustrated by being sidelined in male-dominated peace groups, they develop a new approach: satirical songs in outrageous costumes.",
+  },
+  {
+    when: "February 14, 1987",
+    body: "First action under the name “Raging Grannies.” They present an Un-Valentine (a broken chocolate heart) to MP Pat Crofton, singing satirical lyrics under an umbrella full of holes.",
+  },
+  {
+    when: "February 1987",
+    body: "Two weeks later, they protest uranium mining hearings at the BC Legislature, presenting their “briefs”: a laundry basket of women’s underwear on a clothesline.",
+  },
+  {
+    when: "1988",
+    body: "Victoria Raging Grannies refused entry to the BC Legislature to present their briefs. The movement begins spreading to other Canadian cities.",
+  },
+  {
+    when: "1989",
+    body: "Victoria Grannies join Greenpeace aboard the Rainbow Warrior. Montreal gaggle founded by Joan Hadrill, Mary Rowan, Barbara Seifred, and Jean Laidlaw Perreault. Gaggles form across Canada: Salt Spring Island, Gabriola Island, Edmonton, Toronto, Halifax.",
+  },
+  {
+    when: "Mid-1990s",
+    body: "Movement crosses the border into the United States.",
+  },
+  {
+    when: "1996",
+    body: "First American gaggle established in Seattle.",
+  },
+  {
+    when: "2004",
+    body: "Two books published: <em>Off Our Rockers and into Trouble</em> (Acker & Brightwell) and <em>The Raging Grannies: Wild Hats, Cheeky Songs, and Witty Actions for a Better World</em> (Carole Roy).",
+  },
+  {
+    when: "2005",
+    body: "Five Tucson Grannies arrested for trespassing after attempting to enlist at a US Army recruiting center, saying they wanted to go to Iraq so their grandchildren could come home. California chapter allegedly surveilled by a unit of the California National Guard after organizing a Mother’s Day anti-war rally; State Senator Joe Dunn’s investigation results in the intelligence unit being shut down.",
+  },
+  {
+    when: "2006",
+    body: "New York City Grannies arrested for blocking a Times Square recruitment center. Acquitted of all charges on April 28, 2006.",
+  },
+  {
+    when: "2009",
+    body: "Documentary film <em>Raging Grannies</em> produced about the Bay Area Peninsula gaggle.",
+  },
+  {
+    when: "2013",
+    body: "Grannies participate in worldwide March Against Monsanto protests. Montreal Grannies release <em>Old, Bold & Beautiful</em>, a limited-edition nude calendar.",
+  },
+  {
+    when: "2017",
+    body: "30th anniversary. Original Victoria Grannies honored with a display at the Canadian Museum for Human Rights in Winnipeg, Manitoba.",
+  },
+  {
+    when: "2020",
+    body: "Grannies join Black Lives Matter protests in Portland, Oregon, San Bruno, and Palo Alto, California.",
+  },
+  {
+    when: "2022",
+    body: "Grannies active in abortion rights protests across the United States following the Dobbs decision.",
+  },
+  {
+    when: "2025–26",
+    body: "Gaggles across North America participate in “No Kings” protests, with coverage from Austin to Springfield to Eureka to Greensboro. Lethbridge Grannies lead multiple rallies on immigration, coal mining, and ADAP issues.",
+  },
+];
+---
+
+<BaseLayout title="Fact Sheet & Timeline">
+  <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
+    {/* Masthead */}
+    <header class="text-center pb-10 border-b border-muted mb-12">
+      <div class="kicker text-red mb-4">Press &amp; Coverage</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(48px,7vw,84px)">
+        Fact Sheet &amp; Timeline
+      </h1>
+      <p class="text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+        Quick reference for journalists. Free to quote with attribution.
+      </p>
+    </header>
+
+    {/* Fact sheet */}
+    <section class="max-w-[860px] mx-auto mb-20">
+      <div class="kicker text-red mb-2">Fact Sheet</div>
+      <h2 class="font-display text-ink text-[44px] leading-tight mb-8">At a glance</h2>
+
+      <dl class="fact-grid">
+        {facts.map((f) => (
+          <>
+            <dt class="fact-label">{f.label}</dt>
+            <dd class="fact-body" set:html={f.body} />
+          </>
+        ))}
+      </dl>
+    </section>
+
+    {/* Timeline */}
+    <section class="max-w-[860px] mx-auto">
+      <div class="kicker text-red mb-2">Timeline</div>
+      <h2 class="font-display text-ink text-[44px] leading-tight mb-8">Almost forty years of song</h2>
+
+      <ol class="timeline">
+        {timeline.map((t) => (
+          <li class="timeline-row">
+            <div class="timeline-when">{t.when}</div>
+            <div class="timeline-body" set:html={t.body} />
+          </li>
+        ))}
+      </ol>
+    </section>
+  </article>
+
+  <style>
+    .fact-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      column-gap: 32px;
+      row-gap: 22px;
+      align-items: baseline;
+    }
+    .fact-label {
+      font: 800 11px/1.2 var(--font-body);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      padding-top: 6px;
+    }
+    .fact-body {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--color-text);
+    }
+    .fact-body :global(em) {
+      color: var(--color-ink-soft);
+      font-style: italic;
+    }
+    .fact-body :global(.fact-link) {
+      color: var(--color-red);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--color-red);
+      font-weight: 600;
+    }
+    .fact-body :global(.fact-link:hover) {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+
+    .timeline {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: t;
+      position: relative;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 199px;
+      top: 6px;
+      bottom: 6px;
+      width: 1.5px;
+      background: var(--color-muted);
+      opacity: 0.4;
+    }
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      column-gap: 32px;
+      padding: 14px 0 18px;
+      position: relative;
+    }
+    .timeline-row::before {
+      content: "";
+      position: absolute;
+      left: 195px;
+      top: 24px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--color-red);
+      box-shadow: 0 0 0 4px var(--color-paper);
+    }
+    .timeline-when {
+      font-family: var(--font-display);
+      font-size: 26px;
+      line-height: 1;
+      color: var(--color-red);
+      padding-top: 2px;
+      letter-spacing: -0.005em;
+    }
+    .timeline-body {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--color-text);
+    }
+    .timeline-body :global(em) {
+      color: var(--color-ink-soft);
+      font-style: italic;
+    }
+
+    @media (max-width: 720px) {
+      .fact-grid { grid-template-columns: 1fr; row-gap: 6px; }
+      .fact-label { padding-top: 12px; }
+      .fact-body { padding-bottom: 4px; }
+
+      .timeline::before { left: 6px; }
+      .timeline-row { grid-template-columns: 1fr; row-gap: 4px; padding-left: 28px; }
+      .timeline-row::before { left: 1px; top: 22px; }
+      .timeline-when { font-size: 22px; }
+    }
+  </style>
+</BaseLayout>
