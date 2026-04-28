@@ -1,0 +1,342 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { readFileSync, existsSync } from "node:fs";
+import { resolve } from "node:path";
+
+interface Gaggle {
+  name: string;
+  region: string;
+  country: string;
+  lat: number;
+  lng: number;
+  // Optional fields in the data file we deliberately ignore on the page:
+  //   founding?: boolean   — Victoria treated like every other gaggle
+  //   aka?: string         — nicknames suppressed in UI per request
+}
+
+const DATA = resolve(process.cwd(), "data/gaggle-locations.json");
+let gaggles: Gaggle[] = [];
+if (existsSync(DATA)) {
+  try {
+    const raw = JSON.parse(readFileSync(DATA, "utf8"));
+    if (Array.isArray(raw)) {
+      gaggles = (raw as Gaggle[]).filter(
+        (g) =>
+          g &&
+          typeof g.name === "string" &&
+          typeof g.lat === "number" &&
+          typeof g.lng === "number",
+      );
+    }
+  } catch (err) {
+    console.warn(`[find-a-gaggle] could not parse ${DATA}: ${(err as Error).message}`);
+  }
+}
+
+const total = gaggles.length;
+
+// Group by country → region for the directory list. Within each region,
+// gaggles are sorted alphabetically by name.
+const byCountry: Record<string, Record<string, Gaggle[]>> = {};
+for (const g of gaggles) {
+  byCountry[g.country] ??= {};
+  byCountry[g.country][g.region] ??= [];
+  byCountry[g.country][g.region].push(g);
+}
+for (const country of Object.keys(byCountry)) {
+  for (const region of Object.keys(byCountry[country])) {
+    byCountry[country][region].sort((a, b) => a.name.localeCompare(b.name));
+  }
+}
+// Country order: USA first, Canada second, then the rest alphabetical.
+const COUNTRY_ORDER = ["United States", "Canada"];
+const countries = Object.keys(byCountry).sort((a, b) => {
+  const ai = COUNTRY_ORDER.indexOf(a);
+  const bi = COUNTRY_ORDER.indexOf(b);
+  if (ai !== -1 && bi !== -1) return ai - bi;
+  if (ai !== -1) return -1;
+  if (bi !== -1) return 1;
+  return a.localeCompare(b);
+});
+
+// Send only what the map needs.
+const mapPayload = JSON.stringify(
+  gaggles.map((g) => ({
+    name: g.name,
+    region: g.region,
+    country: g.country,
+    lat: g.lat,
+    lng: g.lng,
+  })),
+);
+---
+
+<BaseLayout title="Find a Gaggle">
+  <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-10 mb-10 border-b border-muted">
+      <div class="kicker text-red mb-4">The Network</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(56px,8vw,112px)">
+        Find a Gaggle
+      </h1>
+      <p class="text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+        {total > 0 ? (
+          <>There are {total} gaggles of Raging Grannies across North America and around the world. Find one near you, or start your own.</>
+        ) : (
+          <>Gaggles span North America and beyond — the map's loading. Find one near you, or start your own.</>
+        )}
+      </p>
+    </header>
+
+    {/* Map */}
+    <div class="map-wrap">
+      <div id="gaggle-map" aria-label="Map of Raging Grannies gaggles"></div>
+      <noscript>
+        <div class="map-noscript">
+          The interactive map needs JavaScript. The full directory of gaggles is below.
+        </div>
+      </noscript>
+    </div>
+
+    {/* Directory */}
+    <section class="max-w-[1080px] mx-auto mt-16">
+      <div class="kicker text-red mb-2">Directory</div>
+      <h2 class="font-display text-ink text-[40px] leading-tight mb-8">All gaggles</h2>
+
+      {countries.length === 0 ? (
+        <div class="text-center py-12 px-8 bg-paper-2 border border-dashed border-rule rounded-[10px] grid gap-2 max-w-[640px] mx-auto">
+          <b class="font-display text-ink text-[24px] font-normal">Directory loading…</b>
+          <span class="text-[14px] text-text-soft">Locations are being added. Check back soon.</span>
+        </div>
+      ) : (
+        countries.map((country) => {
+          const regions = Object.keys(byCountry[country]).sort((a, b) => a.localeCompare(b));
+          return (
+            <div class="dir-country">
+              <h3 class="dir-country-title">{country}</h3>
+              <div class="dir-grid">
+                {regions.map((region) => (
+                  <div class="dir-region">
+                    <div class="dir-region-name">{region}</div>
+                    <ul class="dir-list">
+                      {byCountry[country][region].map((g) => (
+                        <li>{g.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })
+      )}
+    </section>
+
+    {/* CTA */}
+    <section class="mt-20">
+      <div class="cta-card">
+        <div>
+          <div class="kicker text-mustard mb-2">A gaggle of one</div>
+          <h3 class="font-display text-on-dark text-[34px] leading-tight mb-3">
+            Don't see a gaggle near you? Start one.
+          </h3>
+          <p class="text-on-dark/85 leading-relaxed max-w-[56ch]">
+            Two or three women, a good tune, and an issue worth singing about — that's the recipe. Our starter kit walks you through naming a gaggle, writing your first song, and showing up.
+          </p>
+        </div>
+        <a href="/start-a-gaggle/" class="cta-btn">
+          Get the starter kit <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </article>
+
+  <script define:vars={{ mapPayload }}>
+    // Map init runs only on this page — Leaflet is bundled into a page-scoped chunk.
+    import("leaflet/dist/leaflet.css");
+    import("leaflet").then(({ default: L }) => {
+      const gaggles = JSON.parse(mapPayload);
+      const el = document.getElementById("gaggle-map");
+      if (!el) return;
+
+      const map = L.map(el, {
+        center: [39.5, -98.5], // ~ Kansas — centers on continental North America
+        zoom: 4,
+        zoomControl: true,
+        scrollWheelZoom: true,
+        worldCopyJump: true,
+      });
+
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+        attribution:
+          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors · © <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: "abcd",
+        maxZoom: 19,
+      }).addTo(map);
+
+      function escHtml(s) {
+        return String(s ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      const markers = [];
+      for (const g of gaggles) {
+        const m = L.circleMarker([g.lat, g.lng], {
+          radius: 7,
+          color: "#2A1847",
+          weight: 1.25,
+          fillColor: "#E22A2C",
+          fillOpacity: 0.9,
+        }).addTo(map);
+
+        const popup = `
+          <div class="gaggle-popup">
+            <div class="gp-name">${escHtml(g.name)}</div>
+            <div class="gp-where">${escHtml(g.region)}, ${escHtml(g.country)}</div>
+            <div class="gp-contact">Want to connect? <a href="/contact/">Visit our Contact page.</a></div>
+          </div>
+        `;
+        m.bindPopup(popup);
+        markers.push(m);
+      }
+
+      // Hover affordance — slightly grow the marker on pointer-over.
+      for (const m of markers) {
+        m.on("mouseover", () => m.setStyle({ radius: 9, fillOpacity: 1 }));
+        m.on("mouseout", () => m.setStyle({ radius: 7, fillOpacity: 0.9 }));
+      }
+    });
+  </script>
+
+  <style is:global>
+    .map-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      border: 1px solid var(--color-muted);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--color-paper-2);
+    }
+    #gaggle-map {
+      height: 560px;
+      width: 100%;
+    }
+    @media (max-width: 720px) {
+      #gaggle-map { height: 340px; }
+    }
+    .map-noscript {
+      padding: 24px;
+      text-align: center;
+      color: var(--color-text-soft);
+      font-style: italic;
+    }
+    /* Leaflet popup themed to match the Bulletin language */
+    .leaflet-popup-content-wrapper {
+      border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(42, 24, 71, 0.18);
+    }
+    .leaflet-popup-content {
+      margin: 14px 16px 12px;
+      font-family: var(--font-body);
+      color: var(--color-text);
+    }
+    .gaggle-popup .gp-name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      line-height: 1.1;
+      color: var(--color-ink);
+      margin-bottom: 4px;
+    }
+    .gaggle-popup .gp-where {
+      font: 700 11px/1.2 var(--font-body);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 10px;
+    }
+    .gaggle-popup .gp-contact {
+      font-size: 13px;
+      color: var(--color-text-soft);
+    }
+    .gaggle-popup .gp-contact a {
+      color: var(--color-red);
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--color-red);
+    }
+    .gaggle-popup .gp-contact a:hover {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+
+    /* Directory */
+    .dir-country + .dir-country { margin-top: 40px; }
+    .dir-country-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      color: var(--color-ink);
+      margin: 0 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--color-red);
+    }
+    .dir-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px 36px;
+    }
+    @media (max-width: 900px) { .dir-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .dir-grid { grid-template-columns: 1fr; } }
+    .dir-region-name {
+      font: 800 11px/1.2 var(--font-body);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 8px;
+    }
+    .dir-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 4px;
+      font-size: 16px;
+      line-height: 1.45;
+      color: var(--color-text);
+    }
+
+    /* CTA */
+    .cta-card {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: center;
+      padding: 36px 40px;
+      background: var(--color-ink);
+      color: var(--color-on-dark);
+      border-radius: 14px;
+    }
+    @media (max-width: 720px) {
+      .cta-card { grid-template-columns: 1fr; gap: 20px; padding: 28px 24px; }
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: var(--color-red);
+      color: var(--color-on-dark);
+      font: 800 15px/1 var(--font-body);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .cta-btn:hover { background: #c82022; }
+  </style>
+</BaseLayout>

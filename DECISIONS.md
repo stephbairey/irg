@@ -367,6 +367,22 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Why CPT, not media library taxonomy**: the editorial workflow is "select from the media library and add metadata", not "tag every upload". The CPT post is the curation; the image is just an attachment it points at. This keeps the admin sidebar tidy and the GraphQL surface small.
 - **Revisit if**: the gallery exceeds ~50 photos (then add pagination on the page) or ~200 (then move to a virtualised grid); OR usage-rights variants proliferate (then promote `usage_rights` to a taxonomy or enum); OR we want per-photo licence URLs.
 
+## D029 — Find a Gaggle: Leaflet + CartoDB Positron + committed JSON
+
+- **Status**: Decided
+- **Date**: 2026-04-27
+- **Context**: The "Find a Gaggle" page needs a map of the ~80 gaggles across North America (and a handful elsewhere), plus a scannable directory below it. Data is curated by hand — Maya pulls coordinates from a sourced list rather than querying a third-party geocoder at build time. The page is a destination but isn't a critical performance path; clean visuals and zero ongoing cost matter more than slick vendor features.
+- **Options considered**:
+  - **Google Maps / Mapbox** — slick tiles, geocoder, clustering. Both want an API key, both meter usage, both add a vendor dependency. Overkill for ~80 static markers.
+  - **Leaflet + OpenStreetMap default tiles** — no key, free, fine, but the default OSM colour scheme competes with markers.
+  - **Leaflet + CartoDB Positron** — same engine as above, muted/desaturated tile theme that lets red markers pop. Free, no key, OSM data.
+- **Choice**: **Leaflet** (npm dep, page-scoped — only loaded on `/find-a-gaggle/`, not site-wide) with **CartoDB Positron** tiles. Markers are `L.circleMarker`s in the site's red (`#E22A2C`) — avoids the bundled-asset hassle of Leaflet's PNG marker icons and keeps every gaggle visually equal (no special "founding gaggle" treatment for Victoria; nicknames not displayed even when present in the JSON).
+- **Data source**: `data/gaggle-locations.json`. Shape: `{ name, region, country, lat, lng, founding?, aka? }`. The two optional fields exist in the data but are intentionally ignored by the page so the map stays uniform. `country` and `region` drive the directory grouping below the map (USA first, Canada second, others alphabetical; regions A→Z within each).
+- **Page composition**: Bulletin-style hero with kicker / display title / dynamic count, full-bleed map (560px desktop / 340px mobile, scroll-wheel zoom on, world-copy-jump, popups themed in the site palette), directory grid (3/2/1 cols by viewport), dark CTA card linking to `/start-a-gaggle/`. Header nav: "Find a Gaggle" and "Start One" links wired up.
+- **Privacy**: popups never embed contact info — they point at `/contact/` instead. Per-gaggle emails/phone numbers stay out of the static bundle.
+- **Empty-state behaviour**: missing/invalid `gaggle-locations.json` → hero subtitle softens, directory shows a "loading" placeholder, map renders an empty world view. Build never fails.
+- **Revisit if**: marker count grows past ~150 and visual overlap forces clustering (add `leaflet.markercluster`); OR Maya wants editor-managed locations (promote to a `gaggle` CPT in irg-core with a location ACF field — already on the open-questions list); OR we add per-gaggle pages/links and the popup needs an outbound URL.
+
 ---
 
 ## Open decisions (not yet resolved)
