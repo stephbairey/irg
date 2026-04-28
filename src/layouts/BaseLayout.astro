@@ -41,6 +41,7 @@ const path = Astro.url.pathname;
           <a href="#" class="font-bold text-[15px] no-underline text-text hover:text-red transition-colors">Find a Gaggle</a>
           <a href="#" class="font-bold text-[15px] no-underline text-text hover:text-red transition-colors">Start One</a>
           <a href="/in-the-news/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/in-the-news") ? "text-red" : "text-text"]}>In the News</a>
+          <a href="/photos/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/photos") ? "text-red" : "text-text"]}>Photos</a>
           <a href="/about/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/about") ? "text-red" : "text-text"]}>About</a>
           <a href="#" class="text-white bg-ink px-[18px] py-[10px] rounded-full text-sm font-bold no-underline hover:bg-red transition-colors">The Map</a>
         </nav>

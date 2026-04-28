@@ -1,0 +1,475 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { wpQuery } from "../lib/graphql";
+
+interface ImageSize {
+  name: string;
+  sourceUrl: string;
+  width: number;
+  height: number;
+}
+interface MediaDetails {
+  width: number;
+  height: number;
+  sizes: ImageSize[] | null;
+}
+interface MediaNode {
+  sourceUrl: string;
+  altText: string | null;
+  mediaDetails: MediaDetails | null;
+}
+interface PressPhoto {
+  databaseId: number;
+  title: string;
+  slug: string;
+  photoCategories: { nodes: { name: string; slug: string }[] };
+  pressPhotoDetails: {
+    photographerCredit: string | null;
+    caption: string | null;
+    usageRights: string | null;
+    photo: { node: MediaNode } | null;
+  } | null;
+}
+
+interface QueryData {
+  pressPhotos: { nodes: PressPhoto[] };
+  photoCategories: { nodes: { name: string; slug: string; count: number | null }[] };
+}
+
+let data: QueryData | null = null;
+try {
+  data = await wpQuery<QueryData>({
+    query: `{
+      pressPhotos(first: 100, where: { orderby: { field: DATE, order: DESC } }) {
+        nodes {
+          databaseId
+          title
+          slug
+          photoCategories { nodes { name slug } }
+          pressPhotoDetails {
+            photographerCredit
+            caption
+            usageRights
+            photo {
+              node {
+                sourceUrl
+                altText
+                mediaDetails {
+                  width
+                  height
+                  sizes { name sourceUrl width height }
+                }
+              }
+            }
+          }
+        }
+      }
+      photoCategories(first: 100, where: { hideEmpty: true }) {
+        nodes { name slug count }
+      }
+    }`,
+  });
+} catch (err) {
+  console.warn("[photos] GraphQL fetch failed:", (err as Error).message);
+}
+
+const rawPhotos = data?.pressPhotos?.nodes ?? [];
+
+// Pick the smallest size at-or-above 600px for the grid thumbnail; fall back
+// to whatever's available. The full original is always served via download.
+function pickThumb(media: MediaNode | null | undefined): string | null {
+  if (!media) return null;
+  const sizes = media.mediaDetails?.sizes ?? [];
+  const candidates = sizes
+    .filter((s) => typeof s?.sourceUrl === "string" && s.sourceUrl)
+    .sort((a, b) => (a.width || 0) - (b.width || 0));
+  const big = candidates.find((s) => (s.width || 0) >= 600);
+  return big?.sourceUrl ?? candidates[candidates.length - 1]?.sourceUrl ?? media.sourceUrl ?? null;
+}
+
+const photos = rawPhotos
+  .filter((p) => p?.pressPhotoDetails?.photo?.node?.sourceUrl)
+  .map((p) => {
+    const media = p.pressPhotoDetails!.photo!.node;
+    return {
+      id: p.databaseId,
+      title: p.title || "",
+      slug: p.slug,
+      categories: (p.photoCategories?.nodes ?? []).map((c) => c.slug),
+      categoryNames: (p.photoCategories?.nodes ?? []).map((c) => c.name),
+      caption: p.pressPhotoDetails?.caption ?? "",
+      credit: p.pressPhotoDetails?.photographerCredit ?? "",
+      rights:
+        p.pressPhotoDetails?.usageRights ??
+        "Free for editorial use with credit to the International Raging Grannies",
+      thumbUrl: pickThumb(media),
+      fullUrl: media.sourceUrl,
+      altText: media.altText || p.title || "",
+      width: media.mediaDetails?.width ?? null,
+      height: media.mediaDetails?.height ?? null,
+    };
+  });
+
+const categories = (data?.photoCategories?.nodes ?? []).filter(
+  (c) => (c.count ?? 0) > 0,
+);
+
+const photosJson = JSON.stringify(photos);
+const categoriesJson = JSON.stringify(categories);
+---
+
+<BaseLayout title="Press Photos">
+  <article class="photos-page">
+    <section class="bg-paper border-b border-muted">
+      <div class="max-w-[1240px] mx-auto px-10 pt-12 pb-10">
+        <div class="kicker text-red mb-4">Press &amp; Coverage</div>
+        <h1 class="font-display text-ink leading-[.92] tracking-tight" style="font-size:clamp(56px,8vw,112px)">
+          Press Photos
+        </h1>
+        <p class="text-[20px] leading-[1.5] text-text mt-5 max-w-[60ch]">
+          High-resolution images free for editorial use. Please credit the photographer.
+        </p>
+      </div>
+    </section>
+
+    <section class="bg-paper">
+      <div class="max-w-[1240px] mx-auto px-10 py-10">
+        {photos.length === 0 ? (
+          <div class="text-center py-16 px-10 bg-paper-2 border border-dashed border-rule rounded-[10px] grid gap-2 max-w-[640px] mx-auto">
+            <b class="font-display text-ink text-[28px] font-normal">No photos yet.</b>
+            <span class="text-[15px] text-text-soft">Press photos appear here as they're added in WP admin. Check back soon.</span>
+          </div>
+        ) : (
+          <>
+            <div id="photo-filters" class="flex gap-2 flex-wrap mb-8" role="tablist"></div>
+            <div id="photo-count" class="font-extrabold text-xs tracking-[.12em] uppercase text-muted mb-5"></div>
+            <div id="photo-grid" class="photo-grid"></div>
+            <div id="photo-empty" class="hidden text-center py-12 px-8 bg-paper-2 border border-dashed border-rule rounded-[10px] grid gap-2 my-6">
+              <b class="font-display text-ink text-[24px] font-normal">No photos in this category yet.</b>
+              <span class="text-[14px] text-text-soft">Try a different filter.</span>
+            </div>
+          </>
+        )}
+      </div>
+    </section>
+
+    {photos.length > 0 && (
+      <div id="photo-lightbox" class="lightbox hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+        <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">×</button>
+        <div class="lightbox-stage">
+          <img id="lightbox-img" src="" alt="" />
+        </div>
+        <aside class="lightbox-info">
+          <div class="kicker text-mustard mb-2" id="lightbox-cats"></div>
+          <h2 id="lightbox-title" class="font-display text-on-dark text-[28px] leading-tight mb-3"></h2>
+          <p id="lightbox-caption" class="text-[15px] leading-[1.55] text-on-dark/80 mb-5"></p>
+          <div class="lightbox-meta">
+            <div class="kicker text-mustard mb-1.5">Credit</div>
+            <p id="lightbox-credit" class="text-[15px] text-on-dark mb-4"></p>
+            <div class="kicker text-mustard mb-1.5">Usage rights</div>
+            <p id="lightbox-rights" class="text-[14px] text-on-dark/80 mb-6"></p>
+            <a id="lightbox-download" href="#" download class="lightbox-download">
+              Download high-res <span aria-hidden="true">↓</span>
+            </a>
+          </div>
+        </aside>
+      </div>
+    )}
+  </article>
+
+  {photos.length > 0 && (
+    <script define:vars={{ photosJson, categoriesJson }}>
+      const PHOTOS = JSON.parse(photosJson);
+      const CATEGORIES = JSON.parse(categoriesJson);
+
+      const $ = (s) => document.querySelector(s);
+      const filtersEl = $("#photo-filters");
+      const gridEl = $("#photo-grid");
+      const countEl = $("#photo-count");
+      const emptyEl = $("#photo-empty");
+
+      let active = "all";
+
+      function escAttr(s) {
+        return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+      function escHtml(s) { return escAttr(s); }
+
+      function renderFilters() {
+        const btns = [["all", "All", PHOTOS.length]].concat(
+          CATEGORIES.map((c) => [c.slug, c.name, PHOTOS.filter((p) => p.categories.includes(c.slug)).length]),
+        );
+        filtersEl.innerHTML = btns
+          .filter(([, , n]) => n > 0)
+          .map(([slug, name, n]) => {
+            const cls = active === slug ? "is-active" : "";
+            return `<button type="button" class="photo-chip ${cls}" data-cat="${escAttr(slug)}">${escHtml(name)} <span>${n}</span></button>`;
+          })
+          .join("");
+      }
+
+      function filtered() {
+        if (active === "all") return PHOTOS;
+        return PHOTOS.filter((p) => p.categories.includes(active));
+      }
+
+      function renderGrid() {
+        const items = filtered();
+        countEl.textContent = `${items.length} photo${items.length === 1 ? "" : "s"}`;
+        if (items.length === 0) {
+          gridEl.innerHTML = "";
+          emptyEl.classList.remove("hidden");
+          return;
+        }
+        emptyEl.classList.add("hidden");
+
+        gridEl.innerHTML = items.map((p, idx) => `
+          <button type="button" class="photo-card" data-idx="${idx}">
+            <div class="photo-thumb">
+              <img src="${escAttr(p.thumbUrl)}" alt="${escAttr(p.altText)}" loading="lazy" decoding="async" />
+            </div>
+            <div class="photo-meta">
+              ${p.caption ? `<p class="photo-caption">${escHtml(p.caption)}</p>` : `<p class="photo-caption photo-caption-empty">${escHtml(p.title || "Untitled")}</p>`}
+              ${p.credit ? `<p class="photo-credit">${escHtml(p.credit)}</p>` : ""}
+            </div>
+          </button>
+        `).join("");
+      }
+
+      filtersEl.addEventListener("click", (e) => {
+        const btn = e.target.closest(".photo-chip");
+        if (!btn) return;
+        active = btn.dataset.cat;
+        renderFilters();
+        renderGrid();
+      });
+
+      // Lightbox
+      const lb = $("#photo-lightbox");
+      const lbImg = $("#lightbox-img");
+      const lbTitle = $("#lightbox-title");
+      const lbCats = $("#lightbox-cats");
+      const lbCaption = $("#lightbox-caption");
+      const lbCredit = $("#lightbox-credit");
+      const lbRights = $("#lightbox-rights");
+      const lbDownload = $("#lightbox-download");
+
+      function openLightbox(p) {
+        lbImg.src = p.fullUrl;
+        lbImg.alt = p.altText || p.title || "";
+        lbTitle.textContent = p.title || "Press photo";
+        lbCats.textContent = (p.categoryNames || []).join(" · ") || "Press photo";
+        if (p.caption) {
+          lbCaption.textContent = p.caption;
+          lbCaption.style.display = "";
+        } else {
+          lbCaption.style.display = "none";
+        }
+        lbCredit.textContent = p.credit || "Photographer unknown";
+        lbRights.textContent = p.rights || "";
+        lbDownload.href = p.fullUrl;
+        lbDownload.setAttribute("download", "");
+        lb.classList.remove("hidden");
+        lb.setAttribute("aria-hidden", "false");
+        document.documentElement.style.overflow = "hidden";
+      }
+      function closeLightbox() {
+        lb.classList.add("hidden");
+        lb.setAttribute("aria-hidden", "true");
+        document.documentElement.style.overflow = "";
+        lbImg.src = "";
+      }
+      gridEl.addEventListener("click", (e) => {
+        const card = e.target.closest(".photo-card");
+        if (!card) return;
+        const idx = Number(card.dataset.idx);
+        const p = filtered()[idx];
+        if (p) openLightbox(p);
+      });
+      $("#lightbox-close").addEventListener("click", closeLightbox);
+      lb.addEventListener("click", (e) => {
+        if (e.target === lb) closeLightbox();
+      });
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !lb.classList.contains("hidden")) closeLightbox();
+      });
+
+      renderFilters();
+      renderGrid();
+    </script>
+  )}
+
+  <style is:global>
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    @media (max-width: 900px) { .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+    @media (max-width: 560px) { .photo-grid { grid-template-columns: 1fr; gap: 18px; } }
+
+    .photo-card {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      color: inherit;
+      font: inherit;
+    }
+    .photo-thumb {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      border-radius: 6px;
+      background: var(--color-paper-2);
+      box-shadow: 0 1px 0 rgba(42, 24, 71, 0.04), 0 2px 8px rgba(42, 24, 71, 0.06);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .photo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-card:hover .photo-thumb {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(42, 24, 71, 0.12);
+    }
+    .photo-card:focus-visible .photo-thumb {
+      outline: 2px solid var(--color-red);
+      outline-offset: 4px;
+    }
+    .photo-meta { padding: 10px 2px 0; }
+    .photo-caption {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--color-text);
+    }
+    .photo-caption-empty {
+      font-style: italic;
+      color: var(--color-text-soft);
+    }
+    .photo-credit {
+      margin: 6px 0 0;
+      font: 700 11px/1.3 var(--font-body);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    /* Filter chips — same shape as the press region chips, simpler look. */
+    .photo-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--color-card);
+      border: 1px solid var(--color-rule);
+      font: 700 13px/1 var(--font-body);
+      color: var(--color-text);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .photo-chip span {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-muted);
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--color-paper-2);
+    }
+    .photo-chip:hover {
+      border-color: var(--color-ink-lilac);
+      color: var(--color-ink);
+    }
+    .photo-chip.is-active {
+      background: var(--color-ink);
+      color: var(--color-on-dark);
+      border-color: var(--color-ink);
+    }
+    .photo-chip.is-active span {
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--color-on-dark);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 12, 36, 0.92);
+      z-index: 100;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 0;
+      padding: 0;
+    }
+    .lightbox.hidden { display: none; }
+    .lightbox-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      overflow: hidden;
+    }
+    #lightbox-img {
+      max-width: 100%;
+      max-height: calc(100vh - 80px);
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    .lightbox-info {
+      background: var(--color-ink);
+      color: var(--color-on-dark);
+      padding: 48px 40px;
+      overflow-y: auto;
+    }
+    .lightbox-info .kicker { color: var(--color-mustard); }
+    .lightbox-meta {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    .lightbox-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      background: var(--color-red);
+      color: var(--color-on-dark);
+      font: 800 14px/1 var(--font-body);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: background 0.15s ease;
+    }
+    .lightbox-download:hover { background: #c82022; }
+    .lightbox-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--color-on-dark);
+      border: 0;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .lightbox-close:hover { background: rgba(255, 255, 255, 0.18); }
+    @media (max-width: 900px) {
+      .lightbox { grid-template-columns: 1fr; grid-template-rows: 1fr auto; overflow-y: auto; }
+      .lightbox-stage { padding: 20px; min-height: 60vh; }
+      #lightbox-img { max-height: 70vh; }
+      .lightbox-info { padding: 28px 24px; }
+    }
+  </style>
+</BaseLayout>

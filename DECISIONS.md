@@ -352,6 +352,21 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **UI**: page title "In the News", subtitle "What they're saying about us", year-grouped list when the archive spans multiple years (otherwise a flat list). Each row links to the original article in a new tab; thumbnails render only when `image_url` is present, with `onerror` collapsing the slot if the image 404s. Bulletin design language preserved (clippings-desk top bar, live-feed pill, dark Press Kit aside, foot note). Header nav now reads "In the News" instead of "Press".
 - **Revisit if**: rate limits or article volume push us off The News API's free tier (then evaluate NewsAPI.org / GDELT / a custom scraper); OR the build-time fetch starts adding noticeable latency to CF Pages builds (cache by `etag` or `if-modified-since` and only re-fetch when changed); OR we want to add per-source friendly names (build a `domain → publication` map alongside the archive).
 
+## D028 — Press Photos as a dedicated CPT (separate from media library)
+
+- **Status**: Decided
+- **Date**: 2026-04-27
+- **Context**: Journalists need a curated set of high-resolution photos with consistent metadata (caption, photographer credit, usage rights, category). The WP media library holds *every* image ever uploaded — granny phone snapshots, scanned songbook pages, social-media exports, ACF preview attachments. Surfacing the media library as a "press kit gallery" would dump all of that on visitors.
+- **Options considered**:
+  - **Tag/category on the media library** — re-use core attachments. Cheap to set up, but every other plugin and editor touches the same pool, so the "press" filter would constantly drift. Also no place for structured fields like usage rights without per-attachment ACF.
+  - **Block-based gallery on a single page** — a Gutenberg gallery block handcrafted by an editor. Manual to maintain, lossy on filtering, hard to expose to GraphQL.
+  - **Dedicated `press_photo` CPT with ACF fields and its own taxonomy** — clean admin surface (Press Photos sidebar item), structured GraphQL schema, image picker still pulls from the media library so authors aren't re-uploading.
+- **Choice**: New CPT `press_photo` registered in irg-core (`graphql_single_name: pressPhoto`, plural `pressPhotos`), gated to the main site. ACF field group "Press Photo Details" with: `photo` (image, return-format `array`, exposes the WP media node + `mediaDetails.sizes`), `photographer_credit` (text), `caption` (textarea), `usage_rights` (text, default copy: "Free for editorial use with credit to the International Raging Grannies"). Hierarchical taxonomy `photo_category` seeded with **Rally · Performance · Portrait · Historical · Media**.
+- **GraphQL shape**: each photo exposes `pressPhotoDetails.photo.node` with `sourceUrl`, `altText`, and `mediaDetails.sizes[]`. The Astro page picks the smallest registered size ≥ 600px wide as the grid thumbnail and links to the full `sourceUrl` for download. Categories (with `count`) come from `photoCategories(first:100, where:{hideEmpty:true})`.
+- **UI**: `src/pages/photos.astro` — hero with kicker/title/dek, single-select category chip bar (computed from `photoCategories`), 3/2/1 column grid with explicit `aspect-ratio: 3/2` so cards don't reflow as images load, lightbox with the full image, caption, credit, usage rights, and a prominent "Download high-res" button (`<a download>` to the original URL). `loading="lazy" decoding="async"` on every thumb so the grid stays cheap. Build is resilient — a GraphQL failure or zero-photo archive renders the empty state instead of breaking. Header nav: "Photos" sits next to "In the News".
+- **Why CPT, not media library taxonomy**: the editorial workflow is "select from the media library and add metadata", not "tag every upload". The CPT post is the curation; the image is just an attachment it points at. This keeps the admin sidebar tidy and the GraphQL surface small.
+- **Revisit if**: the gallery exceeds ~50 photos (then add pagination on the page) or ~200 (then move to a virtualised grid); OR usage-rights variants proliferate (then promote `usage_rights` to a taxonomy or enum); OR we want per-photo licence URLs.
+
 ---
 
 ## Open decisions (not yet resolved)

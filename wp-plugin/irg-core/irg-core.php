@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.3.0
+ * Version: 3.4.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -19,7 +19,11 @@ add_action( 'init', 'irg_register_song_cpt' );
 add_action( 'init', 'irg_register_song_taxonomies' );
 add_action( 'init', 'irg_relabel_posts_on_subsites' );
 add_action( 'init', 'irg_seed_issue_terms' );
+add_action( 'init', 'irg_register_press_photo_cpt' );
+add_action( 'init', 'irg_register_press_photo_taxonomy' );
+add_action( 'init', 'irg_seed_photo_category_terms' );
 add_action( 'acf/include_fields', 'irg_register_acf_fields' );
+add_action( 'acf/include_fields', 'irg_register_press_photo_acf_fields' );
 add_action( 'admin_menu', 'irg_add_import_page' );
 
 add_filter( 'manage_song_posts_columns', 'irg_song_admin_columns' );
@@ -809,4 +813,164 @@ function irg_handle_subsites() {
 	}
 
 	return $out;
+}
+
+// ---------------------------------------------------------------------------
+// Press Photo CPT — high-resolution images for press / editorial reuse.
+// ---------------------------------------------------------------------------
+
+function irg_register_press_photo_cpt(): void {
+	if ( ! is_main_site() ) {
+		return;
+	}
+
+	register_post_type( 'press_photo', [
+		'labels' => [
+			'name'               => 'Press Photos',
+			'singular_name'      => 'Press Photo',
+			'add_new'            => 'Add New Press Photo',
+			'add_new_item'       => 'Add New Press Photo',
+			'edit_item'          => 'Edit Press Photo',
+			'new_item'           => 'New Press Photo',
+			'view_item'          => 'View Press Photo',
+			'search_items'       => 'Search Press Photos',
+			'not_found'          => 'No press photos found',
+			'not_found_in_trash' => 'No press photos found in Trash',
+			'all_items'          => 'All Press Photos',
+			'menu_name'          => 'Press Photos',
+		],
+		'public'              => true,
+		'has_archive'         => false,
+		'rewrite'             => [ 'slug' => 'press-photos' ],
+		'menu_icon'           => 'dashicons-camera',
+		'menu_position'       => 6,
+		'supports'            => [ 'title', 'thumbnail', 'custom-fields', 'revisions' ],
+		'show_in_rest'        => true,
+		'show_in_graphql'     => true,
+		'graphql_single_name' => 'pressPhoto',
+		'graphql_plural_name' => 'pressPhotos',
+	] );
+}
+
+function irg_register_press_photo_taxonomy(): void {
+	if ( ! is_main_site() ) {
+		return;
+	}
+
+	register_taxonomy( 'photo_category', [ 'press_photo' ], [
+		'labels' => [
+			'name'          => 'Photo Categories',
+			'singular_name' => 'Photo Category',
+			'search_items'  => 'Search Photo Categories',
+			'all_items'     => 'All Photo Categories',
+			'parent_item'   => 'Parent Photo Category',
+			'edit_item'     => 'Edit Photo Category',
+			'add_new_item'  => 'Add New Photo Category',
+			'menu_name'     => 'Categories',
+		],
+		'hierarchical'        => true,
+		'public'              => true,
+		'show_in_rest'        => true,
+		'show_in_graphql'     => true,
+		'graphql_single_name' => 'photoCategory',
+		'graphql_plural_name' => 'photoCategories',
+		'rewrite'             => [ 'slug' => 'photo-category' ],
+	] );
+}
+
+function irg_seed_photo_category_terms(): void {
+	if ( ! is_main_site() ) {
+		return;
+	}
+	if ( get_option( 'irg_photo_category_terms_seeded' ) ) {
+		return;
+	}
+	if ( ! taxonomy_exists( 'photo_category' ) ) {
+		return;
+	}
+
+	$terms = [ 'Rally', 'Performance', 'Portrait', 'Historical', 'Media' ];
+	foreach ( $terms as $term ) {
+		if ( ! term_exists( $term, 'photo_category' ) ) {
+			wp_insert_term( $term, 'photo_category' );
+		}
+	}
+
+	update_option( 'irg_photo_category_terms_seeded', true );
+}
+
+function irg_register_press_photo_acf_fields(): void {
+	if ( ! is_main_site() ) {
+		return;
+	}
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group( [
+		'key'                   => 'group_irg_press_photo_fields',
+		'title'                 => 'Press Photo Details',
+		'fields'                => [
+			[
+				'key'             => 'field_irg_press_photo_image',
+				'label'           => 'Photo',
+				'name'            => 'photo',
+				'type'            => 'image',
+				'instructions'    => 'Upload a high-resolution image. WordPress will generate thumbnail and intermediate sizes automatically.',
+				'required'        => 1,
+				'return_format'   => 'array',
+				'preview_size'    => 'medium',
+				'library'         => 'all',
+				'show_in_graphql' => 1,
+			],
+			[
+				'key'             => 'field_irg_press_photo_credit',
+				'label'           => 'Photographer Credit',
+				'name'            => 'photographer_credit',
+				'type'            => 'text',
+				'instructions'    => 'How the photographer should be credited (e.g. "Photo: Jane Smith"). Leave blank if unknown.',
+				'required'        => 0,
+				'show_in_graphql' => 1,
+			],
+			[
+				'key'             => 'field_irg_press_photo_caption',
+				'label'           => 'Caption',
+				'name'            => 'caption',
+				'type'            => 'textarea',
+				'instructions'    => 'A short description of what is happening in the photo.',
+				'required'        => 0,
+				'rows'            => 3,
+				'new_lines'       => '',
+				'show_in_graphql' => 1,
+			],
+			[
+				'key'             => 'field_irg_press_photo_usage_rights',
+				'label'           => 'Usage Rights',
+				'name'            => 'usage_rights',
+				'type'            => 'text',
+				'instructions'    => 'Licensing terms shown on the lightbox / download page.',
+				'required'        => 0,
+				'default_value'   => 'Free for editorial use with credit to the International Raging Grannies',
+				'show_in_graphql' => 1,
+			],
+		],
+		'location'              => [
+			[
+				[
+					'param'    => 'post_type',
+					'operator' => '==',
+					'value'    => 'press_photo',
+				],
+			],
+		],
+		'menu_order'            => 0,
+		'position'              => 'normal',
+		'style'                 => 'default',
+		'label_placement'       => 'top',
+		'instruction_placement' => 'label',
+		'active'                => true,
+		'show_in_rest'          => 1,
+		'show_in_graphql'       => 1,
+		'graphql_field_name'    => 'pressPhotoDetails',
+	] );
 }
