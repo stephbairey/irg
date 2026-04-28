@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/generate-songsheets.mjs",
+    "prebuild": "node scripts/fetch-press.mjs && node scripts/generate-songsheets.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

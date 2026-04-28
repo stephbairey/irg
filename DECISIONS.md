@@ -334,6 +334,24 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **UI**: song detail page gains a `Download songsheet (PDF)` button in the header CTA cluster, hidden when the song has no lyrics. The pre-existing browser-print button is now labeled "Print page" to disambiguate.
 - **Revisit if**: build time on Cloudflare Pages becomes a problem (then: cache PDFs across builds keyed by lyrics hash); OR a granny wants pretty PDFs with branding (then: separate "branded songsheet" output, keep this one as the utility format); OR we want musical notation in PDFs beyond bold/italic/underline.
 
+## D027 — Press clippings via The News API + committed JSON archive
+
+- **Status**: Decided
+- **Date**: 2026-04-27
+- **Context**: The Press page ("In the News") shows third-party coverage of the Raging Grannies. Coverage trickles in unpredictably across many small outlets, so manual curation isn't viable; an automated feed is. The page itself is read-mostly and benefits from being part of the static build (fast, cacheable, no runtime API dependency).
+- **Options considered**:
+  - **WordPress CPT** — would put the data in the multisite admin, but it's third-party content not authored by the Grannies and the value of WP's editorial workflow is low here.
+  - **Runtime API call from the browser** — exposes the API key, costs latency, and ties uptime to the third-party.
+  - **Runtime API call from a Cloudflare Pages Function** — solves the key-exposure problem but still couples reads to the third-party's uptime.
+  - **Build-time fetch into a committed JSON archive** — fast, cacheable, transparent, survives API outages.
+- **Choice**: A prebuild script (`scripts/fetch-press.mjs`) hits The News API (`/v1/news/all?search=raging+grannies`), dedupes by normalised title against `data/press-clippings.json` (lowercase + strip punctuation/whitespace), merges, sorts newest-first, and writes back. The Press page (`src/pages/press.astro`) reads the JSON at build time and renders a year-grouped list. Both are wired into npm's `prebuild` chain ahead of the songsheet generator.
+- **Failure semantics**: missing API key, network error, non-2xx response, or malformed payload → log a warning and exit 0. The page renders from whatever's already on file. The build never breaks because of a third-party.
+- **Archive shape**: `{ title, source, url, published_at (YYYY-MM-DD), snippet, image_url, fetched_at }`. `source` is whatever The News API returns (currently a domain like `cbc.ca`); we may map to friendly names later.
+- **Storage**: `data/press-clippings.json` is committed. Cron / scheduled GitHub Action work is left for a follow-up — for now the archive grows as Maya runs prebuild locally and pushes; the build on Cloudflare Pages also fetches but won't auto-commit.
+- **Privacy / cost**: only the public title/URL/snippet are stored. Rate limits and quota are managed by the API key in `THENEWSAPI_KEY` (env var, never committed).
+- **UI**: page title "In the News", subtitle "What they're saying about us", year-grouped list when the archive spans multiple years (otherwise a flat list). Each row links to the original article in a new tab; thumbnails render only when `image_url` is present, with `onerror` collapsing the slot if the image 404s. Bulletin design language preserved (clippings-desk top bar, live-feed pill, dark Press Kit aside, foot note). Header nav now reads "In the News" instead of "Press".
+- **Revisit if**: rate limits or article volume push us off The News API's free tier (then evaluate NewsAPI.org / GDELT / a custom scraper); OR the build-time fetch starts adding noticeable latency to CF Pages builds (cache by `etag` or `if-modified-since` and only re-fetch when changed); OR we want to add per-source friendly names (build a `domain → publication` map alongside the archive).
+
 ---
 
 ## Open decisions (not yet resolved)
