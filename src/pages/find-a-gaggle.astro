@@ -245,6 +245,18 @@ const mapPayload = JSON.stringify(
     #gaggle-map .leaflet-tile-pane {
       filter: sepia(0.35) saturate(0.78) brightness(1.04) hue-rotate(-12deg);
     }
+    /* Overlay an ink-tinted multiply layer so dark linework (roads, borders,
+       coastlines) leans toward --color-ink while the cream background stays
+       cream. Sits inside the tile pane so it never covers markers or
+       popups (those live in higher-z panes). */
+    #gaggle-map .leaflet-tile-pane::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(42, 24, 71, 0.28);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
     @media (max-width: 720px) {
       #gaggle-map { height: 340px; }
     }
