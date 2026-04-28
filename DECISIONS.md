@@ -398,7 +398,7 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
   - **Cloudflare Turnstile** widget renders client-side; visitor solves the (usually invisible) challenge; Turnstile returns a token; WP verifies the token server-side against `https://challenges.cloudflare.com/turnstile/v0/siteverify` using `IRG_TURNSTILE_SECRET` (defined in wp-config.php). Free, replaces reCAPTCHA, native to the CF account we already have.
   - **Honeypot field** (visually hidden, screen-reader hidden, `tabindex=-1`) — bots that fill every input get caught. The endpoint silently returns `{ ok: true }` so they don't learn which field tripped them.
   - **Hard limits**: name ≤ 200 chars, message ≤ 8000 chars; `is_email()` validation; `sanitize_text_field()` on name; `wp_strip_all_tags()` on subject; trimmed message body.
-- **CORS**: `rest_pre_serve_request` filter sets `Access-Control-Allow-Origin` only for `raginggrannies.org` (and `www.`), `*.pages.dev` previews, and `localhost`. Other origins get no header (browser blocks the response).
+- **CORS**: `rest_pre_serve_request` filter sets `Access-Control-Allow-Origin` only for the three eventual public domains (`raginggrannies.org`, `raginggrannies.net`, `raginggrannies.international`, with and without `www.`), `*.pages.dev` previews, and `localhost`. Other origins get no header (browser blocks the response).
 - **Destination**: hardcoded `IRG_CONTACT_TO = press@raginggrannies.org`. Prevents the endpoint from being repurposed as an open relay. When per-topic addresses arrive, the constant becomes a routing table.
 - **Setup checklist** (one-time, by Maya):
   1. Cloudflare dashboard → Turnstile → Add site (domains: `raginggrannies.org`, plus the `*.pages.dev` preview and `localhost` for dev). Mode: Managed.

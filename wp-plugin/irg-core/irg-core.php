@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.7.0
+ * Version: 3.7.1
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -1063,6 +1063,10 @@ function irg_contact_origin_allowed( string $origin ): bool {
 	$allowlist = [
 		'https://raginggrannies.org',
 		'https://www.raginggrannies.org',
+		'https://raginggrannies.net',
+		'https://www.raginggrannies.net',
+		'https://raginggrannies.international',
+		'https://www.raginggrannies.international',
 	];
 	if ( in_array( $origin, $allowlist, true ) ) {
 		return true;
