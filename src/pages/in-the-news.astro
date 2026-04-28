@@ -1,0 +1,531 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { readFileSync, existsSync } from "node:fs";
+import { resolve } from "node:path";
+
+interface Clipping {
+  title: string;
+  source: string;
+  url: string;
+  published_at: string;
+  snippet: string;
+  image_url: string | null;
+  fetched_at: string;
+}
+
+const ARCHIVE = resolve(process.cwd(), "data/press-clippings.json");
+let items: Clipping[] = [];
+if (existsSync(ARCHIVE)) {
+  try {
+    const raw = JSON.parse(readFileSync(ARCHIVE, "utf8"));
+    if (Array.isArray(raw)) items = raw as Clipping[];
+  } catch {
+    items = [];
+  }
+}
+items.sort((a, b) => (b.published_at || "").localeCompare(a.published_at || ""));
+
+const totalCount = items.length;
+const itemsJson = JSON.stringify(items);
+
+const latest = items[0];
+let liveLabel = "";
+if (latest) {
+  const days = Math.floor(
+    (Date.now() - new Date(latest.published_at + "T00:00:00").getTime()) / 86_400_000,
+  );
+  liveLabel =
+    days <= 0
+      ? "today"
+      : days === 1
+        ? "yesterday"
+        : days < 30
+          ? `${days} days ago`
+          : days < 365
+            ? `${Math.floor(days / 30)} month${Math.floor(days / 30) === 1 ? "" : "s"} ago`
+            : `${Math.floor(days / 365)} year${Math.floor(days / 365) === 1 ? "" : "s"} ago`;
+}
+---
+
+<BaseLayout title="In the News">
+  <article class="press-page">
+    <section class="bg-paper border-b-[3px] border-double border-ink">
+      <div class="max-w-[1240px] mx-auto px-10 pt-12 pb-12">
+        <div class="flex justify-between gap-6 flex-wrap text-muted font-bold text-xs tracking-[.12em] uppercase border-b border-rule pb-3.5 mb-9">
+          <span>The Clippings Desk</span>
+          <span>Auto-fetched</span>
+          <span>{totalCount} {totalCount === 1 ? "story" : "stories"} on file</span>
+        </div>
+
+        <div class="press-grid">
+          {/* Left: title + dek + live + search + list + foot */}
+          <div>
+            <div class="kicker text-red mb-4">Press &amp; Coverage</div>
+            <h1 class="font-display text-ink leading-[.92] tracking-tight" style="font-size:clamp(56px,8vw,112px)">
+              In the News
+            </h1>
+            <p class="text-[20px] leading-[1.5] text-text mt-5 max-w-[56ch]">
+              What are they saying about us? We've got every mention of <em class="text-ink not-italic font-semibold italic">Raging Grannies</em>, clipped from the news and stacked newest first. If something's missing, <a href="/contact/" class="press-inline-link">send it our way</a>.
+            </p>
+
+            {latest && (
+              <div class="press-live mt-7">
+                <span class="press-live-dot" aria-hidden="true"></span>
+                <span>
+                  <b class="text-ink font-extrabold">Live feed.</b>
+                  Latest clipping added {liveLabel} — <em class="text-ink-soft italic font-semibold">{latest.source}</em>.
+                </span>
+              </div>
+            )}
+
+            {/* Search */}
+            <div id="press-search-area" class="mt-10">
+              <div class="press-search">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 text-muted flex-none" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+                <input type="text" id="press-search-input" placeholder="Search headlines, source, or snippet…" />
+                <button id="press-search-clear" class="hidden text-red font-extrabold text-[13px] px-2 py-1 bg-transparent border-0 cursor-pointer">Clear</button>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-baseline font-extrabold text-xs tracking-[.12em] uppercase text-muted mt-5 mb-4">
+              <span id="press-count"></span>
+              <span id="press-page-info"></span>
+            </div>
+
+            {/* Empty state for SSR / no-JS */}
+            {items.length === 0 && (
+              <div class="text-center py-16 px-10 bg-paper-2 border border-dashed border-rule rounded-[10px] grid gap-2 max-w-[640px] mx-auto" id="press-empty-static">
+                <b class="font-display text-ink text-[28px] font-normal">No clippings yet.</b>
+                <span class="text-[15px] text-text-soft">The alert bot hasn't found anything matching <em>"Raging Grannies"</em> yet. Check back soon.</span>
+              </div>
+            )}
+
+            <div id="press-empty" class="hidden text-center py-12 px-8 bg-paper-2 border border-dashed border-rule rounded-[10px] grid gap-2 my-6">
+              <b class="font-display text-ink text-[24px] font-normal">No matches.</b>
+              <span class="text-[14px] text-text-soft">Nothing matches that search. Try a different word.</span>
+            </div>
+
+            <div id="press-groups"></div>
+
+            <div id="press-pager" class="hidden justify-between items-center mt-10 gap-4 flex-wrap">
+              <span id="press-pager-info" class="text-sm text-muted"></span>
+              <div class="flex gap-2">
+                <button id="press-prev" class="btn-mini" type="button">← Previous</button>
+                <button id="press-next" class="btn-mini" type="button">Next →</button>
+              </div>
+            </div>
+
+            <div class="press-foot-note mt-14">
+              <b class="text-ink font-extrabold">News about the Raging Grannies</b> is curated from online sources. No editors, no curated narrative. Just what the press is saying.
+            </div>
+          </div>
+
+          {/* Right: photo + press kit */}
+          <aside>
+            <figure class="press-hero-photo">
+              <img src="/granny-movement.jpg" alt="A Raging Grannies gaggle posed in front of a state capitol" class="w-full h-[220px] object-cover" style="filter:saturate(.9) contrast(1.02)" />
+              <figcaption class="font-bold text-[11px] tracking-[.08em] uppercase text-ink text-center py-3 px-1">
+                The Madison gaggle, post-rally · 2025
+              </figcaption>
+            </figure>
+
+            <div class="bg-ink text-on-dark p-7 pt-7 pb-6 rounded-[10px] mt-5">
+              <div class="kicker text-mustard mb-2">For Journalists</div>
+              <div class="font-display text-on-dark text-[40px] leading-none mb-5">Press Kit</div>
+              <ul class="list-none p-0 m-0 grid gap-0.5 mb-5">
+                <li><a href="#" class="press-kit-link">Photography (CC-BY) <span aria-hidden="true">→</span></a></li>
+                <li><a href="#" class="press-kit-link">Fact sheet &amp; timeline <span aria-hidden="true">→</span></a></li>
+                <li><a href="#" class="press-kit-link">Spokesperson directory <span aria-hidden="true">→</span></a></li>
+              </ul>
+              <div class="pt-4 border-t border-white/15">
+                <div class="font-bold text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-1.5">Media inquiries</div>
+                <a href="mailto:press@raginggrannies.org" class="press-kit-mail">press@raginggrannies.org</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <script define:vars={{ itemsJson }}>
+    const ALL = JSON.parse(itemsJson);
+    const PER_PAGE = 10;
+
+    const $ = (s) => document.querySelector(s);
+    const searchInput = $("#press-search-input");
+    const clearBtn = $("#press-search-clear");
+    const searchArea = $("#press-search-area");
+    const countEl = $("#press-count");
+    const pageInfoEl = $("#press-page-info");
+    const groupsEl = $("#press-groups");
+    const emptyEl = $("#press-empty");
+    const pagerEl = $("#press-pager");
+    const pagerInfoEl = $("#press-pager-info");
+    const prevBtn = $("#press-prev");
+    const nextBtn = $("#press-next");
+
+    let state = { q: "", page: 1 };
+
+    function escAttr(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+    function escHtml(s) { return escAttr(s); }
+    function fmtDate(iso) {
+      return new Date(iso + "T00:00:00").toLocaleDateString("en-US", {
+        month: "long", day: "numeric", year: "numeric",
+      });
+    }
+    function yearOf(iso) { return (iso || "").slice(0, 4) || ""; }
+
+    function applySearch() {
+      if (!state.q) return ALL;
+      const q = state.q.toLowerCase();
+      return ALL.filter((i) => {
+        const hay = ((i.title || "") + " " + (i.source || "") + " " + (i.snippet || "")).toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    function render() {
+      const filtered = applySearch();
+      const total = filtered.length;
+      const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
+      if (state.page > totalPages) state.page = totalPages;
+      const start = (state.page - 1) * PER_PAGE;
+      const pageItems = filtered.slice(start, start + PER_PAGE);
+
+      countEl.textContent = total === 0 ? "" : `${total} clipping${total === 1 ? "" : "s"}`;
+      pageInfoEl.textContent = total === 0 ? "" : `Showing ${start + 1}–${Math.min(start + PER_PAGE, total)}`;
+      clearBtn.classList.toggle("hidden", !state.q);
+
+      if (total === 0) {
+        groupsEl.innerHTML = "";
+        emptyEl.classList.remove("hidden");
+        emptyEl.classList.add("grid");
+        pagerEl.classList.add("hidden");
+        pagerEl.classList.remove("flex");
+        return;
+      }
+
+      emptyEl.classList.add("hidden");
+      emptyEl.classList.remove("grid");
+
+      // Group rendered page items by year (cross-year groupings can appear on a single page).
+      const yearsInPage = new Set(pageItems.map((i) => yearOf(i.published_at)));
+      const yearsTotal = new Set(filtered.map((i) => yearOf(i.published_at)));
+      const showYearHeads = yearsTotal.size > 1;
+
+      const groups = [];
+      let cur = null;
+      for (const item of pageItems) {
+        const y = yearOf(item.published_at);
+        if (!cur || cur.year !== y) {
+          cur = { year: y, items: [] };
+          groups.push(cur);
+        }
+        cur.items.push(item);
+      }
+
+      let html = "";
+      for (const g of groups) {
+        if (showYearHeads && g.year) {
+          html += `<div class="press-group-head"><h3 class="press-group-title">${escHtml(g.year)}</h3></div>`;
+        }
+        html += `<ol class="press-list">${g.items.map(renderItem).join("")}</ol>`;
+      }
+      groupsEl.innerHTML = html;
+
+      // Pager
+      if (totalPages > 1) {
+        pagerEl.classList.remove("hidden");
+        pagerEl.classList.add("flex");
+        pagerInfoEl.textContent = `Page ${state.page} of ${totalPages}`;
+        prevBtn.disabled = state.page <= 1;
+        nextBtn.disabled = state.page >= totalPages;
+      } else {
+        pagerEl.classList.add("hidden");
+        pagerEl.classList.remove("flex");
+      }
+    }
+
+    function renderItem(i) {
+      const thumb = i.image_url
+        ? `<div class="press-item-thumb"><img src="${escAttr(i.image_url)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'" /></div>`
+        : "";
+      const snippet = i.snippet ? `<p class="press-item-snippet">${escHtml(i.snippet)}</p>` : "";
+      return `
+        <li class="press-item">
+          <a href="${escAttr(i.url)}" target="_blank" rel="noopener" class="press-item-link">
+            <div class="press-item-row">
+              <div class="press-item-text">
+                <div class="press-item-meta">
+                  <span class="press-source">${escHtml(i.source)}</span>
+                  <span class="press-dot-sep" aria-hidden="true">·</span>
+                  <time datetime="${escAttr(i.published_at)}">${fmtDate(i.published_at)}</time>
+                </div>
+                <h4 class="press-item-title">${escHtml(i.title)}</h4>
+                ${snippet}
+                <div class="press-item-foot"><span class="press-read">Read at ${escHtml(i.source)} <span aria-hidden="true">→</span></span></div>
+              </div>
+              ${thumb}
+            </div>
+          </a>
+        </li>`;
+    }
+
+    let debounce;
+    searchInput.addEventListener("input", () => {
+      clearTimeout(debounce);
+      debounce = setTimeout(() => {
+        state.q = searchInput.value;
+        state.page = 1;
+        render();
+      }, 160);
+    });
+    clearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      state.q = "";
+      state.page = 1;
+      render();
+    });
+
+    function scrollToList() {
+      const top = searchArea.getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+    prevBtn.addEventListener("click", () => {
+      if (state.page > 1) {
+        state.page--;
+        render();
+        scrollToList();
+      }
+    });
+    nextBtn.addEventListener("click", () => {
+      const total = applySearch().length;
+      const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
+      if (state.page < totalPages) {
+        state.page++;
+        render();
+        scrollToList();
+      }
+    });
+
+    if (ALL.length > 0) render();
+  </script>
+
+  <style>
+    .press-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .press-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    .press-inline-link {
+      color: var(--color-red);
+      border-bottom: 1.5px solid var(--color-red);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .press-inline-link:hover {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+    .press-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px 10px 14px;
+      border: 1px solid var(--color-rule);
+      border-radius: 999px;
+      background: var(--color-paper-2);
+      font-size: 14px;
+      color: var(--color-text);
+    }
+    .press-live-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--color-red);
+      box-shadow: 0 0 0 0 rgba(226, 42, 44, 0.6);
+      animation: press-pulse 2s ease-out infinite;
+    }
+    @keyframes press-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(226, 42, 44, 0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(226, 42, 44, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(226, 42, 44, 0); }
+    }
+
+    .press-hero-photo {
+      margin: 0;
+      padding: 10px 10px 0;
+      background: var(--color-on-dark);
+      transform: rotate(1.4deg);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+    }
+
+    .press-kit-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      color: var(--color-on-dark);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 15px;
+      font-weight: 600;
+      transition: color 0.15s, padding 0.15s;
+    }
+    .press-kit-link:hover {
+      color: var(--color-mustard);
+      padding-left: 4px;
+    }
+    .press-kit-mail {
+      color: var(--color-on-dark);
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.3);
+    }
+    .press-kit-mail:hover {
+      color: var(--color-mustard);
+      border-bottom-color: var(--color-mustard);
+    }
+
+    /* Search */
+    .press-search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 16px;
+      height: 48px;
+      background: var(--color-card);
+      border: 1px solid var(--color-rule);
+      border-radius: 10px;
+    }
+    .press-search input {
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      font: 500 15px/1 var(--font-body);
+      color: var(--color-text);
+    }
+    .press-search input::placeholder { color: var(--color-muted); }
+
+    /* Year headers */
+    .press-group-head {
+      padding-bottom: 12px;
+      margin-top: 36px;
+      margin-bottom: 4px;
+      border-bottom: 2px solid var(--color-red);
+    }
+    .press-group-head:first-child { margin-top: 0; }
+    .press-group-title {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 400;
+      color: var(--color-red);
+      margin: 0;
+      letter-spacing: -0.005em;
+      line-height: 1;
+    }
+
+    /* List */
+    .press-list { list-style: none; padding: 0; margin: 0; }
+    .press-item { border-bottom: 1px solid var(--color-rule); }
+    .press-item-link {
+      display: block;
+      padding: 22px 0 26px;
+      text-decoration: none;
+      color: inherit;
+      transition: padding 0.15s ease;
+    }
+    .press-item-link:hover { padding-left: 12px; }
+    .press-item-link:hover .press-item-title { color: var(--color-red); }
+    .press-item-link:hover .press-read { color: var(--color-red); }
+    .press-item-link:focus-visible {
+      outline: 2px solid var(--color-red);
+      outline-offset: 4px;
+    }
+    .press-item-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+    }
+    .press-item-text { min-width: 0; }
+    .press-item-thumb {
+      width: 120px;
+      height: 80px;
+      overflow: hidden;
+      border-radius: 6px;
+      background: var(--color-paper-2);
+      flex-shrink: 0;
+    }
+    .press-item-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .press-item-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font: 700 13px/1 var(--font-body);
+      color: var(--color-muted);
+      margin-bottom: 8px;
+    }
+    .press-source {
+      color: var(--color-ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 12px;
+    }
+    .press-dot-sep { color: var(--color-rule); }
+    .press-item-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 26px;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin: 0 0 10px;
+      letter-spacing: -0.005em;
+      transition: color 0.15s ease;
+    }
+    .press-item-snippet {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--color-text);
+    }
+    .press-item-foot { margin-top: 12px; }
+    .press-read {
+      font: 700 13px/1 var(--font-body);
+      color: var(--color-text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s ease;
+    }
+
+    @media (max-width: 720px) {
+      .press-item-row { grid-template-columns: 1fr; }
+      .press-item-thumb { width: 100%; height: 180px; }
+    }
+
+    .press-foot-note {
+      padding: 22px 28px;
+      background: var(--color-paper-2);
+      border-left: 3px solid var(--color-ink-soft);
+      border-radius: 0 10px 10px 0;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--color-text-soft);
+    }
+  </style>
+</BaseLayout>
