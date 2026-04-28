@@ -1,0 +1,56 @@
+name: Fetch press clippings
+
+# Daily run that pulls new "Raging Grannies" coverage from The News API
+# (via scripts/fetch-press.mjs) and commits any new entries to
+# data/press-clippings.json. The push triggers Cloudflare Pages to
+# rebuild the site, which is how the new clippings end up on
+# /in-the-news/.
+#
+# Failure-tolerant: the script catches all API errors and exits 0, so
+# this workflow only commits when there's a real diff. Quiet days are
+# no-ops.
+
+on:
+  schedule:
+    # 13:17 UTC daily (~6 AM Pacific / 9 AM Eastern). Off-the-hour to
+    # avoid the at-the-top-of-hour cron rush on GitHub's runners.
+    - cron: "17 13 * * *"
+  workflow_dispatch: # allow ad-hoc runs from the Actions tab
+
+permissions:
+  contents: write # needed to commit the updated archive
+
+concurrency:
+  group: fetch-press
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run fetch-press.mjs
+        env:
+          THENEWSAPI_KEY: ${{ secrets.THENEWSAPI_KEY }}
+        run: node scripts/fetch-press.mjs
+
+      - name: Commit if archive changed
+        run: |
+          if git diff --quiet data/press-clippings.json; then
+            echo "No new clippings — archive unchanged."
+            exit 0
+          fi
+          git config user.name "irg-press-bot"
+          git config user.email "press-bot@users.noreply.github.com"
+          git add data/press-clippings.json
+          # Quote count of new entries from the diff for the commit body.
+          NEW_COUNT=$(git diff --cached --shortstat data/press-clippings.json | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo "?")
+          git commit -m "chore(press): auto-fetch new clippings" -m "Lines added: $NEW_COUNT (commit by GitHub Actions)."
+          git push
