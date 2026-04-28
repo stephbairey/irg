@@ -237,6 +237,13 @@ const mapPayload = JSON.stringify(
     #gaggle-map {
       height: 560px;
       width: 100%;
+      background: var(--color-paper-2);
+    }
+    /* Tint the tile layer toward the site's warm-paper palette. The filter
+       only touches raster tiles; markers, popups, and the attribution stay
+       crisp. Tweak sepia/hue-rotate/saturate to taste. */
+    #gaggle-map .leaflet-tile-pane {
+      filter: sepia(0.35) saturate(0.78) brightness(1.04) hue-rotate(-12deg);
     }
     @media (max-width: 720px) {
       #gaggle-map { height: 340px; }
