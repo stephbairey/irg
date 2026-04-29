@@ -29,22 +29,146 @@ const path = Astro.url.pathname;
     <!-- Header -->
     <header class="sticky top-0 z-50 border-b-[1.5px] border-rule bg-paper" style="backdrop-filter:saturate(1.1)">
       <div class="flex justify-between items-center max-w-[1400px] mx-auto px-8 py-4">
-        <a href="/" class="flex items-center gap-3 no-underline text-ink">
+        <a href="/" class="flex items-center gap-3 no-underline text-ink" aria-label="Raging Grannies International, Home">
           <img src="/logo-cropped.svg" alt="" class="w-[38px] h-[38px] object-contain" />
           <div>
             <span class="font-display text-2xl leading-none text-ink block">Raging Grannies</span>
             <span class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-muted block mt-1">International Network · Est. 1987</span>
           </div>
         </a>
-        <nav aria-label="Main" class="flex items-center gap-7">
+
+        {/* Desktop nav: visible at md+ */}
+        <nav aria-label="Main" class="hidden md:flex items-center gap-7">
           <a href="/about/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/about") ? "text-red" : "text-text"]}>About</a>
           <a href="/in-the-news/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/in-the-news") || path.startsWith("/photos") ? "text-red" : "text-text"]}>In the News</a>
           <a href="/find-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/find-a-gaggle") ? "text-red" : "text-text"]}>Find a Gaggle</a>
           <a href="/start-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/start-a-gaggle") ? "text-red" : "text-text"]}>Start One</a>
           <a href="/songs/" class="px-[18px] py-[10px] rounded-full text-sm font-bold no-underline transition-colors text-white bg-red hover:bg-ink-soft">Songs</a>
         </nav>
+
+        {/* Mobile hamburger: visible below md */}
+        <button
+          id="nav-toggle"
+          class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-md text-ink hover:bg-paper-2 transition-colors"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <svg class="nav-toggle-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
+          </svg>
+          <svg class="nav-toggle-close hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="6" y1="6" x2="18" y2="18" />
+            <line x1="18" y1="6" x2="6" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile menu drawer: slides down from header on toggle */}
+      <div
+        id="mobile-menu"
+        class="md:hidden hidden bg-paper border-t border-rule"
+        aria-hidden="true"
+      >
+        <nav aria-label="Mobile" class="max-w-[1400px] mx-auto px-8 py-4 grid gap-1">
+          <a href="/about/" class:list={["mobile-link", path.startsWith("/about") && "is-active"]}>About</a>
+          <a href="/in-the-news/" class:list={["mobile-link", (path.startsWith("/in-the-news") || path.startsWith("/photos")) && "is-active"]}>In the News</a>
+          <a href="/find-a-gaggle/" class:list={["mobile-link", path.startsWith("/find-a-gaggle") && "is-active"]}>Find a Gaggle</a>
+          <a href="/start-a-gaggle/" class:list={["mobile-link", path.startsWith("/start-a-gaggle") && "is-active"]}>Start One</a>
+          <a href="/songs/" class:list={["mobile-link mobile-link-pill", path.startsWith("/songs") && "is-active"]}>Songs</a>
+        </nav>
       </div>
     </header>
+
+    <script>
+      // Mobile nav toggle. Vanilla JS, no deps. Closes on link tap, on Escape,
+      // and when the viewport grows past the md breakpoint.
+      (() => {
+        const btn = document.getElementById("nav-toggle");
+        const menu = document.getElementById("mobile-menu");
+        if (!btn || !menu) return;
+
+        const iconOpen = btn.querySelector(".nav-toggle-open");
+        const iconClose = btn.querySelector(".nav-toggle-close");
+
+        function setOpen(open) {
+          btn.setAttribute("aria-expanded", open ? "true" : "false");
+          btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+          menu.classList.toggle("hidden", !open);
+          menu.setAttribute("aria-hidden", open ? "false" : "true");
+          iconOpen?.classList.toggle("hidden", open);
+          iconClose?.classList.toggle("hidden", !open);
+          document.body.style.overflow = open ? "hidden" : "";
+        }
+
+        btn.addEventListener("click", () => {
+          const open = btn.getAttribute("aria-expanded") === "true";
+          setOpen(!open);
+        });
+
+        // Tap a link → close (then the browser navigates).
+        menu.addEventListener("click", (e) => {
+          const target = e.target;
+          if (target instanceof HTMLAnchorElement) setOpen(false);
+        });
+
+        // Escape closes.
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && btn.getAttribute("aria-expanded") === "true") {
+            setOpen(false);
+            btn.focus();
+          }
+        });
+
+        // If user resizes/rotates above md, force-close so state stays sane.
+        const mq = window.matchMedia("(min-width: 768px)");
+        mq.addEventListener("change", (e) => {
+          if (e.matches) setOpen(false);
+        });
+      })();
+    </script>
+
+    <style>
+      /* Mobile menu links — match Bulletin language: cream bg, deep purple
+         text, brand-red accent on hover and active route. */
+      .mobile-link {
+        display: block;
+        padding: 14px 12px;
+        font-family: var(--font-body);
+        font-weight: 800;
+        font-size: 17px;
+        color: var(--color-text);
+        text-decoration: none;
+        border-bottom: 1px solid var(--color-rule);
+        transition: color 0.15s ease, padding 0.15s ease;
+      }
+      .mobile-link:last-child { border-bottom: 0; }
+      .mobile-link:hover, .mobile-link:focus-visible {
+        color: var(--color-red);
+        padding-left: 18px;
+        outline: none;
+      }
+      .mobile-link.is-active { color: var(--color-red); }
+      /* Songs link styled as a pill in the mobile menu, matching desktop. */
+      .mobile-link-pill {
+        align-self: start;
+        margin-top: 8px;
+        padding: 12px 18px;
+        background: var(--color-red);
+        color: #fff;
+        border: 0;
+        border-radius: 999px;
+        text-align: center;
+      }
+      .mobile-link-pill:hover, .mobile-link-pill:focus-visible {
+        background: var(--color-ink-soft);
+        color: #fff;
+        padding-left: 18px;
+      }
+    </style>
 
     <slot />
 
@@ -63,7 +187,7 @@ const path = Astro.url.pathname;
         </div>
         <!-- Songs column -->
         <div>
-          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">The Songs</h4>
+          <h2 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4 m-0">The Songs</h2>
           <ul class="space-y-2 text-[15px]">
             <li><a href="/songs/" class="text-on-dark no-underline hover:text-red">Browse</a></li>
             <li><a href="/songs/by-issue/" class="text-on-dark no-underline hover:text-red">By issue</a></li>
@@ -73,7 +197,7 @@ const path = Astro.url.pathname;
         </div>
         <!-- About column -->
         <div>
-          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">About Us</h4>
+          <h2 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4 m-0">About Us</h2>
           <ul class="space-y-2 text-[15px]">
             <li><a href="/about/" class="text-on-dark no-underline hover:text-red">About</a></li>
             <li><a href="/herstory/" class="text-on-dark no-underline hover:text-red">Herstory</a></li>
@@ -83,7 +207,7 @@ const path = Astro.url.pathname;
         </div>
         <!-- Media column -->
         <div>
-          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">Media</h4>
+          <h2 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4 m-0">Media</h2>
           <ul class="space-y-2 text-[15px]">
             <li><a href="/photos/" class="text-on-dark no-underline hover:text-red">Photos</a></li>
             <li><a href="/videos/" class="text-on-dark no-underline hover:text-red">Videos</a></li>
@@ -93,7 +217,7 @@ const path = Astro.url.pathname;
         </div>
         <!-- Connect column -->
         <div>
-          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">Connect</h4>
+          <h2 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4 m-0">Connect</h2>
           <ul class="space-y-2 text-[15px]">
             <li><a href="/contact/" class="text-on-dark no-underline hover:text-red">Contact</a></li>
             <li><a href="/ask/" class="text-on-dark no-underline hover:text-red">Ask a question</a></li>

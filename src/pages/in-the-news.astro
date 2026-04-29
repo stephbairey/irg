@@ -230,7 +230,7 @@ if (latest) {
       let html = "";
       for (const g of groups) {
         if (showYearHeads && g.year) {
-          html += `<div class="press-group-head"><h3 class="press-group-title">${escHtml(g.year)}</h3></div>`;
+          html += `<div class="press-group-head"><h2 class="press-group-title">${escHtml(g.year)}</h2></div>`;
         }
         html += `<ol class="press-list">${g.items.map(renderItem).join("")}</ol>`;
       }
@@ -264,7 +264,7 @@ if (latest) {
                   <span class="press-dot-sep" aria-hidden="true">·</span>
                   <time datetime="${escAttr(i.published_at)}">${fmtDate(i.published_at)}</time>
                 </div>
-                <h4 class="press-item-title">${escHtml(i.title)}</h4>
+                <h3 class="press-item-title">${escHtml(i.title)}</h3>
                 ${snippet}
                 <div class="press-item-foot"><span class="press-read">Read at ${escHtml(i.source)} <span aria-hidden="true">→</span></span></div>
               </div>
