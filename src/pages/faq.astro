@@ -1,0 +1,226 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+type QA = { q: string; a: string };
+type Section = { id: string; title: string; intro: string; items: QA[] };
+
+const sections: Section[] = [
+  {
+    id: "joining",
+    title: "Joining a Gaggle",
+    intro: "Who can be a Raging Granny, and how to find or start a group near you.",
+    items: [
+      {
+        q: "Do I have to be a grandmother?",
+        a: `Nope. "Granny" is a state of mind. You don't need grandchildren, and you don't even need children. You just need to care about the world they're inheriting.`,
+      },
+      {
+        q: "Can men join?",
+        a: `This varies by gaggle. A few welcome men, but most limit membership to women. There's real power in subverting the stereotype of the quiet, harmless grandmother, and that's a big part of why we're effective. If your local gaggle is women-only and you're a man who wants to support the cause, we love a good audience.`,
+      },
+      {
+        q: "How do I find a gaggle near me?",
+        a: `Check the map on our <a href="/find-a-gaggle/">Find a Gaggle</a> page. If there isn't one nearby, keep reading. The next question is for you.`,
+      },
+      {
+        q: "Is there an age requirement?",
+        a: `Most gaggles set 50 as the floor. The granny figure is a parody of the sweet little old lady stereotype, and the costume reads best on women who can credibly play the part. What matters more than the number is the willingness to put on a hat and sing in public.`,
+      },
+    ],
+  },
+  {
+    id: "how-gaggles-work",
+    title: "How Gaggles Work",
+    intro: "There's no head office. Here's what we mean when we say that.",
+    items: [
+      {
+        q: "Is there a central organization?",
+        a: `No, and that's on purpose. Each gaggle is fully autonomous. The international network is deliberately disorganized: no dues, no bylaws, no central committee. We're more of a shared spirit than an organization.`,
+      },
+      {
+        q: "How do I start a gaggle?",
+        a: `All it takes is a few good women of that certain age, a shared sense of outrage, and the willingness to get out there and sing about it. We have a full <a href="/start-a-gaggle/">Starter Kit</a> with everything you need: how to pick your issues, write your songs, find your granny garb, and get raging.`,
+      },
+      {
+        q: "Are there meetings? Officers? Bylaws?",
+        a: `Most gaggles meet regularly to rehearse and plan actions, but how they organize is entirely up to them. Some rotate facilitation, some have a designated convenor, some just show up. Nobody has to file paperwork with anyone. The one thing we do have in common is that we make decisions by consensus, free from hierarchical leadership.`,
+      },
+      {
+        q: "Do the Raging Grannies take donations?",
+        a: `The international network does not. Most gaggles operate informally and self-fund through their members. If you want to support the work, support the issues we're singing about.`,
+      },
+    ],
+  },
+  {
+    id: "songs",
+    title: "Songs and Performances",
+    intro: "About the songbook, who wrote what, and what we sing in public.",
+    items: [
+      {
+        q: "Where do the songs come from?",
+        a: `We write them ourselves, almost without exception. We set our lyrics to familiar tunes (lullabies, hymns, pop songs, folk standards) so audiences pick up the melody immediately and the satire lands. Some songs travel between gaggles; many stay local to the issue and town that birthed them.`,
+      },
+      {
+        q: "Why parody songs instead of original music?",
+        a: `Two reasons. First, a familiar tune means we don't burn rehearsal time we'd rather spend protesting. Second, the contrast between a tune the audience loves and lyrics that name the thing nobody wants to name is exactly what makes the joke work.`,
+      },
+      {
+        q: "What's the song library on this site?",
+        a: `Our <a href="/songs/">Song Library</a> is a collection of nearly 1,500 songs written by Raging Grannies from gaggles all over the world. You can search by issue, by gaggle, or by tune, and every song has a printable songsheet you can download and bring to your next action. Think of it as our shared arsenal, one verse at a time.`,
+      },
+      {
+        q: "Can I use a Raging Grannies song at my own event?",
+        a: `Yes, with credit. Our songs are part of an activist commons. Alter the lyrics to fit your situation, swap in your local issue, change the city name. That's the tradition.`,
+      },
+      {
+        q: "Do you record albums or sell music?",
+        a: `Mostly no. We're a live, in-public form, and the songbook is the durable artifact. A handful of gaggles have made recordings over the years; most haven't bothered.`,
+      },
+      {
+        q: "How do I submit a song I wrote?",
+        a: `Song submissions are open to Raging Grannies only. Head to our <a href="/submit/">Submit a Song</a> page for details and access.`,
+      },
+    ],
+  },
+  {
+    id: "issues",
+    title: "Issues and Politics",
+    intro: "Where we stand and where we don't.",
+    items: [
+      {
+        q: "What issues do the Raging Grannies sing about?",
+        a: `Whatever needs raging about. Peace and anti-militarism (the founding issue), the environment and climate, healthcare, reproductive rights, racism, economic inequality, ageism, and whatever else needs naming this week. Each gaggle picks its own focus based on what's happening locally.`,
+      },
+      {
+        q: "Are the Raging Grannies affiliated with a political party?",
+        a: `No. We are not a political party and we are not affiliated with one. Individual grannies hold all kinds of political views. What unites us is a commitment to peace, justice, and the belief that ordinary women can make extraordinary noise. We take positions on issues, not personalities.`,
+      },
+      {
+        q: "Are you affiliated with a religion or any other organization?",
+        a: `No. We come from many traditions and none. We sometimes coalition with peace groups, environmental groups, healthcare advocates, and others on specific actions, but the gaggle itself doesn't represent any other body.`,
+      },
+      {
+        q: `Why are the Grannies "Raging"?`,
+        a: `The "raging" in our name refers to creative rage: a combination of deep compassion, concern for the future, and a willingness to confront social issues with wit and perseverance. We rage because we care. And we do it with song, humor, and a flowered hat, because nothing catches people off guard quite like strong lyrics coming from sweet little old ladies.`,
+      },
+      {
+        q: "Do gaggles ever disagree with each other?",
+        a: `Of course. Eighty-plus autonomous groups are not going to march in lockstep, and we wouldn't want them to. When differences come up, consensus is always the goal, both within gaggles and across the network. If two gaggles take different positions on something, that's the network working as designed.`,
+      },
+    ],
+  },
+  {
+    id: "press",
+    title: "Press and Getting Involved",
+    intro: "For journalists, supporters, and the curious.",
+    items: [
+      {
+        q: "I'm a journalist. Who do I contact?",
+        a: `If your story is about a specific gaggle, reach out to that gaggle directly through their page. For questions about the international network, the songbook, or the movement as a whole, use our <a href="/contact/">contact form</a> and we'll route you to a Granny who can speak to it.`,
+      },
+      {
+        q: "Can a gaggle perform at our event?",
+        a: `Most gaggles are happy to come sing if the issue aligns with our work. Reach out to the gaggle nearest you. There's no booking fee, but covering reasonable travel costs is appreciated. Don't expect a polished concert. Expect activism with hats.`,
+      },
+      {
+        q: "I'm not a Granny but I want to support the work. What can I do?",
+        a: `Show up to actions. Share songs and posts. Donate to the local issues we're singing about. Tell your friends. And if you're a woman of that certain age with a sense of humor and a sense of outrage, maybe it's time to stop supporting and start singing.`,
+      },
+      {
+        q: "Can I license a Raging Grannies photo or song for a film, book, or campaign?",
+        a: `Photos belong to whoever took them, so we can't grant rights centrally. For songs, our parody lyrics are usually freely available for nonprofit and educational use with credit. For commercial use, contact the gaggle the song came from.`,
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout title="FAQ">
+  <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-10 border-b border-muted mb-12">
+      <div class="kicker text-red mb-4">Frequently Asked</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(48px,7.5vw,96px)">
+        Questions, mostly
+      </h1>
+      <p class="text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+        The questions we get most, and a few you haven't thought of yet.
+      </p>
+    </header>
+
+    {/* Body */}
+    <div class="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-[220px_1fr] gap-12">
+      {/* Sidebar nav */}
+      <aside class="md:sticky md:top-24 md:self-start">
+        <div class="kicker text-red mb-4">In this FAQ</div>
+        <nav>
+          <ul class="space-y-2.5 text-[15px]">
+            {sections.map((s) => (
+              <li>
+                <a href={`#${s.id}`} class="text-ink no-underline hover:text-red font-[700]">
+                  {s.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+
+      {/* Sections column */}
+      <div>
+        {sections.map((section, i) => (
+          <section id={section.id} class={i === 0 ? "scroll-mt-28" : "scroll-mt-28 mt-16"}>
+            <h2 class="font-display text-ink text-[40px] leading-tight mb-2">{section.title}</h2>
+            <p class="text-text-soft text-[17px] leading-relaxed italic mb-6 max-w-[60ch]">
+              {section.intro}
+            </p>
+
+            <div>
+              {section.items.map((item) => (
+                <details class="border-b border-rule py-5 group">
+                  <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight gap-4">
+                    <span>{item.q}</span>
+                    <span class="text-muted text-xl transition-transform group-open:rotate-180 shrink-0">▾</span>
+                  </summary>
+                  <p
+                    class="mt-4 text-text-soft leading-relaxed text-[17px] faq-prose"
+                    style="max-width:75ch"
+                    set:html={item.a}
+                  />
+                </details>
+              ))}
+            </div>
+          </section>
+        ))}
+
+        {/* Closing CTA */}
+        <section class="mt-20 pt-10 border-t border-muted">
+          <h2 class="font-display text-ink text-[40px] leading-tight mb-4">Still wondering?</h2>
+          <p class="text-text-soft text-[17px] leading-relaxed mb-5" style="max-width:75ch">
+            We don't have a head office, but we do have an inbox. Send us a question and a Granny will get back to you.
+          </p>
+          <a
+            href="/contact/"
+            class="inline-block font-[800] text-red no-underline hover:underline text-[15px]"
+          >
+            Send a question →
+          </a>
+        </section>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .faq-prose :global(a) {
+    color: var(--color-red);
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--color-red);
+    font-weight: 600;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .faq-prose :global(a:hover) {
+    background: var(--color-red);
+    color: var(--color-on-dark);
+  }
+</style>
