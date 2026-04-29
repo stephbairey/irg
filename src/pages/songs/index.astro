@@ -34,10 +34,10 @@ const songsJson = JSON.stringify(
   <section class="pt-14 pb-6 max-w-[1200px] mx-auto px-8">
     <div class="grid grid-cols-[1fr_auto] gap-12 items-end">
       <div>
-        <div class="kicker text-red mb-3">The Songbook · 1987 – 2026</div>
+        <div class="kicker text-red mb-3">The Songbook · 1987-2026</div>
         <h1 class="font-display text-ink leading-[.98] mb-4" style="font-size:clamp(56px,7vw,96px)">The Song Library</h1>
         <p class="text-[19px] text-text-soft max-w-[640px] leading-normal">
-          Every song catalogued by gaggles across four continents — searchable, filterable, printable, and <em class="text-ink">yours to sing</em>.
+          Every song catalogued by gaggles across four continents: searchable, filterable, printable, and <em class="text-ink">yours to sing</em>.
         </p>
       </div>
       <div class="p-[22px_28px] bg-ink text-on-dark rounded-[10px] text-right" style="transform:rotate(1.5deg);box-shadow:var(--shadow-lift)">
@@ -339,9 +339,11 @@ const songsJson = JSON.stringify(
       render();
     });
 
-    // Init from URL params
+    // Init from URL params (supports linking from /songs/by-issue/, /songs/by-tune/, etc.)
     const params = new URLSearchParams(window.location.search);
     if (params.get("issue")) filters.issue = params.get("issue");
+    if (params.get("tune")) filters.tune = params.get("tune");
+    if (params.get("gaggle")) filters.gaggle = params.get("gaggle");
     render();
   </script>
 </BaseLayout>

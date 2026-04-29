@@ -1,0 +1,174 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { fetchAllSongs } from "../../../lib/songs";
+
+const allSongs = await fetchAllSongs();
+
+const counts = new Map<string, number>();
+for (const song of allSongs) {
+  for (const tune of song.tunes.nodes) {
+    counts.set(tune.name, (counts.get(tune.name) ?? 0) + 1);
+  }
+}
+
+const tunes = [...counts.entries()]
+  .map(([name, count]) => ({ name, count }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+// Group by first letter; non-alphabetic leaders fall under "#".
+const groups = new Map<string, { name: string; count: number }[]>();
+for (const t of tunes) {
+  const ch = (t.name.trim().charAt(0) || "#").toUpperCase();
+  const key = /[A-Z]/.test(ch) ? ch : "#";
+  const arr = groups.get(key) ?? [];
+  arr.push(t);
+  groups.set(key, arr);
+}
+
+// Letter index: A–Z then # if present.
+const allKeys = [...groups.keys()];
+const letters = allKeys
+  .filter((k) => k !== "#")
+  .sort();
+if (groups.has("#")) letters.push("#");
+
+const totalTunes = tunes.length;
+const totalSongs = allSongs.length;
+---
+
+<BaseLayout title="Songs by Tune">
+  <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-10 mb-12 border-b border-muted">
+      <div class="kicker text-red mb-4">The Songbook · By Tune</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(48px,7.5vw,96px)">
+        Songs by Tune
+      </h1>
+      <p class="text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+        {totalTunes.toLocaleString()} familiar melodies. {totalSongs.toLocaleString()} sets of new lyrics. Pick a tune and see what we've put to it.
+      </p>
+    </header>
+
+    {/* Letter index — sticky alpha nav */}
+    {letters.length > 0 && (
+      <nav class="tune-letters">
+        {letters.map((l) => (
+          <a href={`#letter-${l}`} class="tune-letter">{l}</a>
+        ))}
+      </nav>
+    )}
+
+    {/* Tune list grouped by letter */}
+    <section class="max-w-[1080px] mx-auto mt-10">
+      {tunes.length === 0 ? (
+        <p class="text-center text-text-soft italic py-16">No tunes catalogued yet.</p>
+      ) : (
+        letters.map((letter) => (
+          <section id={`letter-${letter}`} class="tune-section">
+            <h2 class="tune-letter-heading">{letter}</h2>
+            <div class="tune-grid">
+              {(groups.get(letter) ?? []).map(({ name, count }) => (
+                <a href={`/songs/?tune=${encodeURIComponent(name)}`} class="tune-link">
+                  <span class="tune-name">{name}</span>
+                  <span class="tune-count">{count}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        ))
+      )}
+    </section>
+
+    {/* Back link */}
+    <section class="max-w-[1080px] mx-auto mt-16 text-center">
+      <a href="/songs/" class="font-[800] text-red no-underline hover:underline text-[15px]">
+        ← Back to the full library
+      </a>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  /* Sticky alpha nav */
+  .tune-letters {
+    position: sticky;
+    top: 73px; /* clear the site header */
+    z-index: 30;
+    background: var(--color-paper);
+    border-bottom: 1px solid var(--color-rule);
+    padding: 12px 0;
+    margin: 0 auto;
+    max-width: 1080px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+  }
+  .tune-letter {
+    display: inline-grid;
+    place-items: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 6px;
+    font: 800 13px/1 var(--font-body);
+    color: var(--color-ink);
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-muted);
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .tune-letter:hover {
+    background: var(--color-red);
+    color: var(--color-on-dark);
+    border-color: var(--color-red);
+  }
+
+  .tune-section + .tune-section { margin-top: 36px; }
+  .tune-letter-heading {
+    font-family: var(--font-display);
+    font-size: 64px;
+    line-height: 1;
+    color: var(--color-red);
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--color-red);
+    scroll-margin-top: 130px;
+  }
+
+  .tune-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px 24px;
+  }
+  @media (max-width: 720px) { .tune-grid { grid-template-columns: 1fr; } }
+
+  .tune-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--color-rule);
+    text-decoration: none;
+    transition: background 0.15s ease, padding 0.15s ease;
+  }
+  .tune-link:hover {
+    background: var(--color-paper-2);
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .tune-name {
+    font-family: var(--font-display);
+    font-size: 19px;
+    line-height: 1.2;
+    color: var(--color-ink);
+  }
+  .tune-link:hover .tune-name { color: var(--color-red); }
+  .tune-count {
+    font: 800 11px/1.2 var(--font-body);
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+    flex: none;
+  }
+</style>

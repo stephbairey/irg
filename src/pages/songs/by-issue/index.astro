@@ -1,0 +1,100 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { fetchAllSongs } from "../../../lib/songs";
+
+const allSongs = await fetchAllSongs();
+
+const counts = new Map<string, number>();
+for (const song of allSongs) {
+  for (const issue of song.issues.nodes) {
+    counts.set(issue.name, (counts.get(issue.name) ?? 0) + 1);
+  }
+}
+
+const issues = [...counts.entries()]
+  .map(([name, count]) => ({ name, count }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+const totalIssues = issues.length;
+const totalSongs = allSongs.length;
+---
+
+<BaseLayout title="Songs by Issue">
+  <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-10 mb-12 border-b border-muted">
+      <div class="kicker text-red mb-4">The Songbook · By Issue</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(48px,7.5vw,96px)">
+        Songs by Issue
+      </h1>
+      <p class="text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+        {totalIssues} causes, {totalSongs.toLocaleString()} songs. Pick a fight and find the songs we sing about it.
+      </p>
+    </header>
+
+    {/* Issue grid */}
+    <section class="max-w-[1080px] mx-auto">
+      {issues.length === 0 ? (
+        <p class="text-center text-text-soft italic py-16">No issues catalogued yet.</p>
+      ) : (
+        <div class="issue-grid">
+          {issues.map(({ name, count }) => (
+            <a href={`/songs/?issue=${encodeURIComponent(name)}`} class="issue-card">
+              <span class="issue-name">{name}</span>
+              <span class="issue-count">{count} {count === 1 ? "song" : "songs"}</span>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+
+    {/* Back link */}
+    <section class="max-w-[1080px] mx-auto mt-16 text-center">
+      <a href="/songs/" class="font-[800] text-red no-underline hover:underline text-[15px]">
+        ← Back to the full library
+      </a>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .issue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px) { .issue-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .issue-grid { grid-template-columns: 1fr; } }
+
+  .issue-card {
+    display: block;
+    padding: 22px 22px 20px;
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-muted);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+  .issue-card:hover {
+    background: var(--color-red);
+    border-color: var(--color-red);
+    transform: translateY(-2px);
+  }
+  .issue-name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 24px;
+    line-height: 1.1;
+    color: var(--color-ink);
+    margin-bottom: 6px;
+  }
+  .issue-card:hover .issue-name { color: var(--color-on-dark); }
+  .issue-count {
+    display: block;
+    font: 800 11px/1.2 var(--font-body);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .issue-card:hover .issue-count { color: var(--color-on-dark); opacity: 0.85; }
+</style>
