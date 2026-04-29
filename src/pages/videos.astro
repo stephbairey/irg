@@ -1,0 +1,300 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+type Channel = { name: string; url: string };
+type StateGroup = { state: string; channels: Channel[] };
+type CountryGroup = { country: string; states: StateGroup[] };
+type FeaturedVideo = { gaggle: string; title: string; url: string };
+
+const channels: CountryGroup[] = [
+  {
+    country: "Canada",
+    states: [
+      {
+        state: "Alberta",
+        channels: [
+          { name: "Calgary Raging Grannies", url: "https://youtube.com/@calgaryraginggrannies348" },
+          { name: "Edmonton Raging Grannies", url: "https://youtube.com/@edmontonraginggrannies7789" },
+          { name: "YYC Raging Grannies", url: "https://youtube.com/@YYCRagingGrannies" },
+        ],
+      },
+      {
+        state: "British Columbia",
+        channels: [
+          { name: "Maple Ridge Raging Grannies", url: "https://youtube.com/@mapleridgeraginggrannies2088" },
+          { name: "Raging Grannies Song Site (Gabriola Island)", url: "https://youtube.com/@raginggranniessongsite9758" },
+        ],
+      },
+      {
+        state: "Manitoba",
+        channels: [
+          { name: "Winnipeg Raging Grannies", url: "https://youtube.com/@WinnipegRagingGrannies" },
+        ],
+      },
+      {
+        state: "Ontario",
+        channels: [
+          { name: "Ottawa Raging Grannies", url: "https://youtube.com/@ragingrannies" },
+          { name: "Raging Grannies Chatham-Kent", url: "https://youtube.com/@raginggrannieschatham-kent7526" },
+          { name: "Raging Grannies Niagara", url: "https://youtube.com/@RagingGranniesNiagara" },
+          { name: "Raging Grannies Niagara (@rainggranniesniagara)", url: "https://youtube.com/@rainggranniesniagara" },
+          { name: "Toronto Raging Grannies", url: "https://youtube.com/@torontoraginggrannies" },
+        ],
+      },
+      {
+        state: "Quebec",
+        channels: [
+          { name: "Montreal Raging Grannies", url: "https://youtube.com/@montrealraginggrannies7448" },
+        ],
+      },
+    ],
+  },
+  {
+    country: "United States",
+    states: [
+      {
+        state: "Arizona",
+        channels: [
+          { name: "Raging Grannies Tucson", url: "https://youtube.com/@raginggranniestucson123" },
+          { name: "Raging Grannies Tucson (@raginggrannies5354)", url: "https://youtube.com/@raginggrannies5354" },
+        ],
+      },
+      {
+        state: "Arkansas",
+        channels: [
+          { name: "Raging Grannies NWA", url: "https://youtube.com/@RagingGranniesNWA" },
+        ],
+      },
+      {
+        state: "California",
+        channels: [
+          { name: "Humboldt Raging Grannies", url: "https://youtube.com/@humboldtraginggrannies447" },
+          { name: "Mendocino Raging Grannies", url: "https://youtube.com/@mendocinoraginggrannies7321" },
+          { name: "Raging Grannies Action League (Bay Area)", url: "https://youtube.com/@raginggranniesactionleague6695" },
+          { name: "Raging Grannies (Palo Alto, @raginggrannies1872)", url: "https://youtube.com/@raginggrannies1872" },
+          { name: "Raging Grannies of Tuolumne & Calaveras", url: "https://youtube.com/@RGTC-2025" },
+          { name: "Sacramento Raging Grannies", url: "https://youtube.com/@SacGrannies" },
+        ],
+      },
+      {
+        state: "Florida",
+        channels: [
+          { name: "CFL Raging Grannies", url: "https://youtube.com/@cflraginggrannies1493" },
+          { name: "South FL Raging Grannies", url: "https://youtube.com/@southflraginggrannies1580" },
+        ],
+      },
+      {
+        state: "Maryland",
+        channels: [
+          { name: "Raging Grannies Annapolis", url: "https://youtube.com/@RagingGranniesAnnapolis" },
+        ],
+      },
+      {
+        state: "Massachusetts",
+        channels: [
+          { name: "Western Massachusetts Raging Grannies", url: "https://youtube.com/@westernmassachusettsraging4965" },
+        ],
+      },
+      {
+        state: "New Mexico",
+        channels: [
+          { name: "NM Raging Granny", url: "https://youtube.com/@nmraginggranny4805" },
+        ],
+      },
+      {
+        state: "North Carolina",
+        channels: [
+          { name: "Piedmont Raging Grannies", url: "https://youtube.com/@PiedmontRagingGrannies" },
+        ],
+      },
+      {
+        state: "Oregon",
+        channels: [
+          { name: "Portland Raging Grannies", url: "https://youtube.com/@portlandraginggrannies" },
+          { name: "Raging Grannies Eugene", url: "https://youtube.com/@raginggrannieseugene356" },
+        ],
+      },
+      {
+        state: "Washington",
+        channels: [
+          { name: "Bellingham Raging Grannies", url: "https://youtube.com/@bellinghamraginggrannies5781" },
+          { name: "Seattle Raging Grannies", url: "https://youtube.com/@seattleraginggrannies1552" },
+          { name: "Spokane Raging Grannies", url: "https://youtube.com/@SpokRagingGrans" },
+        ],
+      },
+    ],
+  },
+];
+
+const featured: FeaturedVideo[] = [
+  { gaggle: "NM Raging Granny", title: "Hit the Road, ICE!", url: "https://www.youtube.com/watch?v=k-pDBP9PGN8" },
+  { gaggle: "Piedmont Raging Grannies", title: "Now You've Pissed Off Grandma!", url: "https://www.youtube.com/watch?v=otdWKe3Jv4U" },
+  { gaggle: "Ottawa Raging Grannies", title: "Ottawa Raging Grannies against Prorogation", url: "https://www.youtube.com/watch?v=QeR2BZYT7gM" },
+  { gaggle: "Raging Grannies (Palo Alto)", title: 'Support Iran Deal: "Da Doo Iran Ran Ran"', url: "https://www.youtube.com/watch?v=KcgycFhgZJg" },
+  { gaggle: "Calgary Raging Grannies", title: "The Curriculum Song", url: "https://www.youtube.com/watch?v=MX6FPReAyV8" },
+  { gaggle: "YYC Raging Grannies", title: "Scientists' Lament", url: "https://www.youtube.com/watch?v=fXRwbfNoEB4" },
+  { gaggle: "Portland Raging Grannies", title: "The Raging Granny Can Can", url: "https://www.youtube.com/watch?v=o7FLbxWKz44" },
+  { gaggle: "Seattle Raging Grannies", title: "Capitalism is the Culprit", url: "https://www.youtube.com/watch?v=ktT5CWhCBqU" },
+  { gaggle: "Toronto Raging Grannies", title: "Great Granny Leap", url: "https://www.youtube.com/watch?v=tWwzgdAmcSQ" },
+  { gaggle: "Raging Grannies of Tuolumne & Calaveras", title: "The Climate It Is A-Changing", url: "https://www.youtube.com/watch?v=z-5wIo8WVMQ" },
+];
+
+function ytId(url: string): string {
+  const m = url.match(/(?:v=|\/embed\/|youtu\.be\/)([\w-]{11})/);
+  return m?.[1] ?? "";
+}
+---
+
+<BaseLayout title="Grannies on Camera">
+  <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-10 border-b border-muted mb-14">
+      <div class="kicker text-red mb-4">From the airwaves</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(48px,7.5vw,96px)">
+        Grannies on Camera
+      </h1>
+      <p class="text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+        We've been singing truth to power since 1987, and thanks to the internet, you can hear us from anywhere. Below you'll find YouTube channels from gaggles across the network, plus a few of our favorite performances. Fair warning: we're better at protest than production value.
+      </p>
+    </header>
+
+    {/* Channel directory */}
+    <section class="max-w-[1080px] mx-auto">
+      <div class="kicker text-red mb-2">Directory</div>
+      <h2 class="font-display text-ink text-[40px] leading-tight mb-8">Granny Channels on YouTube</h2>
+
+      {channels.map((country) => (
+        <div class="vid-country">
+          <h3 class="vid-country-title">{country.country}</h3>
+          <div class="vid-grid">
+            {country.states.map((sg) => (
+              <div class="vid-region">
+                <div class="vid-region-name">{sg.state}</div>
+                <ul class="vid-list">
+                  {sg.channels.map((ch) => (
+                    <li>
+                      <a
+                        href={ch.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="vid-link"
+                      >
+                        {ch.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    {/* Featured videos */}
+    <section class="max-w-[860px] mx-auto mt-20 pt-12 border-t border-muted">
+      <div class="kicker text-red mb-2">Greatest hits</div>
+      <h2 class="font-display text-ink text-[40px] leading-tight mb-10">Featured Videos</h2>
+
+      <div class="space-y-16">
+        {featured.map((v) => {
+          const id = ytId(v.url);
+          return (
+            <div>
+              <div class="kicker text-red mb-2">{v.gaggle}</div>
+              <h3 class="font-display text-ink text-[28px] leading-tight mb-5">{v.title}</h3>
+              <div class="vid-embed">
+                {id ? (
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${id}`}
+                    title={`${v.gaggle}: ${v.title}`}
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                ) : (
+                  <a href={v.url} target="_blank" rel="noopener noreferrer" class="vid-fallback">
+                    Watch on YouTube
+                  </a>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  /* Channel directory — mirrors the Find a Gaggle pattern */
+  .vid-country + .vid-country { margin-top: 40px; }
+  .vid-country-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    color: var(--color-ink);
+    margin: 0 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-red);
+  }
+  .vid-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px 36px;
+  }
+  @media (max-width: 900px) { .vid-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .vid-grid { grid-template-columns: 1fr; } }
+  .vid-region-name {
+    font: 800 11px/1.2 var(--font-body);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 8px;
+  }
+  .vid-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 4px;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .vid-link {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .vid-link:hover {
+    color: var(--color-red);
+    border-bottom-color: var(--color-red);
+  }
+
+  /* Featured embeds — 16:9, lazy-loaded, gentle frame in the brand palette */
+  .vid-embed {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-muted);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .vid-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .vid-fallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--color-red);
+    font-weight: 800;
+    text-decoration: underline;
+  }
+</style>
