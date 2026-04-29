@@ -46,7 +46,17 @@ const SONG_FIELDS = `
   tunes { nodes { name } }
 `;
 
-export async function fetchAllSongs(): Promise<Song[]> {
+// Module-level cache: fetchAllSongs paginates through ~1500 songs and is the
+// hottest call on the build (home, /songs/, /songs/by-issue/, /songs/by-tune/,
+// every /songs/[slug] page generation, etc). One process = one fetch.
+let cachedAll: Promise<Song[]> | null = null;
+
+export function fetchAllSongs(): Promise<Song[]> {
+  if (!cachedAll) cachedAll = fetchAllSongsImpl();
+  return cachedAll;
+}
+
+async function fetchAllSongsImpl(): Promise<Song[]> {
   const all: Song[] = [];
   let hasNext = true;
   let cursor: string | null = null;
