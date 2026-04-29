@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 // Single source of truth for the address. Swap when separate aliases exist.
-const EMAIL = "press@raginggrannies.org";
+const EMAIL = "connect@raginggrannies.org";
 
 const TURNSTILE_SITEKEY = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? "";
 const WP_BASE = (import.meta.env.PUBLIC_WP_URL ?? "").replace(/\/$/, "");
@@ -19,12 +19,12 @@ const cards = [
   {
     title: "Web Granny help",
     blurb: "Starting a gaggle and want a website link, a Facebook nudge, or a slot on the directory map? Pass the keyboard to a granny.",
-    href: `mailto:${EMAIL}?subject=${encodeURIComponent("Web Granny — new gaggle")}&body=${encodeURIComponent("Gaggle (working name):\n\nCity / region:\n\nPrimary contact:\n\nWhat we need help with:\n")}`,
+    href: `mailto:${EMAIL}?subject=${encodeURIComponent("Web Granny: new gaggle")}&body=${encodeURIComponent("Gaggle (working name):\n\nCity / region:\n\nPrimary contact:\n\nWhat we need help with:\n")}`,
     cta: "Email the Web Granny",
   },
   {
     title: "Press kit & photos",
-    blurb: "High-resolution photography free for editorial use, plus a fact sheet and timeline. No need to email — it's all on one page.",
+    blurb: "High-resolution photography free for editorial use, plus a fact sheet and timeline. No need to email; it's all on one page.",
     href: "/in-the-news/",
     cta: "Open the press kit",
     internal: true,
@@ -41,7 +41,7 @@ const cards = [
         Contact
       </h1>
       <p class="text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
-        We'd love to hear from you. Drop us a line — a granny on the other end will write back.
+        We'd love to hear from you. Drop us a line, and a granny on the other end will write back.
       </p>
     </header>
 

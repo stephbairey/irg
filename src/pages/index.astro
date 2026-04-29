@@ -51,19 +51,6 @@ const issues = issuesData.issues.nodes
   .sort((a, b) => b.count - a.count);
 const totalSongs = allSongs.length;
 
-const shortTitled = allSongs.filter(
-  (s) => s.title.length <= 12 && s.songDetails?.lyrics,
-);
-const featured = shortTitled.length
-  ? shortTitled[Math.floor(Math.random() * shortTitled.length)]
-  : null;
-
-const gaggleNames = new Set<string>();
-for (const s of allSongs) for (const g of s.gaggles.nodes) gaggleNames.add(g.name);
-const gagglesCount = gaggleNames.size;
-
-const yearsSinging = new Date().getFullYear() - 1987;
-
 function stripHtml(html: string): string {
   return html
     .replace(/&amp;/gi, "&")
@@ -81,6 +68,31 @@ function stripHtml(html: string): string {
     .replace(/&[a-z#0-9]+;/gi, "")
     .trim();
 }
+
+// Pick a random featured song whose lyrics fall within a target word count.
+// Build-time only; runs once per build. If the primary range yields nothing,
+// widen by 10 words on each side and try again.
+function wordCount(html: string): number {
+  return stripHtml(html).split(/\s+/).filter(Boolean).length;
+}
+function pickFeatured(min: number, max: number) {
+  const eligible = allSongs.filter((s) => {
+    const lyrics = s.songDetails?.lyrics;
+    if (!lyrics) return false;
+    const wc = wordCount(lyrics);
+    return wc >= min && wc <= max;
+  });
+  if (eligible.length === 0) return null;
+  return eligible[Math.floor(Math.random() * eligible.length)];
+}
+const featured = pickFeatured(175, 195) ?? pickFeatured(165, 205);
+
+const gaggleNames = new Set<string>();
+for (const s of allSongs) for (const g of s.gaggles.nodes) gaggleNames.add(g.name);
+const gagglesCount = gaggleNames.size;
+
+const yearsSinging = new Date().getFullYear() - 1987;
+
 const featuredLyrics = featured?.songDetails?.lyrics
   ? stripHtml(featured.songDetails.lyrics)
       .split("\n")
@@ -236,16 +248,24 @@ const featuredLyrics = featured?.songDetails?.lyrics
         <div class="kicker text-red mb-3">The network</div>
         <h2 class="font-display text-ink text-[56px] leading-[.98] mb-5">Find Your Gaggle</h2>
         <p class="text-[19px] text-text-soft leading-normal mb-8">
-          Eighty-plus gaggles across the US and Canada, from Victoria to Halifax. Find one near you — or start your own.
+          Eighty-plus gaggles across the US and Canada, from Victoria to Halifax. Find one near you, or start your own.
         </p>
         <div class="flex gap-3 flex-wrap">
-          <a href="#" class="btn btn-primary">Find a gaggle</a>
-          <a href="#" class="btn btn-ghost">Start a gaggle</a>
+          <a href="/find-a-gaggle/" class="btn btn-pill">Find a gaggle</a>
+          <a href="/start-a-gaggle/" class="btn btn-pill">Start a gaggle</a>
         </div>
       </div>
-      <div class="ph-image aspect-[16/10] rounded-xl text-center">
-        Interactive gaggle map — coming soon
-      </div>
+      <a
+        href="/find-a-gaggle/"
+        class="block rounded-xl overflow-hidden border border-muted bg-paper-2 aspect-[16/10] hover:opacity-95 transition-opacity"
+        aria-label="View the full map of gaggles"
+      >
+        <img
+          src="/granny-map.jpg"
+          alt="Map of Raging Grannies gaggles across North America"
+          class="w-full h-full object-cover"
+        />
+      </a>
     </div>
   </section>
 
@@ -264,9 +284,9 @@ const featuredLyrics = featured?.songDetails?.lyrics
         <p class="text-[18px] leading-relaxed text-text max-w-[52ch] mb-5">
           We are not a club, a party, or an organization. We are a loose network of autonomous gaggles united by a shared method: writing satirical songs about the issues that matter and singing them in public.
         </p>
-        <div class="flex gap-6 flex-wrap">
-          <a href="#" class="font-[800] text-red no-underline hover:underline">Read more about us →</a>
-          <a href="#" class="font-[800] text-red no-underline hover:underline">Our philosophy →</a>
+        <div class="flex gap-3 flex-wrap">
+          <a href="/herstory/" class="btn btn-pill-ink">Our herstory</a>
+          <a href="/philosophy/" class="btn btn-pill-ink">Our philosophy</a>
         </div>
       </div>
     </div>
@@ -282,48 +302,73 @@ const featuredLyrics = featured?.songDetails?.lyrics
         </figure>
         <h2 class="font-display text-ink text-[52px] leading-[.95] mt-2.5 mb-3.5">FAQ</h2>
         <p class="text-[16px] text-text-soft leading-relaxed max-w-[32ch] mb-4">
-          The questions we get most — and a few you haven't thought of yet.
+          The questions we get most, and a few you haven't thought of yet.
         </p>
-        <a href="#" class="font-[800] text-red no-underline hover:underline text-sm">See all questions →</a>
       </div>
       <div>
         <details open class="border-b border-rule py-5 group">
           <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight">
-            <span>Do I have to be a grandmother?</span>
+            <span>Do I have to be a grandmother to join?</span>
             <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
           </summary>
-          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] text-[17px]">
-            No. You have to be a woman (broadly defined) willing to put on a hat and sing in public. Many Grannies are grandmothers, but it's not a requirement.
+          <p class="mt-4 text-text-soft leading-relaxed text-[17px]" style="max-width:75ch">
+            Nope. "Granny" is a state of mind. You don't need grandchildren, and you don't even need children. You just need to care about the world they're inheriting.
           </p>
         </details>
         <details class="border-b border-rule py-5 group">
           <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight">
-            <span>Is there a central organization?</span>
+            <span>What issues do the Raging Grannies sing about?</span>
             <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
           </summary>
-          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] text-[17px]">
-            No. Each gaggle is autonomous. The international network is deliberately disorganized — there are no dues, no bylaws, and no central committee.
+          <p class="mt-4 text-text-soft leading-relaxed text-[17px]" style="max-width:75ch">
+            Whatever needs raging about. Peace and anti-militarism (the founding issue), the environment and climate, healthcare, reproductive rights, racism, economic inequality, ageism, and whatever else needs naming this week. Each gaggle picks its own focus based on what's happening locally.
           </p>
         </details>
         <details class="border-b border-rule py-5 group">
           <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight">
-            <span>How do I start a gaggle?</span>
+            <span>How do I find a gaggle near me?</span>
             <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
           </summary>
-          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] text-[17px]">
-            Find two or more like-minded women, pick an issue, write a song (or borrow one from the songbook), put on hats, and show up somewhere. That's it.
+          <p class="mt-4 text-text-soft leading-relaxed text-[17px] faq-prose" style="max-width:75ch">
+            Check the map on our <a href="/find-a-gaggle/">Find a Gaggle</a> page. If there isn't one nearby, keep reading. The next question is for you.
           </p>
         </details>
         <details class="border-b border-rule py-5 group">
           <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight">
-            <span>Can men join?</span>
+            <span>Are the Raging Grannies affiliated with a political party?</span>
             <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
           </summary>
-          <p class="mt-4 text-text-soft leading-relaxed max-w-[60ch] text-[17px]">
-            The Raging Grannies are a women's movement. Men are welcome to support, cheer, carry signs, and start their own groups — but the gaggles are for women.
+          <p class="mt-4 text-text-soft leading-relaxed text-[17px]" style="max-width:75ch">
+            No. We are not a political party and we are not affiliated with one. Individual grannies hold all kinds of political views. What unites us is a commitment to peace, justice, and the belief that ordinary women can make extraordinary noise. We take positions on issues, not personalities.
           </p>
         </details>
+        <details class="border-b border-rule py-5 group">
+          <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight">
+            <span>Why are the Grannies "Raging"?</span>
+            <span class="text-muted text-xl transition-transform group-open:rotate-180">▾</span>
+          </summary>
+          <p class="mt-4 text-text-soft leading-relaxed text-[17px]" style="max-width:75ch">
+            The "raging" in our name refers to creative rage: a combination of deep compassion, concern for the future, and a willingness to confront social issues with wit and perseverance. We rage because we care. And we do it with song, humor, and a flowered hat, because nothing catches people off guard quite like strong lyrics coming from sweet little old ladies.
+          </p>
+        </details>
+        <p class="mt-8 text-[15px] text-text-soft">
+          More questions? <a href="/faq/" class="font-[800] text-red no-underline hover:underline">See our full FAQ →</a>
+        </p>
       </div>
     </div>
   </section>
+
+  <style>
+    .faq-prose :global(a) {
+      color: var(--color-red);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--color-red);
+      font-weight: 600;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .faq-prose :global(a:hover) {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+  </style>
 </BaseLayout>

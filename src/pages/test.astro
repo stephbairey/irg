@@ -112,7 +112,7 @@ try {
     <h1>WP → GraphQL → Astro Connection Test</h1>
     <p class="meta">Endpoint: <code>{endpoint}</code></p>
 
-    <h2>1. Main Site — General Settings</h2>
+    <h2>1. Main Site · General Settings</h2>
     {siteError ? (
       <p class="error">❌ {siteError}</p>
     ) : siteInfo ? (
@@ -126,7 +126,7 @@ try {
       <p>No data returned.</p>
     )}
 
-    <h2>2. Main Site — Songs (CPT + Taxonomies)</h2>
+    <h2>2. Main Site · Songs (CPT + Taxonomies)</h2>
     {songsError ? (
       <p class="error">❌ {songsError}</p>
     ) : songs && songs.songs.nodes.length > 0 ? (
@@ -152,11 +152,11 @@ try {
       </div>
     ) : (
       <div class="card">
-        <p class="success">✓ Songs query succeeded (no songs published yet — add one in WP admin to test)</p>
+        <p class="success">✓ Songs query succeeded (no songs published yet; add one in WP admin to test)</p>
       </div>
     )}
 
-    <h2>3. Portland Subsite — Posts</h2>
+    <h2>3. Portland Subsite · Posts</h2>
     <p class="meta">Endpoint: <code>{portlandEndpoint}</code></p>
     {portlandError ? (
       <p class="error">❌ {portlandError}</p>

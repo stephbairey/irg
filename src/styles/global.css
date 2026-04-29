@@ -126,6 +126,26 @@ button.chip:hover {
   background: var(--color-ink);
   color: var(--color-on-dark);
 }
+.btn-pill {
+  background: var(--color-red);
+  color: #fff;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+}
+.btn-pill:hover {
+  background: var(--color-ink-soft);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.btn-pill-ink {
+  background: var(--color-ink);
+  color: #fff;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+}
+.btn-pill-ink:hover {
+  background: var(--color-red);
+  color: #fff;
+  transform: translateY(-1px);
+}
 .btn-mini {
   background: transparent;
   border: 1.5px solid var(--color-rule);

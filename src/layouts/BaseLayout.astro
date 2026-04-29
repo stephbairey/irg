@@ -16,7 +16,7 @@ const path = Astro.url.pathname;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <title>{title} — Raging Grannies</title>
+    <title>{title} · Raging Grannies</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -41,7 +41,7 @@ const path = Astro.url.pathname;
           <a href="/in-the-news/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/in-the-news") || path.startsWith("/photos") ? "text-red" : "text-text"]}>In the News</a>
           <a href="/find-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/find-a-gaggle") ? "text-red" : "text-text"]}>Find a Gaggle</a>
           <a href="/start-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/start-a-gaggle") ? "text-red" : "text-text"]}>Start One</a>
-          <a href="/songs/" class:list={["px-[18px] py-[10px] rounded-full text-sm font-bold no-underline transition-colors", path.startsWith("/songs") ? "text-white bg-red" : "text-white bg-ink hover:bg-red"]}>Songs</a>
+          <a href="/songs/" class="px-[18px] py-[10px] rounded-full text-sm font-bold no-underline transition-colors text-white bg-red hover:bg-ink-soft">Songs</a>
         </nav>
       </div>
     </header>
@@ -50,7 +50,7 @@ const path = Astro.url.pathname;
 
     <!-- Footer -->
     <footer class="mt-24 bg-ink text-on-dark pt-14 pb-8">
-      <div class="grid grid-cols-[2fr_1fr_1fr_1fr] gap-12 max-w-[1200px] mx-auto px-8">
+      <div class="grid grid-cols-[1.7fr_1fr_1fr_1.2fr_1fr] gap-12 max-w-[1200px] mx-auto px-8">
         <!-- Brand column -->
         <div>
           <div class="flex items-center gap-3 mb-4">
@@ -58,7 +58,7 @@ const path = Astro.url.pathname;
             <span class="font-display text-2xl text-on-dark">Raging Grannies</span>
           </div>
           <p class="text-[15px] text-ink-lilac leading-relaxed max-w-[340px]">
-            A network of women over 50, singing satire into the face of injustice since a damp Tuesday in Victoria, BC, 1987.
+            A network of women over 50, singing satire into the face of injustice as long as it's needed.
           </p>
         </div>
         <!-- Songs column -->
@@ -66,35 +66,44 @@ const path = Astro.url.pathname;
           <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">The Songs</h4>
           <ul class="space-y-2 text-[15px]">
             <li><a href="/songs/" class="text-on-dark no-underline hover:text-red">Browse</a></li>
-            <li><a href="/songs/" class="text-on-dark no-underline hover:text-red">By issue</a></li>
-            <li><a href="/songs/" class="text-on-dark no-underline hover:text-red">By tune</a></li>
-            <li><a href="#" class="text-on-dark no-underline hover:text-red">Submit</a></li>
+            <li><a href="/songs/by-issue/" class="text-on-dark no-underline hover:text-red">By issue</a></li>
+            <li><a href="/songs/by-tune/" class="text-on-dark no-underline hover:text-red">By tune</a></li>
+            <li><a href="/submit/" class="text-on-dark no-underline hover:text-red">Add a Song</a></li>
           </ul>
         </div>
-        <!-- Movement column -->
+        <!-- About column -->
         <div>
-          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">The Movement</h4>
+          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">About Us</h4>
           <ul class="space-y-2 text-[15px]">
-            <li><a href="#" class="text-on-dark no-underline hover:text-red">Find a gaggle</a></li>
-            <li><a href="#" class="text-on-dark no-underline hover:text-red">Start a gaggle</a></li>
-            <li><a href="#" class="text-on-dark no-underline hover:text-red">Herstory</a></li>
-            <li><a href="#" class="text-on-dark no-underline hover:text-red">Philosophy</a></li>
+            <li><a href="/about/" class="text-on-dark no-underline hover:text-red">About</a></li>
+            <li><a href="/herstory/" class="text-on-dark no-underline hover:text-red">Herstory</a></li>
+            <li><a href="/philosophy/" class="text-on-dark no-underline hover:text-red">Philosophy</a></li>
+            <li><a href="/faq/" class="text-on-dark no-underline hover:text-red">FAQ</a></li>
           </ul>
         </div>
-        <!-- Contact column -->
+        <!-- Media column -->
         <div>
-          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">Get in touch</h4>
+          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">Media</h4>
           <ul class="space-y-2 text-[15px]">
-            <li><a href="#" class="text-on-dark no-underline hover:text-red">Contact</a></li>
-            <li><a href="#" class="text-on-dark no-underline hover:text-red">Press</a></li>
-            <li><a href="#" class="text-on-dark no-underline hover:text-red">FAQ</a></li>
+            <li><a href="/photos/" class="text-on-dark no-underline hover:text-red">Photos</a></li>
+            <li><a href="/videos/" class="text-on-dark no-underline hover:text-red">Videos</a></li>
+            <li><a href="/fact-sheet/" class="text-on-dark no-underline hover:text-red">Fact sheet</a></li>
+            <li><a href="/in-the-news/" class="text-on-dark no-underline hover:text-red">In the News</a></li>
+          </ul>
+        </div>
+        <!-- Connect column -->
+        <div>
+          <h4 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4">Connect</h4>
+          <ul class="space-y-2 text-[15px]">
+            <li><a href="/contact/" class="text-on-dark no-underline hover:text-red">Contact</a></li>
+            <li><a href="/ask/" class="text-on-dark no-underline hover:text-red">Ask a question</a></li>
           </ul>
         </div>
       </div>
       <!-- Bottom bar -->
       <div class="max-w-[1200px] mx-auto mt-10 pt-6 px-8 border-t border-white/15 flex justify-between text-[13px] text-ink-lilac">
         <span>&copy; {year} International Raging Grannies</span>
-        <span>Made with satire, by volunteers.</span>
+        <span>Made with spirit, by volunteers.</span>
       </div>
     </footer>
   </body>

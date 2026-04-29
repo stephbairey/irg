@@ -49,7 +49,7 @@ if (latest) {
 
 <BaseLayout title="In the News">
   <article class="press-page">
-    <section class="bg-paper border-b-[3px] border-double border-ink">
+    <section class="bg-paper">
       <div class="max-w-[1240px] mx-auto px-10 pt-12 pb-12">
         <div class="flex justify-between gap-6 flex-wrap text-muted font-bold text-xs tracking-[.12em] uppercase border-b border-rule pb-3.5 mb-9">
           <span>The Clippings Desk</span>
@@ -73,7 +73,7 @@ if (latest) {
                 <span class="press-live-dot" aria-hidden="true"></span>
                 <span>
                   <b class="text-ink font-extrabold">Live feed.</b>
-                  Latest clipping added {liveLabel} — <em class="text-ink-soft italic font-semibold">{latest.source}</em>.
+                  Latest clipping added {liveLabel} · <em class="text-ink-soft italic font-semibold">{latest.source}</em>.
                 </span>
               </div>
             )}
@@ -137,9 +137,9 @@ if (latest) {
                 <li><a href="/fact-sheet/" class="press-kit-link">Fact sheet &amp; timeline <span aria-hidden="true">→</span></a></li>
                 <li><a href="/spokespeople/" class="press-kit-link">Spokesperson directory <span aria-hidden="true">→</span></a></li>
               </ul>
-              <div class="pt-4 border-t border-white/15">
+              <div class="pt-4">
                 <div class="font-bold text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-1.5">Media inquiries</div>
-                <a href="mailto:press@raginggrannies.org" class="press-kit-mail">press@raginggrannies.org</a>
+                <a href="mailto:connect@raginggrannies.org" class="press-kit-mail">connect@raginggrannies.org</a>
               </div>
             </div>
           </aside>
@@ -196,7 +196,7 @@ if (latest) {
       const pageItems = filtered.slice(start, start + PER_PAGE);
 
       countEl.textContent = total === 0 ? "" : `${total} clipping${total === 1 ? "" : "s"}`;
-      pageInfoEl.textContent = total === 0 ? "" : `Showing ${start + 1}–${Math.min(start + PER_PAGE, total)}`;
+      pageInfoEl.textContent = total === 0 ? "" : `Showing ${start + 1}-${Math.min(start + PER_PAGE, total)}`;
       clearBtn.classList.toggle("hidden", !state.q);
 
       if (total === 0) {
