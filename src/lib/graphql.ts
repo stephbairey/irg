@@ -11,7 +11,13 @@ export async function wpQuery<T>({
 }): Promise<T> {
   const response = await fetch(endpoint, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      // Explicit headers — bare POSTs from Cloudflare Pages build workers
+      // get rejected with 415 by some LiteSpeed/Nixihost configs.
+      "Content-Type": "application/json; charset=utf-8",
+      "Accept": "application/json",
+      "User-Agent": "irg-build/1.0 (+https://raginggrannies.org)",
+    },
     body: JSON.stringify({ query, variables }),
   });
 

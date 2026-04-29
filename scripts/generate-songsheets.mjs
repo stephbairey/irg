@@ -83,7 +83,13 @@ async function fetchAllSongs() {
     }`;
     const res = await fetch(GRAPHQL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        // Explicit headers — bare POSTs from Cloudflare Pages build workers
+        // get rejected with 415 by some LiteSpeed/Nixihost configs.
+        "Content-Type": "application/json; charset=utf-8",
+        "Accept": "application/json",
+        "User-Agent": "irg-build/1.0 (+https://raginggrannies.org)",
+      },
       body: JSON.stringify({ query: q }),
     });
     if (!res.ok) throw new Error(`GraphQL ${res.status} ${res.statusText}`);
