@@ -84,7 +84,7 @@ const mapPayload = JSON.stringify(
         {total > 0 ? (
           <>There are {total} gaggles of Raging Grannies across North America and around the world. Find one near you, or start your own.</>
         ) : (
-          <>Gaggles span North America and beyond — the map's loading. Find one near you, or start your own.</>
+          <>Gaggles span North America and beyond. The map's loading. Find one near you, or start your own.</>
         )}
       </p>
     </header>
@@ -142,7 +142,7 @@ const mapPayload = JSON.stringify(
             Don't see a gaggle near you? Start one.
           </h3>
           <p class="text-on-dark/85 leading-relaxed max-w-[56ch]">
-            Two or three women, a good tune, and an issue worth singing about — that's the recipe. Our starter kit walks you through naming a gaggle, writing your first song, and showing up.
+            Two or three women, a good tune, and an issue worth singing about: that's the recipe. Our starter kit walks you through naming a gaggle, writing your first song, and showing up.
           </p>
         </div>
         <a href="/start-a-gaggle/" class="cta-btn">
@@ -156,11 +156,18 @@ const mapPayload = JSON.stringify(
   <script type="application/json" id="gaggle-data" set:html={mapPayload}></script>
 
   <script>
-    // Map init runs only on this page — Astro bundles Leaflet into a page-scoped chunk.
-    import L from "leaflet";
-    import "leaflet/dist/leaflet.css";
+    // Map init runs only on this page — Astro bundles Mapbox GL JS into a page-scoped chunk.
+    import mapboxgl from "mapbox-gl";
+    import "mapbox-gl/dist/mapbox-gl.css";
 
     (() => {
+      const token = import.meta.env.PUBLIC_MAPBOX_TOKEN;
+      if (!token) {
+        console.warn("[find-a-gaggle] PUBLIC_MAPBOX_TOKEN missing — map will not load.");
+        return;
+      }
+      mapboxgl.accessToken = token;
+
       const dataEl = document.getElementById("gaggle-data");
       if (!dataEl) return;
       let gaggles = [];
@@ -173,20 +180,42 @@ const mapPayload = JSON.stringify(
       const el = document.getElementById("gaggle-map");
       if (!el) return;
 
-      const map = L.map(el, {
-        center: [39.5, -98.5], // ~ Kansas — centers on continental North America
-        zoom: 4,
-        zoomControl: true,
-        scrollWheelZoom: true,
-        worldCopyJump: true,
+      const map = new mapboxgl.Map({
+        container: el,
+        style: "mapbox://styles/webgranny/cmoj09evr000801ra14qg2brh",
+        center: [-98.5, 39.5], // [lng, lat] — ~ Kansas, centers on continental North America
+        zoom: 3,
+        attributionControl: true,
       });
+      map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "top-right");
 
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-        attribution:
-          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors · © <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: "abcd",
-        maxZoom: 19,
-      }).addTo(map);
+      // Hide road / transit layers at runtime. Works on classic Studio styles
+      // (where individual layers are exposed); Mapbox Standard styles seal
+      // their internals so this is a no-op on Standard — confirm via console.
+      map.on("style.load", () => {
+        const ROAD_RE = /road|bridge|tunnel|motorway|highway|trunk|street|aeroway|transit|rail|subway|ferry/i;
+        const layers = map.getStyle().layers || [];
+        let hidden = 0;
+        const hiddenIds = [];
+        for (const layer of layers) {
+          const id = layer.id || "";
+          const sourceLayer = layer["source-layer"] || "";
+          if (ROAD_RE.test(id) || ROAD_RE.test(sourceLayer)) {
+            try {
+              map.setLayoutProperty(layer.id, "visibility", "none");
+              hidden++;
+              hiddenIds.push(layer.id);
+            } catch {
+              // Standard styles may reject mutation; silently skip.
+            }
+          }
+        }
+        // eslint-disable-next-line no-console
+        console.log(
+          `[find-a-gaggle] hid ${hidden} road-related layers of ${layers.length} total`,
+          hiddenIds
+        );
+      });
 
       function escHtml(s) {
         return String(s ?? "")
@@ -196,31 +225,26 @@ const mapPayload = JSON.stringify(
           .replace(/"/g, "&quot;");
       }
 
-      const markers = [];
       for (const g of gaggles) {
-        const m = L.circleMarker([g.lat, g.lng], {
-          radius: 7,
-          color: "#2A1847",
-          weight: 1.25,
-          fillColor: "#E22A2C",
-          fillOpacity: 0.9,
-        }).addTo(map);
+        const markerEl = document.createElement("div");
+        markerEl.className = "gaggle-marker";
 
-        const popup = `
+        const popup = new mapboxgl.Popup({
+          offset: 14,
+          closeButton: false,
+          maxWidth: "280px",
+        }).setHTML(`
           <div class="gaggle-popup">
             <div class="gp-name">${escHtml(g.name)}</div>
             <div class="gp-where">${escHtml(g.region)}, ${escHtml(g.country)}</div>
             <div class="gp-contact">Want to connect? <a href="/contact/">Visit our Contact page.</a></div>
           </div>
-        `;
-        m.bindPopup(popup);
-        markers.push(m);
-      }
+        `);
 
-      // Hover affordance — slightly grow the marker on pointer-over.
-      for (const m of markers) {
-        m.on("mouseover", () => m.setStyle({ radius: 9, fillOpacity: 1 }));
-        m.on("mouseout", () => m.setStyle({ radius: 7, fillOpacity: 0.9 }));
+        new mapboxgl.Marker({ element: markerEl })
+          .setLngLat([g.lng, g.lat])
+          .setPopup(popup)
+          .addTo(map);
       }
     })();
   </script>
@@ -239,24 +263,6 @@ const mapPayload = JSON.stringify(
       width: 100%;
       background: var(--color-paper-2);
     }
-    /* Tint the tile layer toward the site's warm-paper palette. The filter
-       only touches raster tiles; markers, popups, and the attribution stay
-       crisp. Tweak sepia/hue-rotate/saturate to taste. */
-    #gaggle-map .leaflet-tile-pane {
-      filter: sepia(0.35) saturate(0.78) brightness(1.04) hue-rotate(-12deg);
-    }
-    /* Overlay an ink-tinted multiply layer so dark linework (roads, borders,
-       coastlines) leans toward --color-ink while the cream background stays
-       cream. Sits inside the tile pane so it never covers markers or
-       popups (those live in higher-z panes). */
-    #gaggle-map .leaflet-tile-pane::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(42, 24, 71, 0.28);
-      mix-blend-mode: multiply;
-      pointer-events: none;
-    }
     @media (max-width: 720px) {
       #gaggle-map { height: 340px; }
     }
@@ -266,15 +272,31 @@ const mapPayload = JSON.stringify(
       color: var(--color-text-soft);
       font-style: italic;
     }
-    /* Leaflet popup themed to match the Bulletin language */
-    .leaflet-popup-content-wrapper {
+    /* Gaggle marker — circle dot in the brand red over an ink stroke. */
+    .gaggle-marker {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #E22A2C;
+      border: 1.25px solid #2A1847;
+      box-shadow: 0 1px 3px rgba(42, 24, 71, 0.35);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    .gaggle-marker:hover {
+      transform: scale(1.3);
+    }
+    /* Mapbox popup themed to match the Bulletin language */
+    .mapboxgl-popup-content {
       border-radius: 8px;
       box-shadow: 0 6px 24px rgba(42, 24, 71, 0.18);
-    }
-    .leaflet-popup-content {
-      margin: 14px 16px 12px;
+      padding: 14px 16px 12px;
       font-family: var(--font-body);
       color: var(--color-text);
+    }
+    .mapboxgl-popup-tip {
+      border-top-color: var(--color-on-dark);
+      border-bottom-color: var(--color-on-dark);
     }
     .gaggle-popup .gp-name {
       font-family: var(--font-display);
