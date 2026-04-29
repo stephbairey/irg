@@ -1,0 +1,570 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { fetchAllSongs } from "../lib/songs";
+import crypto from "node:crypto";
+
+// SUBMIT_PASSWORD is server-only (no PUBLIC_ prefix). Astro's import.meta.env
+// only exposes PUBLIC_-prefixed vars; non-public vars come from process.env at
+// build time. The plaintext stays on the server; the browser only ever sees
+// the SHA-256 hex digest.
+const PW = (process.env.SUBMIT_PASSWORD ?? "").trim();
+const PW_HASH = PW
+  ? crypto.createHash("sha256").update(PW).digest("hex")
+  : "";
+
+const WP_BASE = (import.meta.env.PUBLIC_WP_URL ?? "").replace(/\/$/, "");
+const SUBMIT_ENDPOINT = WP_BASE ? `${WP_BASE}/wp-json/irg/v1/submit-song` : "";
+
+// Pull autocomplete data straight off the cached song fetch so we don't
+// re-query GraphQL just for taxonomy term lists.
+const allSongs = await fetchAllSongs();
+
+const titles = [...new Set(allSongs.map((s) => s.title).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+const issues = [
+  ...new Set(allSongs.flatMap((s) => s.issues.nodes.map((n) => n.name).filter(Boolean))),
+].sort((a, b) => a.localeCompare(b));
+const songwriters = [
+  ...new Set(allSongs.flatMap((s) => s.songwriters.nodes.map((n) => n.name).filter(Boolean))),
+].sort((a, b) => a.localeCompare(b));
+const gaggles = [
+  ...new Set(allSongs.flatMap((s) => s.gaggles.nodes.map((n) => n.name).filter(Boolean))),
+].sort((a, b) => a.localeCompare(b));
+const tunes = [
+  ...new Set(allSongs.flatMap((s) => s.tunes.nodes.map((n) => n.name).filter(Boolean))),
+].sort((a, b) => a.localeCompare(b));
+
+const formAvailable = !!PW_HASH && !!SUBMIT_ENDPOINT;
+
+// Default Date Written field to today (ISO yyyy-mm-dd) so a quick submit
+// stamps it correctly. The submitter can override.
+const today = new Date().toISOString().slice(0, 10);
+---
+
+<BaseLayout title="Submit a Song">
+  <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-10 border-b border-muted mb-12">
+      <div class="kicker text-red mb-4">For Grannies</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(48px,7.5vw,96px)">
+        Submit a Song
+      </h1>
+      <p class="text-[19px] text-text-soft max-w-[760px] mx-auto leading-snug">
+        Song submissions are open to members of a Raging Grannies gaggle. If you're not a member but have a song to share, we'd love to hear it. Email it to your <a href="/find-a-gaggle/" class="submit-inline-link">nearest gaggle</a> and they'll take it from there.
+      </p>
+    </header>
+
+    {!formAvailable ? (
+      <div class="max-w-[760px] mx-auto px-7 py-6 bg-paper-2 border border-dashed border-rule rounded-[10px] text-center">
+        <p class="text-[15px] text-text-soft m-0">
+          The submission form is being set up. Check back shortly.
+        </p>
+      </div>
+    ) : (
+      <div class="max-w-[760px] mx-auto">
+        {/* Password gate */}
+        <section id="submit-gate" class="px-7 py-7 bg-paper-2 border border-muted rounded-[12px]">
+          <div class="kicker text-red mb-3">Granny check</div>
+          <h2 class="font-display text-ink text-[28px] leading-tight mb-3">Enter the gaggle password</h2>
+          <p class="text-[15px] text-text-soft leading-relaxed mb-5 max-w-[60ch]">
+            Ask any granny in your gaggle for the password. This keeps drive-by submissions and bots from filling our drafts queue.
+          </p>
+          <form id="submit-pw-form" class="flex flex-wrap gap-3 items-center" novalidate>
+            <input
+              id="submit-pw-input"
+              type="password"
+              autocomplete="off"
+              placeholder="Password"
+              class="flex-1 min-w-[200px] px-4 py-3 text-[15px] bg-card text-ink border-[1.5px] border-muted rounded-lg focus:outline-none focus:border-red"
+              aria-label="Password"
+            />
+            <button type="submit" class="btn btn-pill">Unlock</button>
+          </form>
+          <p id="submit-pw-error" class="hidden text-red text-[14px] font-bold mt-3">That's not the right password. Ask a granny.</p>
+        </section>
+
+        {/* Submission form */}
+        <section id="submit-form-section" class="hidden">
+          <form id="submit-form" class="submit-form" novalidate>
+            <label class="sf-field">
+              <span class="sf-label">Song title</span>
+              <input type="text" name="title" list="dl-titles" required maxlength="200" autocomplete="off" />
+              <span class="sf-hint">If your title matches an existing song, pick it from the list. Otherwise, type a new one.</span>
+            </label>
+            <datalist id="dl-titles">
+              {titles.map((t) => <option value={t} />)}
+            </datalist>
+
+            <label class="sf-field">
+              <span class="sf-label">Tune</span>
+              <input type="text" name="tune" list="dl-tunes" required maxlength="200" autocomplete="off" />
+              <span class="sf-hint">The melody you set the lyrics to. Pick from the list if it's a familiar one, or type a new tune.</span>
+            </label>
+            <datalist id="dl-tunes">
+              {tunes.map((t) => <option value={t} />)}
+            </datalist>
+
+            <div class="sf-field">
+              <span class="sf-label">Lyrics</span>
+              <div class="sf-editor-wrap">
+                <div class="sf-editor-toolbar" role="toolbar" aria-label="Formatting">
+                  <button type="button" data-mark="bold" aria-pressed="false" title="Bold (Ctrl+B)"><b>B</b></button>
+                  <button type="button" data-mark="italic" aria-pressed="false" title="Italic (Ctrl+I)"><i>I</i></button>
+                  <button type="button" data-mark="underline" aria-pressed="false" title="Underline (Ctrl+U)"><u>U</u></button>
+                </div>
+                <div id="lyrics-editor" class="sf-editor" aria-label="Lyrics"></div>
+              </div>
+              <span class="sf-hint">Press Enter to start a new stanza. Press Shift+Enter for a new line within a stanza. Bold, italic, and underline are performance marks.</span>
+            </div>
+
+            <label class="sf-field">
+              <span class="sf-label">Songwriter</span>
+              <input type="text" name="songwriter" list="dl-songwriters" required maxlength="200" autocomplete="off" />
+              <span class="sf-hint">The granny (or grannies) who wrote the lyrics.</span>
+            </label>
+            <datalist id="dl-songwriters">
+              {songwriters.map((s) => <option value={s} />)}
+            </datalist>
+
+            <label class="sf-field">
+              <span class="sf-label">Gaggle</span>
+              <select name="gaggle" required>
+                <option value="">Choose your gaggle</option>
+                {gaggles.map((g) => <option value={g}>{g}</option>)}
+              </select>
+            </label>
+
+            <fieldset class="sf-field sf-issues">
+              <legend class="sf-label">Issues</legend>
+              <span class="sf-hint sf-hint-block">Select all that apply.</span>
+              <div class="sf-issues-grid">
+                {issues.map((i) => (
+                  <label class="sf-checkbox">
+                    <input type="checkbox" name="issues" value={i} />
+                    <span>{i}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <label class="sf-field">
+              <span class="sf-label">YouTube link</span>
+              <input type="url" name="youtube_link" maxlength="500" autocomplete="off" inputmode="url" />
+              <span class="sf-hint"><span class="sf-optional">Optional:</span> Link to a YouTube video of this song being performed (by the artist or your gaggle).</span>
+            </label>
+
+            <label class="sf-field">
+              <span class="sf-label">Date written or updated</span>
+              <input type="date" name="date_written" value={today} />
+              <span class="sf-hint"><span class="sf-optional">Optional:</span> When this song was written or last updated.</span>
+            </label>
+
+            <label class="sf-field">
+              <span class="sf-label">Key or starting note</span>
+              <input type="text" name="key_starting_note" maxlength="200" autocomplete="off" />
+              <span class="sf-hint"><span class="sf-optional">Optional:</span> Musical key or starting note (e.g., 'Key of G' or 'Start on D').</span>
+            </label>
+
+            <label class="sf-field">
+              <span class="sf-label">Source notes</span>
+              <input type="text" name="source_notes" maxlength="300" autocomplete="off" />
+              <span class="sf-hint"><span class="sf-optional">Optional:</span> Provenance or attribution (e.g., 'from the Victoria Grannies Songbook, 1993').</span>
+            </label>
+
+            <div class="sf-actions">
+              <button type="submit" class="sf-submit btn btn-pill">Submit song</button>
+              <span id="submit-status" class="sf-status" role="status" aria-live="polite"></span>
+            </div>
+          </form>
+        </section>
+
+        {/* Confirmation */}
+        <section id="submit-success" class="hidden text-center px-7 py-10 bg-paper-2 border border-muted rounded-[12px]">
+          <div class="kicker text-red mb-3">Submitted</div>
+          <h2 class="font-display text-ink text-[36px] leading-tight mb-3">Your song has been submitted for review.</h2>
+          <p class="text-[17px] text-text-soft leading-relaxed max-w-[60ch] mx-auto">Thank you, Granny!</p>
+          <p class="text-[15px] text-text-soft leading-relaxed max-w-[60ch] mx-auto mt-3">
+            The song librarian will review and publish it. Want to <a href="#" id="submit-another" class="submit-inline-link">submit another</a>?
+          </p>
+        </section>
+
+        {/* Build-time config carried into the bundled script via data attrs.
+            (define:vars + ES import statements aren't compatible: define:vars
+            emits an unbundled inline script.) */}
+        <div id="submit-config" data-pw-hash={PW_HASH} data-endpoint={SUBMIT_ENDPOINT} hidden></div>
+      </div>
+    )}
+  </article>
+
+  {formAvailable && (
+    <script>
+      import { Editor } from "@tiptap/core";
+      import StarterKit from "@tiptap/starter-kit";
+      import Underline from "@tiptap/extension-underline";
+
+      const $ = (s) => document.querySelector(s);
+      const SS_KEY = "irg-submit-unlocked";
+
+      const cfg = $("#submit-config");
+      const PW_HASH = cfg?.dataset.pwHash || "";
+      const SUBMIT_ENDPOINT = cfg?.dataset.endpoint || "";
+
+      const gateSection = $("#submit-gate");
+      const formSection = $("#submit-form-section");
+      const successSection = $("#submit-success");
+      const pwForm = $("#submit-pw-form");
+      const pwInput = $("#submit-pw-input");
+      const pwError = $("#submit-pw-error");
+      const form = $("#submit-form");
+      const statusEl = $("#submit-status");
+      const editorEl = $("#lyrics-editor");
+      const submitAnotherLink = $("#submit-another");
+
+      let editor = null;
+
+      async function sha256Hex(text) {
+        const buf = new TextEncoder().encode(text);
+        const hash = await crypto.subtle.digest("SHA-256", buf);
+        return [...new Uint8Array(hash)]
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      }
+
+      function showForm() {
+        gateSection.classList.add("hidden");
+        formSection.classList.remove("hidden");
+        successSection.classList.add("hidden");
+        if (!editor) initEditor();
+      }
+
+      function showSuccess() {
+        formSection.classList.add("hidden");
+        successSection.classList.remove("hidden");
+      }
+
+      function initEditor() {
+        editor = new Editor({
+          element: editorEl,
+          extensions: [
+            StarterKit.configure({
+              heading: false,
+              bulletList: false,
+              orderedList: false,
+              listItem: false,
+              blockquote: false,
+              code: false,
+              codeBlock: false,
+              strike: false,
+              horizontalRule: false,
+            }),
+            Underline,
+          ],
+          content: "",
+          editorProps: {
+            attributes: {
+              class: "sf-editor-content",
+              "aria-label": "Lyrics editor",
+            },
+          },
+        });
+
+        // Wire toolbar buttons
+        const buttons = document.querySelectorAll(".sf-editor-toolbar [data-mark]");
+        const sync = () => {
+          buttons.forEach((b) => {
+            const mark = b.dataset.mark;
+            const active = editor.isActive(mark);
+            b.setAttribute("aria-pressed", active ? "true" : "false");
+            b.classList.toggle("is-active", active);
+          });
+        };
+        buttons.forEach((b) => {
+          b.addEventListener("click", () => {
+            const mark = b.dataset.mark;
+            const chain = editor.chain().focus();
+            if (mark === "bold") chain.toggleBold().run();
+            else if (mark === "italic") chain.toggleItalic().run();
+            else if (mark === "underline") chain.toggleUnderline().run();
+          });
+        });
+        editor.on("selectionUpdate", sync);
+        editor.on("transaction", sync);
+      }
+
+      // Unlock state from session
+      if (sessionStorage.getItem(SS_KEY) === "1") {
+        showForm();
+      }
+
+      pwForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        pwError.classList.add("hidden");
+        const entered = pwInput.value;
+        if (!entered) return;
+        const hash = await sha256Hex(entered);
+        if (hash === PW_HASH) {
+          sessionStorage.setItem(SS_KEY, "1");
+          showForm();
+        } else {
+          pwError.classList.remove("hidden");
+          pwInput.select();
+        }
+      });
+
+      submitAnotherLink?.addEventListener("click", (e) => {
+        e.preventDefault();
+        form.reset();
+        if (editor) editor.commands.clearContent();
+        statusEl.textContent = "";
+        statusEl.removeAttribute("data-state");
+        showForm();
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        statusEl.removeAttribute("data-state");
+        statusEl.textContent = "";
+
+        const fd = new FormData(form);
+        const title = (fd.get("title") || "").toString().trim();
+        const tune = (fd.get("tune") || "").toString().trim();
+        const songwriter = (fd.get("songwriter") || "").toString().trim();
+        const gaggle = (fd.get("gaggle") || "").toString().trim();
+        const issuesArr = fd.getAll("issues").map((v) => v.toString());
+        const lyricsHtml = editor ? editor.getHTML() : "";
+        const lyricsText = editor ? editor.getText().trim() : "";
+
+        // Optional fields (no validation in the browser; the endpoint validates URLs).
+        const keyStartingNote = (fd.get("key_starting_note") || "").toString().trim();
+        const youtubeLink = (fd.get("youtube_link") || "").toString().trim();
+        const dateWritten = (fd.get("date_written") || "").toString().trim();
+        const sourceNotes = (fd.get("source_notes") || "").toString().trim();
+
+        if (!title || !tune || !songwriter || !gaggle) {
+          statusEl.dataset.state = "error";
+          statusEl.textContent = "Please fill in title, tune, songwriter, and gaggle.";
+          return;
+        }
+        if (!lyricsText) {
+          statusEl.dataset.state = "error";
+          statusEl.textContent = "Lyrics can't be empty.";
+          return;
+        }
+        if (issuesArr.length === 0) {
+          statusEl.dataset.state = "error";
+          statusEl.textContent = "Pick at least one issue.";
+          return;
+        }
+
+        const submitBtn = form.querySelector("button[type=submit]");
+        submitBtn.disabled = true;
+        statusEl.dataset.state = "sending";
+        statusEl.textContent = "Submitting…";
+
+        try {
+          const res = await fetch(SUBMIT_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              title,
+              tune,
+              lyrics: lyricsHtml,
+              songwriter,
+              gaggle,
+              issues: issuesArr,
+              key_starting_note: keyStartingNote,
+              youtube_link: youtubeLink,
+              date_written: dateWritten,
+              source_notes: sourceNotes,
+            }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) {
+            throw new Error(data.message || `HTTP ${res.status}`);
+          }
+          showSuccess();
+        } catch (err) {
+          statusEl.dataset.state = "error";
+          statusEl.textContent =
+            "Couldn't submit. " + (err && err.message ? err.message : "Please try again.");
+          submitBtn.disabled = false;
+        }
+      });
+    </script>
+  )}
+
+  <style is:global>
+    .submit-inline-link {
+      color: var(--color-red);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--color-red);
+      font-weight: 600;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .submit-inline-link:hover {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+
+    /* Form layout */
+    .submit-form {
+      display: grid;
+      gap: 22px;
+      margin-top: 8px;
+    }
+    .sf-field {
+      display: grid;
+      gap: 6px;
+    }
+    .sf-label {
+      font: 800 12px/1.2 var(--font-body);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+    }
+    .sf-hint {
+      font-size: 13px;
+      color: var(--color-text-soft);
+      line-height: 1.4;
+    }
+    .sf-hint-block {
+      display: block;
+      margin-bottom: 4px;
+    }
+    .submit-form input[type="text"],
+    .submit-form input[type="url"],
+    .submit-form input[type="date"],
+    .submit-form select {
+      width: 100%;
+      padding: 12px 14px;
+      font: 400 16px/1.4 var(--font-body);
+      color: var(--color-ink);
+      background: var(--color-card);
+      border: 1.5px solid var(--color-muted);
+      border-radius: 10px;
+      transition: border-color 0.15s ease;
+    }
+    .submit-form input[type="text"]:focus,
+    .submit-form input[type="url"]:focus,
+    .submit-form input[type="date"]:focus,
+    .submit-form select:focus {
+      outline: none;
+      border-color: var(--color-red);
+    }
+    .sf-optional {
+      color: var(--color-red);
+      font-weight: 700;
+    }
+    .submit-form select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232A1847' stroke-width='2'><path d='m6 9 6 6 6-6'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 14px;
+      padding-right: 40px;
+    }
+
+    /* TipTap editor */
+    .sf-editor-toolbar {
+      display: flex;
+      gap: 4px;
+      padding: 6px;
+      background: var(--color-paper-2);
+      border: 1.5px solid var(--color-muted);
+      border-bottom: 0;
+      border-radius: 10px 10px 0 0;
+    }
+    .sf-editor-toolbar button {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: var(--color-ink);
+      font-family: var(--font-body);
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.12s ease, border-color 0.12s ease;
+    }
+    .sf-editor-toolbar button:hover {
+      background: var(--color-card);
+      border-color: var(--color-muted);
+    }
+    .sf-editor-toolbar button.is-active {
+      background: var(--color-ink);
+      border-color: var(--color-ink);
+      color: var(--color-on-dark);
+    }
+    .sf-editor {
+      min-height: 220px;
+      max-height: 540px;
+      overflow-y: auto;
+      padding: 0;
+      background: var(--color-card);
+      border: 1.5px solid var(--color-muted);
+      border-radius: 0 0 10px 10px;
+      transition: border-color 0.15s ease;
+    }
+    .sf-editor:focus-within {
+      border-color: var(--color-red);
+    }
+    .sf-editor-content {
+      padding: 14px 16px;
+      min-height: 220px;
+      outline: none;
+      font: 400 16px/1.65 var(--font-body);
+      color: var(--color-ink);
+    }
+    .sf-editor-content p { margin: 0 0 12px; }
+    .sf-editor-content p:last-child { margin-bottom: 0; }
+    .sf-editor-content u { text-decoration: underline; }
+    .sf-editor-content.ProseMirror-focused { outline: none; }
+    .sf-editor-content p.is-editor-empty:first-child::before {
+      content: "Type or paste your lyrics here…";
+      color: var(--color-muted);
+      pointer-events: none;
+      float: left;
+      height: 0;
+    }
+
+    /* Issues */
+    .sf-issues { border: 0; padding: 0; margin: 0; }
+    .sf-issues-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 6px 14px;
+      margin-top: 4px;
+    }
+    .sf-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 4px;
+      font-size: 15px;
+      color: var(--color-text);
+      cursor: pointer;
+    }
+    .sf-checkbox input { accent-color: var(--color-red); }
+
+    /* Actions */
+    .sf-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .sf-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .sf-status {
+      font-size: 14px;
+      color: var(--color-text-soft);
+    }
+    .sf-status[data-state="sending"] { color: var(--color-ink-soft); font-weight: 700; }
+    .sf-status[data-state="error"] { color: var(--color-red); font-weight: 700; }
+  </style>
+</BaseLayout>

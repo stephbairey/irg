@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.7.1
+ * Version: 3.8.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -36,6 +36,8 @@ add_action( 'rest_api_init', 'irg_register_deploy_endpoint' );
 add_action( 'rest_api_init', 'irg_register_subsites_endpoint' );
 add_action( 'rest_api_init', 'irg_register_contact_endpoint' );
 add_filter( 'rest_pre_serve_request', 'irg_contact_cors_headers', 10, 4 );
+add_action( 'rest_api_init', 'irg_register_submit_song_endpoint' );
+add_filter( 'rest_pre_serve_request', 'irg_submit_song_cors_headers', 10, 4 );
 
 add_filter( 'upload_size_limit', 'irg_upload_size_limit' );
 add_filter( 'pre_site_option_fileupload_maxk', 'irg_multisite_upload_maxk' );
@@ -1153,4 +1155,205 @@ function irg_handle_contact( WP_REST_Request $req ) {
 	}
 
 	return [ 'ok' => true ];
+}
+
+// ---------------------------------------------------------------------------
+// Song submission endpoint (D031) — granny-only form at /submit/ POSTs here.
+// Creates a draft Song, attaches taxonomy terms (creating tune/songwriter/
+// gaggle on the fly if new; issues must already exist), emails the librarian.
+// ---------------------------------------------------------------------------
+
+const IRG_SUBMIT_TO = 'songlibrarian@raginggrannies.org';
+
+function irg_register_submit_song_endpoint(): void {
+	register_rest_route( 'irg/v1', '/submit-song', [
+		'methods'             => 'POST',
+		'callback'            => 'irg_handle_submit_song',
+		'permission_callback' => '__return_true',
+	] );
+}
+
+function irg_submit_song_cors_headers( $served, $result, $request, $server ) {
+	if ( strpos( $request->get_route(), '/irg/v1/submit-song' ) !== 0 ) {
+		return $served;
+	}
+	$origin = isset( $_SERVER['HTTP_ORIGIN'] ) ? (string) $_SERVER['HTTP_ORIGIN'] : '';
+	if ( $origin && irg_contact_origin_allowed( $origin ) ) {
+		header( "Access-Control-Allow-Origin: {$origin}" );
+		header( 'Access-Control-Allow-Methods: POST, OPTIONS' );
+		header( 'Access-Control-Allow-Headers: Content-Type' );
+		header( 'Vary: Origin' );
+	}
+	return $served;
+}
+
+function irg_handle_submit_song( WP_REST_Request $req ) {
+	// Songs CPT lives on the main site only. Block off-network attempts cleanly.
+	if ( ! is_main_site() ) {
+		return new WP_Error( 'irg_wrong_site', 'Songs can only be submitted on the main site.', [ 'status' => 400 ] );
+	}
+
+	$title      = sanitize_text_field( (string) $req->get_param( 'title' ) );
+	$tune       = sanitize_text_field( (string) $req->get_param( 'tune' ) );
+	$lyrics_raw = (string) $req->get_param( 'lyrics' );
+	$songwriter = sanitize_text_field( (string) $req->get_param( 'songwriter' ) );
+	$gaggle     = sanitize_text_field( (string) $req->get_param( 'gaggle' ) );
+	$issues     = $req->get_param( 'issues' );
+
+	// Optional fields. All four may be empty.
+	$key_starting_note = sanitize_text_field( (string) $req->get_param( 'key_starting_note' ) );
+	$youtube_link      = esc_url_raw( trim( (string) $req->get_param( 'youtube_link' ) ) );
+	$date_written      = sanitize_text_field( (string) $req->get_param( 'date_written' ) );
+	$source_notes      = sanitize_text_field( (string) $req->get_param( 'source_notes' ) );
+
+	if ( $title === '' || $tune === '' || $songwriter === '' || $gaggle === '' ) {
+		return new WP_Error( 'irg_required', 'Title, tune, songwriter, and gaggle are all required.', [ 'status' => 400 ] );
+	}
+	if ( trim( wp_strip_all_tags( $lyrics_raw ) ) === '' ) {
+		return new WP_Error( 'irg_lyrics_required', 'Lyrics are required.', [ 'status' => 400 ] );
+	}
+	if ( ! is_array( $issues ) || count( $issues ) === 0 ) {
+		return new WP_Error( 'irg_issues_required', 'At least one issue is required.', [ 'status' => 400 ] );
+	}
+	if ( $youtube_link !== '' && ! irg_is_youtube_url( $youtube_link ) ) {
+		return new WP_Error( 'irg_bad_youtube', 'YouTube link must be a youtube.com or youtu.be URL.', [ 'status' => 400 ] );
+	}
+
+	// Allow only the formatting marks the songbook treats as performance cues
+	// (bold = strong beat, italic = inflection, underline = held). Strip the rest.
+	$allowed_html = [
+		'p'      => [],
+		'br'     => [],
+		'strong' => [],
+		'b'      => [],
+		'em'     => [],
+		'i'      => [],
+		'u'      => [],
+	];
+	$lyrics = wp_kses( $lyrics_raw, $allowed_html );
+
+	$post_id = wp_insert_post( [
+		'post_type'   => 'song',
+		'post_status' => 'draft',
+		'post_title'  => $title,
+	], true );
+	if ( is_wp_error( $post_id ) ) {
+		return new WP_Error( 'irg_post_fail', 'Could not create the song draft.', [ 'status' => 500 ] );
+	}
+
+	if ( function_exists( 'update_field' ) ) {
+		update_field( 'field_irg_lyrics', $lyrics, $post_id );
+		// Optional ACF fields. Only write when the submitter provided a value
+		// so empty strings don't overwrite future librarian edits.
+		if ( $key_starting_note !== '' ) {
+			update_field( 'field_irg_key_or_starting_note', $key_starting_note, $post_id );
+		}
+		if ( $youtube_link !== '' ) {
+			update_field( 'field_irg_youtube_link', $youtube_link, $post_id );
+		}
+		if ( $date_written !== '' ) {
+			update_field( 'field_irg_date_written_or_updated', $date_written, $post_id );
+		}
+		if ( $source_notes !== '' ) {
+			update_field( 'field_irg_source_notes', $source_notes, $post_id );
+		}
+	} else {
+		update_post_meta( $post_id, 'lyrics', $lyrics );
+		if ( $key_starting_note !== '' ) update_post_meta( $post_id, 'key_or_starting_note', $key_starting_note );
+		if ( $youtube_link !== '' )      update_post_meta( $post_id, 'youtube_link', $youtube_link );
+		if ( $date_written !== '' )      update_post_meta( $post_id, 'date_written_or_updated', $date_written );
+		if ( $source_notes !== '' )      update_post_meta( $post_id, 'source_notes', $source_notes );
+	}
+
+	irg_submit_attach_term( $post_id, 'tune', $tune );
+	irg_submit_attach_term( $post_id, 'songwriter', $songwriter );
+	irg_submit_attach_term( $post_id, 'gaggle', $gaggle );
+
+	$issue_ids       = [];
+	$unknown_issues  = [];
+	foreach ( (array) $issues as $issue_name ) {
+		$issue_name = sanitize_text_field( (string) $issue_name );
+		if ( $issue_name === '' ) {
+			continue;
+		}
+		$term = term_exists( $issue_name, 'issue' );
+		if ( $term ) {
+			$issue_ids[] = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+		} else {
+			$unknown_issues[] = $issue_name;
+		}
+	}
+	if ( $issue_ids ) {
+		wp_set_object_terms( $post_id, $issue_ids, 'issue' );
+	}
+	if ( $unknown_issues ) {
+		error_log( '[irg-submit] Unknown issues for post ' . $post_id . ': ' . implode( ', ', $unknown_issues ) );
+	}
+
+	irg_submit_send_notification( $post_id, [
+		'title'             => $title,
+		'tune'              => $tune,
+		'songwriter'        => $songwriter,
+		'gaggle'            => $gaggle,
+		'issues'            => array_map( 'sanitize_text_field', (array) $issues ),
+		'key_starting_note' => $key_starting_note,
+		'youtube_link'      => $youtube_link,
+		'date_written'      => $date_written,
+	] );
+
+	return [ 'ok' => true, 'post_id' => $post_id ];
+}
+
+// True if the URL contains a YouTube hostname (youtube.com or youtu.be).
+// Used to reject obvious non-YouTube URLs in the optional video fields.
+function irg_is_youtube_url( string $url ): bool {
+	$url = strtolower( $url );
+	return strpos( $url, 'youtube.com' ) !== false || strpos( $url, 'youtu.be' ) !== false;
+}
+
+// Look up a term in the given taxonomy. Create it if missing. Attach to the post.
+// Used for tune / songwriter / gaggle (open taxonomies — submitters can extend).
+function irg_submit_attach_term( int $post_id, string $taxonomy, string $name ): void {
+	$name = trim( $name );
+	if ( $name === '' ) {
+		return;
+	}
+	$term = term_exists( $name, $taxonomy );
+	if ( ! $term ) {
+		$term = wp_insert_term( $name, $taxonomy );
+	}
+	if ( is_wp_error( $term ) ) {
+		error_log( '[irg-submit] term op failed for ' . $taxonomy . ' "' . $name . '": ' . $term->get_error_message() );
+		return;
+	}
+	$term_id = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+	wp_set_object_terms( $post_id, [ $term_id ], $taxonomy );
+}
+
+function irg_submit_send_notification( int $post_id, array $fields ): void {
+	$edit_url = admin_url( 'post.php?post=' . $post_id . '&action=edit' );
+	$subject  = 'New song submission: ' . $fields['title'];
+	$body     = "A new song has been submitted for review.\n\n";
+	$body    .= "Title:      {$fields['title']}\n";
+	$body    .= "Tune:       {$fields['tune']}\n";
+	$body    .= "Songwriter: {$fields['songwriter']}\n";
+	$body    .= "Gaggle:     {$fields['gaggle']}\n";
+	$body    .= 'Issues:     ' . implode( ', ', $fields['issues'] ) . "\n";
+	if ( ! empty( $fields['key_starting_note'] ) ) {
+		$body .= "Key/Note:   {$fields['key_starting_note']}\n";
+	}
+	if ( ! empty( $fields['youtube_link'] ) ) {
+		$body .= "YouTube:    {$fields['youtube_link']}\n";
+	}
+	if ( ! empty( $fields['date_written'] ) ) {
+		$body .= "Written:    {$fields['date_written']}\n";
+	}
+	$body    .= "\nReview and publish: {$edit_url}\n";
+	$headers  = [ 'Content-Type: text/plain; charset=UTF-8' ];
+
+	$sent = wp_mail( IRG_SUBMIT_TO, $subject, $body, $headers );
+	if ( ! $sent ) {
+		// Non-fatal. The draft was already created; the email is a notification, not a gate.
+		error_log( '[irg-submit] wp_mail failed for post ' . $post_id );
+	}
 }
