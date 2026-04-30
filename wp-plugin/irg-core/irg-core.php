@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.8.0
+ * Version: 3.9.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -33,6 +33,7 @@ add_action( 'pre_get_posts', 'irg_song_admin_sort_by_taxonomy' );
 add_action( 'restrict_manage_posts', 'irg_song_admin_filter_dropdowns' );
 
 add_action( 'rest_api_init', 'irg_register_deploy_endpoint' );
+add_action( 'rest_api_init', 'irg_register_theme_deploy_endpoint' );
 add_action( 'rest_api_init', 'irg_register_subsites_endpoint' );
 add_action( 'rest_api_init', 'irg_register_contact_endpoint' );
 add_filter( 'rest_pre_serve_request', 'irg_contact_cors_headers', 10, 4 );
@@ -766,6 +767,86 @@ function irg_handle_plugin_upload( WP_REST_Request $req ) {
 		'version'     => $data['Version'] ?? null,
 		'network'     => is_multisite(),
 		'active'      => is_multisite() ? is_plugin_active_for_network( $plugin_file ) : is_plugin_active( $plugin_file ),
+	];
+}
+
+// ---------------------------------------------------------------------------
+// Theme self-deploy endpoint — upload a new the-bulletin-local.zip via REST.
+// Same access model as the plugin endpoint: super admin on multisite,
+// install_themes capability otherwise. Network-enables the theme on install
+// so subsites can activate it; does NOT change any subsite's active theme.
+// ---------------------------------------------------------------------------
+
+function irg_register_theme_deploy_endpoint(): void {
+	register_rest_route( 'irg/v1', '/theme-upload', [
+		'methods'             => 'POST',
+		'callback'            => 'irg_handle_theme_upload',
+		'permission_callback' => function () {
+			return is_multisite() ? is_super_admin() : current_user_can( 'install_themes' );
+		},
+	] );
+}
+
+function irg_handle_theme_upload( WP_REST_Request $req ) {
+	$files = $req->get_file_params();
+	if ( empty( $files['theme'] ) ) {
+		return new WP_Error( 'irg_no_file', 'No theme file uploaded (expected multipart field "theme").', [ 'status' => 400 ] );
+	}
+
+	$file = $files['theme'];
+	if ( ( $file['error'] ?? UPLOAD_ERR_OK ) !== UPLOAD_ERR_OK ) {
+		return new WP_Error( 'irg_upload_error', 'Upload error code ' . (int) $file['error'], [ 'status' => 400 ] );
+	}
+
+	$name = (string) ( $file['name'] ?? '' );
+	if ( strpos( $name, 'the-bulletin-local' ) !== 0 || substr( $name, -4 ) !== '.zip' ) {
+		return new WP_Error( 'irg_bad_name', 'Expected filename starting with "the-bulletin-local" and ending in ".zip".', [ 'status' => 400 ] );
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/misc.php';
+	require_once ABSPATH . 'wp-admin/includes/theme.php';
+	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+	$skin     = new WP_Ajax_Upgrader_Skin();
+	$upgrader = new Theme_Upgrader( $skin );
+	$result   = $upgrader->install( $file['tmp_name'], [ 'overwrite_package' => true ] );
+
+	if ( is_wp_error( $result ) ) {
+		return $result;
+	}
+	if ( $result === false ) {
+		$errors = $skin->get_errors();
+		return new WP_Error(
+			'irg_install_failed',
+			'Theme install returned false.',
+			[
+				'status' => 500,
+				'errors' => is_wp_error( $errors ) ? $errors->get_error_messages() : [],
+			]
+		);
+	}
+
+	$stylesheet = 'the-bulletin-local';
+	$theme      = wp_get_theme( $stylesheet );
+	if ( ! $theme->exists() ) {
+		return new WP_Error( 'irg_theme_missing', 'Theme installed but not found at expected slug.', [ 'status' => 500 ] );
+	}
+
+	$network_enabled = false;
+	if ( is_multisite() ) {
+		$allowed                = (array) get_site_option( 'allowedthemes', [] );
+		$allowed[ $stylesheet ] = true;
+		update_site_option( 'allowedthemes', $allowed );
+		$network_enabled = true;
+	}
+
+	return [
+		'ok'              => true,
+		'name'            => $name,
+		'stylesheet'      => $stylesheet,
+		'version'         => $theme->get( 'Version' ),
+		'network_enabled' => $network_enabled,
 	];
 }
 
