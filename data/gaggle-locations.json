@@ -1,60 +1,551 @@
 [
-  { "name": "Victoria", "region": "British Columbia", "country": "Canada", "lat": 48.4284, "lng": -123.3656, "founding": true },
-  { "name": "Vancouver", "region": "British Columbia", "country": "Canada", "lat": 49.2827, "lng": -123.1207 },
-  { "name": "Gabriola Island", "region": "British Columbia", "country": "Canada", "lat": 49.1667, "lng": -123.7833 },
-  { "name": "Calgary", "region": "Alberta", "country": "Canada", "lat": 51.0447, "lng": -114.0719 },
-  { "name": "Edmonton", "region": "Alberta", "country": "Canada", "lat": 53.5461, "lng": -113.4938 },
-  { "name": "Lethbridge", "region": "Alberta", "country": "Canada", "lat": 49.6935, "lng": -112.8418 },
-  { "name": "Winnipeg", "region": "Manitoba", "country": "Canada", "lat": 49.8951, "lng": -97.1384 },
-  { "name": "Fundy Bay", "region": "New Brunswick", "country": "Canada", "lat": 45.2733, "lng": -66.0633 },
-  { "name": "Antigonish", "region": "Nova Scotia", "country": "Canada", "lat": 45.6167, "lng": -61.9983 },
-  { "name": "Halifax", "region": "Nova Scotia", "country": "Canada", "lat": 44.6488, "lng": -63.5752 },
-  { "name": "Wolfville", "region": "Nova Scotia", "country": "Canada", "lat": 45.0869, "lng": -64.3650 },
-  { "name": "Barrie", "region": "Ontario", "country": "Canada", "lat": 44.3894, "lng": -79.6903 },
-  { "name": "Chatham-Kent", "region": "Ontario", "country": "Canada", "lat": 42.4048, "lng": -82.1910 },
-  { "name": "Guelph", "region": "Ontario", "country": "Canada", "lat": 43.5448, "lng": -80.2482 },
-  { "name": "Kitchener-Waterloo", "region": "Ontario", "country": "Canada", "lat": 43.4516, "lng": -80.4925 },
-  { "name": "Niagara", "region": "Ontario", "country": "Canada", "lat": 43.0896, "lng": -79.0849 },
-  { "name": "Ottawa", "region": "Ontario", "country": "Canada", "lat": 45.4215, "lng": -75.6972, "aka": "The Parliament Hill Mob" },
-  { "name": "Peterborough", "region": "Ontario", "country": "Canada", "lat": 44.3091, "lng": -78.3197 },
-  { "name": "Toronto", "region": "Ontario", "country": "Canada", "lat": 43.6532, "lng": -79.3832 },
-  { "name": "Montreal", "region": "Quebec", "country": "Canada", "lat": 45.5017, "lng": -73.5673 },
-  { "name": "Tucson", "region": "Arizona", "country": "United States", "lat": 32.2226, "lng": -110.9747 },
-  { "name": "Davis", "region": "California", "country": "United States", "lat": 38.5449, "lng": -121.7405 },
-  { "name": "Fresno", "region": "California", "country": "United States", "lat": 36.7378, "lng": -119.7871 },
-  { "name": "Humboldt County", "region": "California", "country": "United States", "lat": 40.7450, "lng": -123.8695 },
-  { "name": "Mendocino", "region": "California", "country": "United States", "lat": 39.3077, "lng": -123.7995 },
-  { "name": "Redding", "region": "California", "country": "United States", "lat": 40.5865, "lng": -122.3917 },
-  { "name": "Sacramento", "region": "California", "country": "United States", "lat": 38.5816, "lng": -121.4944 },
-  { "name": "San Francisco Bay Area", "region": "California", "country": "United States", "lat": 37.7749, "lng": -122.4194 },
-  { "name": "San Jose", "region": "California", "country": "United States", "lat": 37.3382, "lng": -121.8863 },
-  { "name": "Sonoma County", "region": "California", "country": "United States", "lat": 38.5110, "lng": -122.8474 },
-  { "name": "Ventura County", "region": "California", "country": "United States", "lat": 34.3705, "lng": -119.1391 },
-  { "name": "Walnut Creek", "region": "California", "country": "United States", "lat": 37.9101, "lng": -122.0652 },
-  { "name": "New Haven", "region": "Connecticut", "country": "United States", "lat": 41.3083, "lng": -72.9279 },
-  { "name": "Central Florida", "region": "Florida", "country": "United States", "lat": 29.1872, "lng": -81.0590 },
-  { "name": "Gulf Coast", "region": "Florida", "country": "United States", "lat": 27.3364, "lng": -82.5307 },
-  { "name": "South Florida", "region": "Florida", "country": "United States", "lat": 26.1224, "lng": -80.1373 },
-  { "name": "Dubuque", "region": "Iowa", "country": "United States", "lat": 42.5006, "lng": -90.6646 },
-  { "name": "Oak Park", "region": "Illinois", "country": "United States", "lat": 41.8850, "lng": -87.7845 },
-  { "name": "Louisville", "region": "Kentucky", "country": "United States", "lat": 38.2527, "lng": -85.7585 },
-  { "name": "Western Massachusetts", "region": "Massachusetts", "country": "United States", "lat": 42.3266, "lng": -72.6700 },
-  { "name": "Metro Detroit", "region": "Michigan", "country": "United States", "lat": 42.3314, "lng": -83.0458 },
-  { "name": "Duluth", "region": "Minnesota", "country": "United States", "lat": 46.7867, "lng": -92.1005 },
-  { "name": "Rolla", "region": "Missouri", "country": "United States", "lat": 37.9514, "lng": -91.7712 },
-  { "name": "Albuquerque", "region": "New Mexico", "country": "United States", "lat": 35.0844, "lng": -106.6504 },
-  { "name": "Grant County", "region": "New Mexico", "country": "United States", "lat": 32.7732, "lng": -108.2803 },
-  { "name": "Delaware County", "region": "New York", "country": "United States", "lat": 42.1979, "lng": -74.9686 },
-  { "name": "NYC Metro", "region": "New York", "country": "United States", "lat": 40.7128, "lng": -74.0060 },
-  { "name": "Rochester", "region": "New York", "country": "United States", "lat": 43.1566, "lng": -77.6088 },
-  { "name": "Triangle", "region": "North Carolina", "country": "United States", "lat": 35.7796, "lng": -78.6382 },
-  { "name": "Portland", "region": "Oregon", "country": "United States", "lat": 45.5152, "lng": -122.6784 },
-  { "name": "Eugene-Springfield", "region": "Oregon", "country": "United States", "lat": 44.0521, "lng": -123.0868 },
-  { "name": "Pittsburgh", "region": "Pennsylvania", "country": "United States", "lat": 40.4406, "lng": -79.9959 },
-  { "name": "Greater Westerly", "region": "Rhode Island", "country": "United States", "lat": 41.3776, "lng": -71.8273 },
-  { "name": "Austin", "region": "Texas", "country": "United States", "lat": 30.2672, "lng": -97.7431 },
-  { "name": "Seattle", "region": "Washington", "country": "United States", "lat": 47.6062, "lng": -122.3321 },
-  { "name": "Green Bay", "region": "Wisconsin", "country": "United States", "lat": 44.5133, "lng": -88.0133 },
-  { "name": "Madison", "region": "Wisconsin", "country": "United States", "lat": 43.0731, "lng": -89.4012 },
-  { "name": "Oshkosh", "region": "Wisconsin", "country": "United States", "lat": 44.0247, "lng": -88.5426 }
+  {
+    "name": "Antigonish",
+    "region": "Nova Scotia",
+    "country": "Canada",
+    "lat": 45.6167,
+    "lng": -61.9983,
+    "aka": "Antigonish Raging Grannies",
+    "slug": "antigonish"
+  },
+  {
+    "name": "Barrie",
+    "region": "Ontario",
+    "country": "Canada",
+    "lat": 44.3894,
+    "lng": -79.6903,
+    "aka": "Barrie and District Raging Grannies",
+    "slug": "barrie"
+  },
+  {
+    "name": "Calgary",
+    "region": "Alberta",
+    "country": "Canada",
+    "lat": 51.0447,
+    "lng": -114.0719,
+    "aka": "Calgary Raging Grannies",
+    "slug": "calgary"
+  },
+  {
+    "name": "Chatham-Kent",
+    "region": "Ontario",
+    "country": "Canada",
+    "lat": 42.4048,
+    "lng": -82.191,
+    "aka": "Chatham-Kent Raging Grannies",
+    "slug": "chatham-kent"
+  },
+  {
+    "name": "Edmonton",
+    "region": "Alberta",
+    "country": "Canada",
+    "lat": 53.5461,
+    "lng": -113.4938,
+    "aka": "Edmonton Raging Grannies",
+    "slug": "edmonton"
+  },
+  {
+    "name": "Fundy Bay",
+    "region": "New Brunswick",
+    "country": "Canada",
+    "lat": 45.2733,
+    "lng": -66.0633,
+    "aka": "Fundy Bay Raging Grannies",
+    "slug": "fundy-bay"
+  },
+  {
+    "name": "Gabriola Island",
+    "region": "British Columbia",
+    "country": "Canada",
+    "lat": 49.1667,
+    "lng": -123.7833,
+    "aka": "Gabriola Island Raging Grannies",
+    "slug": "gabriola-island"
+  },
+  {
+    "name": "Guelph",
+    "region": "Ontario",
+    "country": "Canada",
+    "lat": 43.5448,
+    "lng": -80.2482,
+    "aka": "Guelph Raging Grannies",
+    "slug": "guelph"
+  },
+  {
+    "name": "Halifax",
+    "region": "Nova Scotia",
+    "country": "Canada",
+    "lat": 44.6488,
+    "lng": -63.5752,
+    "aka": "Halifax Raging Grannies",
+    "slug": "halifax"
+  },
+  {
+    "name": "Kelowna",
+    "region": "British Columbia",
+    "country": "Canada",
+    "lat": 49.888,
+    "lng": -119.496,
+    "aka": "Kelowna Raging Grannies",
+    "slug": "kelowna"
+  },
+  {
+    "name": "Kitchener-Waterloo",
+    "region": "Ontario",
+    "country": "Canada",
+    "lat": 43.4516,
+    "lng": -80.4925,
+    "aka": "KW Raging Grannies",
+    "slug": "kitchener-waterloo"
+  },
+  {
+    "name": "Lethbridge",
+    "region": "Alberta",
+    "country": "Canada",
+    "lat": 49.6935,
+    "lng": -112.8418,
+    "aka": "Lethbridge Raging Grannies",
+    "slug": "lethbridge"
+  },
+  {
+    "name": "Maple Ridge",
+    "region": "British Columbia",
+    "country": "Canada",
+    "lat": 49.2193,
+    "lng": -122.5984,
+    "aka": "Maple Ridge Raging Grannies",
+    "slug": "maple-ridge"
+  },
+  {
+    "name": "Montreal",
+    "region": "Quebec",
+    "country": "Canada",
+    "lat": 45.5017,
+    "lng": -73.5673,
+    "aka": "Montreal Raging Grannies",
+    "slug": "montreal"
+  },
+  {
+    "name": "Toronto",
+    "region": "Ontario",
+    "country": "Canada",
+    "lat": 43.6532,
+    "lng": -79.3832,
+    "aka": "Toronto Raging Grannies",
+    "slug": "toronto"
+  },
+  {
+    "name": "Vancouver",
+    "region": "British Columbia",
+    "country": "Canada",
+    "lat": 49.2827,
+    "lng": -123.1207,
+    "aka": "Vancouver Raging Grannies",
+    "slug": "vancouver"
+  },
+  {
+    "name": "Winnipeg",
+    "region": "Manitoba",
+    "country": "Canada",
+    "lat": 49.8951,
+    "lng": -97.1384,
+    "aka": "Winnipeg Raging Grannies",
+    "slug": "winnipeg"
+  },
+  {
+    "name": "Wolfville",
+    "region": "Nova Scotia",
+    "country": "Canada",
+    "lat": 45.0869,
+    "lng": -64.365,
+    "aka": "Wolfville Raging Grannies",
+    "slug": "wolfville"
+  },
+  {
+    "name": "Austin",
+    "region": "Texas",
+    "country": "United States",
+    "lat": 30.2672,
+    "lng": -97.7431,
+    "aka": "Austin Raging Grannies",
+    "slug": "austin"
+  },
+  {
+    "name": "Bellingham",
+    "region": "Washington",
+    "country": "United States",
+    "lat": 48.7519,
+    "lng": -122.4787,
+    "aka": "Bellingham Raging Grannies",
+    "slug": "bellingham"
+  },
+  {
+    "name": "Bowling Green",
+    "region": "Ohio",
+    "country": "United States",
+    "lat": 41.3745,
+    "lng": -83.6513,
+    "aka": "Bowling Green Raging Grannies",
+    "slug": "bowling-green"
+  },
+  {
+    "name": "Central Florida",
+    "region": "Florida",
+    "country": "United States",
+    "lat": 29.1872,
+    "lng": -81.059,
+    "aka": "Central Florida Raging Grannies",
+    "slug": "central-florida"
+  },
+  {
+    "name": "Charlotte",
+    "region": "North Carolina",
+    "country": "United States",
+    "lat": 35.2271,
+    "lng": -80.8431,
+    "aka": "Charlotte Raging Grannies",
+    "slug": "charlotte"
+  },
+  {
+    "name": "Davis",
+    "region": "California",
+    "country": "United States",
+    "lat": 38.5449,
+    "lng": -121.7405,
+    "aka": "Davis Raging Grannies",
+    "slug": "davis"
+  },
+  {
+    "name": "Eau Claire",
+    "region": "Wisconsin",
+    "country": "United States",
+    "lat": 44.8113,
+    "lng": -91.4985,
+    "aka": "Chippewa Valley Raging Grannies",
+    "slug": "eau-claire"
+  },
+  {
+    "name": "El Dorado County",
+    "region": "California",
+    "country": "United States",
+    "lat": 38.7296,
+    "lng": -120.7985,
+    "aka": "El Dorado County Raging Grannies",
+    "slug": "el-dorado-county"
+  },
+  {
+    "name": "Eugene",
+    "region": "Oregon",
+    "country": "United States",
+    "lat": 44.0521,
+    "lng": -123.0868,
+    "aka": "Eugene Raging Grannies",
+    "slug": "eugene"
+  },
+  {
+    "name": "Fresno",
+    "region": "California",
+    "country": "United States",
+    "lat": 36.7378,
+    "lng": -119.7871,
+    "aka": "Fresno Raging Grannies",
+    "slug": "fresno"
+  },
+  {
+    "name": "Grant County",
+    "region": "New Mexico",
+    "country": "United States",
+    "lat": 32.7732,
+    "lng": -108.2803,
+    "aka": "Grant County Raging Grannies",
+    "slug": "grant-county"
+  },
+  {
+    "name": "Gray's Harbor",
+    "region": "Washington",
+    "country": "United States",
+    "lat": 46.9715,
+    "lng": -123.6924,
+    "aka": "Gray's Harbor Raging Grannies",
+    "slug": "grays-harbor"
+  },
+  {
+    "name": "Humboldt County",
+    "region": "California",
+    "country": "United States",
+    "lat": 40.745,
+    "lng": -123.8695,
+    "aka": "Humboldt County Raging Grannies",
+    "slug": "humboldt"
+  },
+  {
+    "name": "Madison",
+    "region": "Wisconsin",
+    "country": "United States",
+    "lat": 43.0731,
+    "lng": -89.4012,
+    "aka": "Madison Raging Grannies",
+    "slug": "madison"
+  },
+  {
+    "name": "Manitowoc County",
+    "region": "Wisconsin",
+    "country": "United States",
+    "lat": 44.0886,
+    "lng": -87.6576,
+    "aka": "Manitowoc County Raging Grannies",
+    "slug": "manitowoc"
+  },
+  {
+    "name": "Mendocino",
+    "region": "California",
+    "country": "United States",
+    "lat": 39.3077,
+    "lng": -123.7995,
+    "aka": "Mendocino Raging Grannies",
+    "slug": "mendocino"
+  },
+  {
+    "name": "Metro Detroit",
+    "region": "Michigan",
+    "country": "United States",
+    "lat": 42.3314,
+    "lng": -83.0458,
+    "aka": "Metro Detroit Raging Grannies",
+    "slug": "metro-detroit"
+  },
+  {
+    "name": "Milwaukee",
+    "region": "Wisconsin",
+    "country": "United States",
+    "lat": 43.0389,
+    "lng": -87.9065,
+    "aka": "Milwaukee Raging Grannies",
+    "slug": "milwaukee"
+  },
+  {
+    "name": "NYC Metro",
+    "region": "New York",
+    "country": "United States",
+    "lat": 40.7128,
+    "lng": -74.006,
+    "aka": "NYC Metro Raging Grannies",
+    "slug": "nyc-metro"
+  },
+  {
+    "name": "New Haven",
+    "region": "Connecticut",
+    "country": "United States",
+    "lat": 41.3083,
+    "lng": -72.9279,
+    "aka": "New Haven Raging Grannies",
+    "slug": "new-haven"
+  },
+  {
+    "name": "New Mexico",
+    "region": "New Mexico",
+    "country": "United States",
+    "lat": 35.687,
+    "lng": -105.9378,
+    "aka": "NM Raging Grannies",
+    "slug": "new-mexico"
+  },
+  {
+    "name": "Olympia",
+    "region": "Washington",
+    "country": "United States",
+    "lat": 47.0379,
+    "lng": -122.9007,
+    "aka": "Olympia Raging Grannies",
+    "slug": "olympia"
+  },
+  {
+    "name": "Piedmont",
+    "region": "North Carolina",
+    "country": "United States",
+    "lat": 36.0726,
+    "lng": -79.792,
+    "aka": "Piedmont Raging Grannies",
+    "slug": "piedmont"
+  },
+  {
+    "name": "Port Townsend",
+    "region": "Washington",
+    "country": "United States",
+    "lat": 48.117,
+    "lng": -122.7604,
+    "aka": "Port Townsend Raging Grannies",
+    "slug": "port-townsend"
+  },
+  {
+    "name": "Portland",
+    "region": "Oregon",
+    "country": "United States",
+    "lat": 45.5152,
+    "lng": -122.6784,
+    "aka": "Portland Raging Grannies",
+    "slug": "portland"
+  },
+  {
+    "name": "Redding",
+    "region": "California",
+    "country": "United States",
+    "lat": 40.5865,
+    "lng": -122.3917,
+    "aka": "Redding Raging Grannies",
+    "slug": "redding"
+  },
+  {
+    "name": "Rochester",
+    "region": "New York",
+    "country": "United States",
+    "lat": 43.1566,
+    "lng": -77.6088,
+    "aka": "Rochester Raging Grannies",
+    "slug": "rochester"
+  },
+  {
+    "name": "Sacramento",
+    "region": "California",
+    "country": "United States",
+    "lat": 38.5816,
+    "lng": -121.4944,
+    "aka": "Sacramento Raging Grannies",
+    "slug": "sacramento"
+  },
+  {
+    "name": "San Francisco Bay Area",
+    "region": "California",
+    "country": "United States",
+    "lat": 37.7749,
+    "lng": -122.4194,
+    "aka": "Raging Grannies Action League",
+    "slug": "sf-bay-area"
+  },
+  {
+    "name": "San Jose & Santa Clara County",
+    "region": "California",
+    "country": "United States",
+    "lat": 37.3382,
+    "lng": -121.8863,
+    "aka": "San Jose & Santa Clara County Raging Grannies",
+    "slug": "san-jose-santa-clara"
+  },
+  {
+    "name": "Santa Cruz",
+    "region": "California",
+    "country": "United States",
+    "lat": 36.9741,
+    "lng": -122.0308,
+    "aka": "Santa Cruz Raging Grannies",
+    "slug": "santa-cruz"
+  },
+  {
+    "name": "Seattle",
+    "region": "Washington",
+    "country": "United States",
+    "lat": 47.6062,
+    "lng": -122.3321,
+    "aka": "Seattle Raging Grannies",
+    "slug": "seattle"
+  },
+  {
+    "name": "Sonoma County",
+    "region": "California",
+    "country": "United States",
+    "lat": 38.511,
+    "lng": -122.8474,
+    "aka": "Sonoma County Raging Grannies",
+    "slug": "sonoma"
+  },
+  {
+    "name": "South Florida",
+    "region": "Florida",
+    "country": "United States",
+    "lat": 26.1224,
+    "lng": -80.1373,
+    "aka": "South Florida Raging Grannies",
+    "slug": "south-florida"
+  },
+  {
+    "name": "Southern Indiana and Louisville",
+    "region": "Kentucky",
+    "country": "United States",
+    "lat": 38.2527,
+    "lng": -85.7585,
+    "aka": "Kentuckiana Raging Grannies",
+    "slug": "kentuckiana"
+  },
+  {
+    "name": "Spokane",
+    "region": "Washington",
+    "country": "United States",
+    "lat": 47.6588,
+    "lng": -117.426,
+    "aka": "Spokane Raging Grannies",
+    "slug": "spokane"
+  },
+  {
+    "name": "Tompkins County",
+    "region": "New York",
+    "country": "United States",
+    "lat": 42.444,
+    "lng": -76.5019,
+    "aka": "Tompkins County Raging Grannies",
+    "slug": "tompkins-county"
+  },
+  {
+    "name": "Triangle",
+    "region": "North Carolina",
+    "country": "United States",
+    "lat": 35.7796,
+    "lng": -78.6382,
+    "aka": "Triangle Raging Grannies",
+    "slug": "triangle"
+  },
+  {
+    "name": "Tucson",
+    "region": "Arizona",
+    "country": "United States",
+    "lat": 32.2226,
+    "lng": -110.9747,
+    "aka": "Tucson Raging Grannies",
+    "slug": "tucson"
+  },
+  {
+    "name": "Tuolumne & Calaveras Counties",
+    "region": "California",
+    "country": "United States",
+    "lat": 37.9833,
+    "lng": -120.3822,
+    "aka": "RGTC",
+    "slug": "tuolumne-calaveras"
+  },
+  {
+    "name": "Walnut Creek",
+    "region": "California",
+    "country": "United States",
+    "lat": 37.9101,
+    "lng": -122.0652,
+    "aka": "Walnut Creek Raging Grannies",
+    "slug": "walnut-creek"
+  },
+  {
+    "name": "Western Massachusetts",
+    "region": "Massachusetts",
+    "country": "United States",
+    "lat": 42.3266,
+    "lng": -72.67,
+    "aka": "Western Massachusetts Raging Grannies",
+    "slug": "western-mass"
+  },
+  {
+    "name": "Israel",
+    "region": "Israel",
+    "country": "Israel",
+    "lat": 31.7683,
+    "lng": 35.2137,
+    "aka": "Israel Raging Grannies",
+    "slug": "israel"
+  }
 ]

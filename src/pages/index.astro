@@ -3,6 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { wpQuery } from "../lib/graphql";
 import { fetchAllSongs } from "../lib/songs";
 import { fetchLatestActions } from "../lib/actions";
+import { getActiveGaggleCount } from "../lib/gaggles";
+
+const activeGaggleCount = getActiveGaggleCount();
 
 interface IssuesData {
   issues: {
@@ -248,7 +251,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
         <div class="kicker text-red mb-3">The network</div>
         <h2 class="font-display text-ink text-[56px] leading-[.98] mb-5">Find Your Gaggle</h2>
         <p class="text-[19px] text-text-soft leading-normal mb-8">
-          Eighty-plus gaggles across the US and Canada, from Victoria to Halifax. Find one near you, or start your own.
+          {activeGaggleCount} gaggles across the US, Canada, and beyond. Find one near you, or start your own.
         </p>
         <div class="flex gap-3 flex-wrap">
           <a href="/find-a-gaggle/" class="btn btn-pill">Find a gaggle</a>

@@ -9,9 +9,8 @@ interface Gaggle {
   country: string;
   lat: number;
   lng: number;
-  // Optional fields in the data file we deliberately ignore on the page:
-  //   founding?: boolean   — Victoria treated like every other gaggle
-  //   aka?: string         — nicknames suppressed in UI per request
+  aka: string;   // display name, e.g. "Antigonish Raging Grannies"
+  slug: string;  // subsite slug, e.g. "antigonish"
 }
 
 const DATA = resolve(process.cwd(), "data/gaggle-locations.json");
@@ -25,7 +24,9 @@ if (existsSync(DATA)) {
           g &&
           typeof g.name === "string" &&
           typeof g.lat === "number" &&
-          typeof g.lng === "number",
+          typeof g.lng === "number" &&
+          typeof g.slug === "string" &&
+          typeof g.aka === "string",
       );
     }
   } catch (err) {
@@ -64,6 +65,8 @@ const countries = Object.keys(byCountry).sort((a, b) => {
 const mapPayload = JSON.stringify(
   gaggles.map((g) => ({
     name: g.name,
+    aka: g.aka,
+    slug: g.slug,
     region: g.region,
     country: g.country,
     lat: g.lat,
@@ -121,7 +124,13 @@ const mapPayload = JSON.stringify(
                     <div class="dir-region-name">{region}</div>
                     <ul class="dir-list">
                       {byCountry[country][region].map((g) => (
-                        <li>{g.name}</li>
+                        <li>
+                          <a
+                            href={`https://${g.slug}.raginggrannies.org/`}
+                            class="dir-link"
+                            rel="noopener"
+                          >{g.aka || g.name}</a>
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -229,15 +238,16 @@ const mapPayload = JSON.stringify(
         const markerEl = document.createElement("div");
         markerEl.className = "gaggle-marker";
 
+        const subsiteUrl = `https://${encodeURIComponent(g.slug)}.raginggrannies.org/`;
         const popup = new mapboxgl.Popup({
           offset: 14,
           closeButton: false,
           maxWidth: "280px",
         }).setHTML(`
           <div class="gaggle-popup">
-            <div class="gp-name">${escHtml(g.name)}</div>
+            <div class="gp-name">${escHtml(g.aka || g.name)}</div>
             <div class="gp-where">${escHtml(g.region)}, ${escHtml(g.country)}</div>
-            <div class="gp-contact">Want to connect? <a href="/contact/">Visit our Contact page.</a></div>
+            <div class="gp-contact"><a href="${escHtml(subsiteUrl)}">Visit this gaggle's website →</a></div>
           </div>
         `);
 
@@ -360,6 +370,16 @@ const mapPayload = JSON.stringify(
       font-size: 16px;
       line-height: 1.45;
       color: var(--color-text);
+    }
+    .dir-link {
+      color: var(--color-red);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .dir-link:hover, .dir-link:focus-visible {
+      border-bottom-color: var(--color-red);
+      outline: none;
     }
 
     /* CTA */

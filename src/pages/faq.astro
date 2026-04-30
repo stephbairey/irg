@@ -1,5 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getActiveGaggleCount } from "../lib/gaggles";
+
+const gaggleCount = getActiveGaggleCount();
 
 type QA = { q: string; a: string };
 type Section = { id: string; title: string; intro: string; items: QA[] };
@@ -105,7 +108,7 @@ const sections: Section[] = [
       },
       {
         q: "Do gaggles ever disagree with each other?",
-        a: `Of course. Eighty-plus autonomous groups are not going to march in lockstep, and we wouldn't want them to. When differences come up, consensus is always the goal, both within gaggles and across the network. If two gaggles take different positions on something, that's the network working as designed.`,
+        a: `Of course. ${gaggleCount} autonomous groups are not going to march in lockstep, and we wouldn't want them to. When differences come up, consensus is always the goal, both within gaggles and across the network. If two gaggles take different positions on something, that's the network working as designed.`,
       },
     ],
   },

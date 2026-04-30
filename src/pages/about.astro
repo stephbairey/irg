@@ -1,5 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getActiveGaggleCount } from "../lib/gaggles";
+
+const gaggleCount = getActiveGaggleCount();
 ---
 
 <BaseLayout title="About">
@@ -15,7 +18,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     {/* Body */}
     <div class="max-w-[700px] mx-auto text-[19px] leading-[1.85] text-text about-prose">
       <p class="mb-8">
-        We are an international network of women activists "of a certain age" who use satirical songs, street theater, and outrageous granny garb to fight for peace, social justice, and the planet. We started in Victoria, British Columbia in 1987, when a group of women got tired of being told to make the coffee at peace meetings and decided to make some noise instead. They put on flowery hats, wrote biting lyrics to familiar tunes, and showed up uninvited wherever they thought their message needed to be heard. Nearly four decades later, there are more than 80 autonomous gaggles across Canada, the United States, and beyond, and we have not gotten any quieter. You can read the full story of <a href="/herstory/">how we began</a> or explore <a href="/philosophy/">what drives us</a>.
+        We are an international network of women activists "of a certain age" who use satirical songs, street theater, and outrageous granny garb to fight for peace, social justice, and the planet. We started in Victoria, British Columbia in 1987, when a group of women got tired of being told to make the coffee at peace meetings and decided to make some noise instead. They put on flowery hats, wrote biting lyrics to familiar tunes, and showed up uninvited wherever they thought their message needed to be heard. Nearly four decades later, there are {gaggleCount} autonomous gaggles across Canada, the United States, and beyond, and we have not gotten any quieter. You can read the full story of <a href="/herstory/">how we began</a> or explore <a href="/philosophy/">what drives us</a>.
       </p>
       <p>
         We are not entertainers, although we are often entertaining. We are not a political party, and we don't endorse candidates. We are grandmothers, teachers, artists, scientists, librarians, troublemakers, and women who refuse to sit down and be quiet while the world needs singing at. Each gaggle picks its own issues, writes its own songs, and makes its own decisions by consensus. There is no headquarters, no hierarchy, and no one in charge. Just women with strong opinions, bad hats, and worse singing voices. If you want to know more, check our <a href="/faq/">FAQ</a>. If you want to find us, <a href="/find-a-gaggle/">look at the map</a>. And if you can't find a gaggle near you, maybe it's time to <a href="/start-a-gaggle/">start one</a>.
