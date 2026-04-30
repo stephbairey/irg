@@ -9,13 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBL_VERSION', '1.9.4' );
+define( 'TBL_VERSION', '1.10.0' );
 define( 'TBL_DIR', get_template_directory() );
 define( 'TBL_URI', get_template_directory_uri() );
 
 require_once TBL_DIR . '/inc/template-functions.php';
 require_once TBL_DIR . '/inc/theme-options.php';
 require_once TBL_DIR . '/inc/default-content.php';
+require_once TBL_DIR . '/inc/jsonld.php';
 
 /**
  * Theme setup. Runs once on `after_setup_theme`.
