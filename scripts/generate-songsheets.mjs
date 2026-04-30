@@ -31,8 +31,10 @@ function loadEnv() {
 const env = loadEnv();
 const GRAPHQL = env.PUBLIC_WP_GRAPHQL_ENDPOINT;
 if (!GRAPHQL) {
-  console.error("Missing PUBLIC_WP_GRAPHQL_ENDPOINT");
-  process.exit(1);
+  console.warn(
+    "[songsheets] PUBLIC_WP_GRAPHQL_ENDPOINT not set — skipping (build continues; songsheet PDFs will be missing or stale)",
+  );
+  process.exit(0);
 }
 
 // --- layout constants ------------------------------------------------------
@@ -95,6 +97,11 @@ async function fetchAllSongs() {
     if (!res.ok) throw new Error(`GraphQL ${res.status} ${res.statusText}`);
     const json = await res.json();
     if (json.errors) throw new Error(`GraphQL errors: ${JSON.stringify(json.errors)}`);
+    if (!json.data?.songs) {
+      throw new Error(
+        `GraphQL response missing data.songs — endpoint may be misconfigured. Got: ${JSON.stringify(json).slice(0, 200)}`,
+      );
+    }
     const data = json.data.songs;
     all.push(...data.nodes);
     hasNext = data.pageInfo.hasNextPage;
@@ -392,7 +399,16 @@ async function generatePdf(song, fonts) {
 
 (async () => {
   console.log("[songsheets] fetching songs from WPGraphQL…");
-  const songs = await fetchAllSongs();
+  let songs;
+  try {
+    songs = await fetchAllSongs();
+  } catch (err) {
+    console.warn(`[songsheets] fetch failed: ${err.message}`);
+    console.warn(
+      "[songsheets] skipping songsheet generation (build continues; songsheet PDFs will be missing or stale)",
+    );
+    process.exit(0);
+  }
   console.log(`[songsheets] got ${songs.length} songs`);
 
   console.log("[songsheets] loading fonts…");
