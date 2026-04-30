@@ -226,9 +226,16 @@ const path = Astro.url.pathname;
       </div>
       <!-- Bottom bar -->
       <div class="max-w-[1200px] mx-auto mt-10 pt-6 px-8 border-t border-white/15 flex justify-between text-[13px] text-ink-lilac">
-        <span>&copy; {year} International Raging Grannies</span>
+        <span>&copy; <span class="copyright-year">{year}</span> International Raging Grannies</span>
         <span>Made with spirit, by volunteers.</span>
       </div>
     </footer>
+
+    <script is:inline>
+      // Keep the copyright year correct even if the static build is months old.
+      for (const el of document.querySelectorAll(".copyright-year")) {
+        el.textContent = String(new Date().getFullYear());
+      }
+    </script>
   </body>
 </html>

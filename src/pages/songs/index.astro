@@ -339,11 +339,28 @@ const songsJson = JSON.stringify(
       render();
     });
 
-    // Init from URL params (supports linking from /songs/by-issue/, /songs/by-tune/, etc.)
+    // Init from URL params (supports linking from /songs/by-issue/, /songs/by-tune/,
+    // and from gaggle subsites whose Songs pill passes ?gaggle=<slug>).
+    // The lookup is case-insensitive against the actual term names so a
+    // slug-form param like ?gaggle=portland resolves to the canonical
+    // "Portland" — otherwise the strict equality filter returns 0 results.
+    function canonicalize(rawValues, requested) {
+      const want = String(requested).toLowerCase();
+      return rawValues.find((v) => String(v).toLowerCase() === want) ?? requested;
+    }
     const params = new URLSearchParams(window.location.search);
-    if (params.get("issue")) filters.issue = params.get("issue");
-    if (params.get("tune")) filters.tune = params.get("tune");
-    if (params.get("gaggle")) filters.gaggle = params.get("gaggle");
+    if (params.get("issue")) {
+      const issueNames = [...new Set(ALL.flatMap((s) => s.i))];
+      filters.issue = canonicalize(issueNames, params.get("issue"));
+    }
+    if (params.get("tune")) {
+      const tuneNames = [...new Set(ALL.map((s) => s.n).filter(Boolean))];
+      filters.tune = canonicalize(tuneNames, params.get("tune"));
+    }
+    if (params.get("gaggle")) {
+      const gaggleNames = [...new Set(ALL.map((s) => s.g).filter(Boolean))];
+      filters.gaggle = canonicalize(gaggleNames, params.get("gaggle"));
+    }
     render();
   </script>
 </BaseLayout>
