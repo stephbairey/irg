@@ -408,6 +408,116 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Graceful degradation**: if `PUBLIC_TURNSTILE_SITEKEY` is unset at build time, the page renders a friendly fallback ("the form is being set up — email us at press@") instead of a broken widget. Same fallback if the WP URL isn't configured. Once both are present, the form appears.
 - **Revisit if**: spam volume punches through Turnstile (add rate-limiting per IP / Origin); OR we want delivery confirmation / queueing (move to Resend + Cloudflare Queues); OR we need separate destinations per topic (introduce a `category` field on the form and route in the WP endpoint).
 
+## D031 — The Bulletin Local: WP theme for gaggle subsites
+
+- **Status**: Decided
+- **Date**: 2026-04-30
+- **Context**: Each gaggle subsite on the multisite needed a frontend. Per the project framing, WP is primarily a backend (Astro is the public face), but subsites still render via WP — they're admin-managed by individual gaggles, and the public hits them at `<gaggle>.raginggrannies.org` (eventually) or `cms.raginggrannies.international/<gaggle>` (now). A theme is required even if the public never sees the WP frontend on the main site.
+- **Options considered**:
+  - **Existing third-party theme** (Astra / Twenty Twenty-Four). Faster to ship; bloated, design-incoherent with the Astro main site, hard to lock down.
+  - **Child theme of an existing theme**. Smaller surface than full custom, but still tied to the parent's update cadence and design vocabulary.
+  - **Standalone custom theme** mirroring the Astro design tokens. Full control; design coherence with the public site; small surface to maintain.
+- **Choice**: Standalone custom theme called **The Bulletin Local**. Authored by Lingua Ink Media. Vanilla CSS + vanilla JS (no preprocessors, no JS frameworks). Tokens mirror `src/styles/global.css` exactly: paper `#FAF3E3`, ink `#2A1847`, ink-soft `#57228C`, red `#E22A2C`, on-dark `#F5F4E6`, plus Rum Raisin (display) and Nunito Sans (body) Google Fonts. 1400px outer header / 1200px footer container width matches BaseLayout. Theme registers no widgets, no Customizer panel, no admin chrome — a single Appearance → Gaggle Settings page with three knobs (hero image, YouTube channel URL, tagline) plus the toggle from D034.
+- **Templates**: `front-page.php` (two-column polaroid hero + Recent Actions grid), `home.php` and `archive.php` (Actions list with placeholder fallback for posts without featured images), `single.php` (Action with floated polaroid feature), `page.php` (generic), `page-photos.php` (auto-gallery from inline + featured images), `page-videos.php` (YouTube channel CTA), `page-contact.php` (slug-derived recipient), `404.php`, plus the songs templates added in D034.
+- **WP page-content support**: alignment classes (`alignright`, `alignleft`, `aligncenter`, `alignnone`) styled per Classic Editor expectations; `.wp-caption` / `.wp-caption-text`; a user-friendly `.polaroid` image class so editors can wrap any embedded image in the polaroid frame just by typing "polaroid" into the Image CSS Class field.
+- **Activation seeder** (`tbl_seed_default_content`): creates Home / About / Photos / Videos / Contact / Actions pages with templates assigned, sets static-front + posts-page, sets `/%postname%/` permalinks, seeds one sample Action post. Idempotent — re-activation doesn't duplicate.
+- **Brand block**: header shows the gaggle locator (subsite WP title) on top in Rum Raisin 22px and "Raging Grannies" below in Rum Raisin 22px; the inverse of the Astro main site (where "Raging Grannies" leads). The flip reflects identity primacy on subsites.
+- **Inline-SVG logos**: `logo-cropped.svg` and `logo-full.svg` embedded inline (no `fill` attribute on the root) so CSS controls colour per location — ink in the header, on-dark in the footer.
+- **Cache-busting on bundled images**: `tbl_hero_image_url()` and `tbl_action_feature_url()` append `?v=<TBL_VERSION>` to default image URLs. LiteSpeed serves bundled assets with a 7-day public cache; without versioning, swapping the bundled image leaves browsers stuck on the old copy until expiry. Theme version bump invalidates.
+- **Revisit if**: subsites need richer admin tooling (e.g. a member directory, event calendar) that doesn't fit in three theme options — promote to a separate plugin or a per-feature CPT in irg-core; OR a gaggle wants visual customization beyond the hero image and tagline (introduce a Customizer panel keyed on `theme_mod`); OR Cloudflare Pages takes over subsite rendering too (then the theme becomes a per-route SSR target instead of a public-facing theme).
+
+## D032 — Theme self-deploy via REST endpoint
+
+- **Status**: Decided
+- **Date**: 2026-04-30
+- **Context**: Iterating on The Bulletin Local theme through the WP admin's "Upload Theme" flow is slow — package, browse, upload, install, activate, four clicks per cycle. The plugin self-deploy pattern (D022) already exists. Theme deployment should mirror it.
+- **Options considered**:
+  - **Continue uploading via WP admin Themes → Add New**. Works for every WP install; manual per iteration.
+  - **rsync / SSH directly to the Nixihost theme directory**. Bypasses WP entirely; no activation, no version-aware update; requires SSH config we don't otherwise rely on.
+  - **REST endpoint paralleling the plugin one** (`POST /wp-json/irg/v1/theme-upload`). Reuses the application-password auth already in `.env.local`; reuses `WP_Upgrader` so installs go through WP's normal lifecycle (zip extract, file copy, version registration, network-enable for multisite).
+- **Choice**: Add `irg_register_theme_deploy_endpoint()` to irg-core (3.9.0). The endpoint:
+  - Accepts a multipart `theme` field; rejects any zip whose filename doesn't start with `the-bulletin-local`
+  - Permission gate: `is_super_admin()` on multisite, otherwise `current_user_can('install_themes')`
+  - Uses `Theme_Upgrader::install` with `overwrite_package: true` so re-deploys replace the installed theme cleanly
+  - On multisite, network-enables the theme by adding it to the `allowedthemes` site option — does NOT activate it on any subsite (active theme stays as set)
+  - Returns `{ ok, name, stylesheet, version, network_enabled }` for the deploy script to log
+- **Client**: `scripts/deploy-theme.mjs` mirrors `scripts/deploy-plugin.mjs`. Reads `.env.local`, zips `wp-theme/the-bulletin-local`, POSTs to the endpoint. Single command per iteration: `node scripts/deploy-theme.mjs`.
+- **First-install caveat**: the endpoint can't bootstrap itself. The very first theme install needs a manual upload via Network Admin → Themes → Add New. Same chicken-and-egg as D022.
+- **Auto-flush on version change**: WP's `after_switch_theme` doesn't fire on a theme *update*, only first activation. Without this hook, a deploy that adds a new rewrite rule (e.g. D035's `/songs/<slug>/`) wouldn't take effect until something else flushed (Settings → Permalinks → Save). The theme stores its active version in a regular option (`tbl_active_version`); when `init` runs and the stored version differs, rewrite rules are flushed and the option is updated. One-shot per version bump.
+- **Revisit if**: we need staging/preview environments for theme changes (then add a `?dry-run` mode that extracts to a sibling directory); OR the upload zip exceeds Nixihost's PHP `upload_max_filesize` (split assets out, or move large media to Cloudflare R2).
+
+## D033 — Subsite WP site title = locator only; AKA assembled in code
+
+- **Status**: Decided
+- **Date**: 2026-04-30
+- **Context**: A gaggle's identity has two parts: a locator (e.g. "San Jose & Santa Clara County") and the network mark ("Raging Grannies"). Both surface in the subsite's chrome — the header brand, the hero title, the footer wordmark, the canonical URL on the central library, the contact-email derivation. WordPress only stores one `blogname` per subsite. We could store the full AKA there (and split off "Raging Grannies" wherever the locator alone is needed), or store just the locator (and append "Raging Grannies" wherever the AKA is needed).
+- **Options considered**:
+  - **`blogname` = full AKA** (e.g. "San Jose & Santa Clara County Raging Grannies"). Some references to the gaggle naturally read as the AKA; storing it that way makes those reads trivial. But splitting off the suffix for header sub-lines, song-library filter URLs, etc. requires a string-strip that breaks if any gaggle's title doesn't include "Raging Grannies".
+  - **`blogname` = locator only** (e.g. "San Jose & Santa Clara County"). The "Raging Grannies" suffix is constant network typography that the theme controls. No string parsing. WP admin chrome (browser tab, Network Admin sidebar) shows the locator alone — slightly terser but clearer-than-truncated.
+- **Choice**: locator only. `tbl_gaggle_name()` returns the bare site title; `tbl_gaggle_aka()` appends " Raging Grannies" wherever the AKA is needed (hero title with the suffix coloured red, footer wordmark, copyright, central-library filter URL).
+- **Slug match for cross-site queries**: the gaggle taxonomy term slug (`seattle`) auto-generated by WP from the term name (`Seattle`) is canonically the same as the subsite's URL path slug. The theme's `tbl_gaggle_slug()` derives from `get_blog_details()->path`. The cross-site song query (D034) matches on this slug. If a gaggle's term name is later edited and the slug diverges from the subsite path, Gaggle Settings shows "Detected: 0 songs" — surfacing the mismatch immediately rather than failing silently.
+- **Revisit if**: a gaggle wants a display name that isn't `<locator> Raging Grannies` exactly (some chapters use "RG&lt;Locator&gt;" or other compositions) — then add an explicit "display AKA" field to Gaggle Settings and have `tbl_gaggle_aka()` prefer it.
+
+## D034 — Subsite-local song archive: cross-site cached via site option
+
+- **Status**: Decided
+- **Date**: 2026-04-30
+- **Context**: Songs live exclusively on the multisite's main site as a `song` CPT (D003), gated `is_main_site()`. Some gaggles (Seattle first) used songs as their primary content on their old WordPress sites and want a list of "their" songs on the subsite — not a search portal, but a browsable archive of songs tagged with their gaggle term. The architecture's default is to send subsite users to the central Astro library at `raginggrannies.org/songs/?gaggle=<slug>`, but Seattle's grannies expect songs on their own site.
+- **Options considered**:
+  - **No subsite list; Songs pill always sends to the central library**. Architecturally cleanest — one place for songs, no duplication. Mismatched with Seattle's expectation; deters opt-in gaggles.
+  - **Replicate the song CPT and sync to subsites**. WordPress doesn't natively share post types across sites, so this would mean nightly imports or live cross-site writes. Heavy, fragile, and duplicates the canonical source.
+  - **Cross-site query at runtime, cached on the subsite** (per-blog transient). Subsite reads use `switch_to_blog( get_main_site_id() )`, query, cache as a transient. Works, but transients are per-blog — busting on a song save (which fires in main-site context) requires switching to every opted-in subsite to delete its transient.
+  - **Cross-site query at runtime, cached as a network site option** (option 4). Site options are network-wide. Subsite reads with `get_site_option()` skip `switch_to_blog` entirely on cache hits. Bust path runs in main-site context (where the save hooks fire) and writes the same site option — no switching needed in either direction.
+- **Choice**: option 4. `irg_get_subsite_songs( $gaggle_slug )` in irg-core checks the site option `irg_subsite_songs_<slug>_v7`. Miss → switch to main site, force-register the CPT and gaggle taxonomy if they aren't (init fired earlier in subsite context where the guards returned early), build the array, write to the site option, restore. Build returns plain arrays (no `WP_Post`s leaked across blog context): title, slug, year, songwriters[], tunes[], issues[], lyrics, lyrics_excerpt, youtube_link, detail_url. **Empty results are NOT cached** — a transient registration glitch becomes a one-call surprise rather than a sticky-empty state until something invalidates.
+- **Cache invalidation** (all hooks fire in main-site context): `save_post_song`, `before_delete_post` (when post type is `song`), `set_object_terms` (when taxonomy is `gaggle` — covers Quick Edit term reassignment), `transition_post_status` (publish/draft/trash). The term-change buster walks every gaggle slug and clears each (~80 site options, all small) since the hook only knows the new terms, not the old.
+- **Per-subsite opt-in**: `show_local_songs` boolean in `tbl_options`. Renders a Gaggle Settings checkbox that displays the detected song count for the subsite's slug — instant feedback that the slug match is working. When the toggle is on, `tbl_songs_url()` (which the header pill uses) returns `home_url('/songs/')` instead of the central-library URL; otherwise the pill behaves as before.
+- **Page lifecycle**: when the toggle is on at any settings save, `tbl_ensure_page('songs', 'Songs', '', 'page-songs.php')` runs. Idempotent. Toggling off does NOT delete the page — admins who customised the intro shouldn't lose it.
+- **Cache key version**: bumping the suffix (`_v1` → `_v7` over the lifetime of this feature) is the canonical way to invalidate the entire cache surface. Old keys orphan in `wp_sitemeta`; small, harmless.
+- **Revisit if**: opted-in gaggle count grows past ~10 (the term-change broad invalidation walks all gaggles; consider tracking which slugs are actually subscribed and only busting those); OR a gaggle wants live filtering / search on its local list (the cache delivers full content; build it as a client-side filter UI in `page-songs.php`); OR site-option size becomes a concern at 1000+ songs per gaggle (move to a custom DB table).
+
+## D035 — Subsite single-song page: cross-site detail without duplicate Astro
+
+- **Status**: Decided
+- **Date**: 2026-04-30
+- **Context**: Once a gaggle opts into D034, clicking a song row needs to land somewhere. The first-cut implementation pointed each row at the canonical Astro library URL (`raginggrannies.org/songs/<slug>/`). Seattle's mental model — songs live on their own site — meant they expected a song detail page on the subsite, not an outbound jump.
+- **Options considered**:
+  - **Link out to the Astro library** (initial implementation). One detail rendering on the network. No duplication. Mismatched with Seattle's expectation.
+  - **Build a full-feature single-song template on the subsite** mirroring everything Astro's `/songs/[slug].astro` does (lyrics, related songs, YouTube embed, songsheet PDF download, share links). Maintenance burden doubles; SEO duplication.
+  - **Render a focused single-song page on the subsite** with the basics, and link out to the Astro library for the features Astro is canonical for (songsheet PDF, taxonomy filter exploration). Best of both: subsite stays the surface, Astro stays canonical for ancillary features.
+- **Choice**: option 3. New rewrite rule on every subsite for `^songs/([^/]+)/?$` → query var `tbl_song_slug` → `single-song.php` template (via `template_include` filter). The rule is registered unconditionally; the template falls back to a "song not found / browse central library" CTA when the toggle is off or the slug doesn't resolve.
+- **Single-song renders**: title, full lyrics (cached in D034), metadata block — Year (display only), Songwriter (each linked to `raginggrannies.org/songs/?songwriter=<name>`), Tune (linked to `?tune=`), Categories (linked chips → `?issue=`). YouTube embed if `youtube_link` ACF field is set. Bottom aside has three links: "Printable songsheet available on the international site →" (`/songsheets/<slug>.pdf`), "View this song in the central library →" (the canonical detail URL), and "← Back to all songs" (subsite-local list).
+- **Songsheet PDFs stay on Astro**: D026's build-time PDF generation already runs there; replicating it on the subsite would mean either bundling pdf-lib into the WP plugin (a Node dependency in PHP space) or re-uploading PDFs to each subsite's media library on every regeneration. Linking out is the right granularity.
+- **Songwriter URL filter on Astro**: D034's metadata links promised `?songwriter=` filtering, which the Astro library didn't have. Added it as part of this work — case-insensitive canonicalization (D036 pattern), removable chip in the active filters, included in the reset-all behaviour. No songwriter dropdown is added to the library UI; only URL-driven filtering for now.
+- **Lyrics cache shape**: the by-slug helper (`irg_get_subsite_song_by_slug`) walks the cached array — no extra cross-site call. Cost: one O(n) array scan per detail-page hit, where n is the gaggle's song count. Cheap at Seattle's 454.
+- **No canonical link tag** on the subsite single-song. Letting Google decide between the subsite version and the central library version means subsite pages can rank for "song lyrics" queries (which Seattle wants), without an explicit duplicate-content suppression.
+- **Revisit if**: SEO duplicate-content turns out to dilute either side's ranking (then add `<link rel="canonical">` pointing at the Astro version); OR a gaggle wants the songsheet PDF rendered locally (then either bundle pdf-lib via PHP or proxy the Astro PDF through a subsite endpoint); OR songs need richer detail features (related songs, comments, history) — at that point the full Astro template should ship locally as well.
+
+## D036 — Astro song library: case-insensitive URL-param canonicalization
+
+- **Status**: Decided
+- **Date**: 2026-04-30
+- **Context**: The Astro library at `/songs/` exposes filterable URL params: `?gaggle=`, `?issue=`, `?tune=`, `?songwriter=`. The original implementation stored the param value verbatim and compared it strictly against the song's term name (`s.g === filters.gaggle`). Term names are canonical-cased (e.g. "Portland", "War & Peace"). Subsite Songs pills pass slug-form params (e.g. `?gaggle=portland`), and humans hand-typing URLs can't be expected to match casing exactly. Strict equality returned 0 results for any non-exact param value, while `rebuildDropdown` prepended the unmatched value as if it had selected something — confusing UX.
+- **Options considered**:
+  - **Make every link build its URL from the canonical term name**. Works only if every link site has access to the term-name list. Subsite pills only know the gaggle slug.
+  - **Lowercase normalize on both sides**. `s.g.toLowerCase() === filters.gaggle.toLowerCase()`. Easy, but `select.value` setting (which drives the dropdown) wouldn't match an option unless the option's value also lowercases — which would break the dropdown's display label.
+  - **Canonicalize on init**: read the URL param, look it up case-insensitively against the actual term names in the songs data, replace the filter state with the canonical-cased term. From then on, strict equality and `select.value` behave correctly.
+- **Choice**: canonicalize on init. A small `canonicalize(rawValues, requested)` helper does the lookup. Applied to all four URL params (`issue`, `tune`, `gaggle`, `songwriter`). If the requested value matches no term name, the filter state keeps the requested value verbatim — UI then shows the unmatched term as an active chip, surfacing the typo to the user rather than silently failing.
+- **Subsite implications**: `tbl_songs_url()` passes the lowercase slug (`?gaggle=portland`); the Astro page resolves to "Portland" automatically. No coordination needed between the slug naming and the term-name casing.
+- **Revisit if**: term names start having genuine case-significant variations (unlikely for English taxonomy terms); OR we add a fifth filterable param (then refactor the four near-identical canonicalize blocks into a loop).
+
+## D037 — Migrated lyrics sanitization deferred to content level
+
+- **Status**: Decided
+- **Date**: 2026-04-30
+- **Context**: The migrated `lyrics` ACF field for songs carries several classes of broken markup from older WordPress installs: orphan tag-fragments like `br>` and `em>` (the leading `<` was lost in a prior sanitization), malformed pseudo-tags like `<Chorus:</` (a section label that got angle-bracketed by mistake), and mixed entity encoding where `>` is sometimes `&gt;` while surrounding markup is literal. These render as visible junk on the subsite single-song template (D035), e.g. `<em>br>By Jo-Hanna Read</em>` showing "br>By Jo-Hanna Read" italicised.
+- **Options considered**:
+  - **Display-time regex sanitization** in `irg_build_subsite_songs_cache`. Cheap to ship; tried multiple iterations (`\b/?(em|...)>` → `(?<!<)/?(em|...)>` → `(?<![</])(em|...)(?:>|&gt;)` plus several companion passes for malformed `<Chorus:</`). Each pass surfaced new edge cases — over-stripping tag names inside valid `</em>` tags (consumed lyrics until the next `>`), missing entity-encoded trailers, etc.
+  - **DOM-based parse and rebuild**. Use `DOMDocument` to parse, walk, rewrite. Heavier; still requires deciding what malformed input means. Doesn't help if the source field itself has lost information.
+  - **Defer to content-level cleanup**. Display the lyrics field as-stored; let the song librarian (Jo-Hanna) clean up the source field over time. Subsite template uses `white-space: pre-wrap` on `.tbl-song-lyrics` so the plain-text `\n` breaks render as line breaks; tags that survive (`<em>`, `<strong>`) format normally; orphan fragments display as visible text.
+- **Choice**: defer. The cache builder no longer attempts any lyric sanitization. `irg_clean_lyrics_fragments()` was removed entirely. Cache key bumped to `_v7` to force a clean rebuild. The subsite single-song template renders the lyrics field via `wp_kses_post()` for safety, with `white-space: pre-wrap` preserving the original line structure.
+- **Why deferred**: every regex pass had a counter-example. The migrated content is heterogeneous (different songs went through different historical migrations) and the only path to clean lyrics is per-song manual cleanup in the WP admin's ACF rich-text editor. Jo-Hanna has agreed to take on the Song Librarian role and will edit the field directly. Display-time fixes added complexity and bugs while papering over the real problem.
+- **Revisit if**: Jo-Hanna's content cleanup stalls and a large fraction of songs still have visible orphan fragments after several months (then ship a one-off CLI / WP-CLI migration that cleans the field in-place rather than at display-time); OR a content-level "clean lyrics" indicator gets added (an ACF field flag that says "this song's lyrics have been cleaned") so we can stage the cutover by song.
+
 ---
 
 ## Open decisions (not yet resolved)
