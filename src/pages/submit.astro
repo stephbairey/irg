@@ -26,9 +26,13 @@ const issues = [
 const songwriters = [
   ...new Set(allSongs.flatMap((s) => s.songwriters.nodes.map((n) => n.name).filter(Boolean))),
 ].sort((a, b) => a.localeCompare(b));
+// Active gaggles only — anything renamed to "<name> (historical)" is hidden
+// from the submission dropdown but still attaches to existing songs.
 const gaggles = [
   ...new Set(allSongs.flatMap((s) => s.gaggles.nodes.map((n) => n.name).filter(Boolean))),
-].sort((a, b) => a.localeCompare(b));
+]
+  .filter((n) => !/\s\(historical\)$/i.test(n))
+  .sort((a, b) => a.localeCompare(b));
 const tunes = [
   ...new Set(allSongs.flatMap((s) => s.tunes.nodes.map((n) => n.name).filter(Boolean))),
 ].sort((a, b) => a.localeCompare(b));
