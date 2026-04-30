@@ -27,6 +27,9 @@ public/songsheets/
 data/sources/*.xml
 docs/sources/
 
+# Pre-implementation design proposals — kept local until they ship
+docs/architecture/
+
 # python
 __pycache__/
 
