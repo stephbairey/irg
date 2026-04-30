@@ -514,10 +514,12 @@ ul { padding-left: 22px; }
 	margin: 0;
 }
 .tbl-page-body { font-size: 18px; line-height: 1.7; }
+.tbl-page-body::after { content: ""; display: block; clear: both; }
 .tbl-page-body h2 { margin-top: 1.5em; }
 .tbl-page-body h3 { margin-top: 1.4em; }
 .tbl-page-body a { color: var(--color-red); text-decoration: none; }
 .tbl-page-body a:hover { color: var(--color-ink-soft); }
+.tbl-page-body img { margin: 1em 0; }
 
 /* Action list (home.php / archive.php) */
 .tbl-action-list {
@@ -632,7 +634,7 @@ ul { padding-left: 22px; }
 	display: block;
 	clear: both;
 }
-.tbl-single-body img { margin: 1em auto; }
+.tbl-single-body img { margin: 1em 0; }
 .tbl-single-body a { color: var(--color-red); text-decoration: none; }
 .tbl-single-body a:hover { color: var(--color-ink-soft); }
 .tbl-single-body iframe {
@@ -642,6 +644,73 @@ ul { padding-left: 22px; }
 	aspect-ratio: 16 / 9;
 	display: block;
 	margin: 1.25em 0;
+}
+
+/* WordPress alignment classes for editor-inserted images. Classic Editor
+   and Gutenberg both apply these. Themes have to ship the styles
+   themselves; without these rules, alignright/alignleft do nothing. On
+   small viewports the float drops so images don't sit half-width next to
+   a tiny column of text. */
+.alignright {
+	float: right;
+	margin: 0.5em 0 1em 1.5em;
+	max-width: 50%;
+}
+.alignleft {
+	float: left;
+	margin: 0.5em 1.5em 1em 0;
+	max-width: 50%;
+}
+.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.alignnone {
+	float: none;
+	display: block;
+	margin: 1em 0;
+}
+@media (max-width: 600px) {
+	.alignright, .alignleft {
+		float: none;
+		display: block;
+		margin: 1em 0;
+		max-width: 100%;
+	}
+}
+
+/* Caption support — Classic Editor wraps captioned images in
+   <div class="wp-caption"> with a <p class="wp-caption-text"> below. */
+.wp-caption {
+	max-width: 100%;
+}
+.wp-caption img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+.wp-caption-text {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--color-text-soft);
+	margin: 6px 0 0;
+	text-align: center;
+}
+
+/* User-friendly polaroid class — add `polaroid` to an image's CSS Class in
+   the Classic Editor (Advanced Image Settings) and the theme renders the
+   same frame as the homepage polaroid: cream-white background, thin border
+   on top/sides, deeper foot at the bottom, soft drop shadow, slight tilt.
+   Composes with alignright/alignleft for floated polaroids. */
+img.polaroid {
+	background: var(--color-on-dark);
+	padding: 10px 10px 40px;
+	box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+	transform: rotate(1.4deg);
+	box-sizing: border-box;
 }
 
 /* Featured image polaroid — frame styling mirrors src/styles/global.css
@@ -907,6 +976,194 @@ ul { padding-left: 22px; }
 }
 .tbl-link-arrow:hover { color: var(--color-red); border-color: var(--color-red); }
 .tbl-more { margin-top: 32px; }
+
+/* ==========================================================================
+   Subsite-local Songs page (page-songs.php)
+   ========================================================================== */
+.tbl-songs-intro { margin-bottom: 32px; }
+
+.tbl-songs-cta {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: 17px;
+	color: var(--color-text-soft);
+	margin: 0 0 32px;
+}
+.tbl-songs-cta a {
+	color: var(--color-red);
+	text-decoration: none;
+	border-bottom: 1.5px solid transparent;
+	transition: border-color .15s ease;
+}
+.tbl-songs-cta a:hover { border-bottom-color: var(--color-red); }
+
+.tbl-song-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 0;
+}
+.tbl-song-row {
+	border-bottom: 1px solid var(--color-rule);
+}
+.tbl-song-row:last-child { border-bottom: 0; }
+
+.tbl-song-link {
+	display: block;
+	padding: 22px 4px;
+	color: var(--color-text);
+	text-decoration: none;
+	transition: padding .15s ease, background .15s ease;
+}
+.tbl-song-link:hover, .tbl-song-link:focus-visible {
+	background: rgba(87, 34, 140, 0.04);
+	padding-left: 14px;
+	padding-right: 14px;
+	outline: none;
+}
+.tbl-song-title {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: 28px;
+	line-height: 1.1;
+	color: var(--color-ink);
+	margin: 0 0 6px;
+	transition: color .15s ease;
+}
+.tbl-song-link:hover .tbl-song-title,
+.tbl-song-link:focus-visible .tbl-song-title { color: var(--color-red); }
+
+.tbl-song-meta {
+	font-family: var(--font-body);
+	font-size: 14px;
+	color: var(--color-text-soft);
+	margin-bottom: 10px;
+}
+.tbl-song-meta em {
+	color: var(--color-ink-soft);
+	font-style: italic;
+}
+.tbl-song-excerpt {
+	font-family: var(--font-body);
+	font-size: 15px;
+	line-height: 1.6;
+	color: var(--color-text);
+	margin: 0 0 10px;
+	max-width: 60ch;
+}
+.tbl-issue-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+.tbl-issue-chip {
+	display: inline-block;
+	padding: 3px 10px;
+	background: rgba(226, 42, 44, 0.08);
+	color: var(--color-red);
+	border: 1px solid rgba(226, 42, 44, 0.22);
+	border-radius: var(--radius-pill);
+	font-family: var(--font-body);
+	font-weight: 700;
+	font-size: 12px;
+	letter-spacing: .02em;
+	text-decoration: none;
+	transition: background .15s ease, color .15s ease;
+}
+a.tbl-issue-chip:hover, a.tbl-issue-chip:focus-visible {
+	background: var(--color-red);
+	color: var(--color-on-dark);
+}
+
+/* Single-song page (single-song.php) */
+.tbl-song-detail .tbl-page-title {
+	margin-bottom: 4px;
+}
+
+.tbl-song-meta-block {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 28px;
+	padding: 18px 0 24px;
+	margin-bottom: 28px;
+	border-bottom: 1px solid var(--color-rule);
+	font-family: var(--font-body);
+	font-size: 15px;
+	color: var(--color-text);
+}
+.tbl-song-meta-item { line-height: 1.4; }
+.tbl-song-meta-label {
+	display: block;
+	font-family: var(--font-body);
+	font-weight: 800;
+	font-size: 11px;
+	letter-spacing: .14em;
+	text-transform: uppercase;
+	color: var(--color-muted);
+	margin-bottom: 2px;
+}
+.tbl-song-meta-block a {
+	color: var(--color-ink-soft);
+	text-decoration: none;
+	transition: color .15s ease;
+}
+.tbl-song-meta-block a:hover, .tbl-song-meta-block a:focus-visible {
+	color: var(--color-red);
+}
+.tbl-song-meta-issues .tbl-issue-chips {
+	display: inline-flex;
+	gap: 6px;
+	flex-wrap: wrap;
+}
+
+.tbl-song-lyrics {
+	font-family: var(--font-body);
+	font-size: 19px;
+	line-height: 1.6;
+	color: var(--color-ink);
+	white-space: pre-wrap;
+	margin: 0 0 32px;
+}
+.tbl-song-lyrics p {
+	margin: 0 0 1em;
+}
+.tbl-song-lyrics p:last-child { margin-bottom: 0; }
+.tbl-song-lyrics em { font-style: italic; }
+.tbl-song-lyrics strong { font-weight: 700; }
+.tbl-song-lyrics u { text-decoration: underline; }
+
+.tbl-song-video {
+	position: relative;
+	aspect-ratio: 16 / 9;
+	margin: 0 0 32px;
+	background: var(--color-paper-2);
+}
+.tbl-song-video iframe {
+	width: 100%; height: 100%;
+	border: 0;
+	display: block;
+}
+
+.tbl-song-aside {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 18px 0;
+	margin-top: 32px;
+	border-top: 1px solid var(--color-rule);
+	border-bottom: 1px solid var(--color-rule);
+	font-family: var(--font-body);
+	font-size: 14px;
+}
+.tbl-song-aside-link {
+	color: var(--color-ink-soft);
+	text-decoration: none;
+	transition: color .15s ease;
+}
+.tbl-song-aside-link:hover, .tbl-song-aside-link:focus-visible {
+	color: var(--color-red);
+}
 
 /* ==========================================================================
    Footer (dark, 3 columns) — values mirror src/layouts/BaseLayout.astro

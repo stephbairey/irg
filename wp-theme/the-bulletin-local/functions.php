@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBL_VERSION', '1.6.0' );
+define( 'TBL_VERSION', '1.9.4' );
 define( 'TBL_DIR', get_template_directory() );
 define( 'TBL_URI', get_template_directory_uri() );
 
@@ -163,10 +163,99 @@ add_action( 'wp_ajax_tbl_contact', 'tbl_handle_contact_submit' );
 add_action( 'wp_ajax_nopriv_tbl_contact', 'tbl_handle_contact_submit' );
 
 /**
- * On theme activation, run the default content seeder. Activation hooks
+ * On theme activation, run the default content seeder and flush rewrite
+ * rules so the /songs/<slug>/ rule below takes effect. Activation hooks
  * for themes are fired via `after_switch_theme`.
  */
 function tbl_on_activation(): void {
 	tbl_seed_default_content();
+	flush_rewrite_rules( false );
 }
 add_action( 'after_switch_theme', 'tbl_on_activation' );
+
+/**
+ * Custom rewrite rule for subsite single-song pages: /songs/<slug>/ maps
+ * to the tbl_song_slug query var; template_include below loads
+ * single-song.php when that var is set. Registered unconditionally; the
+ * rule is harmless on subsites that don't have show_local_songs enabled
+ * because the template falls back gracefully.
+ */
+function tbl_register_song_rewrite(): void {
+	add_rewrite_rule( '^songs/([^/]+)/?$', 'index.php?tbl_song_slug=$matches[1]', 'top' );
+}
+add_action( 'init', 'tbl_register_song_rewrite' );
+
+/**
+ * Auto-flush rewrite rules when the theme version changes. after_switch_theme
+ * doesn't fire on a theme *update* (only on first activation), so without
+ * this hook a deploy that adds a new rewrite rule wouldn't take effect until
+ * something else flushed (e.g. Settings → Permalinks → Save). One-shot per
+ * version: the option write makes the comparison cheap on later requests.
+ */
+function tbl_maybe_flush_on_version_change(): void {
+	$stored = get_option( 'tbl_active_version', '' );
+	if ( $stored === TBL_VERSION ) {
+		return;
+	}
+	update_option( 'tbl_active_version', TBL_VERSION );
+	flush_rewrite_rules( false );
+}
+add_action( 'init', 'tbl_maybe_flush_on_version_change', 99 );
+
+function tbl_register_song_query_var( array $vars ): array {
+	$vars[] = 'tbl_song_slug';
+	return $vars;
+}
+add_filter( 'query_vars', 'tbl_register_song_query_var' );
+
+function tbl_load_single_song_template( $template ) {
+	$slug = get_query_var( 'tbl_song_slug' );
+	if ( $slug ) {
+		$custom = locate_template( 'single-song.php' );
+		if ( $custom ) {
+			return $custom;
+		}
+	}
+	return $template;
+}
+add_filter( 'template_include', 'tbl_load_single_song_template' );
+
+/**
+ * When `show_local_songs` flips from off to on, ensure the /songs/ page
+ * exists with the page-songs.php template assigned. Idempotent — safe
+ * to fire repeatedly. We don't auto-delete on flip-off; an admin who
+ * customized the page intro shouldn't lose it.
+ *
+ * WP fires `updated_option` with ($option_name, $old_value, $new_value) —
+ * order matters.
+ */
+function tbl_on_options_updated( $option_name, $old_value, $new_value ): void {
+	if ( $option_name !== 'tbl_options' ) {
+		return;
+	}
+	$new_on = is_array( $new_value ) && ! empty( $new_value['show_local_songs'] );
+	if ( $new_on ) {
+		// Idempotent — does nothing if the page already exists. Always
+		// running it on settings save means a stale "toggle is already on
+		// but the page never got created" state self-heals on next save.
+		tbl_ensure_page( 'songs', 'Songs', '', 'page-songs.php' );
+		// Flush so the /songs/<slug>/ rewrite is active on subsites that
+		// only have it after a theme update.
+		flush_rewrite_rules( false );
+	}
+}
+add_action( 'updated_option', 'tbl_on_options_updated', 10, 3 );
+
+/**
+ * Same trigger when the option is being created for the first time
+ * (rare — defaults are set, so usually `updated_option` fires instead).
+ */
+function tbl_on_options_added( $option_name, $value ): void {
+	if ( $option_name !== 'tbl_options' ) {
+		return;
+	}
+	if ( is_array( $value ) && ! empty( $value['show_local_songs'] ) ) {
+		tbl_ensure_page( 'songs', 'Songs', '', 'page-songs.php' );
+	}
+}
+add_action( 'added_option', 'tbl_on_options_added', 10, 2 );

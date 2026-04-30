@@ -41,6 +41,7 @@ function tbl_register_options(): void {
 				'hero_image_id'       => 0,
 				'youtube_channel_url' => '',
 				'tagline'             => '',
+				'show_local_songs'    => 0,
 			],
 		]
 	);
@@ -52,9 +53,10 @@ function tbl_register_options(): void {
 		TBL_OPTIONS_PAGE
 	);
 
-	add_settings_field( 'hero_image_id',       'Hero Image',         'tbl_field_hero_image',  TBL_OPTIONS_PAGE, 'tbl_options_main' );
-	add_settings_field( 'youtube_channel_url', 'YouTube Channel URL','tbl_field_youtube_url', TBL_OPTIONS_PAGE, 'tbl_options_main' );
-	add_settings_field( 'tagline',             'Tagline',            'tbl_field_tagline',     TBL_OPTIONS_PAGE, 'tbl_options_main' );
+	add_settings_field( 'hero_image_id',       'Hero Image',                   'tbl_field_hero_image',        TBL_OPTIONS_PAGE, 'tbl_options_main' );
+	add_settings_field( 'youtube_channel_url', 'YouTube Channel URL',          'tbl_field_youtube_url',       TBL_OPTIONS_PAGE, 'tbl_options_main' );
+	add_settings_field( 'tagline',             'Tagline',                      'tbl_field_tagline',           TBL_OPTIONS_PAGE, 'tbl_options_main' );
+	add_settings_field( 'show_local_songs',    'Display songs on this subsite','tbl_field_show_local_songs',  TBL_OPTIONS_PAGE, 'tbl_options_main' );
 }
 add_action( 'admin_init', 'tbl_register_options' );
 
@@ -66,6 +68,7 @@ function tbl_sanitize_options( $input ): array {
 		'hero_image_id'       => 0,
 		'youtube_channel_url' => '',
 		'tagline'             => '',
+		'show_local_songs'    => 0,
 	];
 	if ( ! is_array( $input ) ) {
 		return $out;
@@ -90,6 +93,7 @@ function tbl_sanitize_options( $input ): array {
 	if ( isset( $input['tagline'] ) ) {
 		$out['tagline'] = sanitize_text_field( (string) $input['tagline'] );
 	}
+	$out['show_local_songs'] = ! empty( $input['show_local_songs'] ) ? 1 : 0;
 	return $out;
 }
 
@@ -113,7 +117,7 @@ function tbl_field_hero_image(): void {
 		</div>
 		<button type="button" class="button" id="tbl_hero_pick">Choose image</button>
 		<button type="button" class="button" id="tbl_hero_clear" <?php echo $id ? '' : 'style="display:none"'; ?>>Clear</button>
-		<p class="description">Used as the homepage hero. Wide landscape images work best (roughly 1600 by 600).</p>
+		<p class="description">Used as the homepage polaroid. Square images work best (roughly 1000 by 1000 pixels).</p>
 	</div>
 	<script>
 		(function () {
@@ -165,6 +169,32 @@ function tbl_field_tagline(): void {
 	?>
 	<input type="text" class="regular-text" maxlength="280" name="<?php echo esc_attr( TBL_OPTIONS_KEY ); ?>[tagline]" value="<?php echo esc_attr( $val ); ?>" placeholder="Older women in flowered hats, singing truth to power and joy to the streets. We do not retire quietly." />
 	<p class="description">An italic tagline shown on the homepage hero. Keep it short — one or two sentences.</p>
+	<?php
+}
+
+function tbl_field_show_local_songs(): void {
+	$opts    = get_option( TBL_OPTIONS_KEY, [] );
+	$checked = ! empty( $opts['show_local_songs'] );
+	$count   = function_exists( 'tbl_count_local_songs' ) ? tbl_count_local_songs() : 0;
+	$slug    = function_exists( 'tbl_gaggle_slug' ) ? tbl_gaggle_slug() : '';
+	?>
+	<label>
+		<input type="checkbox" name="<?php echo esc_attr( TBL_OPTIONS_KEY ); ?>[show_local_songs]" value="1" <?php checked( $checked ); ?> />
+		Show this gaggle's songs on the subsite
+	</label>
+	<p class="description">
+		Pulls from the central song library, filtered by the gaggle taxonomy term whose slug matches this subsite (<code><?php echo esc_html( $slug ); ?></code>). When on, the Songs pill in the header points to a local <code>/songs/</code> page. When off, the pill links to the central library.
+	</p>
+	<p class="description" style="margin-top:6px">
+		<strong>Detected:</strong>
+		<?php
+		if ( $count === 0 ) {
+			echo 'no songs found tagged with the <code>' . esc_html( $slug ) . '</code> gaggle term. Either no songs exist for this gaggle yet, or the term slug doesn\'t match this subsite\'s path.';
+		} else {
+			echo esc_html( (string) $count ) . ' songs in the central archive tagged with this gaggle.';
+		}
+		?>
+	</p>
 	<?php
 }
 

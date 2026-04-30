@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.9.0
+ * Version: 3.11.4
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -13,6 +13,12 @@
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+// Public host for cross-site URL builders (subsite-songs detail links, etc.).
+// Override in wp-config.php to point at a preview/dev URL.
+if ( ! defined( 'IRG_PUBLIC_HOST' ) ) {
+	define( 'IRG_PUBLIC_HOST', 'https://raginggrannies.org' );
 }
 
 add_action( 'init', 'irg_register_song_cpt' );
@@ -39,6 +45,12 @@ add_action( 'rest_api_init', 'irg_register_contact_endpoint' );
 add_filter( 'rest_pre_serve_request', 'irg_contact_cors_headers', 10, 4 );
 add_action( 'rest_api_init', 'irg_register_submit_song_endpoint' );
 add_filter( 'rest_pre_serve_request', 'irg_submit_song_cors_headers', 10, 4 );
+
+// Subsite-songs cache invalidation (main-site context only).
+add_action( 'save_post_song', 'irg_subsite_songs_bust_on_save', 10, 1 );
+add_action( 'before_delete_post', 'irg_subsite_songs_bust_on_delete', 10, 1 );
+add_action( 'set_object_terms', 'irg_subsite_songs_bust_on_term_change', 10, 4 );
+add_action( 'transition_post_status', 'irg_subsite_songs_bust_on_status', 10, 3 );
 
 add_filter( 'upload_size_limit', 'irg_upload_size_limit' );
 add_filter( 'pre_site_option_fileupload_maxk', 'irg_multisite_upload_maxk' );
@@ -1437,4 +1449,276 @@ function irg_submit_send_notification( int $post_id, array $fields ): void {
 		// Non-fatal. The draft was already created; the email is a notification, not a gate.
 		error_log( '[irg-submit] wp_mail failed for post ' . $post_id );
 	}
+}
+
+// ---------------------------------------------------------------------------
+// Subsite-songs cross-site query — lets opted-in subsites display "their"
+// songs (filtered by gaggle taxonomy term-slug) on a local /songs/ page.
+// Songs live exclusively on the main site as a `song` CPT, so the build
+// path runs in main-site context. The result is cached as a network-wide
+// site option, keyed by gaggle term-slug, so the read path never has to
+// switch_to_blog — `get_site_option()` is enough.
+//
+// Cache invalidation is hooked on the main site for: save, delete, term
+// reassignment (set_object_terms with taxonomy=gaggle), and status
+// transitions (publish/draft/trash).
+// ---------------------------------------------------------------------------
+
+function irg_subsite_songs_cache_key( string $gaggle_slug ): string {
+	// Bump the suffix to invalidate every gaggle's cached song list.
+	return 'irg_subsite_songs_' . sanitize_key( $gaggle_slug ) . '_v7';
+}
+
+/**
+ * Find a single song by slug within the subsite cache. Walks the cached
+ * list (alphabetical, ~100s of entries — cheap). Returns null if missing.
+ *
+ * @return array<string, mixed>|null
+ */
+function irg_get_subsite_song_by_slug( string $gaggle_slug, string $song_slug ): ?array {
+	$song_slug = sanitize_title( $song_slug );
+	if ( $song_slug === '' ) {
+		return null;
+	}
+	foreach ( irg_get_subsite_songs( $gaggle_slug ) as $song ) {
+		if ( ( $song['slug'] ?? '' ) === $song_slug ) {
+			return $song;
+		}
+	}
+	return null;
+}
+
+/**
+ * Read path. Subsites call this with their own slug. Returns plain arrays.
+ * If the network-wide cache miss, builds it under switch_to_blog.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function irg_get_subsite_songs( string $gaggle_slug ): array {
+	$gaggle_slug = sanitize_key( $gaggle_slug );
+	if ( $gaggle_slug === '' ) {
+		return [];
+	}
+
+	$key    = irg_subsite_songs_cache_key( $gaggle_slug );
+	$cached = get_site_option( $key, null );
+	if ( is_array( $cached ) ) {
+		return $cached;
+	}
+
+	if ( ! is_main_site() ) {
+		$switched = true;
+		switch_to_blog( get_main_site_id() );
+	} else {
+		$switched = false;
+	}
+	try {
+		// `init` fired earlier in subsite context, where the song CPT and
+		// gaggle taxonomy registration is guarded by `is_main_site()` and
+		// returns early. We're now switched to the main site — force the
+		// registration so WP_Query and get_term_by can see them.
+		if ( ! post_type_exists( 'song' ) ) {
+			irg_register_song_cpt();
+		}
+		if ( ! taxonomy_exists( 'gaggle' ) ) {
+			irg_register_song_taxonomies();
+		}
+		$built = irg_build_subsite_songs_cache( $gaggle_slug );
+		// Only persist non-empty results. Caching an empty array is a
+		// footgun: a transient registration glitch becomes a sticky
+		// "always 0 songs" state until something explicitly invalidates.
+		if ( ! empty( $built ) ) {
+			update_site_option( $key, $built );
+		}
+	} finally {
+		if ( $switched ) {
+			restore_current_blog();
+		}
+	}
+	return $built;
+}
+
+/**
+ * Build the song list for a gaggle. MUST run in main-site context (the
+ * caller is responsible for switch_to_blog if needed). Returns plain
+ * arrays — caller is decoupled from WP_Post objects.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function irg_build_subsite_songs_cache( string $gaggle_slug ): array {
+	if ( ! is_main_site() ) {
+		// Defensive: schema only exists on the main site.
+		return [];
+	}
+
+	$term = get_term_by( 'slug', $gaggle_slug, 'gaggle' );
+	if ( ! ( $term instanceof WP_Term ) ) {
+		return [];
+	}
+
+	$q = new WP_Query( [
+		'post_type'      => 'song',
+		'post_status'    => 'publish',
+		'posts_per_page' => -1,
+		'no_found_rows'  => true,
+		'orderby'        => 'title',
+		'order'          => 'ASC',
+		'tax_query'      => [
+			[
+				'taxonomy' => 'gaggle',
+				'field'    => 'term_id',
+				'terms'    => [ $term->term_id ],
+			],
+		],
+	] );
+
+	$out = [];
+	foreach ( $q->posts as $p ) {
+		$lyrics = '';
+		if ( function_exists( 'get_field' ) ) {
+			$lyrics = (string) get_field( 'lyrics', $p->ID );
+		}
+		if ( $lyrics === '' ) {
+			$lyrics = (string) get_post_meta( $p->ID, 'lyrics', true );
+		}
+		// Lyrics ship as-stored. The migrated field has known issues
+		// (orphan "br>" fragments, mixed entity encoding, malformed
+		// pseudo-tags) but every regex-based sanitizer pass we tried
+		// surfaced new edge cases. The fix belongs at the content level,
+		// not the display.
+		$lyrics_excerpt = wp_trim_words(
+			wp_strip_all_tags( $lyrics, true ),
+			30,
+			'…'
+		);
+
+		$youtube_link = '';
+		if ( function_exists( 'get_field' ) ) {
+			$youtube_link = (string) get_field( 'youtube_link', $p->ID );
+		}
+		if ( $youtube_link === '' ) {
+			$youtube_link = (string) get_post_meta( $p->ID, 'youtube_link', true );
+		}
+
+		$songwriters = [];
+		foreach ( wp_get_object_terms( $p->ID, 'songwriter' ) as $t ) {
+			if ( $t instanceof WP_Term ) {
+				$songwriters[] = $t->name;
+			}
+		}
+		$tunes = [];
+		foreach ( wp_get_object_terms( $p->ID, 'tune' ) as $t ) {
+			if ( $t instanceof WP_Term ) {
+				$tunes[] = $t->name;
+			}
+		}
+		$issues = [];
+		foreach ( wp_get_object_terms( $p->ID, 'issue' ) as $t ) {
+			if ( $t instanceof WP_Term ) {
+				$issues[] = $t->name;
+			}
+		}
+
+		$year = '';
+		if ( ! empty( $p->post_date ) ) {
+			$year = substr( $p->post_date, 0, 4 );
+		}
+
+		$out[] = [
+			'title'          => get_the_title( $p ),
+			'slug'           => $p->post_name,
+			'year'           => $year,
+			'songwriters'    => $songwriters,
+			'tunes'          => $tunes,
+			'issues'         => $issues,
+			'lyrics'         => $lyrics,
+			'lyrics_excerpt' => $lyrics_excerpt,
+			'youtube_link'   => $youtube_link,
+			'detail_url'     => rtrim( IRG_PUBLIC_HOST, '/' ) . '/songs/' . $p->post_name . '/',
+		];
+	}
+	return $out;
+}
+
+/**
+ * For a given song post ID (in main-site context), return the slugs of its
+ * gaggle terms. Used by the cache-busters.
+ *
+ * @return string[]
+ */
+function irg_song_gaggle_slugs( int $post_id ): array {
+	$slugs = [];
+	$terms = wp_get_object_terms( $post_id, 'gaggle' );
+	if ( is_array( $terms ) ) {
+		foreach ( $terms as $t ) {
+			if ( $t instanceof WP_Term ) {
+				$slugs[] = $t->slug;
+			}
+		}
+	}
+	return $slugs;
+}
+
+function irg_subsite_songs_bust_for_slugs( array $gaggle_slugs ): void {
+	foreach ( array_unique( $gaggle_slugs ) as $slug ) {
+		delete_site_option( irg_subsite_songs_cache_key( (string) $slug ) );
+	}
+}
+
+function irg_subsite_songs_bust_on_save( int $post_id ): void {
+	if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+		return;
+	}
+	if ( get_post_type( $post_id ) !== 'song' ) {
+		return;
+	}
+	irg_subsite_songs_bust_for_slugs( irg_song_gaggle_slugs( $post_id ) );
+}
+
+function irg_subsite_songs_bust_on_delete( int $post_id ): void {
+	if ( get_post_type( $post_id ) !== 'song' ) {
+		return;
+	}
+	irg_subsite_songs_bust_for_slugs( irg_song_gaggle_slugs( $post_id ) );
+}
+
+/**
+ * Catches gaggle term reassignment, including via Quick Edit.
+ *
+ * @param int    $object_id
+ * @param array  $terms
+ * @param array  $tt_ids
+ * @param string $taxonomy
+ */
+function irg_subsite_songs_bust_on_term_change( int $object_id, $terms, $tt_ids, string $taxonomy ): void {
+	if ( $taxonomy !== 'gaggle' ) {
+		return;
+	}
+	if ( get_post_type( $object_id ) !== 'song' ) {
+		return;
+	}
+	// Bust both the new gaggles AND the previously-cached ones — but at
+	// this hook we only know the new set. Simpler: walk every cached
+	// gaggle option and let the next read rebuild on demand. With ~80
+	// gaggles and a tiny option table it's cheap.
+	$slugs = [];
+	$all_terms = get_terms( [
+		'taxonomy'   => 'gaggle',
+		'hide_empty' => false,
+		'fields'     => 'slugs',
+	] );
+	if ( is_array( $all_terms ) ) {
+		$slugs = $all_terms;
+	}
+	irg_subsite_songs_bust_for_slugs( $slugs );
+}
+
+function irg_subsite_songs_bust_on_status( string $new_status, string $old_status, $post ): void {
+	if ( ! ( $post instanceof WP_Post ) || $post->post_type !== 'song' ) {
+		return;
+	}
+	if ( $new_status === $old_status ) {
+		return;
+	}
+	irg_subsite_songs_bust_for_slugs( irg_song_gaggle_slugs( (int) $post->ID ) );
 }

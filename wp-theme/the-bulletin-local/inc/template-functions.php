@@ -74,7 +74,10 @@ function tbl_tagline(): string {
 }
 
 /**
- * Hero image URL — option override, or bundled default.
+ * Hero image URL — option override, or bundled default. The default is
+ * cache-busted by theme version: WP/LiteSpeed sets a 7-day public cache on
+ * static assets, so swapping the bundled image without a URL change leaves
+ * browsers stuck on the old copy until cache expiry.
  */
 function tbl_hero_image_url(): string {
 	$id = (int) tbl_get_option( 'hero_image_id' );
@@ -84,21 +87,58 @@ function tbl_hero_image_url(): string {
 			return $src;
 		}
 	}
-	return TBL_URI . '/assets/images/default-hero.jpg';
+	return TBL_URI . '/assets/images/default-hero.jpg?v=' . TBL_VERSION;
 }
 
 /**
- * URL to the main Astro site's Song Library, pre-filtered by this gaggle.
- * Passes the subsite slug (e.g. "portland"); the Astro page does a
- * case-insensitive lookup against the song-library's gaggle taxonomy term
- * names, so the slug resolves to the canonical-cased term ("Portland").
+ * URL the Songs pill should point to. When the subsite has the local
+ * songs page enabled (Gaggle Settings → Display songs on this subsite),
+ * the pill links to that subsite-local page. Otherwise it falls through
+ * to the central Astro library, pre-filtered by this gaggle.
+ *
+ * The Astro page does a case-insensitive lookup against the song-
+ * library's gaggle taxonomy term names, so the subsite slug resolves
+ * to the canonical-cased term ("portland" → "Portland").
  */
 function tbl_songs_url(): string {
+	if ( (int) tbl_get_option( 'show_local_songs' ) === 1 ) {
+		return home_url( '/songs/' );
+	}
 	$slug = tbl_gaggle_slug();
 	if ( $slug === '' ) {
 		return 'https://raginggrannies.international/songs/';
 	}
 	return 'https://raginggrannies.international/songs/?gaggle=' . rawurlencode( $slug );
+}
+
+/**
+ * Public detail URL for a song slug — points to the Astro library's
+ * canonical detail page. Host is overrideable via IRG_PUBLIC_HOST.
+ */
+function tbl_song_detail_url( string $slug ): string {
+	$host = defined( 'IRG_PUBLIC_HOST' ) ? rtrim( IRG_PUBLIC_HOST, '/' ) : 'https://raginggrannies.org';
+	return $host . '/songs/' . rawurlencode( $slug ) . '/';
+}
+
+/**
+ * Songs visible on this subsite, queried cross-network from the main site.
+ * Returns plain arrays (see irg_get_subsite_songs in irg-core).
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function tbl_subsite_songs(): array {
+	if ( ! function_exists( 'irg_get_subsite_songs' ) ) {
+		return [];
+	}
+	return irg_get_subsite_songs( tbl_gaggle_slug() );
+}
+
+/**
+ * Count of songs detected for this subsite. Used by Gaggle Settings to
+ * show the gaggle admin a sanity-check that the slug match is working.
+ */
+function tbl_count_local_songs(): int {
+	return count( tbl_subsite_songs() );
 }
 
 /**
@@ -123,7 +163,8 @@ function tbl_excerpt( int $words = 28 ): string {
 /**
  * URL of the featured image for the current post, or the bundled default
  * if no featured image is set. Used by single.php so every Action page has
- * an image — most grannies won't set a featured image on their own.
+ * an image — most grannies won't set a featured image on their own. The
+ * default is cache-busted by theme version (see tbl_hero_image_url for why).
  */
 function tbl_action_feature_url( string $size = 'large' ): string {
 	$post = get_post();
@@ -133,7 +174,7 @@ function tbl_action_feature_url( string $size = 'large' ): string {
 			return $src;
 		}
 	}
-	return TBL_URI . '/assets/images/default-feat.jpg';
+	return TBL_URI . '/assets/images/default-feat.jpg?v=' . TBL_VERSION;
 }
 
 /**
