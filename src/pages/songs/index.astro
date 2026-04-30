@@ -130,7 +130,7 @@ const songsJson = JSON.stringify(
     const ALL = JSON.parse(songsJson);
     const PER_PAGE = 50;
 
-    let filters = { q: "", issue: "", gaggle: "", tune: "" };
+    let filters = { q: "", issue: "", gaggle: "", tune: "", songwriter: "" };
     let sort = "a-z";
     let page = 1;
 
@@ -164,6 +164,7 @@ const songsJson = JSON.stringify(
         if (excluding !== "issue" && filters.issue && !s.i.includes(filters.issue)) return false;
         if (excluding !== "gaggle" && filters.gaggle && s.g !== filters.gaggle) return false;
         if (excluding !== "tune" && filters.tune && s.n !== filters.tune) return false;
+        if (excluding !== "songwriter" && filters.songwriter && s.w !== filters.songwriter) return false;
         return true;
       });
     }
@@ -262,6 +263,7 @@ const songsJson = JSON.stringify(
         filters.issue ? chipRm("issue", filters.issue) : "",
         filters.gaggle ? chipRm("gaggle", filters.gaggle) : "",
         filters.tune ? chipRm("tune", filters.tune) : "",
+        filters.songwriter ? chipRm("songwriter", filters.songwriter) : "",
       ].filter(Boolean).join("");
       resultCount.innerHTML = countHtml + chipHtml;
 
@@ -331,7 +333,7 @@ const songsJson = JSON.stringify(
     prevBtn.addEventListener("click", () => { page--; render(); window.scrollTo(0, 300); });
     nextBtn.addEventListener("click", () => { page++; render(); window.scrollTo(0, 300); });
     resetBtn.addEventListener("click", () => {
-      filters = { q: "", issue: "", gaggle: "", tune: "" };
+      filters = { q: "", issue: "", gaggle: "", tune: "", songwriter: "" };
       searchInput.value = "";
       sort = "a-z";
       sortSelect.value = "a-z";
@@ -360,6 +362,10 @@ const songsJson = JSON.stringify(
     if (params.get("gaggle")) {
       const gaggleNames = [...new Set(ALL.map((s) => s.g).filter(Boolean))];
       filters.gaggle = canonicalize(gaggleNames, params.get("gaggle"));
+    }
+    if (params.get("songwriter")) {
+      const songwriterNames = [...new Set(ALL.map((s) => s.w).filter(Boolean))];
+      filters.songwriter = canonicalize(songwriterNames, params.get("songwriter"));
     }
     render();
   </script>
