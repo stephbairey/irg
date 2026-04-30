@@ -1,8 +1,22 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const SITE_URL = Astro.site?.toString().replace(/\/$/, "") ?? "https://raginggrannies.org";
+
+const startSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Start Your Own Gaggle",
+  name: "Start Your Own Gaggle",
+  description:
+    "How to start a Raging Grannies gaggle in your own town: gather a few good women of that certain age, write your songs, dress the part, and show up where it matters.",
+  url: `${SITE_URL}/start-a-gaggle/`,
+  publisher: { "@id": `${SITE_URL}#org` },
+  inLanguage: "en",
+};
 ---
 
-<BaseLayout title="Start a Gaggle">
+<BaseLayout title="Start a Gaggle" structuredData={startSchema}>
   <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
     {/* Hero */}
     <header class="text-center pb-10 border-b border-muted mb-12">

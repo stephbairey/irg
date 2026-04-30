@@ -73,9 +73,38 @@ const mapPayload = JSON.stringify(
     lng: g.lng,
   })),
 ).replace(/</g, "\\u003c");
+
+const SITE_URL = Astro.site?.toString().replace(/\/$/, "") ?? "https://raginggrannies.org";
+
+const gaggleListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Raging Grannies Gaggle Directory",
+  numberOfItems: total,
+  itemListElement: gaggles.map((g, idx) => ({
+    "@type": "ListItem",
+    position: idx + 1,
+    item: {
+      "@type": "Organization",
+      name: g.aka,
+      address: {
+        "@type": "PostalAddress",
+        addressRegion: g.region,
+        addressCountry: g.country,
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: g.lat,
+        longitude: g.lng,
+      },
+      parentOrganization: { "@id": `${SITE_URL}#org` },
+      url: `${SITE_URL}/find-a-gaggle/#${g.slug}`,
+    },
+  })),
+};
 ---
 
-<BaseLayout title="Find a Gaggle">
+<BaseLayout title="Find a Gaggle" structuredData={gaggleListSchema}>
   <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
     {/* Hero */}
     <header class="text-center pb-10 mb-10 border-b border-muted">

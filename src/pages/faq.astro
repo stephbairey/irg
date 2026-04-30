@@ -136,9 +136,26 @@ const sections: Section[] = [
     ],
   },
 ];
+
+const stripHtml = (s: string) => s.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: sections.flatMap((section) =>
+    section.items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: stripHtml(item.a),
+      },
+    })),
+  ),
+};
 ---
 
-<BaseLayout title="FAQ">
+<BaseLayout title="FAQ" structuredData={faqSchema}>
   <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
     {/* Hero */}
     <header class="text-center pb-10 border-b border-muted mb-12">
