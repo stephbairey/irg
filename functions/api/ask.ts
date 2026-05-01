@@ -26,12 +26,18 @@ interface Env {
   CHATBOT_DAILY_HARD_USD?: string;
   CHATBOT_FALLBACK_EMAIL?: string;
   CHATBOT_ENABLED?: string;
+  CHATBOT_LOG_TRANSCRIPTS?: string;
   ASSETS: { fetch: (request: Request | URL | string) => Promise<Response> };
 }
 
 interface KVNamespace {
   get: (key: string) => Promise<string | null>;
   put: (key: string, value: string, options?: { expirationTtl?: number }) => Promise<void>;
+  list: (options?: { prefix?: string; limit?: number; cursor?: string }) => Promise<{
+    keys: Array<{ name: string; expiration?: number }>;
+    list_complete: boolean;
+    cursor?: string;
+  }>;
 }
 
 interface EmbeddingRecord {
@@ -234,6 +240,37 @@ async function bumpDailySpend(kv: KVNamespace, dateKey: string, costUsd: number)
   return next;
 }
 
+// Transcript logging — anonymized question + answer + sources + cost,
+// keyed by chronological time so newer entries sort to the end. 90-day
+// rolling retention via KV TTL. No IP, cookie, or session ID stored.
+//
+// Disable by setting CHATBOT_LOG_TRANSCRIPTS=false. Default: enabled.
+async function logTranscript(
+  kv: KVNamespace,
+  enabled: boolean,
+  entry: {
+    question: string;
+    answer: string;
+    sources: Array<{ title: string; url: string; type: string; score: number }>;
+    costUsd: number;
+    todaySpendUsd: number;
+    usage: AnthropicUsage;
+  },
+): Promise<void> {
+  if (!enabled) return;
+  const now = new Date();
+  const dateKey = todayKey();
+  const timeKey = now.toISOString().slice(11, 23).replace(/[:.]/g, "");
+  const random = Math.random().toString(36).slice(2, 8);
+  const key = `transcript:${dateKey}:${timeKey}-${random}`;
+  const value = JSON.stringify({
+    timestamp: now.toISOString(),
+    ...entry,
+  });
+  // 90-day TTL: 90 * 24 * 60 * 60 = 7,776,000 seconds
+  await kv.put(key, value, { expirationTtl: 90 * 24 * 60 * 60 });
+}
+
 function jsonResponse(body: unknown, init?: ResponseInit): Response {
   return new Response(JSON.stringify(body), {
     ...init,
@@ -317,10 +354,27 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     const newSpend = await bumpDailySpend(env.BUDGET_KV, dateKey, costUsd);
     const softAlertCrossed = todaySpend < softCap && newSpend >= softCap;
 
-    // 5. Compose response
+    // 5. Log transcript (anonymized; D045)
+    const sourcesForResponse = top.map((r) => ({
+      title: r.title,
+      url: r.url,
+      type: r.type,
+      score: r.score,
+    }));
+    const logEnabled = env.CHATBOT_LOG_TRANSCRIPTS !== "false";
+    await logTranscript(env.BUDGET_KV, logEnabled, {
+      question,
+      answer,
+      sources: sourcesForResponse,
+      costUsd,
+      todaySpendUsd: newSpend,
+      usage: completion.usage,
+    });
+
+    // 6. Compose response
     return jsonResponse({
       answer,
-      sources: top.map((r) => ({ title: r.title, url: r.url, type: r.type, score: r.score })),
+      sources: sourcesForResponse,
       usage: completion.usage,
       costUsd,
       todaySpendUsd: newSpend,
