@@ -202,16 +202,30 @@ const askSchema = {
 
     // Tiny markdown-lite renderer for Claude's response. Escape first,
     // then transform the small set of constructs we expect: [text](url)
-    // links and **bold**. Anything else falls through as preformatted text
-    // (the .ask-prose CSS uses white-space: pre-wrap so paragraph breaks
-    // and bullet lines render as written).
+    // links (absolute or site-relative), bare URLs (the "Sources:" list
+    // uses these), and **bold**. Anything else falls through as
+    // preformatted text — .ask-prose has white-space: pre-wrap so
+    // paragraph breaks and bullet lines render as written.
     function renderMarkdownLite(text) {
       let html = escapeHtml(text);
+
+      // 1. Markdown links [label](url) — absolute https?:// or site-relative /path
       html = html.replace(
-        /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
+        /\[([^\]]+)\]\((\/[^)\s]+|https?:\/\/[^)\s]+)\)/g,
         (_m, label, url) => `<a href="${url}" rel="noopener">${label}</a>`,
       );
+
+      // 2. Bare URLs (e.g. in the "Sources:" list). Must be preceded by
+      // whitespace / start-of-string / `(` / `>` so URLs already inside
+      // href="…" attributes from step 1 don't double-process.
+      html = html.replace(
+        /(^|[\s>(])(https?:\/\/[^\s<)"]+)/g,
+        (_m, before, url) => `${before}<a href="${url}" rel="noopener">${url}</a>`,
+      );
+
+      // 3. Bold
       html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+
       return html;
     }
 
