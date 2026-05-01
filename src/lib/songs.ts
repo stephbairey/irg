@@ -33,6 +33,7 @@ interface SongsPage {
 interface ConsolidatedRecord {
   id: string;
   title: string;
+  slug?: string; // present on WP-snapshot records; absent on migration-era records
   lyrics: string;
   tune: string;
   songwriter: string;
@@ -86,7 +87,9 @@ function nullIfEmpty(s: string | null | undefined): string | null {
 function consolidatedToSong(r: ConsolidatedRecord): Song {
   return {
     title: r.title,
-    slug: slugify(r.title),
+    // Prefer the WP-assigned slug from the snapshot; fall back to deriving
+    // from title only for legacy records that predate the snapshot pipeline.
+    slug: r.slug || slugify(r.title),
     date: r.date_published || r.date_written_or_updated || "",
     songDetails: {
       lyrics: nullIfEmpty(r.lyrics),

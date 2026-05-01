@@ -53,7 +53,9 @@ function loadSongsFromJson() {
       .filter((r) => r && !r.duplicate_of && typeof r.title === "string" && r.title.length > 0)
       .map((r) => ({
         title: r.title,
-        slug: slugify(r.title),
+        // Prefer WP-assigned slug from the snapshot; derive from title only
+        // for legacy records that lack the slug field.
+        slug: r.slug || slugify(r.title),
         songDetails: {
           lyrics: r.lyrics || null,
           dateWrittenOrUpdated: r.date_written_or_updated || null,
