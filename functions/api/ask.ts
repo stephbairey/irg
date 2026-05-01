@@ -62,7 +62,7 @@ interface AnthropicUsage {
 
 const TOP_K = 6;
 const MAX_QUESTION_LEN = 500;
-const FALLBACK_EMAIL_DEFAULT = "webgranny@gmail.com";
+const FALLBACK_EMAIL_DEFAULT = "webgranny@raginggrannies.org";
 const SOFT_USD_DEFAULT = 0.25;
 const HARD_USD_DEFAULT = 1.0;
 const DEFAULT_MODEL = "claude-haiku-4-5-20251001";

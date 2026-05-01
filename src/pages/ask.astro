@@ -94,7 +94,7 @@ const askSchema = {
     {/* Permanent fallback */}
     <footer class="mt-16 pt-10 border-t border-muted text-center max-w-[760px] mx-auto">
       <p class="text-[17px] text-text-soft mb-2">
-        Still wondering? <a href="mailto:webgranny@gmail.com" class="text-red font-bold no-underline hover:underline">Email a human Granny</a>.
+        Still wondering? <a href="mailto:webgranny@raginggrannies.org" class="text-red font-bold no-underline hover:underline">Email a human Granny</a>.
       </p>
       <p class="text-[13px] text-muted italic">
         Your questions help us improve the website. No personal information is collected.
@@ -141,18 +141,24 @@ const askSchema = {
     border-color: var(--color-red);
     color: var(--color-red);
   }
-  .ask-prose a {
+  /* :global() so the selector applies to anchors injected via innerHTML
+     at runtime — Astro's scoped styles add a per-component data-attribute
+     that dynamically-created elements don't have, so descendant rules
+     have to opt out of scoping or they won't match. Tailwind's preflight
+     also resets anchor color/decoration to inherit, which is why these
+     anchors otherwise look like plain text. */
+  .ask-prose :global(a) {
     color: var(--color-red);
     text-decoration: none;
     border-bottom: 1.5px solid var(--color-red);
     font-weight: 600;
     transition: background 0.15s ease, color 0.15s ease;
   }
-  .ask-prose a:hover {
+  .ask-prose :global(a:hover) {
     background: var(--color-red);
     color: var(--color-on-dark);
   }
-  .ask-prose strong {
+  .ask-prose :global(strong) {
     color: var(--color-ink);
   }
   .ask-prose {
@@ -272,14 +278,14 @@ const askSchema = {
         if (!res.ok || data.error) {
           showError(
             data.message ||
-              "Something went wrong. Email [a human Granny](mailto:webgranny@gmail.com).",
+              "Something went wrong. Email [a human Granny](mailto:webgranny@raginggrannies.org).",
           );
           return;
         }
         showAnswer(data.answer || "");
       } catch (err) {
         showError(
-          "Couldn't reach the server. Email [a human Granny](mailto:webgranny@gmail.com) and we'll get back to you.",
+          "Couldn't reach the server. Email [a human Granny](mailto:webgranny@raginggrannies.org) and we'll get back to you.",
         );
       }
     });
