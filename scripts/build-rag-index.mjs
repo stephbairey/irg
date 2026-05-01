@@ -23,7 +23,10 @@ const SITE_URL = "https://raginggrannies.org";
 
 const SONGS_PATH = resolve(ROOT, "data/songs-consolidated.json");
 const GAGGLES_PATH = resolve(ROOT, "data/gaggle-locations.json");
-const OUT_PATH = resolve(ROOT, "data/embeddings.json");
+// Output goes to public/ (not data/) so the file is in the static-asset
+// build output and the chat endpoint can read it via env.ASSETS.fetch()
+// at runtime. Astro copies public/* to dist/ unchanged.
+const OUT_PATH = resolve(ROOT, "public/embeddings.json");
 
 const MODEL = "@cf/baai/bge-small-en-v1.5";
 const BATCH_SIZE = 20;
