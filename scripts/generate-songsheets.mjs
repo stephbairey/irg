@@ -30,11 +30,43 @@ function loadEnv() {
 }
 const env = loadEnv();
 const GRAPHQL = env.PUBLIC_WP_GRAPHQL_ENDPOINT;
-if (!GRAPHQL) {
-  console.warn(
-    "[songsheets] PUBLIC_WP_GRAPHQL_ENDPOINT not set — skipping (build continues; songsheet PDFs will be missing or stale)",
-  );
-  process.exit(0);
+
+const CONSOLIDATED_PATH = resolve(ROOT, "data/songs-consolidated.json");
+
+// WordPress sanitize_title()-equivalent for slug generation. ASCII-fold via
+// NFKD, lowercase, collapse non-alphanumerics. Keep in sync with src/lib/songs.ts.
+function slugify(s) {
+  return s
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/\p{M}/gu, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function loadSongsFromJson() {
+  if (!existsSync(CONSOLIDATED_PATH)) return null;
+  try {
+    const raw = JSON.parse(readFileSync(CONSOLIDATED_PATH, "utf8"));
+    if (!Array.isArray(raw)) return null;
+    return raw
+      .filter((r) => r && !r.duplicate_of && typeof r.title === "string" && r.title.length > 0)
+      .map((r) => ({
+        title: r.title,
+        slug: slugify(r.title),
+        songDetails: {
+          lyrics: r.lyrics || null,
+          dateWrittenOrUpdated: r.date_written_or_updated || null,
+        },
+        songwriters: { nodes: r.songwriter ? [{ name: r.songwriter }] : [] },
+        gaggles: { nodes: r.gaggle ? [{ name: r.gaggle }] : [] },
+        tunes: { nodes: r.tune ? [{ name: r.tune }] : [] },
+        issues: { nodes: (r.issues ?? []).map((name) => ({ name })) },
+      }));
+  } catch (err) {
+    console.warn(`[songsheets] could not parse ${CONSOLIDATED_PATH}: ${err.message}`);
+    return null;
+  }
 }
 
 // --- layout constants ------------------------------------------------------
@@ -398,18 +430,30 @@ async function generatePdf(song, fonts) {
 // --- main ------------------------------------------------------------------
 
 (async () => {
-  console.log("[songsheets] fetching songs from WPGraphQL…");
-  let songs;
-  try {
-    songs = await fetchAllSongs();
-  } catch (err) {
-    console.warn(`[songsheets] fetch failed: ${err.message}`);
+  // Prefer the committed consolidated corpus — works where WPGraphQL isn't
+  // reachable (CF Pages preview behind Imunify360 bot-protection). Fall back
+  // to live WPGraphQL for local dev when the JSON is absent or empty.
+  let songs = loadSongsFromJson();
+  if (songs && songs.length > 0) {
+    console.log(`[songsheets] loaded ${songs.length} songs from data/songs-consolidated.json`);
+  } else if (GRAPHQL) {
+    console.log("[songsheets] JSON corpus unavailable — fetching songs from WPGraphQL…");
+    try {
+      songs = await fetchAllSongs();
+    } catch (err) {
+      console.warn(`[songsheets] fetch failed: ${err.message}`);
+      console.warn(
+        "[songsheets] skipping songsheet generation (build continues; songsheet PDFs will be missing or stale)",
+      );
+      process.exit(0);
+    }
+    console.log(`[songsheets] got ${songs.length} songs`);
+  } else {
     console.warn(
-      "[songsheets] skipping songsheet generation (build continues; songsheet PDFs will be missing or stale)",
+      "[songsheets] no JSON corpus and no PUBLIC_WP_GRAPHQL_ENDPOINT — skipping (build continues; songsheet PDFs will be missing or stale)",
     );
     process.exit(0);
   }
-  console.log(`[songsheets] got ${songs.length} songs`);
 
   console.log("[songsheets] loading fonts…");
   const fontBytes = {
