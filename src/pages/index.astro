@@ -1,24 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { wpQuery } from "../lib/graphql";
 import { fetchAllSongs } from "../lib/songs";
 import { fetchLatestActions } from "../lib/actions";
 import { getActiveGaggleCount } from "../lib/gaggles";
 
 const activeGaggleCount = getActiveGaggleCount();
-
-interface IssuesData {
-  issues: {
-    nodes: Array<{
-      name: string;
-      count: number;
-    }>;
-  };
-}
-
-const issuesData = await wpQuery<IssuesData>({
-  query: `{ issues(first:100) { nodes { name count } } }`,
-});
 
 const [allSongs, latestActions] = await Promise.all([
   fetchAllSongs(),
@@ -49,8 +35,16 @@ function truncateExcerpt(html: string, maxLen = 140): string {
   return stripped.slice(0, maxLen).replace(/\s\S*$/, "") + "…";
 }
 
-const issues = issuesData.issues.nodes
-  .filter((i) => i.count > 0)
+// Derive issues from the song corpus instead of a separate WPGraphQL call.
+// Keeps the homepage build self-contained against the committed JSON
+// snapshot — won't break when the live WP endpoint is bot-blocked.
+const issueCounts = new Map<string, number>();
+for (const song of allSongs) {
+  for (const issue of song.issues.nodes) {
+    issueCounts.set(issue.name, (issueCounts.get(issue.name) ?? 0) + 1);
+  }
+}
+const issues = Array.from(issueCounts, ([name, count]) => ({ name, count }))
   .sort((a, b) => b.count - a.count);
 const totalSongs = allSongs.length;
 
