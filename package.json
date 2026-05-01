@@ -10,7 +10,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier --write .",
-    "songsheets": "node scripts/generate-songsheets.mjs"
+    "songsheets": "node scripts/generate-songsheets.mjs",
+    "snapshot": "node scripts/snapshot-songs.mjs",
+    "embed": "node scripts/build-rag-index.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.0",

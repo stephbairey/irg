@@ -1,0 +1,174 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const SITE_URL = Astro.site?.toString().replace(/\/$/, "") ?? "https://raginggrannies.org";
+
+// Example questions surface as clickable chips. Tuned per D045 — short,
+// concrete, span the major content types (songs, gaggles, how-to, FAQ).
+const examples = [
+  "Find a song about water rights",
+  "What tune does Frack Attack go to?",
+  "Is there a gaggle near me?",
+  "How do I start a gaggle?",
+  "Who can be a Granny?",
+  "How do I submit a song I wrote?",
+];
+
+const askSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Ask the website",
+  description:
+    "Ask a question about the Raging Grannies — find a song, find a gaggle, find your way in.",
+  url: `${SITE_URL}/ask/`,
+  publisher: { "@id": `${SITE_URL}#org` },
+  inLanguage: "en",
+};
+---
+
+<BaseLayout
+  title="Ask the website"
+  description="Ask a question about the Raging Grannies — find a song, find a gaggle, find your way in."
+  structuredData={askSchema}
+>
+  <article class="max-w-[1100px] mx-auto px-8 pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-12 border-b border-muted mb-12">
+      <div class="kicker text-red mb-4">Ask the website</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(48px,7.5vw,96px)">
+        What do you want to know?
+      </h1>
+      <p class="text-[20px] text-text-soft italic max-w-[680px] mx-auto leading-snug">
+        Find a song, find a gaggle, find your way in. We'll do our best — and if we can't, we'll connect you to a human Granny.
+      </p>
+    </header>
+
+    {/* Input */}
+    <form id="ask-form" class="max-w-[760px] mx-auto">
+      <label for="ask-input" class="sr-only">Your question</label>
+      <input
+        id="ask-input"
+        type="text"
+        autocomplete="off"
+        autocapitalize="sentences"
+        placeholder="Type your question…"
+        class="ask-input"
+      />
+      <div class="flex justify-center mt-6">
+        <button type="submit" class="btn btn-primary text-[17px] px-9 py-3" id="ask-submit">
+          Ask
+        </button>
+      </div>
+    </form>
+
+    {/* Example chips */}
+    <section class="max-w-[760px] mx-auto mt-12">
+      <p class="kicker text-red mb-4 text-center">Try one of these</p>
+      <div class="flex flex-wrap gap-2.5 justify-center">
+        {examples.map((q) => (
+          <button class="example-chip" type="button" data-question={q}>{q}</button>
+        ))}
+      </div>
+    </section>
+
+    {/* Placeholder result area — visible after first submit until the
+        backend lands. Lets gaggles see the page shape during feedback. */}
+    <section id="ask-result" class="max-w-[760px] mx-auto mt-14 hidden">
+      <div class="border-l-[3px] border-red pl-5 py-2 bg-paper-2 rounded-r-[10px]">
+        <p class="kicker text-red mb-2">Coming soon</p>
+        <p class="text-[17px] leading-relaxed text-text mb-2">
+          The "Ask the website" feature is still being built. Your question hasn't been answered yet — but the page is live so the gaggles can give us feedback on how it should feel.
+        </p>
+        <p class="text-[17px] leading-relaxed text-text">
+          For a real answer right now, <a href="mailto:webgranny@gmail.com" class="text-red font-bold no-underline hover:underline">email a human Granny</a>.
+        </p>
+      </div>
+    </section>
+
+    {/* Permanent fallback */}
+    <footer class="mt-16 pt-10 border-t border-muted text-center max-w-[760px] mx-auto">
+      <p class="text-[17px] text-text-soft mb-2">
+        Still wondering? <a href="mailto:webgranny@gmail.com" class="text-red font-bold no-underline hover:underline">Email a human Granny</a>.
+      </p>
+      <p class="text-[13px] text-muted italic">
+        Your questions help us improve the website. No personal information is collected.
+      </p>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .ask-input {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 20px;
+    line-height: 1.4;
+    padding: 18px 22px;
+    border: 1.5px solid var(--color-rule);
+    border-radius: 16px;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .ask-input::placeholder {
+    color: var(--color-muted);
+    font-style: italic;
+  }
+  .ask-input:focus {
+    outline: none;
+    border-color: var(--color-red);
+    box-shadow: 0 0 0 3px rgba(226, 42, 44, 0.15);
+  }
+  .example-chip {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border: 1.5px solid var(--color-rule);
+    border-radius: 999px;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .example-chip:hover {
+    border-color: var(--color-red);
+    color: var(--color-red);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("ask-input");
+    const result = document.getElementById("ask-result");
+    const form = document.getElementById("ask-form");
+    if (!input || !result || !form) return;
+
+    document.querySelectorAll(".example-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        input.value = chip.dataset.question || chip.textContent;
+        input.focus();
+      });
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!input.value.trim()) return;
+      // Backend integration is forthcoming. Show the placeholder for now
+      // so the page has a complete user flow during gaggle feedback.
+      result.classList.remove("hidden");
+      result.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+</script>
