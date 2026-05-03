@@ -125,14 +125,14 @@ const gaggleListSchema = {
 ---
 
 <BaseLayout title="Find a Gaggle" structuredData={gaggleListSchema}>
-  <article class="max-w-[1400px] mx-auto px-8 pt-12 pb-20">
+  <article class="max-w-[1400px] mx-auto px-5 md:px-8 pt-10 md:pt-12 pb-20">
     {/* Hero */}
-    <header class="text-center pb-10 mb-10 border-b border-muted">
+    <header class="text-center pb-8 md:pb-10 mb-10 border-b border-muted">
       <div class="kicker text-red mb-4">The Network</div>
-      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(56px,8vw,112px)">
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(40px,8vw,112px)">
         Find a Gaggle
       </h1>
-      <p class="text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+      <p class="text-[17px] md:text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
         {total > 0 ? (
           <>There are {total} gaggles of Raging Grannies across North America and around the world. Find one near you, or start your own.</>
         ) : (
