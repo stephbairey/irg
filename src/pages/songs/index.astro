@@ -81,43 +81,38 @@ const songsJson = JSON.stringify(
   <!-- Body: filters + results -->
   <section class="max-w-[1200px] mx-auto px-5 md:px-8 py-6 md:py-8 pb-20">
     <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6 md:gap-12 items-start">
-      <!-- Left rail filters: collapsible accordion on mobile, sticky aside on desktop -->
-      <details class="lib-filter-panel md:sticky md:top-[220px]">
-        <summary class="lib-filter-summary md:hidden">
-          <span>Filters</span>
-          <span class="lib-filter-chev">▾</span>
-        </summary>
-        <aside id="lib-filters" class="grid gap-5 pt-4 md:pt-0">
-          {[
-            { id: "lib-issue", label: "Issue", placeholder: "All issues", options: allIssues },
-            { id: "lib-gaggle", label: "Gaggle", placeholder: "All gaggles", options: allGaggles },
-            { id: "lib-tune", label: "Tune", placeholder: "All tunes", options: allTunes },
-          ].map(({ id, label, placeholder, options }) => (
-            <div>
-              <label for={id} class="kicker text-ink mb-2 block">{label}</label>
-              <div class="relative">
-                <select
-                  id={id}
-                  class="lib-tax-select appearance-none w-full pl-3.5 pr-10 py-2.5 text-sm font-bold bg-card text-ink border-[1.5px] border-muted rounded-lg cursor-pointer min-h-[40px] focus:outline-none focus:border-red"
-                >
-                  <option value="">{placeholder}</option>
-                  {options.map((opt) => (
-                    <option value={opt}>{opt}</option>
-                  ))}
-                </select>
-                <svg viewBox="0 0 24 24" class="absolute right-3 top-1/2 -translate-y-1/2 w-[14px] h-[14px] text-ink pointer-events-none" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-              </div>
+      <!-- Left rail filters (sticky aside on desktop, stacked above results
+           on mobile via the grid-cols-1 default). -->
+      <aside id="lib-filters" class="grid gap-5 md:sticky md:top-[220px] min-w-0">
+        {[
+          { id: "lib-issue", label: "Issue", placeholder: "All issues", options: allIssues },
+          { id: "lib-gaggle", label: "Gaggle", placeholder: "All gaggles", options: allGaggles },
+          { id: "lib-tune", label: "Tune", placeholder: "All tunes", options: allTunes },
+        ].map(({ id, label, placeholder, options }) => (
+          <div>
+            <label for={id} class="kicker text-ink mb-2 block">{label}</label>
+            <div class="relative">
+              <select
+                id={id}
+                class="lib-tax-select appearance-none w-full pl-3.5 pr-10 py-2.5 text-sm font-bold bg-card text-ink border-[1.5px] border-muted rounded-lg cursor-pointer min-h-[40px] focus:outline-none focus:border-red"
+              >
+                <option value="">{placeholder}</option>
+                {options.map((opt) => (
+                  <option value={opt}>{opt}</option>
+                ))}
+              </select>
+              <svg viewBox="0 0 24 24" class="absolute right-3 top-1/2 -translate-y-1/2 w-[14px] h-[14px] text-ink pointer-events-none" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
             </div>
-          ))}
+          </div>
+        ))}
 
-          <button id="lib-reset" class="px-4 py-2.5 bg-transparent border-[1.5px] border-rule rounded-lg font-[800] text-red cursor-pointer text-[13px] hover:border-red hover:bg-red/[.05] mt-1">
-            Reset all filters
-          </button>
-        </aside>
-      </details>
+        <button id="lib-reset" class="px-4 py-2.5 bg-transparent border-[1.5px] border-rule rounded-lg font-[800] text-red cursor-pointer text-[13px] hover:border-red hover:bg-red/[.05] mt-1">
+          Reset all filters
+        </button>
+      </aside>
 
       <!-- Results -->
-      <div>
+      <div class="min-w-0">
         <div id="lib-results" class="grid gap-0"></div>
         <p id="lib-no-results" class="hidden text-center text-text-soft py-16 text-lg">No songs match your filters.</p>
         <!-- Pagination -->
@@ -374,44 +369,5 @@ const songsJson = JSON.stringify(
       filters.songwriter = canonicalize(songwriterNames, params.get("songwriter"));
     }
     render();
-
-    // Filter panel: collapsible <details> on mobile, always-open aside on
-    // desktop. Same pattern as the footer accordions in BaseLayout.
-    (function () {
-      const panel = document.querySelector(".lib-filter-panel");
-      if (!panel) return;
-      const mq = window.matchMedia("(min-width: 768px)");
-      const apply = function () { panel.open = mq.matches; };
-      apply();
-      mq.addEventListener("change", apply);
-    })();
   </script>
-
-  <style>
-    .lib-filter-panel { width: 100%; }
-    .lib-filter-summary {
-      list-style: none;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      background: var(--color-card);
-      border: 1.5px solid var(--color-muted);
-      border-radius: 10px;
-      font-family: var(--font-body);
-      font-weight: 800;
-      font-size: 13px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--color-ink);
-    }
-    .lib-filter-summary::-webkit-details-marker { display: none; }
-    .lib-filter-summary::marker { display: none; }
-    .lib-filter-chev {
-      transition: transform 0.15s ease;
-      font-size: 14px;
-    }
-    .lib-filter-panel[open] .lib-filter-chev { transform: rotate(180deg); }
-  </style>
 </BaseLayout>
