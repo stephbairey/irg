@@ -6,43 +6,72 @@ This document supersedes any earlier ad-hoc instructions. If a step here disagre
 
 ## Prerequisites
 
-- SSH access to Nixihost with WP-CLI available
-- A WP super admin username (referred to below as `<super_admin>`)
+- SSH access to Nixihost (`ssh nixihost-irg`)
+- WP-CLI phar installed at `~/cms.raginggrannies.international/wp-cli.phar`. If not present, install once:
+  ```bash
+  ssh nixihost-irg "cd ~/cms.raginggrannies.international && curl -sO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar"
+  ```
+- A WP super admin username — currently `webgranny`. Confirm with `php wp-cli.phar super-admin list` from the WP install dir.
 - This repo cloned locally on a machine running Node 22 (`nvm use 22`)
 - `.env.local` populated with `PUBLIC_WP_URL`, `WP_USERNAME`, `WP_APP_PASSWORD`
 - A multisite admin email forwarder set up for the gaggle (e.g. `montreal@raginggrannies.org` forwarding to the Web Granny until the gaggle takes ownership)
 
+> **All `wp` commands below assume you are in `~/cms.raginggrannies.international` on the server, and that you invoke WP-CLI as `php wp-cli.phar`.** A handy shell alias is `alias wp='php ~/cms.raginggrannies.international/wp-cli.phar'`.
+
 ## Step 1: Create the subsite
 
-On the server, via WP-CLI:
+If the subsite does not already exist, create it via WP-CLI on the server:
 
 ```bash
-wp site create --slug=<slug> --title="<Gaggle Name> Raging Grannies" --email=<slug>@raginggrannies.org
+php wp-cli.phar site create --slug=<slug> --title="<Gaggle Name> Raging Grannies" --email=<slug>@raginggrannies.org
 ```
 
 Replace `<slug>` and `<Gaggle Name>` (e.g. `montreal` and `Montreal`).
 
-The `--email` flag sets the per-subsite admin email. If you forget it, you can set it afterwards in network admin → Sites → `<slug>` → Settings → Admin Email.
+If the subsite was already created via the network admin UI, **skip this step**. Maya created Montreal that way — it works the same as far as Steps 2-3 are concerned.
 
-## Step 2: Activate The Bulletin Local theme
+The `--email` flag sets the per-subsite admin email. If you forget it (or used the UI without setting it), set it afterwards in network admin → Sites → `<slug>` → Settings → Admin Email.
 
-```bash
-wp theme activate the-bulletin-local --url=cms.raginggrannies.international/<slug> --user=<super_admin>
-```
+## Step 2: Delete WP's default content
 
-**The `--user` flag is not optional.** The theme's default-content seeder (`inc/default-content.php`) gates on `current_user_can('manage_options')`. WP-CLI runs without a logged-in user by default, which silently fails the check and no-ops the seeder. Always pass `--user=<super_admin>`.
+WP creates a `Hello world!` post and a `Sample Page` on every new subsite, regardless of whether it was created via WP-CLI or the UI. **You must delete these before activating the theme.** Otherwise:
 
-## Step 3: Trigger the seeder if needed
-
-`wp theme activate` fires `after_switch_theme`, which runs the seeder. If you ever need to re-trigger it (e.g. after deploying a theme update that adds new default pages), use:
+- The seeder skips inserting the welcome Action post (it bails when any post is already published — see `inc/default-content.php:46-52`).
+- You're left with WP's "Welcome to WordPress…" placeholder content showing on the gaggle's Actions list and a useless Sample Page in the menu.
 
 ```bash
-wp eval 'do_action("after_switch_theme");' --url=cms.raginggrannies.international/<slug> --user=<super_admin>
+# List to confirm IDs (typically 1 = Hello world!, 2 = Sample Page)
+php wp-cli.phar post list --post_type=post,page --format=table \
+  --url=cms.raginggrannies.international/<slug> --user=webgranny
+
+# Delete (force = skip trash)
+php wp-cli.phar post delete 1 2 --force \
+  --url=cms.raginggrannies.international/<slug> --user=webgranny
 ```
 
-The seeder is idempotent: it checks for existing slugs before creating anything, so re-running won't duplicate. It also won't insert the sample Action post if the gaggle has already published any posts.
+If `wp post list` returns more than two rows, adjust the IDs.
 
-## Step 4: Verify the seeder ran
+## Step 3: Activate The Bulletin Local theme
+
+```bash
+php wp-cli.phar theme activate the-bulletin-local \
+  --url=cms.raginggrannies.international/<slug> --user=webgranny
+```
+
+`wp theme activate` fires `after_switch_theme`, which is supposed to run the seeder. **In practice it doesn't** — the seeder gates on `current_user_can('manage_options')`, and WP-CLI's `--user` flag does not satisfy that check during `after_switch_theme`. The theme switches successfully but the seeder no-ops silently. Verified on Montreal 2026-05-03.
+
+So Step 4 is **required**, not optional.
+
+## Step 4: Force the seeder to run
+
+```bash
+php wp-cli.phar eval 'do_action("after_switch_theme");' \
+  --url=cms.raginggrannies.international/<slug> --user=webgranny
+```
+
+When `do_action` is invoked from `wp eval` with `--user`, the user context is set up correctly and the seeder runs. The seeder is idempotent: it checks for existing slugs before creating anything, so re-running won't duplicate. It also won't insert the sample Action post if the gaggle has already published any posts (which is why Step 2 matters).
+
+## Step 5: Verify the seeder ran
 
 From your local repo:
 
@@ -51,7 +80,7 @@ nvm use 22
 node scripts/verify-subsite.mjs <slug>
 ```
 
-Expected on a freshly seeded subsite: **13 PASS, 1 WARN** (the admin email check WARNs because of a WP multisite permission quirk — see "Known caveats" below). If anything FAILs, do not proceed: the seeder didn't run correctly. Re-run Step 3 with `--user=<super_admin>` and verify again.
+Expected on a freshly seeded subsite: **14 PASS, 1 WARN** (the admin email check WARNs because of a WP multisite permission quirk — see "Known caveats" below). If anything FAILs, do not proceed: the seeder didn't run correctly. Re-run Step 4 and verify again.
 
 The script checks:
 
@@ -65,7 +94,7 @@ The script checks:
 - Sample "Welcome to Our Corner of the Movement" post is published
 - `/graphql` endpoint responds with post data
 
-## Step 5: Visual check
+## Step 6: Visual check
 
 Visit `https://cms.raginggrannies.international/<slug>/` and confirm:
 
@@ -78,7 +107,7 @@ Visit `https://cms.raginggrannies.international/<slug>/` and confirm:
 7. Photos page renders empty without errors.
 8. 404 page works (visit a nonexistent URL like `/<slug>/asdf/`).
 
-## Step 6: Snapshot + push to update the main site
+## Step 7: Snapshot + push to update the main site
 
 The main Astro site reads gaggle data from committed JSON snapshots, not from live WP at build time (the WP origin is bot-blocked from CF Pages by Imunify360). Re-running the snapshot is what makes the new gaggle visible on `raginggrannies.org`.
 
@@ -111,7 +140,7 @@ git commit -m "data: snapshot subsites — add <Gaggle>"
 git push
 ```
 
-## Step 7: Verify on the CF Pages preview
+## Step 8: Verify on the CF Pages preview
 
 After the deploy finishes (~1-2 minutes):
 
@@ -135,6 +164,8 @@ After the deploy finishes (~1-2 minutes):
 
 ## After Montreal
 
-Once Montreal is fully shipped (Steps 1-7 all green) and the runbook is updated with anything we learned, the same steps apply to the remaining gaggles. Bulk creation can be scripted by wrapping Steps 1-3 in a loop driven by `data/gaggle-locations.json`, then running Step 6 once at the end.
+Montreal shipped 2026-05-03. The runbook above reflects what actually worked end-to-end (vs. the original plan, which assumed `wp theme activate` alone would seed and didn't account for WP's default Hello world! / Sample Page).
 
-Decide before bulk creation: do we want all ~58 remaining gaggles created at once with `welcome-to-our-corner-of-the-movement` placeholder content, or only those whose Web Granny contact has been confirmed?
+For bulk creation of the remaining ~58 gaggles, wrap Steps 1, 2, 3, 4 in a loop driven by `data/gaggle-locations.json`, then run Step 7 once at the end. A `scripts/bulk-create-subsites.mjs` could SSH each command in sequence; check Step 5 verify output before moving to the next gaggle.
+
+Decision (claude.ai weighed in 2026-05-03): create all ~58 at once with the welcome placeholder content. The theme falls back gracefully on every page, the placeholder content is harmless, and having all subsites ready means when a gaggle contact responds you hand them a login instead of making them wait.
