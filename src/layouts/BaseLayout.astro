@@ -210,10 +210,10 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
     <slot />
 
     <!-- Footer -->
-    <footer class="mt-24 bg-ink text-on-dark pt-14 pb-8">
-      <div class="grid grid-cols-[1.7fr_1fr_1fr_1.2fr_1fr] gap-12 max-w-[1200px] mx-auto px-8">
-        <!-- Brand column -->
-        <div>
+    <footer class="mt-16 md:mt-24 bg-ink text-on-dark pt-12 md:pt-14 pb-8">
+      <div class="grid grid-cols-2 md:grid-cols-[1.7fr_1fr_1fr_1.2fr_1fr] gap-8 md:gap-12 max-w-[1200px] mx-auto px-5 md:px-8">
+        <!-- Brand column — last on mobile, first on desktop -->
+        <div class="order-last md:order-none col-span-2 md:col-span-1 mt-4 md:mt-0 pt-6 md:pt-0 border-t border-white/15 md:border-0">
           <div class="flex items-center gap-3 mb-4">
             <img src="/logo-full.svg" alt="" class="h-[54px] brightness-0 invert opacity-90" />
             <span class="font-display text-2xl text-on-dark">Raging Grannies</span>
@@ -262,7 +262,7 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         </div>
       </div>
       <!-- Bottom bar -->
-      <div class="max-w-[1200px] mx-auto mt-10 pt-6 px-8 border-t border-white/15 flex justify-between text-[13px] text-ink-lilac">
+      <div class="max-w-[1200px] mx-auto mt-10 pt-6 px-5 md:px-8 border-t border-white/15 flex flex-col md:flex-row gap-2 md:gap-0 md:justify-between text-[13px] text-ink-lilac text-center md:text-left">
         <span>&copy; <span class="copyright-year">{year}</span> International Raging Grannies</span>
         <span>Made with spirit, by volunteers.</span>
       </div>
