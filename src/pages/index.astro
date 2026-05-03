@@ -84,9 +84,6 @@ function pickFeatured(min: number, max: number) {
 }
 const featured = pickFeatured(175, 195) ?? pickFeatured(165, 205);
 
-const gaggleNames = new Set<string>();
-for (const s of allSongs) for (const g of s.gaggles.nodes) gaggleNames.add(g.name);
-const gagglesCount = gaggleNames.size;
 
 const yearsSinging = new Date().getFullYear() - 1987;
 
@@ -158,7 +155,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
             <dl>
               <div class="flex justify-between py-2 border-b border-dotted border-muted">
                 <dt class="text-[15px] text-text-soft">Active gaggles</dt>
-                <dd class="font-display text-ink text-[26px] leading-none">{gagglesCount}</dd>
+                <dd class="font-display text-ink text-[26px] leading-none">{activeGaggleCount}</dd>
               </div>
               <div class="flex justify-between py-2 border-b border-dotted border-muted">
                 <dt class="text-[15px] text-text-soft">Songs archived</dt>
