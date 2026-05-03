@@ -31,25 +31,25 @@ const songsJson = JSON.stringify(
 
 <BaseLayout title="The Song Library">
   <!-- Header -->
-  <section class="pt-14 pb-6 max-w-[1200px] mx-auto px-8">
-    <div class="grid grid-cols-[1fr_auto] gap-12 items-end">
+  <section class="pt-10 md:pt-14 pb-6 max-w-[1200px] mx-auto px-5 md:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-12 items-end">
       <div>
         <div class="kicker text-red mb-3">The Songbook · 1987-2026</div>
-        <h1 class="font-display text-ink leading-[.98] mb-4" style="font-size:clamp(56px,7vw,96px)">The Song Library</h1>
-        <p class="text-[19px] text-text-soft max-w-[640px] leading-normal">
+        <h1 class="font-display text-ink leading-[.98] mb-4" style="font-size:clamp(40px,9vw,96px)">The Song Library</h1>
+        <p class="text-[17px] md:text-[19px] text-text-soft max-w-[640px] leading-normal">
           Every song catalogued by gaggles across four continents: searchable, filterable, printable, and <em class="text-ink">yours to sing</em>.
         </p>
       </div>
-      <div class="p-[22px_28px] bg-ink text-on-dark rounded-[10px] text-right" style="transform:rotate(1.5deg);box-shadow:var(--shadow-lift)">
-        <div class="font-display text-mustard text-[56px] leading-none">{allSongs.length.toLocaleString()}</div>
+      <div class="p-[16px_20px] md:p-[22px_28px] bg-ink text-on-dark rounded-[10px] text-right self-start md:self-auto inline-block md:block w-fit md:w-auto" style="transform:rotate(1.5deg);box-shadow:var(--shadow-lift)">
+        <div class="font-display text-mustard text-[40px] md:text-[56px] leading-none">{allSongs.length.toLocaleString()}</div>
         <div class="font-[800] text-xs tracking-[.1em] uppercase text-ink-lilac mt-2">Songs & counting</div>
       </div>
     </div>
   </section>
 
   <!-- Search bar (sticky) -->
-  <section class="sticky top-[73px] z-40 bg-paper border-b border-rule py-5">
-    <div class="max-w-[1200px] mx-auto px-8">
+  <section class="sticky top-[73px] z-40 bg-paper border-b border-rule py-4 md:py-5">
+    <div class="max-w-[1200px] mx-auto px-5 md:px-8">
       <div class="flex items-center gap-3.5 px-5 py-3.5 bg-card border-2 border-muted rounded-full" style="box-shadow:var(--shadow-card)">
         <svg viewBox="0 0 24 24" class="w-[18px] h-[18px] text-ink flex-none" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
         <input
@@ -79,36 +79,42 @@ const songsJson = JSON.stringify(
   </section>
 
   <!-- Body: filters + results -->
-  <section class="max-w-[1200px] mx-auto px-8 py-8 pb-20">
-    <div class="grid grid-cols-[280px_1fr] gap-12 items-start">
-      <!-- Left rail filters -->
-      <aside id="lib-filters" class="sticky top-[220px] grid gap-5">
-        {[
-          { id: "lib-issue", label: "Issue", placeholder: "All issues", options: allIssues },
-          { id: "lib-gaggle", label: "Gaggle", placeholder: "All gaggles", options: allGaggles },
-          { id: "lib-tune", label: "Tune", placeholder: "All tunes", options: allTunes },
-        ].map(({ id, label, placeholder, options }) => (
-          <div>
-            <label for={id} class="kicker text-ink mb-2 block">{label}</label>
-            <div class="relative">
-              <select
-                id={id}
-                class="lib-tax-select appearance-none w-full pl-3.5 pr-10 py-2.5 text-sm font-bold bg-card text-ink border-[1.5px] border-muted rounded-lg cursor-pointer min-h-[40px] focus:outline-none focus:border-red"
-              >
-                <option value="">{placeholder}</option>
-                {options.map((opt) => (
-                  <option value={opt}>{opt}</option>
-                ))}
-              </select>
-              <svg viewBox="0 0 24 24" class="absolute right-3 top-1/2 -translate-y-1/2 w-[14px] h-[14px] text-ink pointer-events-none" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+  <section class="max-w-[1200px] mx-auto px-5 md:px-8 py-6 md:py-8 pb-20">
+    <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6 md:gap-12 items-start">
+      <!-- Left rail filters: collapsible accordion on mobile, sticky aside on desktop -->
+      <details class="lib-filter-panel md:sticky md:top-[220px]">
+        <summary class="lib-filter-summary md:hidden">
+          <span>Filters</span>
+          <span class="lib-filter-chev">▾</span>
+        </summary>
+        <aside id="lib-filters" class="grid gap-5 pt-4 md:pt-0">
+          {[
+            { id: "lib-issue", label: "Issue", placeholder: "All issues", options: allIssues },
+            { id: "lib-gaggle", label: "Gaggle", placeholder: "All gaggles", options: allGaggles },
+            { id: "lib-tune", label: "Tune", placeholder: "All tunes", options: allTunes },
+          ].map(({ id, label, placeholder, options }) => (
+            <div>
+              <label for={id} class="kicker text-ink mb-2 block">{label}</label>
+              <div class="relative">
+                <select
+                  id={id}
+                  class="lib-tax-select appearance-none w-full pl-3.5 pr-10 py-2.5 text-sm font-bold bg-card text-ink border-[1.5px] border-muted rounded-lg cursor-pointer min-h-[40px] focus:outline-none focus:border-red"
+                >
+                  <option value="">{placeholder}</option>
+                  {options.map((opt) => (
+                    <option value={opt}>{opt}</option>
+                  ))}
+                </select>
+                <svg viewBox="0 0 24 24" class="absolute right-3 top-1/2 -translate-y-1/2 w-[14px] h-[14px] text-ink pointer-events-none" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        <button id="lib-reset" class="px-4 py-2.5 bg-transparent border-[1.5px] border-rule rounded-lg font-[800] text-red cursor-pointer text-[13px] hover:border-red hover:bg-red/[.05] mt-1">
-          Reset all filters
-        </button>
-      </aside>
+          <button id="lib-reset" class="px-4 py-2.5 bg-transparent border-[1.5px] border-rule rounded-lg font-[800] text-red cursor-pointer text-[13px] hover:border-red hover:bg-red/[.05] mt-1">
+            Reset all filters
+          </button>
+        </aside>
+      </details>
 
       <!-- Results -->
       <div>
@@ -368,5 +374,44 @@ const songsJson = JSON.stringify(
       filters.songwriter = canonicalize(songwriterNames, params.get("songwriter"));
     }
     render();
+
+    // Filter panel: collapsible <details> on mobile, always-open aside on
+    // desktop. Same pattern as the footer accordions in BaseLayout.
+    (function () {
+      const panel = document.querySelector(".lib-filter-panel");
+      if (!panel) return;
+      const mq = window.matchMedia("(min-width: 768px)");
+      const apply = function () { panel.open = mq.matches; };
+      apply();
+      mq.addEventListener("change", apply);
+    })();
   </script>
+
+  <style>
+    .lib-filter-panel { width: 100%; }
+    .lib-filter-summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--color-card);
+      border: 1.5px solid var(--color-muted);
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+    }
+    .lib-filter-summary::-webkit-details-marker { display: none; }
+    .lib-filter-summary::marker { display: none; }
+    .lib-filter-chev {
+      transition: transform 0.15s ease;
+      font-size: 14px;
+    }
+    .lib-filter-panel[open] .lib-filter-chev { transform: rotate(180deg); }
+  </style>
 </BaseLayout>
