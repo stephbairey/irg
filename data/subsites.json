@@ -1,5 +1,11 @@
 [
   {
+    "id": 4,
+    "slug": "montreal",
+    "name": "Montreal",
+    "url": "http://cms.raginggrannies.international/montreal"
+  },
+  {
     "id": 2,
     "slug": "portland",
     "name": "Portland",
