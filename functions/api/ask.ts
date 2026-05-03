@@ -24,7 +24,6 @@ interface Env {
   CHAT_MODEL?: string;
   CHATBOT_DAILY_SOFT_USD?: string;
   CHATBOT_DAILY_HARD_USD?: string;
-  CHATBOT_FALLBACK_EMAIL?: string;
   CHATBOT_ENABLED?: string;
   CHATBOT_LOG_TRANSCRIPTS?: string;
   ASSETS: { fetch: (request: Request | URL | string) => Promise<Response> };
@@ -62,7 +61,6 @@ interface AnthropicUsage {
 
 const TOP_K = 6;
 const MAX_QUESTION_LEN = 500;
-const FALLBACK_EMAIL_DEFAULT = "webgranny@raginggrannies.org";
 const SOFT_USD_DEFAULT = 0.25;
 const HARD_USD_DEFAULT = 1.0;
 const DEFAULT_MODEL = "claude-haiku-4-5-20251001";
@@ -152,7 +150,7 @@ For individual songs and gaggles, the URL must come from the matching <context> 
 # Refusals
 
 - If the question asks for endorsements of specific political candidates or parties, decline. We sing about issues, not personalities.
-- If the question is about something outside the IRG corpus (general world knowledge, real-time information, personal advice), say so and suggest the email fallback.
+- If the question is about something outside the IRG corpus (general world knowledge, real-time information, personal advice), say so and point them to the [Contact](/contact/) page so a Granny can follow up. Do not paste the email address inline; the page already has a fallback link below your answer.
 - Never invent songs, gaggles, dates, or quotes that are not in the provided context.
 
 If uncertain which song or gaggle is meant, ask a clarifying question OR offer the closest matches from the context.`;
@@ -218,9 +216,9 @@ function topK(records: EmbeddingRecord[], queryEmbedding: number[], k: number): 
   return scored.slice(0, k);
 }
 
-async function callClaude(env: Env, contextBlock: string, question: string, fallbackEmail: string) {
+async function callClaude(env: Env, contextBlock: string, question: string) {
   const model = env.CHAT_MODEL || DEFAULT_MODEL;
-  const userMessage = `If you can't answer from the context, suggest emailing ${fallbackEmail}.\n\n<context>\n${contextBlock}\n</context>\n\nQuestion: ${question}`;
+  const userMessage = `If you can't answer from the context, point the user to the [Contact](/contact/) page. Do not paste an email address inline; the page already has a fallback link below your answer.\n\n<context>\n${contextBlock}\n</context>\n\nQuestion: ${question}`;
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -322,7 +320,6 @@ function jsonResponse(body: unknown, init?: ResponseInit): Response {
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
-  const fallbackEmail = env.CHATBOT_FALLBACK_EMAIL || FALLBACK_EMAIL_DEFAULT;
   const softCap = parseFloat(env.CHATBOT_DAILY_SOFT_USD || String(SOFT_USD_DEFAULT));
   const hardCap = parseFloat(env.CHATBOT_DAILY_HARD_USD || String(HARD_USD_DEFAULT));
 
@@ -331,8 +328,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return jsonResponse(
       {
         error: "disabled",
-        message: `The Ask feature is currently disabled. Email ${fallbackEmail}.`,
-        fallbackEmail,
+        message: `The Ask feature is currently unavailable. Try our [Contact page](/contact/), or use the email link below.`,
       },
       { status: 503 },
     );
@@ -345,8 +341,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return jsonResponse(
       {
         error: "budget",
-        message: `Today's chat budget has been used. Email ${fallbackEmail}.`,
-        fallbackEmail,
+        message: `We've reached today's chat budget. Try our [Contact page](/contact/), or use the email link below.`,
         todaySpendUsd: todaySpend,
         hardCapUsd: hardCap,
       },
@@ -382,7 +377,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     // 3. Build context + call Claude
     const contextBlock = buildContextBlock(top);
-    const completion = await callClaude(env, contextBlock, question, fallbackEmail);
+    const completion = await callClaude(env, contextBlock, question);
     const answer = completion.content
       .filter((c) => c.type === "text")
       .map((c) => c.text)
@@ -427,8 +422,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return jsonResponse(
       {
         error: "internal",
-        message: `Something went wrong on our end. Email ${fallbackEmail} and we'll get back to you.`,
-        fallbackEmail,
+        message: `Something went wrong on our end. Try our [Contact page](/contact/), or use the email link below and we'll get back to you.`,
       },
       { status: 500 },
     );
