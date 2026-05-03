@@ -116,14 +116,14 @@ const featuredLyrics = featured?.songDetails?.lyrics
   </section>
 
   <!-- Front Page Grid -->
-  <section class="max-w-[1400px] mx-auto px-8">
-    <div class="grid grid-cols-[3fr_4fr_3fr] border-l border-rule">
+  <section class="max-w-[1400px] mx-auto px-5 md:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-[3fr_4fr_3fr] border-l border-rule">
       <!-- Lead story -->
-      <div class="p-7 border-r border-b border-muted">
+      <div class="p-5 md:p-7 border-b md:border-r border-muted">
         <div class="kicker text-red mb-3.5">From the Songbook</div>
         {featured && (
           <>
-            <h2 class="font-display text-ink text-[56px] leading-[.98] mb-2.5">
+            <h2 class="font-display text-ink text-[40px] md:text-[56px] leading-[.98] mb-2.5">
               <a href={`/songs/${featured.slug}/`} class="text-ink no-underline hover:text-red transition-colors">{featured.title}</a>
             </h2>
             <p class="text-sm text-text-soft pb-4 border-b border-rule mb-5">
@@ -140,8 +140,8 @@ const featuredLyrics = featured?.songDetails?.lyrics
       </div>
 
       <!-- Who we are + From the archive -->
-      <div class="border-r border-b border-muted">
-        <div class="p-7 bg-paper-2">
+      <div class="border-b md:border-r border-muted">
+        <div class="p-5 md:p-7 bg-paper-2">
           <div class="kicker text-red mb-3.5">Who we are</div>
           <p class="text-[17px] leading-normal mb-3.5">
             <strong class="text-ink">The Raging Grannies</strong> are a loose international network of women over fifty who use satirical song and street theater as a tool for political education.
@@ -173,14 +173,14 @@ const featuredLyrics = featured?.songDetails?.lyrics
           </div>
         </div>
 
-        <div class="p-7 bg-ink text-on-dark">
+        <div class="p-5 md:p-7 bg-ink text-on-dark">
           <div class="kicker text-mustard mb-3.5">From the archive</div>
           <h2 class="font-display text-on-dark text-[28px] leading-tight mb-4 m-0">The Origin Story</h2>
           <figure class="my-3.5 p-2 pb-0 bg-on-dark inline-block" style="transform:rotate(-1.2deg);box-shadow:0 8px 20px rgba(0,0,0,.25);max-width:420px">
             <img src="/granny-origin.png" alt="The Raging Grannies" class="w-full h-[180px] object-cover" style="filter:saturate(.85) contrast(1.02)" />
             <figcaption class="font-bold text-[11px] tracking-[.08em] uppercase text-ink text-center py-2.5 px-1 italic">The Raging Grannies</figcaption>
           </figure>
-          <div class="font-display text-red text-[120px] leading-none my-2.5">1987</div>
+          <div class="font-display text-red text-[72px] md:text-[120px] leading-none my-2.5">1987</div>
           <p class="text-[17px] leading-relaxed text-on-dark max-w-[540px] mb-4">
             It started on a <em class="text-mustard not-italic">damp Tuesday in Victoria, BC</em> when a handful of older women decided the best way to get attention for peace was to put on flowered hats and sing.
           </p>
@@ -191,7 +191,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
       </div>
 
       <!-- On The Streets -->
-      <div class="p-7 border-r border-b border-muted">
+      <div class="p-5 md:p-7 border-b md:border-r border-muted">
         <div class="kicker text-red mb-3.5">On the streets</div>
         <h2 class="font-display text-ink text-[28px] leading-tight mb-4 m-0">Dispatches</h2>
         {latestActions.length === 0 ? (
