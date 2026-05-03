@@ -167,18 +167,6 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         });
       })();
 
-      // Footer link accordions: collapsed on mobile, fully expanded on
-      // desktop. CSS alone can't reliably override the browser's
-      // ::details-content rendering for closed <details>, so we drive the
-      // [open] attribute from a media query.
-      (() => {
-        const sections = document.querySelectorAll(".footer-section");
-        if (!sections.length) return;
-        const mq = window.matchMedia("(min-width: 768px)");
-        const apply = () => sections.forEach((s) => { s.open = mq.matches; });
-        apply();
-        mq.addEventListener("change", apply);
-      })();
     </script>
 
     <style>
@@ -337,6 +325,22 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       for (const el of document.querySelectorAll(".years-singing")) {
         el.textContent = String(new Date().getFullYear() - 1987);
       }
+      // Footer link accordions: collapsed on mobile, fully expanded on desktop.
+      // CSS alone can't reliably override the browser's ::details-content
+      // rendering for closed <details>, so we drive the [open] attribute from
+      // a media query. Has to run AFTER the footer parses, hence is:inline at
+      // end of body (the bundled <script> after </header> ran too early and
+      // querySelectorAll returned 0 elements).
+      (function () {
+        const sections = document.querySelectorAll(".footer-section");
+        if (!sections.length) return;
+        const mq = window.matchMedia("(min-width: 768px)");
+        const apply = function () {
+          for (const s of sections) s.open = mq.matches;
+        };
+        apply();
+        mq.addEventListener("change", apply);
+      })();
     </script>
   </body>
 </html>
