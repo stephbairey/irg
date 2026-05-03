@@ -90,7 +90,7 @@ if (youtubeEmbed) {
 ---
 
 <BaseLayout title={song.title} structuredData={musicComposition}>
-  <div class="max-w-[1200px] mx-auto px-8">
+  <div class="max-w-[1200px] mx-auto px-5 md:px-8">
     <!-- Breadcrumb -->
     <a href="/songs/" class="inline-flex items-center gap-1.5 font-[800] text-sm text-red no-underline tracking-[.02em] pt-8 hover:underline">
       <svg viewBox="0 0 24 24" class="w-[16px] h-[16px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><path d="m11 5-7 7 7 7"/></svg>
@@ -98,8 +98,8 @@ if (youtubeEmbed) {
     </a>
 
     <!-- Header -->
-    <section class="pt-8 pb-14 border-b border-rule">
-      <div class="grid grid-cols-[1.4fr_1fr] gap-14 items-start">
+    <section class="pt-8 pb-10 md:pb-14 border-b border-rule">
+      <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-8 md:gap-14 items-start">
         <!-- Left: metadata -->
         <div>
           {issues.length > 0 && (
@@ -110,11 +110,11 @@ if (youtubeEmbed) {
             </div>
           )}
 
-          <h1 class="font-display text-ink leading-[.96] mb-7 tracking-tight" style="font-size:clamp(56px,7vw,92px)">
+          <h1 class="font-display text-ink leading-[.96] mb-7 tracking-tight" style="font-size:clamp(40px,9vw,92px)">
             {song.title}
           </h1>
 
-          <dl class="grid grid-cols-2 gap-x-10 gap-y-6 py-6 my-0 border-t border-b border-rule mb-7">
+          <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-5 sm:gap-y-6 py-6 my-0 border-t border-b border-rule mb-7">
             {tune && (
               <div>
                 <dt class="kicker mb-1.5">Sung to</dt>
@@ -216,10 +216,11 @@ if (youtubeEmbed) {
 
     <!-- Lyrics -->
     {lyrics && (
-      <section id="lyrics" class="py-[72px]">
-        <div class="grid grid-cols-[240px_1fr] gap-12 items-start">
-          <!-- Legend sidebar -->
-          <div class="sticky top-[120px] text-sm text-text-soft">
+      <section id="lyrics" class="py-12 md:py-[72px]">
+        <div class="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8 md:gap-12 items-start">
+          <!-- Legend sidebar — moves below the lyrics card on mobile so the
+               first thing readers see on the page is the song. -->
+          <div class="order-last md:order-first md:sticky md:top-[120px] text-sm text-text-soft">
             <div class="kicker text-ink mb-3">How to read the marks</div>
             <div class="flex gap-3.5 items-baseline py-2 border-b border-dotted border-rule">
               <strong class="text-ink text-[17px]">Bold word</strong>
@@ -251,7 +252,7 @@ if (youtubeEmbed) {
           </div>
 
           <!-- Lyrics card -->
-          <div class="lyrics-card bg-card border border-rule rounded-2xl p-[48px_56px_40px] relative" style="box-shadow:var(--shadow-card)">
+          <div class="lyrics-card bg-card border border-rule rounded-2xl p-6 md:p-[48px_56px_40px] relative order-first md:order-last" style="box-shadow:var(--shadow-card)">
             <!-- Top stripe -->
             <div class="absolute top-0 left-10 right-10 h-1 rounded-b-sm" style="background:repeating-linear-gradient(90deg,var(--color-red) 0 20px,var(--color-ink) 20px 40px,var(--color-mustard) 40px 60px)"></div>
 
@@ -267,7 +268,7 @@ if (youtubeEmbed) {
             <div class="font-display text-red text-[28px] mt-8" style="letter-spacing:12px">♦ ♦ ♦</div>
 
             <!-- Footer -->
-            <div class="mt-12 pt-6 border-t border-dashed border-rule grid grid-cols-3 gap-6 items-center">
+            <div class="mt-12 pt-6 border-t border-dashed border-rule grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 items-center">
               {songwriter && (
                 <div>
                   <div class="kicker mb-1">Written by</div>
