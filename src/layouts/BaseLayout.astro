@@ -205,15 +205,61 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         color: #fff;
         padding-left: 18px;
       }
+
+      /* Footer link sections: collapsible accordion on mobile, always-open
+         columns on desktop. The <details> element handles toggling for
+         free; on desktop we override the closed state to keep contents
+         visible and disable the summary's interactive UI. */
+      .footer-section {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      .footer-section > summary {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 0;
+        font-family: var(--font-body);
+        font-weight: 800;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-ink-lilac);
+      }
+      .footer-section > summary::-webkit-details-marker { display: none; }
+      .footer-section > summary::marker { display: none; }
+      .footer-section > summary::after {
+        content: "▾";
+        font-size: 14px;
+        transition: transform 0.15s ease;
+      }
+      .footer-section[open] > summary::after { transform: rotate(180deg); }
+      .footer-section > ul { padding: 0 0 16px; }
+
+      @media (min-width: 768px) {
+        /* Desktop: render exactly like before — heading + always-visible list,
+           no toggle UI. The summary becomes a plain heading. */
+        .footer-section { border-bottom: 0; }
+        .footer-section > summary {
+          cursor: default;
+          pointer-events: none;
+          padding: 0;
+          margin-bottom: 16px;
+        }
+        .footer-section > summary::after { content: ""; display: none; }
+        .footer-section:not([open]) > ul,
+        .footer-section[open] > ul { display: block; padding: 0; }
+      }
     </style>
 
     <slot />
 
     <!-- Footer -->
     <footer class="mt-16 md:mt-24 bg-ink text-on-dark pt-12 md:pt-14 pb-8">
-      <div class="grid grid-cols-2 md:grid-cols-[1.7fr_1fr_1fr_1.2fr_1fr] gap-8 md:gap-12 max-w-[1200px] mx-auto px-5 md:px-8">
-        <!-- Brand column — last on mobile, first on desktop -->
-        <div class="order-last md:order-none col-span-2 md:col-span-1 mt-4 md:mt-0 pt-6 md:pt-0 border-t border-white/15 md:border-0">
+      <div class="grid grid-cols-1 md:grid-cols-[1.7fr_1fr_1fr_1.2fr_1fr] gap-0 md:gap-12 max-w-[1200px] mx-auto px-5 md:px-8">
+        <!-- Brand column -->
+        <div class="mb-2 md:mb-0">
           <div class="flex items-center gap-3 mb-4">
             <img src="/logo-full.svg" alt="" class="h-[54px] brightness-0 invert opacity-90" />
             <span class="font-display text-2xl text-on-dark">Raging Grannies</span>
@@ -222,44 +268,44 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
             A network of women over 50, singing satire into the face of injustice as long as it's needed.
           </p>
         </div>
-        <!-- Songs column -->
-        <div>
-          <h2 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4 m-0">The Songs</h2>
+        <!-- Songs -->
+        <details class="footer-section">
+          <summary>The Songs</summary>
           <ul class="space-y-2 text-[15px]">
             <li><a href="/songs/" class="text-on-dark no-underline hover:text-red">Browse</a></li>
             <li><a href="/songs/by-issue/" class="text-on-dark no-underline hover:text-red">By issue</a></li>
             <li><a href="/songs/by-tune/" class="text-on-dark no-underline hover:text-red">By tune</a></li>
             <li><a href="/submit/" class="text-on-dark no-underline hover:text-red">Add a Song</a></li>
           </ul>
-        </div>
-        <!-- About column -->
-        <div>
-          <h2 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4 m-0">About Us</h2>
+        </details>
+        <!-- About -->
+        <details class="footer-section">
+          <summary>About Us</summary>
           <ul class="space-y-2 text-[15px]">
             <li><a href="/about/" class="text-on-dark no-underline hover:text-red">About</a></li>
             <li><a href="/herstory/" class="text-on-dark no-underline hover:text-red">Herstory</a></li>
             <li><a href="/philosophy/" class="text-on-dark no-underline hover:text-red">Philosophy</a></li>
             <li><a href="/faq/" class="text-on-dark no-underline hover:text-red">FAQ</a></li>
           </ul>
-        </div>
-        <!-- Media column -->
-        <div>
-          <h2 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4 m-0">Media</h2>
+        </details>
+        <!-- Media -->
+        <details class="footer-section">
+          <summary>Media</summary>
           <ul class="space-y-2 text-[15px]">
             <li><a href="/photos/" class="text-on-dark no-underline hover:text-red">Photos</a></li>
             <li><a href="/videos/" class="text-on-dark no-underline hover:text-red">Videos</a></li>
             <li><a href="/fact-sheet/" class="text-on-dark no-underline hover:text-red">Fact sheet</a></li>
             <li><a href="/in-the-news/" class="text-on-dark no-underline hover:text-red">In the News</a></li>
           </ul>
-        </div>
-        <!-- Connect column -->
-        <div>
-          <h2 class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-ink-lilac mb-4 m-0">Connect</h2>
+        </details>
+        <!-- Connect -->
+        <details class="footer-section">
+          <summary>Connect</summary>
           <ul class="space-y-2 text-[15px]">
             <li><a href="/contact/" class="text-on-dark no-underline hover:text-red">Contact</a></li>
             <li><a href="/ask/" class="text-on-dark no-underline hover:text-red">Ask a question</a></li>
           </ul>
-        </div>
+        </details>
       </div>
       <!-- Bottom bar -->
       <div class="max-w-[1200px] mx-auto mt-10 pt-6 px-5 md:px-8 border-t border-white/15 flex flex-col md:flex-row gap-2 md:gap-0 md:justify-between text-[13px] text-ink-lilac text-center md:text-left">
