@@ -19,6 +19,18 @@ const OUT_DIR = resolve(ROOT, "public");
 const SONGS_PATH = resolve(ROOT, "data/songs-consolidated.json");
 const GAGGLES_PATH = resolve(ROOT, "data/gaggle-locations.json");
 
+// Count is interpolated into the herstory page description below; computed
+// here so a single source (gaggle-locations.json) drives the number wherever
+// it appears in agent-facing surfaces.
+const GAGGLE_COUNT = (() => {
+  try {
+    const raw = JSON.parse(readFileSync(GAGGLES_PATH, "utf8"));
+    return Array.isArray(raw) ? raw.length : 0;
+  } catch {
+    return 0;
+  }
+})();
+
 // --- static page descriptions ------------------------------------------
 
 const PAGES = [
@@ -50,7 +62,7 @@ const PAGES = [
   {
     path: "/herstory/",
     title: "Herstory",
-    desc: "Founded in Victoria, BC, Canada, 1987. The movement has spread to ~80 gaggles across North America and beyond.",
+    desc: `Founded in Victoria, BC, Canada, 1987. The movement has spread to ${GAGGLE_COUNT} gaggles across North America and beyond.`,
   },
   {
     path: "/faq/",

@@ -126,13 +126,22 @@ function buildGaggleChunks() {
 
 // Static page summaries — duplicated from scripts/generate-llms-txt.mjs;
 // when the content there changes, sync here. (TODO: extract to shared module.)
+const GAGGLE_COUNT = (() => {
+  try {
+    const raw = JSON.parse(readFileSync(GAGGLES_PATH, "utf8"));
+    return Array.isArray(raw) ? raw.length : 0;
+  } catch {
+    return 0;
+  }
+})();
+
 const PAGES = [
   { path: "/songs/", title: "Song Library", desc: "Searchable archive of nearly 1,500 protest songs by Raging Grannies. Filter by issue, gaggle, tune, or songwriter. Each song has a printable PDF songsheet." },
   { path: "/find-a-gaggle/", title: "Find a Gaggle", desc: "Directory of all active Raging Grannies gaggles, organized by country and region, with a map." },
   { path: "/start-a-gaggle/", title: "Start Your Own Gaggle", desc: "How to start a Raging Grannies gaggle: gather a few committed women, pick your issues, write your songs, dress the part, and show up where it matters." },
   { path: "/about/", title: "About", desc: "Who the Raging Grannies are: women of a certain age subverting the sweet-little-old-lady stereotype to make activist noise about peace, justice, the environment, and human rights." },
   { path: "/philosophy/", title: "Philosophy", desc: "Our approach: creative rage with humor, satire, and song. Non-violent. Decentralized — no head office, no dues, no bylaws." },
-  { path: "/herstory/", title: "Herstory", desc: "Founded in Victoria, BC in 1987. The Raging Grannies movement has spread to ~80 gaggles across North America and beyond." },
+  { path: "/herstory/", title: "Herstory", desc: `Founded in Victoria, BC in 1987. The Raging Grannies movement has spread to ${GAGGLE_COUNT} gaggles across North America and beyond.` },
   { path: "/faq/", title: "FAQ", desc: "Frequently asked questions: who can be a Granny, how gaggles organize, where the songs come from, what issues we sing about." },
   { path: "/in-the-news/", title: "In the News", desc: "Press coverage of the Raging Grannies, auto-fetched from news sources." },
   { path: "/submit/", title: "Submit a Song", desc: "Song submissions are open to Raging Grannies. Submit a song you wrote for the central library." },
