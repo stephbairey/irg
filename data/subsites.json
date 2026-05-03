@@ -1,9 +1,243 @@
 [
   {
+    "id": 5,
+    "slug": "antigonish",
+    "name": "Antigonish Raging Grannies",
+    "url": "http://cms.raginggrannies.international/antigonish"
+  },
+  {
+    "id": 22,
+    "slug": "austin",
+    "name": "Austin Raging Grannies",
+    "url": "http://cms.raginggrannies.international/austin"
+  },
+  {
+    "id": 6,
+    "slug": "barrie",
+    "name": "Barrie Raging Grannies",
+    "url": "http://cms.raginggrannies.international/barrie"
+  },
+  {
+    "id": 23,
+    "slug": "bellingham",
+    "name": "Bellingham Raging Grannies",
+    "url": "http://cms.raginggrannies.international/bellingham"
+  },
+  {
+    "id": 24,
+    "slug": "bowling-green",
+    "name": "Bowling Green Raging Grannies",
+    "url": "http://cms.raginggrannies.international/bowling-green"
+  },
+  {
+    "id": 7,
+    "slug": "calgary",
+    "name": "Calgary Raging Grannies",
+    "url": "http://cms.raginggrannies.international/calgary"
+  },
+  {
+    "id": 25,
+    "slug": "central-florida",
+    "name": "Central Florida Raging Grannies",
+    "url": "http://cms.raginggrannies.international/central-florida"
+  },
+  {
+    "id": 26,
+    "slug": "charlotte",
+    "name": "Charlotte Raging Grannies",
+    "url": "http://cms.raginggrannies.international/charlotte"
+  },
+  {
+    "id": 8,
+    "slug": "chatham-kent",
+    "name": "Chatham-Kent Raging Grannies",
+    "url": "http://cms.raginggrannies.international/chatham-kent"
+  },
+  {
+    "id": 27,
+    "slug": "davis",
+    "name": "Davis Raging Grannies",
+    "url": "http://cms.raginggrannies.international/davis"
+  },
+  {
+    "id": 28,
+    "slug": "eau-claire",
+    "name": "Eau Claire Raging Grannies",
+    "url": "http://cms.raginggrannies.international/eau-claire"
+  },
+  {
+    "id": 9,
+    "slug": "edmonton",
+    "name": "Edmonton Raging Grannies",
+    "url": "http://cms.raginggrannies.international/edmonton"
+  },
+  {
+    "id": 29,
+    "slug": "el-dorado-county",
+    "name": "El Dorado County Raging Grannies",
+    "url": "http://cms.raginggrannies.international/el-dorado-county"
+  },
+  {
+    "id": 30,
+    "slug": "eugene",
+    "name": "Eugene Raging Grannies",
+    "url": "http://cms.raginggrannies.international/eugene"
+  },
+  {
+    "id": 31,
+    "slug": "fresno",
+    "name": "Fresno Raging Grannies",
+    "url": "http://cms.raginggrannies.international/fresno"
+  },
+  {
+    "id": 10,
+    "slug": "fundy-bay",
+    "name": "Fundy Bay Raging Grannies",
+    "url": "http://cms.raginggrannies.international/fundy-bay"
+  },
+  {
+    "id": 11,
+    "slug": "gabriola-island",
+    "name": "Gabriola Island Raging Grannies",
+    "url": "http://cms.raginggrannies.international/gabriola-island"
+  },
+  {
+    "id": 32,
+    "slug": "grant-county",
+    "name": "Grant County Raging Grannies",
+    "url": "http://cms.raginggrannies.international/grant-county"
+  },
+  {
+    "id": 33,
+    "slug": "grays-harbor",
+    "name": "Gray's Harbor Raging Grannies",
+    "url": "http://cms.raginggrannies.international/grays-harbor"
+  },
+  {
+    "id": 12,
+    "slug": "guelph",
+    "name": "Guelph Raging Grannies",
+    "url": "http://cms.raginggrannies.international/guelph"
+  },
+  {
+    "id": 13,
+    "slug": "halifax",
+    "name": "Halifax Raging Grannies",
+    "url": "http://cms.raginggrannies.international/halifax"
+  },
+  {
+    "id": 34,
+    "slug": "humboldt",
+    "name": "Humboldt County Raging Grannies",
+    "url": "http://cms.raginggrannies.international/humboldt"
+  },
+  {
+    "id": 62,
+    "slug": "israel",
+    "name": "Israel Raging Grannies",
+    "url": "http://cms.raginggrannies.international/israel"
+  },
+  {
+    "id": 14,
+    "slug": "kelowna",
+    "name": "Kelowna Raging Grannies",
+    "url": "http://cms.raginggrannies.international/kelowna"
+  },
+  {
+    "id": 54,
+    "slug": "kentuckiana",
+    "name": "Southern Indiana and Louisville Raging Grannies",
+    "url": "http://cms.raginggrannies.international/kentuckiana"
+  },
+  {
+    "id": 15,
+    "slug": "kitchener-waterloo",
+    "name": "Kitchener-Waterloo Raging Grannies",
+    "url": "http://cms.raginggrannies.international/kitchener-waterloo"
+  },
+  {
+    "id": 16,
+    "slug": "lethbridge",
+    "name": "Lethbridge Raging Grannies",
+    "url": "http://cms.raginggrannies.international/lethbridge"
+  },
+  {
+    "id": 35,
+    "slug": "madison",
+    "name": "Madison Raging Grannies",
+    "url": "http://cms.raginggrannies.international/madison"
+  },
+  {
+    "id": 36,
+    "slug": "manitowoc",
+    "name": "Manitowoc County Raging Grannies",
+    "url": "http://cms.raginggrannies.international/manitowoc"
+  },
+  {
+    "id": 17,
+    "slug": "maple-ridge",
+    "name": "Maple Ridge Raging Grannies",
+    "url": "http://cms.raginggrannies.international/maple-ridge"
+  },
+  {
+    "id": 37,
+    "slug": "mendocino",
+    "name": "Mendocino Raging Grannies",
+    "url": "http://cms.raginggrannies.international/mendocino"
+  },
+  {
+    "id": 38,
+    "slug": "metro-detroit",
+    "name": "Metro Detroit Raging Grannies",
+    "url": "http://cms.raginggrannies.international/metro-detroit"
+  },
+  {
+    "id": 39,
+    "slug": "milwaukee",
+    "name": "Milwaukee Raging Grannies",
+    "url": "http://cms.raginggrannies.international/milwaukee"
+  },
+  {
     "id": 4,
     "slug": "montreal",
     "name": "Montreal",
     "url": "http://cms.raginggrannies.international/montreal"
+  },
+  {
+    "id": 41,
+    "slug": "new-haven",
+    "name": "New Haven Raging Grannies",
+    "url": "http://cms.raginggrannies.international/new-haven"
+  },
+  {
+    "id": 42,
+    "slug": "new-mexico",
+    "name": "New Mexico Raging Grannies",
+    "url": "http://cms.raginggrannies.international/new-mexico"
+  },
+  {
+    "id": 40,
+    "slug": "nyc-metro",
+    "name": "NYC Metro Raging Grannies",
+    "url": "http://cms.raginggrannies.international/nyc-metro"
+  },
+  {
+    "id": 43,
+    "slug": "olympia",
+    "name": "Olympia Raging Grannies",
+    "url": "http://cms.raginggrannies.international/olympia"
+  },
+  {
+    "id": 44,
+    "slug": "piedmont",
+    "name": "Piedmont Raging Grannies",
+    "url": "http://cms.raginggrannies.international/piedmont"
+  },
+  {
+    "id": 45,
+    "slug": "port-townsend",
+    "name": "Port Townsend Raging Grannies",
+    "url": "http://cms.raginggrannies.international/port-townsend"
   },
   {
     "id": 2,
@@ -12,9 +246,123 @@
     "url": "https://cms.raginggrannies.international/portland"
   },
   {
+    "id": 46,
+    "slug": "redding",
+    "name": "Redding Raging Grannies",
+    "url": "http://cms.raginggrannies.international/redding"
+  },
+  {
+    "id": 47,
+    "slug": "rochester",
+    "name": "Rochester Raging Grannies",
+    "url": "http://cms.raginggrannies.international/rochester"
+  },
+  {
+    "id": 48,
+    "slug": "sacramento",
+    "name": "Sacramento Raging Grannies",
+    "url": "http://cms.raginggrannies.international/sacramento"
+  },
+  {
+    "id": 50,
+    "slug": "san-jose-santa-clara",
+    "name": "San Jose & Santa Clara County Raging Grannies",
+    "url": "http://cms.raginggrannies.international/san-jose-santa-clara"
+  },
+  {
+    "id": 51,
+    "slug": "santa-cruz",
+    "name": "Santa Cruz Raging Grannies",
+    "url": "http://cms.raginggrannies.international/santa-cruz"
+  },
+  {
     "id": 3,
     "slug": "seattle",
     "name": "Seattle",
     "url": "http://cms.raginggrannies.international/seattle"
+  },
+  {
+    "id": 49,
+    "slug": "sf-bay-area",
+    "name": "San Francisco Bay Area Raging Grannies",
+    "url": "http://cms.raginggrannies.international/sf-bay-area"
+  },
+  {
+    "id": 52,
+    "slug": "sonoma",
+    "name": "Sonoma County Raging Grannies",
+    "url": "http://cms.raginggrannies.international/sonoma"
+  },
+  {
+    "id": 53,
+    "slug": "south-florida",
+    "name": "South Florida Raging Grannies",
+    "url": "http://cms.raginggrannies.international/south-florida"
+  },
+  {
+    "id": 55,
+    "slug": "spokane",
+    "name": "Spokane Raging Grannies",
+    "url": "http://cms.raginggrannies.international/spokane"
+  },
+  {
+    "id": 56,
+    "slug": "tompkins-county",
+    "name": "Tompkins County Raging Grannies",
+    "url": "http://cms.raginggrannies.international/tompkins-county"
+  },
+  {
+    "id": 18,
+    "slug": "toronto",
+    "name": "Toronto Raging Grannies",
+    "url": "http://cms.raginggrannies.international/toronto"
+  },
+  {
+    "id": 57,
+    "slug": "triangle",
+    "name": "Triangle Raging Grannies",
+    "url": "http://cms.raginggrannies.international/triangle"
+  },
+  {
+    "id": 58,
+    "slug": "tucson",
+    "name": "Tucson Raging Grannies",
+    "url": "http://cms.raginggrannies.international/tucson"
+  },
+  {
+    "id": 59,
+    "slug": "tuolumne-calaveras",
+    "name": "Tuolumne & Calaveras Counties Raging Grannies",
+    "url": "http://cms.raginggrannies.international/tuolumne-calaveras"
+  },
+  {
+    "id": 19,
+    "slug": "vancouver",
+    "name": "Vancouver Raging Grannies",
+    "url": "http://cms.raginggrannies.international/vancouver"
+  },
+  {
+    "id": 60,
+    "slug": "walnut-creek",
+    "name": "Walnut Creek Raging Grannies",
+    "url": "http://cms.raginggrannies.international/walnut-creek"
+  },
+  {
+    "id": 61,
+    "slug": "western-mass",
+    "name": "Western Massachusetts Raging Grannies",
+    "url": "http://cms.raginggrannies.international/western-mass"
+  },
+  {
+    "id": 20,
+    "slug": "winnipeg",
+    "name": "Winnipeg Raging Grannies",
+    "url": "http://cms.raginggrannies.international/winnipeg"
+  },
+  {
+    "id": 21,
+    "slug": "wolfville",
+    "name": "Wolfville Raging Grannies",
+    "url": "http://cms.raginggrannies.international/wolfville"
   }
 ]
