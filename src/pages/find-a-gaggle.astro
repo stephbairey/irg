@@ -34,6 +34,25 @@ if (existsSync(DATA)) {
   }
 }
 
+// Set of slugs that have a live subsite. Used to gate whether each directory
+// row + map popup links out, vs. renders as plain text. The link target stays
+// the planned <slug>.raginggrannies.org pattern; this just suppresses the link
+// for gaggles that don't have a subsite yet.
+const SUBSITES_PATH = resolve(process.cwd(), "data/subsites.json");
+const liveSlugs = new Set<string>();
+if (existsSync(SUBSITES_PATH)) {
+  try {
+    const raw = JSON.parse(readFileSync(SUBSITES_PATH, "utf8"));
+    if (Array.isArray(raw)) {
+      for (const s of raw) {
+        if (s && typeof s.slug === "string") liveSlugs.add(s.slug);
+      }
+    }
+  } catch (err) {
+    console.warn(`[find-a-gaggle] could not parse ${SUBSITES_PATH}: ${(err as Error).message}`);
+  }
+}
+
 const total = gaggles.length;
 
 // Group by country → region for the directory list. Within each region,
@@ -71,6 +90,7 @@ const mapPayload = JSON.stringify(
     country: g.country,
     lat: g.lat,
     lng: g.lng,
+    hasSubsite: liveSlugs.has(g.slug),
   })),
 ).replace(/</g, "\\u003c");
 
@@ -154,11 +174,15 @@ const gaggleListSchema = {
                     <ul class="dir-list">
                       {byCountry[country][region].map((g) => (
                         <li>
-                          <a
-                            href={`https://${g.slug}.raginggrannies.org/`}
-                            class="dir-link"
-                            rel="noopener"
-                          >{g.aka || g.name}</a>
+                          {liveSlugs.has(g.slug) ? (
+                            <a
+                              href={`https://${g.slug}.raginggrannies.org/`}
+                              class="dir-link"
+                              rel="noopener"
+                            >{g.aka || g.name}</a>
+                          ) : (
+                            <span class="dir-name">{g.aka || g.name}</span>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -268,6 +292,9 @@ const gaggleListSchema = {
         markerEl.className = "gaggle-marker";
 
         const subsiteUrl = `https://${encodeURIComponent(g.slug)}.raginggrannies.org/`;
+        const contactHtml = g.hasSubsite
+          ? `<div class="gp-contact"><a href="${escHtml(subsiteUrl)}">Visit this gaggle's website →</a></div>`
+          : `<div class="gp-contact gp-contact-soft">Site coming soon</div>`;
         const popup = new mapboxgl.Popup({
           offset: 14,
           closeButton: false,
@@ -276,7 +303,7 @@ const gaggleListSchema = {
           <div class="gaggle-popup">
             <div class="gp-name">${escHtml(g.aka || g.name)}</div>
             <div class="gp-where">${escHtml(g.region)}, ${escHtml(g.country)}</div>
-            <div class="gp-contact"><a href="${escHtml(subsiteUrl)}">Visit this gaggle's website →</a></div>
+            ${contactHtml}
           </div>
         `);
 
@@ -409,6 +436,13 @@ const gaggleListSchema = {
     .dir-link:hover, .dir-link:focus-visible {
       border-bottom-color: var(--color-red);
       outline: none;
+    }
+    .dir-name {
+      color: var(--color-text);
+    }
+    .gaggle-popup .gp-contact-soft {
+      color: var(--color-muted);
+      font-style: italic;
     }
 
     /* CTA */
