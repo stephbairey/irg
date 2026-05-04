@@ -51,6 +51,26 @@ $year = current_time( 'Y' );
 	</div>
 </footer>
 
+<script>
+// Exclusive accordion: when a <details> in the post body opens, close its
+// siblings in the same content area. Native disclosure semantics
+// preserved (keyboard, links to anchors inside, etc.); we only react to
+// the toggle event.
+(function () {
+	var bodies = document.querySelectorAll('.tbl-single-body, .tbl-page-body');
+	bodies.forEach(function (body) {
+		var ds = body.querySelectorAll('details');
+		if (ds.length < 2) return;
+		ds.forEach(function (d) {
+			d.addEventListener('toggle', function () {
+				if (!d.open) return;
+				ds.forEach(function (other) { if (other !== d) other.open = false; });
+			});
+		});
+	});
+})();
+</script>
+
 <?php wp_footer(); ?>
 </body>
 </html>

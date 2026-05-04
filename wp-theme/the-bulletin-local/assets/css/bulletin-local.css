@@ -590,6 +590,64 @@ ul { padding-left: 22px; }
 .tbl-page-body a:hover { color: var(--color-ink-soft); }
 .tbl-page-body img { margin: 1em 0; }
 
+/* Accordion: native <details>/<summary> rendered by WP's Details block.
+ * Stacks borrow the dotted-rule treatment so a series of disclosures
+ * reads as a connected list. JS in footer.php makes them exclusive
+ * (opening one closes its siblings). */
+.tbl-single-body details,
+.tbl-page-body details {
+	border-top: 1px solid var(--color-rule);
+	margin: 0;
+}
+.tbl-single-body details + details,
+.tbl-page-body details + details { margin-top: 0; }
+.tbl-single-body details:last-of-type,
+.tbl-page-body details:last-of-type { border-bottom: 1px solid var(--color-rule); }
+.tbl-single-body summary,
+.tbl-page-body summary {
+	list-style: none;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+	padding: 16px 0;
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: 22px;
+	line-height: 1.25;
+	color: var(--color-ink);
+	transition: color .15s ease;
+}
+.tbl-single-body summary::-webkit-details-marker,
+.tbl-page-body summary::-webkit-details-marker { display: none; }
+.tbl-single-body summary::marker,
+.tbl-page-body summary::marker { display: none; }
+.tbl-single-body summary::after,
+.tbl-page-body summary::after {
+	content: "▾";
+	font-size: 16px;
+	color: var(--color-muted);
+	flex-shrink: 0;
+	transition: transform .2s ease;
+}
+.tbl-single-body details[open] > summary::after,
+.tbl-page-body details[open] > summary::after { transform: rotate(180deg); }
+.tbl-single-body summary:hover,
+.tbl-single-body summary:focus-visible,
+.tbl-page-body summary:hover,
+.tbl-page-body summary:focus-visible {
+	color: var(--color-red);
+	outline: none;
+}
+.tbl-single-body details > *:not(summary),
+.tbl-page-body details > *:not(summary) {
+	margin-top: 0;
+	padding-bottom: 18px;
+}
+.tbl-single-body details > *:first-of-type:not(summary),
+.tbl-page-body details > *:first-of-type:not(summary) { padding-top: 4px; }
+
 /* Action list (home.php / archive.php) */
 .tbl-action-list {
 	list-style: none;
