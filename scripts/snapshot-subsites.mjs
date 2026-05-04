@@ -86,15 +86,22 @@ async function fetchActionsForSubsite(site) {
   }
   // "Calgary Raging Grannies" -> "Calgary"; matches the live actions.ts logic.
   const gaggle = site.name.replace(/\s+Raging\s+Grannies\s*$/i, "").trim() || site.name;
-  return json.data.posts.nodes.map((p) => ({
-    title: p.title ?? "",
-    slug: p.slug ?? "",
-    date: p.date ?? "",
-    excerpt: p.excerpt ?? "",
-    link: p.link ?? "",
-    gaggle,
-    gaggleSlug: site.slug,
-  }));
+  return json.data.posts.nodes
+    // Exclude the seeder's welcome placeholder. It's intentionally left on
+    // each new subsite so the /actions/ page isn't empty, but the
+    // international hub's Recent Actions feed shouldn't carry 60 copies of
+    // the same post. WP auto-suffixes ("-2") if a granny ever writes a real
+    // post by the same title, so this exact-slug match is safe.
+    .filter((p) => p.slug !== "welcome-to-our-corner-of-the-movement")
+    .map((p) => ({
+      title: p.title ?? "",
+      slug: p.slug ?? "",
+      date: p.date ?? "",
+      excerpt: p.excerpt ?? "",
+      link: p.link ?? "",
+      gaggle,
+      gaggleSlug: site.slug,
+    }));
 }
 
 (async () => {
