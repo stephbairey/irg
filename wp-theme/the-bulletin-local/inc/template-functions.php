@@ -286,6 +286,21 @@ function tbl_placeholder_icon( int $idx ): string {
 }
 
 /**
+ * True if this subsite has a published page at the "member-map" slug.
+ * Used to gate the "Grannies Only" nav item so gaggles that haven't set
+ * up a members-only page don't show a dead link. Cached per-request.
+ */
+function tbl_has_member_map_page(): bool {
+	static $cached = null;
+	if ( $cached !== null ) {
+		return $cached;
+	}
+	$page   = get_page_by_path( 'member-map' );
+	$cached = ( $page instanceof WP_Post && $page->post_status === 'publish' );
+	return $cached;
+}
+
+/**
  * Resolve a YouTube channel URL (handle, /c/, /channel/, custom) into the
  * canonical UC… channel ID. Returns "" if it can't be determined. Cached
  * via transient: 7 days on hit, 1 hour on miss so a misconfigured URL

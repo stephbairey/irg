@@ -41,6 +41,9 @@
 					<li><a href="<?php echo esc_url( home_url( '/videos/' ) ); ?>"<?php echo is_page( 'videos' ) ? ' aria-current="page"' : ''; ?>>Videos</a></li>
 				<?php endif; ?>
 				<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"<?php echo is_page( 'contact' ) ? ' aria-current="page"' : ''; ?>>Contact</a></li>
+				<?php if ( tbl_has_member_map_page() ) : ?>
+					<li><a href="<?php echo esc_url( home_url( '/member-map/' ) ); ?>"<?php echo is_page( 'member-map' ) ? ' aria-current="page"' : ''; ?>>Grannies Only</a></li>
+				<?php endif; ?>
 				<li><a href="<?php echo esc_url( tbl_songs_url() ); ?>" class="tbl-pill" rel="noopener">Songs</a></li>
 			</ul>
 		</nav>
@@ -61,6 +64,9 @@
 				<li><a href="<?php echo esc_url( home_url( '/videos/' ) ); ?>">Videos</a></li>
 			<?php endif; ?>
 			<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Contact</a></li>
+			<?php if ( tbl_has_member_map_page() ) : ?>
+				<li><a href="<?php echo esc_url( home_url( '/member-map/' ) ); ?>">Grannies Only</a></li>
+			<?php endif; ?>
 			<li><a href="<?php echo esc_url( tbl_songs_url() ); ?>" class="tbl-pill tbl-pill-mobile" rel="noopener">Songs</a></li>
 		</ul>
 	</nav>
