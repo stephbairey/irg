@@ -895,6 +895,55 @@ img.polaroid {
 	margin: 8px 0 0;
 }
 
+/* Callout: deep-purple block with cream text and an optional mustard
+ * kicker. Use for self-contained calls to action inside page content
+ * (e.g. donate forms, signup notes, members-only links). Drop a
+ *   <div class="tbl-callout">
+ *     <div class="tbl-kicker">…</div>   (optional — renders mustard inside)
+ *     <p>…body…</p>
+ *     ...form/button/etc...
+ *   </div>
+ * Centered with a sensible max-width by default; adjust by wrapping or
+ * overriding inline if a page wants something edge-to-edge.
+ */
+.tbl-callout {
+	background: var(--color-ink);
+	color: var(--color-on-dark);
+	padding: 24px 28px;
+	border-radius: 10px;
+	max-width: 560px;
+	margin: 28px auto;
+}
+@media (min-width: 768px) {
+	.tbl-callout {
+		padding: 28px 32px;
+	}
+}
+.tbl-callout p {
+	color: var(--color-on-dark);
+	font-size: 17px;
+	line-height: 1.55;
+	margin: 0 0 18px;
+}
+.tbl-callout p:last-child { margin-bottom: 0; }
+.tbl-callout a {
+	color: var(--color-mustard);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+.tbl-callout a:hover { color: #fff; }
+/* Inside a callout, the shared .tbl-kicker (red on light bg) flips to
+ * mustard so it has enough contrast on the dark purple. */
+.tbl-callout .tbl-kicker { color: var(--color-mustard); margin-bottom: 14px; }
+/* Optional display-font heading inside a callout. */
+.tbl-callout-title {
+	font-family: var(--font-display);
+	font-size: 24px;
+	line-height: 1.15;
+	color: var(--color-on-dark);
+	margin: 0 0 14px;
+}
+
 /* Buttons (used on Videos and Contact) */
 .tbl-button {
 	display: inline-flex;
