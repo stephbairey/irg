@@ -76,12 +76,31 @@ function shapeArticle(raw) {
   };
 }
 
-async function fetchFromApi() {
+async function fetchFromApi(latestArchivedDate) {
   if (!API_KEY) {
     console.warn("[press] THENEWSAPI_KEY not set — skipping fetch (page renders from archive)");
     return [];
   }
-  const url = `https://api.thenewsapi.com/v1/news/all?search=${encodeURIComponent("raging grannies")}&language=en&api_token=${encodeURIComponent(API_KEY)}`;
+  const params = new URLSearchParams({
+    search: "raging grannies",
+    language: "en",
+    // sort=published_at returns newest-first; default is relevance, which
+    // returns the same 2022 stories every call and reports "0 new" forever.
+    sort: "published_at",
+    api_token: API_KEY,
+  });
+  // The free tier returns 3 articles per call, so use the newest archived
+  // date to skip everything we already have. Subtract a day in case
+  // multiple stories were published on the same day and we'd otherwise
+  // miss the ones that arrived late.
+  if (latestArchivedDate) {
+    const d = new Date(latestArchivedDate);
+    if (!Number.isNaN(d.getTime())) {
+      d.setUTCDate(d.getUTCDate() - 1);
+      params.set("published_after", d.toISOString().slice(0, 10));
+    }
+  }
+  const url = `https://api.thenewsapi.com/v1/news/all?${params.toString()}`;
   try {
     const res = await fetch(url, { headers: { Accept: "application/json" } });
     if (!res.ok) {
@@ -101,8 +120,13 @@ async function fetchFromApi() {
 (async () => {
   const existing = loadArchive();
   const seenTitles = new Set(existing.map((a) => normaliseTitle(a.title)));
+  const latestArchivedDate = existing
+    .map((a) => a.published_at)
+    .filter((d) => typeof d === "string" && d.length >= 10)
+    .sort()
+    .pop();
 
-  const fetched = await fetchFromApi();
+  const fetched = await fetchFromApi(latestArchivedDate);
   const newOnes = [];
   for (const item of fetched) {
     const norm = normaliseTitle(item.title);
