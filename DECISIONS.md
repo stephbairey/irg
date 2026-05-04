@@ -336,7 +336,7 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 
 ## D027 — Press clippings via The News API + committed JSON archive
 
-- **Status**: Decided
+- **Status**: Superseded by D047 (2026-05-04)
 - **Date**: 2026-04-27
 - **Context**: The Press page ("In the News") shows third-party coverage of the Raging Grannies. Coverage trickles in unpredictably across many small outlets, so manual curation isn't viable; an automated feed is. The page itself is read-mostly and benefits from being part of the static build (fast, cacheable, no runtime API dependency).
 - **Options considered**:
@@ -647,6 +647,20 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Revisit if**: WordPress changes how members-only content is represented (currently denylisted by category — could become a `meta_key`, a custom post status, or a paid-membership plugin's flag — the filter needs to follow); OR a new agent surface lands that doesn't go through `public-filter.ts` (then either route it through, or audit-document why it's exempt — never both); OR Cloudflare Access (D004's Phase 2 path) replaces the JS gate (the public-filter would still apply).
 
 ---
+
+## D047 — Press clippings via Google News RSS (supersedes D027)
+
+- **Status**: Decided
+- **Date**: 2026-05-04
+- **Context**: D027 picked The News API as the press feed. In practice it had two problems for /in-the-news/: (1) the free tier returned only 3 articles per call and defaulted to relevance-sort, so every build re-fetched the same handful of 2022 stories already in the archive and reported "0 new" for weeks; (2) coverage was thin — it indexed major outlets but missed the regional/local press where most gaggle activity actually shows up (Mad River Union, Lethbridge News Now, Sacramento News & Review, Wednesday Journal of Oak Park, etc.). Maya raised the concern after a real OregonLive article from 2026-04-26 didn't surface in the API window.
+- **Options considered**:
+  - **Stay on The News API and add `sort=published_at` + `published_after`** — fixed the "same 3 stories every call" symptom but didn't help the underlying coverage gap.
+  - **Add a second source alongside The News API and dedupe** — more code, marginal redundancy benefit (everything The News API has, Google News has).
+  - **Switch to Google News RSS** — `news.google.com/rss/search?q="raging+grannies"` returns ~100 results per call, no API key, broad coverage of small outlets, stable feed format that has existed for ~20 years. Earlier hesitation about "Google News API was deprecated" conflated the official deprecated developer API with these search RSS feeds; they're separate and the RSS feeds remain in active service.
+- **Choice**: Google News RSS replaces The News API in `scripts/fetch-press.mjs`. Same file, same archive shape (`{ title, source, url, published_at, snippet, image_url, fetched_at }`), same dedupe-by-normalised-title, same failure-tolerant behaviour. Parsed with `fast-xml-parser` (already installed as a transitive of `@astrojs/rss`). Title cleanup strips the trailing " - Source Name" suffix Google appends. URL is the Google News redirect URL (clicks pass through Google then land on the original article — slight UX cost, no per-article HTTP overhead at fetch time). Snippet is empty (Google News description is just a wrapped link); the page already renders title-only when snippet is missing.
+- **Verified at swap**: 4 new articles surfaced on first run (Jefferson City News Tribune 2026-05-02, Indybay 2026-05-01, Mad River Union 2026-04-30, Redheaded Blackbelt 2026-04-28). All previously invisible to The News API.
+- **Cleanup**: `THENEWSAPI_KEY` env var is no longer read. Maya can remove it from `.env.local` and Cloudflare Pages env. The daily GitHub Actions workflow at 13:17 UTC continues unchanged; it just runs against the new fetcher.
+- **Revisit if**: Google changes the RSS format or stops serving these feeds (then evaluate Bing News RSS, NewsAPI.org, GDELT, or a per-outlet RSS allowlist); OR we want canonical article URLs instead of Google redirect URLs (then add a one-time URL resolution step that follows the redirect and caches the canonical, accepting the per-article HTTP cost on new entries only).
 
 ## Open decisions (not yet resolved)
 
