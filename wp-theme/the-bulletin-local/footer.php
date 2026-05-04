@@ -42,7 +42,11 @@ $year = current_time( 'Y' );
 
 		<div class="tbl-footer-bottom">
 			<span>&copy; <?php echo esc_html( (string) $year ); ?> <?php echo esc_html( tbl_gaggle_aka() ); ?></span>
-			<span>Made with spirit, by volunteers.</span>
+			<span class="tbl-footer-meta">
+				<a href="https://raginggrannies.international/privacy/" rel="noopener">Privacy</a>
+				<span aria-hidden="true">·</span>
+				<span>Made with spirit, by volunteers.</span>
+			</span>
 		</div>
 	</div>
 </footer>

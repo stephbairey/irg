@@ -1364,6 +1364,17 @@ a.tbl-issue-chip:hover, a.tbl-issue-chip:focus-visible {
 	color: var(--color-ink-lilac);
 	letter-spacing: .04em;
 }
+.tbl-footer-meta {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 0 12px;
+	align-items: baseline;
+}
+.tbl-footer-meta a {
+	color: var(--color-ink-lilac);
+	text-decoration: none;
+}
+.tbl-footer-meta a:hover { color: var(--color-on-dark); }
 
 /* Hide Videos nav link entirely when no YouTube URL is set, regardless of
    how the body class triggers it. (Server-side conditional handles desktop

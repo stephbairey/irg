@@ -1,0 +1,124 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const lastUpdated = "May 4, 2026";
+---
+
+<BaseLayout title="Privacy">
+  <article class="max-w-[1400px] mx-auto px-5 md:px-8 pt-10 md:pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-8 md:pb-10 border-b border-muted mb-10 md:mb-12">
+      <div class="kicker text-red mb-4">Boring but important</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(36px,7.5vw,96px)">
+        Privacy Policy
+      </h1>
+      <p class="text-[17px] md:text-[19px] text-text-soft italic max-w-[680px] mx-auto leading-snug">
+        Plain-language version of what we collect, why we collect it, and what you can do about it. Last updated {lastUpdated}.
+      </p>
+    </header>
+
+    {/* Body */}
+    <div class="max-w-[720px] mx-auto text-[17px] md:text-[18px] leading-[1.7] md:leading-[1.75] text-text privacy-prose">
+      <p class="mb-5">
+        We are the International Raging Grannies, a network of autonomous activist gaggles around the world. We run this website (raginggrannies.org), the song library, and a constellation of gaggle subsites. We are not a company. We have no product to sell you. We have nothing to gain from following you around the internet, and so we don't.
+      </p>
+      <p class="mb-8">
+        That said, the modern web makes some data collection unavoidable. This page tells you what we collect and why, as plainly as we can.
+      </p>
+
+      <h2 class="font-display text-ink text-[28px] leading-tight mb-3 mt-10">What we collect</h2>
+
+      <p class="mb-3"><strong class="text-ink">Things you type into a form.</strong> If you use our Contact form, send a message via a gaggle's Contact page, submit a song through our Submit page, or ask a question of the chatbot on our Ask page, we receive whatever you typed. Forms collect a name, an email address, and a message. The chatbot receives the question text only.</p>
+
+      <p class="mb-3"><strong class="text-ink">Server access logs.</strong> Like every website, our hosting provider records each request: IP address, browser, the URL you visited, the time. These logs exist for security and debugging.</p>
+
+      <p class="mb-3"><strong class="text-ink">Chatbot transcripts.</strong> Questions sent to our Ask page are stored for 90 days, with the IP address replaced by a hashed identifier so we can spot abuse without keeping the address itself. After 90 days the transcripts are deleted automatically. We sometimes review them to spot common questions and improve the FAQ. We never sell or share them.</p>
+
+      <p class="mb-8"><strong class="text-ink">WordPress cookies.</strong> The gaggle subsites run on WordPress. WordPress sets a few small cookies for things like keeping you logged in (if you're a granny with an admin account), remembering that you typed the password on a members-only page, or holding a draft comment. None of these are used for tracking.</p>
+
+      <h2 class="font-display text-ink text-[28px] leading-tight mb-3 mt-10">Who else processes your data</h2>
+
+      <p class="mb-5">
+        We use a small number of trusted vendors to keep the site running. They process data on our behalf, never for their own marketing.
+      </p>
+
+      <ul class="list-disc pl-6 mb-8 space-y-2">
+        <li><strong class="text-ink">Cloudflare</strong> serves the site and runs the chatbot's pre-processing (turning your question into a list of relevant pages). They also keep the bot-management cookie that distinguishes humans from scrapers.</li>
+        <li><strong class="text-ink">Anthropic</strong> runs Claude, the model that writes the chatbot's answers. Your question is sent to them, processed, and returned. Anthropic does not retain it.</li>
+        <li><strong class="text-ink">Mapbox</strong> draws the map on our Find a Gaggle page. When you load that page, Mapbox sees that you visited.</li>
+        <li><strong class="text-ink">YouTube (Google)</strong> hosts video embeds on the Videos pages. We use the privacy-preserving embed (<code>youtube-nocookie.com</code>) so YouTube doesn't drop tracking cookies until you actually press play. Pressing play counts as visiting YouTube.</li>
+        <li><strong class="text-ink">Nixihost</strong> hosts the WordPress installation that powers the gaggle subsites.</li>
+      </ul>
+
+      <h2 class="font-display text-ink text-[28px] leading-tight mb-3 mt-10">Cookies</h2>
+
+      <p class="mb-3">We do not use advertising or marketing cookies. The cookies set on our site fall into two categories:</p>
+
+      <ul class="list-disc pl-6 mb-3 space-y-2">
+        <li><strong class="text-ink">Strictly necessary</strong>: WordPress login session, members-only page access, Cloudflare bot management. These keep the site working. You cannot opt out without breaking the site for yourself.</li>
+        <li><strong class="text-ink">Functional</strong>: cookies set by Mapbox when you load a map page, and by YouTube when you press play on a video. Both are set only after you choose to interact with that feature.</li>
+      </ul>
+
+      <p class="mb-8">If you want to block all of these, your browser's privacy settings can. The site degrades gracefully: the map won't load, embedded videos won't play, but the rest works.</p>
+
+      <h2 class="font-display text-ink text-[28px] leading-tight mb-3 mt-10">Your rights</h2>
+
+      <p class="mb-3">
+        Wherever you live, you can ask us to:
+      </p>
+      <ul class="list-disc pl-6 mb-3 space-y-2">
+        <li>tell you what data we hold about you,</li>
+        <li>correct anything that's wrong,</li>
+        <li>delete it,</li>
+        <li>send you a copy in a portable format.</li>
+      </ul>
+      <p class="mb-8">
+        Email <a href="mailto:webgranny@raginggrannies.org">webgranny@raginggrannies.org</a> with a clear request and we'll get back to you within a reasonable time. We may need to confirm your identity before acting on a request, especially deletion, so a stranger can't ask us to delete someone else's data.
+      </p>
+
+      <h2 class="font-display text-ink text-[28px] leading-tight mb-3 mt-10">Children</h2>
+
+      <p class="mb-8">
+        Our site is not directed at children under 13. We don't knowingly collect their information. If you believe a child has submitted a form here, email <a href="mailto:webgranny@raginggrannies.org">webgranny@raginggrannies.org</a> and we'll delete the record.
+      </p>
+
+      <h2 class="font-display text-ink text-[28px] leading-tight mb-3 mt-10">When this changes</h2>
+
+      <p class="mb-8">
+        We update this page when our practices change, and bump the "Last updated" date at the top. Big changes will get an announcement on the front page.
+      </p>
+
+      <h2 class="font-display text-ink text-[28px] leading-tight mb-3 mt-10">Contact</h2>
+
+      <p class="mb-8">
+        Questions, requests, or concerns about your data: <a href="mailto:webgranny@raginggrannies.org">webgranny@raginggrannies.org</a>. A real granny will read it.
+      </p>
+
+      {/* Foot */}
+      <div class="mt-12 pt-6 border-t border-muted">
+        <p class="text-[15px] text-text-soft italic">
+          Last updated {lastUpdated}. The Raging Grannies are an international network of autonomous gaggles. Each gaggle is responsible for its own local affairs; this policy covers the shared infrastructure (the website you are reading and the gaggle subsites we host).
+        </p>
+      </div>
+    </div>
+  </article>
+
+  <style>
+    .privacy-prose a {
+      color: var(--color-red);
+      text-decoration: none;
+      border-bottom: 1px solid var(--color-red);
+    }
+    .privacy-prose a:hover {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+    .privacy-prose code {
+      font-family: var(--font-mono);
+      font-size: 0.92em;
+      background: var(--color-paper-2);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+  </style>
+</BaseLayout>
