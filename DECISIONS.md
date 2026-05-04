@@ -662,6 +662,50 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Cleanup**: `THENEWSAPI_KEY` env var is no longer read. Maya can remove it from `.env.local` and Cloudflare Pages env. The daily GitHub Actions workflow at 13:17 UTC continues unchanged; it just runs against the new fetcher.
 - **Revisit if**: Google changes the RSS format or stops serving these feeds (then evaluate Bing News RSS, NewsAPI.org, GDELT, or a per-outlet RSS allowlist); OR we want canonical article URLs instead of Google redirect URLs (then add a one-time URL resolution step that follows the redirect and caches the canonical, accepting the per-article HTTP cost on new entries only).
 
+## D048 — "Gaggle Notes" category for evergreen reference content on subsites
+
+- **Status**: Decided
+- **Date**: 2026-05-04
+- **Context**: Each gaggle accumulates evergreen reference posts — FAQs personalized to local dues / meeting cadence, member guidelines, "for new grannies" orientation, racial-justice pledges, code-of-conduct prose. Mixing them into the chronological "Recent Actions" feed buries them and pollutes the cross-site aggregator the international hub homepage renders.
+- **Options considered**:
+  - **Pages instead of posts** — but pages don't aggregate well; the homepage already has a "Recent Actions" surface for posts; adding pages-as-reference would split the editorial model.
+  - **Top-nav links per page** — clutters the nav; some gaggles have 7+ reference docs.
+  - **Custom post type** — heavy; the editorial workflow grannies know is "posts and pages."
+  - **Standard category named "Gaggle Notes"** — uses native WP plumbing, plays nicely with WP-CLI, gets the free `/category/gaggle-notes/` archive, and lets posts retain their normal post-type behavior (search, RSS, single-post template).
+- **Choice**: Standard `gaggle-notes` category. Theme infrastructure:
+  - **Seeder + version-change hook** auto-create the category on every subsite (`tbl_ensure_gaggle_notes_category()` in `inc/default-content.php`, called from both `tbl_seed_default_content` and `tbl_maybe_flush_on_version_change`). Idempotent — safe to re-run on every theme bump.
+  - **Front-page section** above Recent Actions (`tbl-gnotes` in `front-page.php`) renders up to 6 titles in a 1-or-2-col grid (mobile / desktop). Headline-only, no thumbnails or excerpts — these are reference notices, not editorial. Hidden when the gaggle has no posts in the category. Overflow link points at `/category/gaggle-notes/` when count > 6.
+  - **Recent Actions exclusion**: a `pre_get_posts` filter drops the category from the `/actions/` archive (`home.php`); the front-page Recent Actions WP_Query passes `category__not_in` for the same reason.
+  - **Cross-site exclusion**: `scripts/snapshot-subsites.mjs` queries each post's `categories.nodes.slug` and filters out any with `gaggle-notes` so the international hub's Recent Actions feed (`data/actions.json`) stays clean too.
+- **Authoring workflow**: granny edits a post → ticks the "Gaggle Notes" category in the sidebar → save. Appears in the front-page section, hidden from Recent Actions. No theme redeploy per post.
+- **Revisit if**: a gaggle wants tiered reference content (e.g. "members-only notes" vs "public reference") — could promote to a category hierarchy or add a second public/private category. Or if the front-page section grows beyond ~10 posts and grannies want filtering — could add a small filter UI.
+
+## D049 — Native WP disclosure UI (Details block accordion, image lightbox) instead of plugins
+
+- **Status**: Decided
+- **Date**: 2026-05-04
+- **Context**: Subsite posts and pages benefit from accordion-style disclosure (long guidelines, FAQ-style answers) and image lightbox (galleries with click-to-zoom). The naive path is a plugin per feature; modern WP (6.4+) ships both natively and the multisite is on 6.9.4.
+- **Choice**:
+  - **Accordions**: WP's native Details block (`<details>/<summary>`) with theme styling. The block ships in core editor; theme adds the Bulletin-flavored CSS (display-font heading, dotted-rule separators, mustard hover, chevron rotation on open) plus a small inline script in `footer.php` that makes adjacent `<details>` siblings inside `.tbl-single-body` / `.tbl-page-body` exclusive (opening one closes its siblings). Accessible by default (keyboard, screen readers, anchor-link auto-open).
+  - **Image lightbox**: WP 6.4+ native lightbox enabled site-wide via `theme.json` `settings.blocks.core/image.lightbox.enabled = true`. Clicking any image (gallery or standalone) opens a full-screen overlay; click out closes. No JS shipped from theme; WP injects the script when an image block renders. Authors can still disable per-image in the editor.
+- **Trade-offs**:
+  - Plugins (Easy FAQ, Lightbox & Modal Plugin, Simple Lightbox, etc.) would offer more configuration — animations, captions, deep-linkable open state — but the network-active footprint stays minimal and modern WP built-ins are well-maintained, accessible, and free of license churn.
+  - Native Details has no built-in single-open behavior; we add ~12 lines of inline JS to enforce that. Worth it.
+- **Revisit if**: WP deprecates either feature (unlikely; both are in active development); OR a gaggle needs a feature only a plugin offers (deep-linkable accordions, lightbox slideshow with prev/next chrome). At that point evaluate the specific plugin against added weight.
+
+## D050 — Privacy policy lives on the hub; subsites link to it, never duplicate
+
+- **Status**: Decided
+- **Date**: 2026-05-04
+- **Context**: 61 subsites + the international hub all collect form submissions, set cookies, and rely on the same set of third-party processors (Cloudflare, Anthropic, Mapbox, YouTube, Nixihost). Privacy regulations (GDPR, PIPEDA, CCPA, Quebec Law 25) require a privacy policy. Maintaining 62 separate copies invites drift and stale text.
+- **Options considered**:
+  - **Per-subsite privacy page** — one policy each, branded to that gaggle. Drift-prone; 62 copies of the same legal text.
+  - **Network-shared page via WP** — multisite has no native "shared page" concept; would require a plugin or page-clone process.
+  - **Single canonical page on the Astro hub, linked from all subsite footers** — one source of truth, link is identical from every subsite, atomically updates with each hub redeploy.
+- **Choice**: Single page at `raginggrannies.org/privacy/` (currently `raginggrannies.international/privacy/` pre-cutover). Astro footer (`src/layouts/BaseLayout.astro`) and Bulletin Local footer (`footer.php`) both carry a "Privacy" link in the bottom bar. Gaggle Notes / FAQs that touch privacy concerns (member rosters, photo consent) can link to the canonical policy rather than restate it.
+- **Contact**: `webgranny@raginggrannies.org` is the privacy contact (handles access, deletion, correction, portability requests). Single inbox keeps requests centralized; a granny re-routes to a gaggle if the request is about gaggle-local data.
+- **Revisit if**: a gaggle has materially different data practices (e.g. runs paid programs, sells merch, holds donor data) that warrant their own addendum. At that point keep the canonical hub policy and add a subsite-specific addendum page that links back to it.
+
 ## Open decisions (not yet resolved)
 
 - **Song taxonomy structure**: 17 issue categories finalized (D016, split in D021). Song librarian may still refine E&D/G&P boundaries or request additions.
