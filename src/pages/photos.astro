@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { wpQuery } from "../lib/graphql";
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 interface ImageSize {
   name: string;
@@ -36,41 +38,60 @@ interface QueryData {
   photoCategories: { nodes: { name: string; slug: string; count: number | null }[] };
 }
 
-let data: QueryData | null = null;
-try {
-  data = await wpQuery<QueryData>({
-    query: `{
-      pressPhotos(first: 100, where: { orderby: { field: DATE, order: DESC } }) {
-        nodes {
-          databaseId
-          title
-          slug
-          photoCategories { nodes { name slug } }
-          pressPhotoDetails {
-            photographerCredit
-            caption
-            usageRights
-            photo {
-              node {
-                sourceUrl
-                altText
-                mediaDetails {
-                  width
-                  height
-                  sizes { name sourceUrl width height }
-                }
-              }
+const SNAPSHOT_PATH = resolve(process.cwd(), "data/press-photos.json");
+
+const QUERY = `{
+  pressPhotos(first: 100, where: { orderby: { field: DATE, order: DESC } }) {
+    nodes {
+      databaseId
+      title
+      slug
+      photoCategories { nodes { name slug } }
+      pressPhotoDetails {
+        photographerCredit
+        caption
+        usageRights
+        photo {
+          node {
+            sourceUrl
+            altText
+            mediaDetails {
+              width
+              height
+              sizes { name sourceUrl width height }
             }
           }
         }
       }
-      photoCategories(first: 100, where: { hideEmpty: true }) {
-        nodes { name slug count }
-      }
-    }`,
-  });
-} catch (err) {
-  console.warn("[photos] GraphQL fetch failed:", (err as Error).message);
+    }
+  }
+  photoCategories(first: 100, where: { hideEmpty: true }) {
+    nodes { name slug count }
+  }
+}`;
+
+function loadFromSnapshot(): QueryData | null {
+  if (!existsSync(SNAPSHOT_PATH)) return null;
+  try {
+    const raw = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8")) as QueryData;
+    if (!raw?.pressPhotos?.nodes) return null;
+    return raw;
+  } catch (err) {
+    console.warn(`[photos] could not parse ${SNAPSHOT_PATH}: ${(err as Error).message}`);
+    return null;
+  }
+}
+
+// Prefer the committed snapshot — works in CF Pages builds where the WP
+// origin is bot-blocked. Fall back to live WPGraphQL for local dev when
+// the snapshot is missing or empty.
+let data: QueryData | null = loadFromSnapshot();
+if (!data || data.pressPhotos.nodes.length === 0) {
+  try {
+    data = await wpQuery<QueryData>({ query: QUERY });
+  } catch (err) {
+    console.warn("[photos] GraphQL fetch failed:", (err as Error).message);
+  }
 }
 
 const rawPhotos = data?.pressPhotos?.nodes ?? [];
