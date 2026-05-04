@@ -286,6 +286,42 @@ function tbl_placeholder_icon( int $idx ): string {
 }
 
 /**
+ * Term ID of the "Gaggle Notes" category on this subsite. Creates it
+ * lazily if missing (covers subsites that pre-date the category, since
+ * the seeder only runs on theme activation). Cached per-request.
+ */
+function tbl_gaggle_notes_category_id(): int {
+	static $cached = null;
+	if ( $cached !== null ) {
+		return $cached;
+	}
+	$existing = get_term_by( 'slug', 'gaggle-notes', 'category' );
+	if ( $existing instanceof WP_Term ) {
+		$cached = (int) $existing->term_id;
+		return $cached;
+	}
+	$cached = function_exists( 'tbl_ensure_gaggle_notes_category' )
+		? tbl_ensure_gaggle_notes_category()
+		: 0;
+	return $cached;
+}
+
+/**
+ * Latest published posts in the Gaggle Notes category, newest first.
+ * Returns a WP_Query so callers can run a normal `the_post()` loop.
+ */
+function tbl_get_gaggle_notes( int $limit = 6 ): WP_Query {
+	$cat_id = tbl_gaggle_notes_category_id();
+	return new WP_Query( [
+		'post_type'      => 'post',
+		'post_status'    => 'publish',
+		'posts_per_page' => max( 1, $limit ),
+		'no_found_rows'  => true,
+		'category__in'   => $cat_id ? [ $cat_id ] : [ -1 ], // -1 forces empty result if cat is missing
+	] );
+}
+
+/**
  * True if this subsite has a published page at the "member-map" slug.
  * Used to gate the "Grannies Only" nav item so gaggles that haven't set
  * up a members-only page don't show a dead link. Cached per-request.

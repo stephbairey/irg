@@ -20,6 +20,8 @@ function tbl_seed_default_content(): void {
 		return;
 	}
 
+	tbl_ensure_gaggle_notes_category();
+
 	$home_id     = tbl_ensure_page( 'home',       'Welcome',     '' );
 	$about_id    = tbl_ensure_page( 'about',      'About Us',    tbl_default_about_content() );
 	$photos_id   = tbl_ensure_page( 'photos',     'Photos',      '', 'page-photos.php' );
@@ -107,4 +109,31 @@ function tbl_default_about_content(): string {
 	$body .= "Want to join us? Come to one of our actions or reach out through our Contact page. No singing ability required. Just bring a sense of humor and a sense of outrage.";
 
 	return str_replace( '{aka}', $aka, $body );
+}
+
+/**
+ * Ensure the "Gaggle Notes" category exists. Used to mark evergreen
+ * reference posts (FAQs, member guidelines, pledges, etc.) so the front
+ * page can surface them in their own section instead of the Recent
+ * Actions feed. Idempotent — safe to call repeatedly.
+ *
+ * Returns the category term ID, or 0 if creation failed.
+ */
+function tbl_ensure_gaggle_notes_category(): int {
+	$existing = get_term_by( 'slug', 'gaggle-notes', 'category' );
+	if ( $existing instanceof WP_Term ) {
+		return (int) $existing->term_id;
+	}
+	$result = wp_insert_term(
+		'Gaggle Notes',
+		'category',
+		[
+			'slug'        => 'gaggle-notes',
+			'description' => 'Evergreen reference posts for this gaggle: FAQs, member guidelines, pledges. Surfaced in the Gaggle Notes section on the home page; excluded from the Recent Actions feed.',
+		]
+	);
+	if ( is_wp_error( $result ) || empty( $result['term_id'] ) ) {
+		return 0;
+	}
+	return (int) $result['term_id'];
 }

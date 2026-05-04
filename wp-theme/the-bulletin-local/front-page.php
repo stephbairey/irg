@@ -23,12 +23,54 @@ get_header();
 </section>
 
 <?php
-$latest = new WP_Query( [
+$gaggle_notes        = tbl_get_gaggle_notes( 6 );
+$gaggle_notes_cat_id = tbl_gaggle_notes_category_id();
+?>
+
+<?php if ( $gaggle_notes->have_posts() ) : ?>
+<section class="tbl-gnotes">
+	<div class="tbl-gnotes-head">
+		<div class="tbl-kicker">From this gaggle</div>
+		<h2 class="tbl-gnotes-title">Gaggle Notes</h2>
+	</div>
+	<ul class="tbl-gnotes-grid">
+		<?php
+		while ( $gaggle_notes->have_posts() ) :
+			$gaggle_notes->the_post();
+			?>
+			<li class="tbl-gnotes-item">
+				<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+			</li>
+			<?php
+		endwhile;
+		wp_reset_postdata();
+		?>
+	</ul>
+	<?php
+	// If this gaggle has more than 6 notes published, the category archive
+	// page is the natural overflow — WP gives us /category/gaggle-notes/
+	// for free.
+	$total_notes = (int) get_term_field( 'count', $gaggle_notes_cat_id, 'category' );
+	if ( $total_notes > 6 ) :
+		?>
+		<a class="tbl-gnotes-more" href="<?php echo esc_url( get_category_link( $gaggle_notes_cat_id ) ); ?>">
+			All Gaggle Notes <span class="tbl-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	<?php endif; ?>
+</section>
+<?php endif; ?>
+
+<?php
+$latest_args = [
 	'post_type'      => 'post',
 	'post_status'    => 'publish',
 	'posts_per_page' => 6,
 	'no_found_rows'  => true,
-] );
+];
+if ( $gaggle_notes_cat_id ) {
+	$latest_args['category__not_in'] = [ $gaggle_notes_cat_id ];
+}
+$latest = new WP_Query( $latest_args );
 ?>
 
 <section class="tbl-actions">

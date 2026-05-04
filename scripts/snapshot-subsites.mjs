@@ -70,7 +70,10 @@ async function fetchActionsForSubsite(site) {
   const endpoint = `${site.url}/graphql`;
   const query = `{
     posts(first: ${POSTS_PER_SUBSITE}, where: { orderby: { field: DATE, order: DESC } }) {
-      nodes { title slug date excerpt link }
+      nodes {
+        title slug date excerpt link
+        categories { nodes { slug } }
+      }
     }
   }`;
   const res = await fetch(endpoint, {
@@ -93,6 +96,11 @@ async function fetchActionsForSubsite(site) {
     // the same post. WP auto-suffixes ("-2") if a granny ever writes a real
     // post by the same title, so this exact-slug match is safe.
     .filter((p) => p.slug !== "welcome-to-our-corner-of-the-movement")
+    // Exclude posts in the Gaggle Notes category — those are reference
+    // material (FAQs, guidelines, pledges) that get their own surface on
+    // the gaggle subsite home page and shouldn't show in the cross-site
+    // Recent Actions aggregator.
+    .filter((p) => !(p.categories?.nodes ?? []).some((c) => c.slug === "gaggle-notes"))
     .map((p) => ({
       title: p.title ?? "",
       slug: p.slug ?? "",

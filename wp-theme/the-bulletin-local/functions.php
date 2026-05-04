@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBL_VERSION', '1.14.0' );
+define( 'TBL_VERSION', '1.15.0' );
 define( 'TBL_DIR', get_template_directory() );
 define( 'TBL_URI', get_template_directory_uri() );
 
@@ -200,8 +200,39 @@ function tbl_maybe_flush_on_version_change(): void {
 	}
 	update_option( 'tbl_active_version', TBL_VERSION );
 	flush_rewrite_rules( false );
+	// Backfill schema/content that exists in newer versions but missing on
+	// existing subsites. Keep these idempotent — they may run repeatedly
+	// across deploys as the version bumps.
+	if ( function_exists( 'tbl_ensure_gaggle_notes_category' ) ) {
+		tbl_ensure_gaggle_notes_category();
+	}
 }
 add_action( 'init', 'tbl_maybe_flush_on_version_change', 99 );
+
+/**
+ * Exclude the Gaggle Notes category from the main /actions/ archive
+ * query. The category is its own surface (front-page section + standard
+ * /category/gaggle-notes/ archive), so it shouldn't double-render in
+ * the chronological actions list.
+ */
+function tbl_exclude_gaggle_notes_from_actions( WP_Query $query ): void {
+	if ( is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+	if ( ! $query->is_home() ) {
+		return;
+	}
+	$cat_id = function_exists( 'tbl_gaggle_notes_category_id' )
+		? tbl_gaggle_notes_category_id()
+		: 0;
+	if ( ! $cat_id ) {
+		return;
+	}
+	$existing   = (array) $query->get( 'category__not_in' );
+	$existing[] = $cat_id;
+	$query->set( 'category__not_in', array_values( array_unique( $existing ) ) );
+}
+add_action( 'pre_get_posts', 'tbl_exclude_gaggle_notes_from_actions' );
 
 function tbl_register_song_query_var( array $vars ): array {
 	$vars[] = 'tbl_song_slug';
