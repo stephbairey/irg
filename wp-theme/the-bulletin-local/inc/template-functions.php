@@ -284,3 +284,101 @@ function tbl_placeholder_icon( int $idx ): string {
 	];
 	return $icons[ $idx % count( $icons ) ];
 }
+
+/**
+ * Resolve a YouTube channel URL (handle, /c/, /channel/, custom) into the
+ * canonical UC… channel ID. Returns "" if it can't be determined. Cached
+ * via transient: 7 days on hit, 1 hour on miss so a misconfigured URL
+ * doesn't hammer YouTube on every page load.
+ */
+function tbl_resolve_youtube_channel_id( string $url ): string {
+	$url = trim( $url );
+	if ( $url === '' ) {
+		return '';
+	}
+	// Direct channel URL: /channel/UCxxx — no scrape needed.
+	if ( preg_match( '#youtube\.com/channel/(UC[A-Za-z0-9_-]{22})#', $url, $m ) ) {
+		return $m[1];
+	}
+	$cache_key = 'tbl_yt_chid_' . md5( $url );
+	$cached    = get_transient( $cache_key );
+	if ( is_string( $cached ) ) {
+		return $cached;
+	}
+	$resp = wp_remote_get(
+		$url,
+		[
+			'timeout'     => 8,
+			'redirection' => 3,
+			'headers'     => [
+				// Desktop UA so YouTube returns the embedded JSON we scrape from
+				// rather than a stripped-down mobile shell.
+				'User-Agent' => 'Mozilla/5.0 (compatible; IRG-Theme/1.0)',
+			],
+		]
+	);
+	if ( is_wp_error( $resp ) || (int) wp_remote_retrieve_response_code( $resp ) !== 200 ) {
+		set_transient( $cache_key, '', HOUR_IN_SECONDS );
+		return '';
+	}
+	$body = (string) wp_remote_retrieve_body( $resp );
+	$patterns = [
+		'#"channelId":"(UC[A-Za-z0-9_-]{22})"#',
+		'#"externalId":"(UC[A-Za-z0-9_-]{22})"#',
+		'#<meta\s+itemprop="channelId"\s+content="(UC[A-Za-z0-9_-]{22})"#',
+	];
+	foreach ( $patterns as $p ) {
+		if ( preg_match( $p, $body, $m ) ) {
+			set_transient( $cache_key, $m[1], 7 * DAY_IN_SECONDS );
+			return $m[1];
+		}
+	}
+	set_transient( $cache_key, '', HOUR_IN_SECONDS );
+	return '';
+}
+
+/**
+ * Fetch the latest videos from a YouTube channel via its public RSS feed
+ * (https://www.youtube.com/feeds/videos.xml?channel_id=UC…). No API key
+ * required. Returns an array of [ 'videoId', 'title', 'published' ].
+ * Cached for 1 hour.
+ */
+function tbl_fetch_youtube_videos( string $channel_id, int $limit = 6 ): array {
+	if ( $channel_id === '' ) {
+		return [];
+	}
+	$cache_key = 'tbl_yt_videos_' . $channel_id;
+	$cached    = get_transient( $cache_key );
+	if ( is_array( $cached ) ) {
+		return array_slice( $cached, 0, $limit );
+	}
+	$rss_url = 'https://www.youtube.com/feeds/videos.xml?channel_id=' . rawurlencode( $channel_id );
+	$resp    = wp_remote_get( $rss_url, [ 'timeout' => 8 ] );
+	if ( is_wp_error( $resp ) || (int) wp_remote_retrieve_response_code( $resp ) !== 200 ) {
+		set_transient( $cache_key, [], 10 * MINUTE_IN_SECONDS );
+		return [];
+	}
+	$body = (string) wp_remote_retrieve_body( $resp );
+	$prev = libxml_use_internal_errors( true );
+	$xml  = @simplexml_load_string( $body );
+	libxml_use_internal_errors( $prev );
+	if ( ! $xml ) {
+		set_transient( $cache_key, [], 10 * MINUTE_IN_SECONDS );
+		return [];
+	}
+	$videos = [];
+	foreach ( $xml->entry as $entry ) {
+		$yt  = $entry->children( 'yt', true );
+		$vid = (string) ( $yt->videoId ?? '' );
+		if ( $vid === '' ) {
+			continue;
+		}
+		$videos[] = [
+			'videoId'   => $vid,
+			'title'     => trim( (string) $entry->title ),
+			'published' => (string) $entry->published,
+		];
+	}
+	set_transient( $cache_key, $videos, HOUR_IN_SECONDS );
+	return array_slice( $videos, 0, $limit );
+}
