@@ -590,6 +590,15 @@ ul { padding-left: 22px; }
 .tbl-page-body a:hover { color: var(--color-ink-soft); }
 .tbl-page-body img { margin: 1em 0; }
 
+/* Galleries inside post + page bodies clear the floated featured-image
+ * polaroid so they always render at full content width instead of being
+ * squished into the narrow column beside it. */
+.tbl-single-body .wp-block-gallery,
+.tbl-page-body .wp-block-gallery {
+	clear: both;
+	margin: 32px 0;
+}
+
 /* Accordion: native <details>/<summary> rendered by WP's Details block.
  * Stacks borrow the dotted-rule treatment so a series of disclosures
  * reads as a connected list. JS in footer.php makes them exclusive
