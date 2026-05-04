@@ -582,6 +582,17 @@ ul { padding-left: 22px; }
 	max-width: 50ch;
 	margin: 0;
 }
+/* When a gaggle fills the Contact page with custom HTML (links, multiple
+ * paragraphs), render those nicely instead of a single italic line. */
+.tbl-page-deck p { margin: 0 0 .6em; }
+.tbl-page-deck p:last-child { margin-bottom: 0; }
+.tbl-page-deck a {
+	color: var(--color-red);
+	font-style: normal;
+	text-decoration: none;
+	border-bottom: 1.5px solid var(--color-red);
+}
+.tbl-page-deck a:hover { color: var(--color-ink-soft); border-bottom-color: var(--color-ink-soft); }
 .tbl-page-body { font-size: 18px; line-height: 1.7; }
 .tbl-page-body::after { content: ""; display: block; clear: both; }
 .tbl-page-body h2 { margin-top: 1.5em; }

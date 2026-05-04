@@ -9,14 +9,28 @@
  * @package the-bulletin-local
  */
 get_header();
-$gaggle_email = tbl_gaggle_email();
+$gaggle_email     = tbl_gaggle_email();
+$page             = get_post();
+$has_page_content = $page && trim( wp_strip_all_tags( (string) $page->post_content ) ) !== '';
 ?>
 
 <article class="tbl-page tbl-contact">
 	<header class="tbl-page-head">
 		<div class="tbl-kicker">Get in touch</div>
 		<h1 class="tbl-page-title">Contact Us</h1>
-		<p class="tbl-page-deck">Drop us a line. A granny will write back.</p>
+		<?php if ( $has_page_content ) : ?>
+			<div class="tbl-page-deck">
+				<?php
+				// Lets each gaggle replace the default deck text by adding
+				// content to their Contact page in WP admin (e.g. links to
+				// a separate signup form, hours, etc.). Falls back to the
+				// default tagline when the page content is empty.
+				echo apply_filters( 'the_content', $page->post_content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — filtered through the_content; matches how WP renders editor output everywhere else.
+				?>
+			</div>
+		<?php else : ?>
+			<p class="tbl-page-deck">Drop us a line. A granny will write back.</p>
+		<?php endif; ?>
 	</header>
 
 	<form id="tbl-contact-form" class="tbl-form" novalidate>
