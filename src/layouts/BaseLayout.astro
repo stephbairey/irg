@@ -58,6 +58,18 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       rel="stylesheet"
     />
     <link rel="icon" type="image/svg+xml" href="/logo-cropped.svg" />
+    <script is:inline>
+      // Apply saved text-zoom level before first paint to avoid flash. The
+      // click handler at the bottom of body keeps the visible state in sync.
+      (function () {
+        try {
+          var v = localStorage.getItem("rg-text-zoom");
+          if (v === "bigger" || v === "quite-big") {
+            document.documentElement.setAttribute("data-text-zoom", v);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <JsonLd data={allSchemas} />
   </head>
   <body>
@@ -318,6 +330,50 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         </span>
       </div>
     </footer>
+
+    <div class="text-zoom" role="group" aria-label="Text size">
+      <button type="button" class="text-zoom-btn" data-zoom="default" aria-pressed="true" aria-label="Default text size">A</button>
+      <button type="button" class="text-zoom-btn" data-zoom="bigger" aria-pressed="false" aria-label="Bigger text">A<span aria-hidden="true">+</span></button>
+      <button type="button" class="text-zoom-btn" data-zoom="quite-big" aria-pressed="false" aria-label="Quite big text">A<span aria-hidden="true">++</span></button>
+    </div>
+
+    <script is:inline>
+      // Text-size control: cycles html[data-text-zoom] and persists in
+      // localStorage. Pre-paint apply lives in <head>; this handler keeps
+      // aria-pressed in sync after load.
+      (function () {
+        var root = document.documentElement;
+        var btns = document.querySelectorAll(".text-zoom-btn");
+        if (!btns.length) return;
+        function apply(level) {
+          if (level === "bigger" || level === "quite-big") {
+            root.setAttribute("data-text-zoom", level);
+          } else {
+            root.removeAttribute("data-text-zoom");
+            level = "default";
+          }
+          btns.forEach(function (b) {
+            b.setAttribute("aria-pressed", String(b.getAttribute("data-zoom") === level));
+          });
+        }
+        var saved = null;
+        try { saved = localStorage.getItem("rg-text-zoom"); } catch (e) {}
+        apply(saved);
+        btns.forEach(function (b) {
+          b.addEventListener("click", function () {
+            var level = b.getAttribute("data-zoom");
+            apply(level);
+            try {
+              if (level === "default") {
+                localStorage.removeItem("rg-text-zoom");
+              } else {
+                localStorage.setItem("rg-text-zoom", level);
+              }
+            } catch (e) {}
+          });
+        });
+      })();
+    </script>
 
     <script is:inline>
       // Keep the copyright year correct even if the static build is months old.
