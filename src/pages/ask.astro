@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const SITE_URL = Astro.site?.toString().replace(/\/$/, "") ?? "https://raginggrannies.org";
+const TURNSTILE_SITEKEY = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? "";
 
 // Example questions surface as clickable chips. Tuned per D045 — short,
 // concrete, span the major content types (songs, gaggles, how-to, FAQ).
@@ -54,12 +55,21 @@ const askSchema = {
         placeholder="Type your question…"
         class="ask-input"
       />
+      {TURNSTILE_SITEKEY && (
+        <div class="flex justify-center mt-6">
+          <div class="cf-turnstile" data-sitekey={TURNSTILE_SITEKEY} data-theme="light"></div>
+        </div>
+      )}
       <div class="flex justify-center mt-6">
         <button type="submit" class="btn btn-primary text-[17px] px-9 py-3" id="ask-submit">
           Ask
         </button>
       </div>
     </form>
+
+    {TURNSTILE_SITEKEY && (
+      <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+    )}
 
     {/* Example chips */}
     <section class="max-w-[760px] mx-auto mt-12">
@@ -260,10 +270,22 @@ const askSchema = {
       submit.textContent = "Ask";
     }
 
+    function resetTurnstile() {
+      if (window.turnstile && typeof window.turnstile.reset === "function") {
+        window.turnstile.reset();
+      }
+    }
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const question = input.value.trim();
       if (!question) return;
+
+      // Turnstile token (when widget is rendered). The widget injects a
+      // hidden input named cf-turnstile-response into the form once the
+      // visitor passes the challenge.
+      const tokenEl = form.querySelector('[name="cf-turnstile-response"]');
+      const turnstileToken = tokenEl && tokenEl.value ? tokenEl.value : "";
 
       showLoading();
       result.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -272,7 +294,7 @@ const askSchema = {
         const res = await fetch("/api/ask", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ question }),
+          body: JSON.stringify({ question, turnstileToken }),
         });
         const data = await res.json();
         if (!res.ok || data.error) {
@@ -280,13 +302,16 @@ const askSchema = {
             data.message ||
               "Something went wrong. Email [a human Granny](mailto:webgranny@raginggrannies.org).",
           );
+          resetTurnstile();
           return;
         }
         showAnswer(data.answer || "");
+        resetTurnstile();
       } catch (err) {
         showError(
           "Couldn't reach the server. Email [a human Granny](mailto:webgranny@raginggrannies.org) and we'll get back to you.",
         );
+        resetTurnstile();
       }
     });
   });

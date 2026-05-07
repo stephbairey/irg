@@ -30,6 +30,7 @@ interface Env {
   CHATBOT_DAILY_HARD_USD?: string;
   CHATBOT_ENABLED?: string;
   CHATBOT_LOG_TRANSCRIPTS?: string;
+  TURNSTILE_SECRET?: string;
   ASSETS: { fetch: (request: Request | URL | string) => Promise<Response> };
 }
 
@@ -323,6 +324,43 @@ function jsonResponse(body: unknown, init?: ResponseInit): Response {
   });
 }
 
+/**
+ * Verify a Cloudflare Turnstile token against siteverify. Returns
+ * { ok: true } on success, or { ok: false, status, message } on
+ * misconfiguration / missing token / network failure / rejection.
+ *
+ * Runs before any paid API call (embed, Claude) so a bot pummeling
+ * the endpoint without a valid token costs us only the free siteverify
+ * round-trip, not Workers AI + Anthropic dollars.
+ */
+async function verifyTurnstile(
+  token: string,
+  secret: string,
+  remoteIp: string,
+): Promise<{ ok: true } | { ok: false; status: number; message: string }> {
+  if (!token) {
+    return { ok: false, status: 401, message: "Spam check did not load. Please refresh and try again." };
+  }
+  let verify: Response;
+  try {
+    verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ secret, response: token, remoteip: remoteIp }),
+    });
+  } catch {
+    return { ok: false, status: 502, message: "Could not verify the spam check. Please try again." };
+  }
+  if (!verify.ok) {
+    return { ok: false, status: 502, message: "Could not verify the spam check. Please try again." };
+  }
+  const body = (await verify.json().catch(() => ({}))) as { success?: boolean };
+  if (!body.success) {
+    return { ok: false, status: 401, message: "Spam check failed. Please refresh and try again." };
+  }
+  return { ok: true };
+}
+
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const softCap = parseFloat(env.CHATBOT_DAILY_SOFT_USD || String(SOFT_USD_DEFAULT));
   const hardCap = parseFloat(env.CHATBOT_DAILY_HARD_USD || String(HARD_USD_DEFAULT));
@@ -354,9 +392,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   }
 
   // Parse + validate input
-  let body: { question?: string };
+  let body: { question?: string; turnstileToken?: string };
   try {
-    body = (await request.json()) as { question?: string };
+    body = (await request.json()) as { question?: string; turnstileToken?: string };
   } catch {
     return jsonResponse({ error: "invalid_json", message: "Invalid JSON body." }, { status: 400 });
   }
@@ -369,6 +407,22 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       { error: "too_long", message: `Question is too long (max ${MAX_QUESTION_LEN} characters).` },
       { status: 400 },
     );
+  }
+
+  // Turnstile pre-flight — must succeed before we spend on embed/Claude.
+  // Soft-skip when TURNSTILE_SECRET isn't configured so the feature works
+  // in dev / pre-rollout; production sets the secret in CF Pages env to
+  // turn protection on. Logs a warning when skipped so it's visible in
+  // the function logs.
+  const turnstileSecret = env.TURNSTILE_SECRET || "";
+  if (turnstileSecret) {
+    const remoteIp = request.headers.get("CF-Connecting-IP") || "";
+    const t = await verifyTurnstile(body.turnstileToken || "", turnstileSecret, remoteIp);
+    if (!t.ok) {
+      return jsonResponse({ error: "turnstile", message: t.message }, { status: t.status });
+    }
+  } else {
+    console.warn("[ask] TURNSTILE_SECRET not set — spam protection disabled");
   }
 
   try {

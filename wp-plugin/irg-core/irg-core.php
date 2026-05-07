@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.11.4
+ * Version: 3.13.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -15,6 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Plugin version. Used as the gate key for one-shot upgrade routines so a
+// version bump triggers them once, network-wide, then they go quiet again.
+// Keep in sync with the file header above.
+define( 'IRG_VERSION', '3.13.0' );
+
 // Public host for cross-site URL builders (subsite-songs detail links, etc.).
 // Override in wp-config.php to point at a preview/dev URL.
 if ( ! defined( 'IRG_PUBLIC_HOST' ) ) {
@@ -24,6 +29,8 @@ if ( ! defined( 'IRG_PUBLIC_HOST' ) ) {
 add_action( 'init', 'irg_register_song_cpt' );
 add_action( 'init', 'irg_register_song_taxonomies' );
 add_action( 'init', 'irg_relabel_posts_on_subsites' );
+add_action( 'init', 'irg_maybe_apply_subsite_defaults_network', 99 );
+add_action( 'wp_initialize_site', 'irg_apply_defaults_to_new_site', 100 );
 add_action( 'init', 'irg_seed_issue_terms' );
 add_action( 'init', 'irg_register_press_photo_cpt' );
 add_action( 'init', 'irg_register_press_photo_taxonomy' );
@@ -593,6 +600,82 @@ function irg_relabel_posts_on_subsites(): void {
 }
 
 // ---------------------------------------------------------------------------
+// Subsite content defaults — comments, pings, avatars off network-wide.
+// Applied per-subsite via a one-shot version-gated runner; new subsites
+// inherit the same defaults via wp_initialize_site so the policy doesn't
+// drift as new gaggles are added.
+// ---------------------------------------------------------------------------
+
+/**
+ * Set the four content-default options on the current site to off /
+ * closed. Idempotent — running multiple times has no effect. Caller
+ * is responsible for switch_to_blog when applying to a non-current
+ * site.
+ */
+function irg_apply_subsite_content_defaults(): void {
+	update_option( 'default_comment_status', 'closed' );
+	update_option( 'default_ping_status',    'closed' );
+	update_option( 'default_pingback_flag',  0 );
+	update_option( 'show_avatars',           0 );
+}
+
+/**
+ * Network-wide one-shot: when the plugin version bumps, walk every
+ * non-main site in the network and apply the content defaults under
+ * each site's context. The gate (irg_subsite_defaults_version) lives
+ * at network scope so this runner doesn't repeat once it has caught
+ * up with the current version. Skips the network's main site, which
+ * has different editorial policy.
+ */
+function irg_maybe_apply_subsite_defaults_network(): void {
+	$gate_key = 'irg_subsite_defaults_version';
+
+	if ( ! is_multisite() ) {
+		if ( get_option( $gate_key, '' ) === IRG_VERSION ) {
+			return;
+		}
+		irg_apply_subsite_content_defaults();
+		update_option( $gate_key, IRG_VERSION );
+		return;
+	}
+
+	if ( get_site_option( $gate_key, '' ) === IRG_VERSION ) {
+		return;
+	}
+
+	$main_id = (int) get_main_site_id();
+	$ids     = get_sites( [ 'number' => 0, 'fields' => 'ids' ] );
+
+	foreach ( $ids as $blog_id ) {
+		$blog_id = (int) $blog_id;
+		if ( $blog_id === $main_id ) {
+			continue;
+		}
+		switch_to_blog( $blog_id );
+		irg_apply_subsite_content_defaults();
+		restore_current_blog();
+	}
+
+	update_site_option( $gate_key, IRG_VERSION );
+}
+
+/**
+ * New-subsite hook: any gaggle subsite created post-deploy inherits
+ * the same content defaults. The main site is created at network
+ * setup and isn't re-initialized by this hook in normal operation,
+ * but we guard explicitly anyway.
+ */
+function irg_apply_defaults_to_new_site( WP_Site $new_site ): void {
+	$blog_id = (int) $new_site->blog_id;
+	if ( is_multisite() && $blog_id === (int) get_main_site_id() ) {
+		return;
+	}
+	switch_to_blog( $blog_id );
+	irg_apply_subsite_content_defaults();
+	restore_current_blog();
+}
+
+// ---------------------------------------------------------------------------
 // Songs admin list table — custom columns, sorting, filter dropdowns.
 // ---------------------------------------------------------------------------
 
@@ -1146,6 +1229,52 @@ const IRG_CONTACT_TO       = 'press@raginggrannies.org';
 const IRG_CONTACT_MAX_NAME = 200;
 const IRG_CONTACT_MAX_MSG  = 8000;
 
+/**
+ * Public Cloudflare Turnstile sitekey, or empty string if not
+ * configured. Sitekey is not a secret — safe to render in the page —
+ * but lives in wp-config.php alongside the secret for consistency.
+ */
+function irg_turnstile_sitekey(): string {
+	return defined( 'IRG_TURNSTILE_SITEKEY' ) ? (string) IRG_TURNSTILE_SITEKEY : '';
+}
+
+/**
+ * Verify a Cloudflare Turnstile token against siteverify. Returns
+ * true on success, or a WP_Error describing the failure (with an HTTP
+ * status code in its data) on misconfiguration, missing token,
+ * network failure, or a token rejected by Cloudflare. Reads the
+ * secret from IRG_TURNSTILE_SECRET.
+ *
+ * Both the hub (irg_handle_contact) and the gaggle subsite contact
+ * form (tbl_handle_contact_submit in the bulletin-local theme) rely
+ * on this helper so spam policy stays in one place.
+ */
+function irg_verify_turnstile( string $token ) {
+	$secret = defined( 'IRG_TURNSTILE_SECRET' ) ? (string) IRG_TURNSTILE_SECRET : '';
+	if ( $secret === '' ) {
+		return new WP_Error( 'irg_turnstile_unset', 'Spam protection is misconfigured. Please email us directly.', [ 'status' => 503 ] );
+	}
+	if ( $token === '' ) {
+		return new WP_Error( 'irg_turnstile_missing', 'Spam check did not load. Please refresh and try again.', [ 'status' => 400 ] );
+	}
+	$verify = wp_remote_post( 'https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+		'timeout' => 10,
+		'body'    => [
+			'secret'   => $secret,
+			'response' => $token,
+			'remoteip' => isset( $_SERVER['REMOTE_ADDR'] ) ? (string) $_SERVER['REMOTE_ADDR'] : '',
+		],
+	] );
+	if ( is_wp_error( $verify ) ) {
+		return new WP_Error( 'irg_turnstile_net', 'Could not verify the spam check. Please try again.', [ 'status' => 502 ] );
+	}
+	$body = json_decode( (string) wp_remote_retrieve_body( $verify ), true );
+	if ( ! is_array( $body ) || empty( $body['success'] ) ) {
+		return new WP_Error( 'irg_turnstile_fail', 'Spam check failed. Please refresh and try again.', [ 'status' => 400 ] );
+	}
+	return true;
+}
+
 function irg_register_contact_endpoint(): void {
 	register_rest_route( 'irg/v1', '/contact', [
 		'methods'             => 'POST',
@@ -1211,28 +1340,9 @@ function irg_handle_contact( WP_REST_Request $req ) {
 		return new WP_Error( 'irg_too_long', 'That message is longer than we accept here. Please email us directly.', [ 'status' => 400 ] );
 	}
 
-	$secret = defined( 'IRG_TURNSTILE_SECRET' ) ? (string) IRG_TURNSTILE_SECRET : '';
-	if ( $secret === '' ) {
-		return new WP_Error( 'irg_turnstile_unset', 'Spam protection is misconfigured. Please email us directly.', [ 'status' => 503 ] );
-	}
-	if ( $token === '' ) {
-		return new WP_Error( 'irg_turnstile_missing', 'Spam check did not load. Please refresh and try again.', [ 'status' => 400 ] );
-	}
-
-	$verify = wp_remote_post( 'https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-		'timeout' => 10,
-		'body'    => [
-			'secret'   => $secret,
-			'response' => $token,
-			'remoteip' => isset( $_SERVER['REMOTE_ADDR'] ) ? (string) $_SERVER['REMOTE_ADDR'] : '',
-		],
-	] );
-	if ( is_wp_error( $verify ) ) {
-		return new WP_Error( 'irg_turnstile_net', 'Could not verify the spam check. Please try again.', [ 'status' => 502 ] );
-	}
-	$vbody = json_decode( (string) wp_remote_retrieve_body( $verify ), true );
-	if ( ! is_array( $vbody ) || empty( $vbody['success'] ) ) {
-		return new WP_Error( 'irg_turnstile_fail', 'Spam check failed. Please refresh and try again.', [ 'status' => 400 ] );
+	$verified = irg_verify_turnstile( $token );
+	if ( is_wp_error( $verified ) ) {
+		return $verified;
 	}
 
 	$subject = '[Contact form] from ' . wp_strip_all_tags( $name );

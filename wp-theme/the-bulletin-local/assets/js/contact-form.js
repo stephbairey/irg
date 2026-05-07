@@ -35,15 +35,24 @@
 				if (r.ok && r.json && r.json.success) {
 					setStatus("ok", (r.json.data && r.json.data.message) || "Thanks for reaching out!");
 					form.reset();
+					if (window.turnstile && typeof window.turnstile.reset === "function") {
+						window.turnstile.reset();
+					}
 				} else {
 					var msg = (r.json && r.json.data && r.json.data.message) || "Something went wrong. Please try again.";
 					setStatus("error", msg);
 					if (btn) btn.disabled = false;
+					if (window.turnstile && typeof window.turnstile.reset === "function") {
+						window.turnstile.reset();
+					}
 				}
 			})
 			.catch(function () {
 				setStatus("error", "Couldn't reach the server. Please try again.");
 				if (btn) btn.disabled = false;
+				if (window.turnstile && typeof window.turnstile.reset === "function") {
+					window.turnstile.reset();
+				}
 			});
 	});
 })();

@@ -3,8 +3,9 @@
  * Template Name: Contact (form)
  *
  * Submits via admin-ajax (action: tbl_contact). Recipient is derived from
- * the subsite slug: <slug>@raginggrannies.org. No CAPTCHA — a honeypot
- * is enough for low-traffic gaggle sites.
+ * the subsite slug: <slug>@raginggrannies.org. Cloudflare Turnstile is
+ * rendered when IRG_TURNSTILE_SITEKEY is configured in wp-config; without
+ * it, the form falls back to honeypot only.
  *
  * @package the-bulletin-local
  */
@@ -12,6 +13,7 @@ get_header();
 $gaggle_email     = tbl_gaggle_email();
 $page             = get_post();
 $has_page_content = $page && trim( wp_strip_all_tags( (string) $page->post_content ) ) !== '';
+$turnstile_key    = function_exists( 'irg_turnstile_sitekey' ) ? irg_turnstile_sitekey() : '';
 ?>
 
 <article class="tbl-page tbl-contact">
@@ -52,6 +54,10 @@ $has_page_content = $page && trim( wp_strip_all_tags( (string) $page->post_conte
 		<div class="tbl-hp" aria-hidden="true">
 			<label>Don't fill this in if you're human <input type="text" name="hp" tabindex="-1" autocomplete="off" /></label>
 		</div>
+
+		<?php if ( $turnstile_key !== '' ) : ?>
+			<div class="cf-turnstile" data-sitekey="<?php echo esc_attr( $turnstile_key ); ?>" data-theme="light"></div>
+		<?php endif; ?>
 
 		<div class="tbl-form-actions">
 			<button type="submit" class="tbl-button">Send message</button>

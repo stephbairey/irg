@@ -1002,11 +1002,6 @@ img.polaroid {
 		gap: 28px 24px;
 	}
 }
-@media (min-width: 900px) {
-	.tbl-video-grid {
-		grid-template-columns: repeat(3, 1fr);
-	}
-}
 .tbl-video-item {
 	display: flex;
 	flex-direction: column;

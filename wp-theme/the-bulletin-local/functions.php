@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBL_VERSION', '1.21.0' );
+define( 'TBL_VERSION', '1.23.0' );
 define( 'TBL_DIR', get_template_directory() );
 define( 'TBL_URI', get_template_directory_uri() );
 
@@ -85,6 +85,16 @@ function tbl_enqueue_assets(): void {
 	}
 
 	if ( is_page_template( 'page-contact.php' ) || is_page( 'contact-us' ) || is_page( 'contact' ) ) {
+		$turnstile_sitekey = function_exists( 'irg_turnstile_sitekey' ) ? irg_turnstile_sitekey() : '';
+		if ( $turnstile_sitekey !== '' ) {
+			wp_enqueue_script(
+				'tbl-turnstile',
+				'https://challenges.cloudflare.com/turnstile/v0/api.js',
+				[],
+				null,
+				[ 'in_footer' => false, 'strategy' => 'defer' ]
+			);
+		}
 		wp_enqueue_script(
 			'tbl-contact-form',
 			TBL_URI . '/assets/js/contact-form.js',
@@ -93,8 +103,9 @@ function tbl_enqueue_assets(): void {
 			true
 		);
 		wp_localize_script( 'tbl-contact-form', 'TBL_CONTACT', [
-			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-			'nonce'   => wp_create_nonce( 'tbl_contact' ),
+			'ajaxUrl'          => admin_url( 'admin-ajax.php' ),
+			'nonce'            => wp_create_nonce( 'tbl_contact' ),
+			'turnstileSitekey' => $turnstile_sitekey,
 		] );
 	}
 }
@@ -123,6 +134,19 @@ function tbl_handle_contact_submit(): void {
 	if ( $honeypot !== '' ) {
 		// Bots fill it; succeed silently.
 		wp_send_json_success( [ 'message' => 'Thanks for reaching out! A granny will get back to you.' ] );
+	}
+
+	// Turnstile verification — required when the sitekey is configured.
+	// If the sitekey isn't set we fall back to honeypot only, which is
+	// the pre-Turnstile behavior and lets the theme work on installs
+	// that haven't been set up yet.
+	$turnstile_sitekey = function_exists( 'irg_turnstile_sitekey' ) ? irg_turnstile_sitekey() : '';
+	if ( $turnstile_sitekey !== '' && function_exists( 'irg_verify_turnstile' ) ) {
+		$token    = isset( $_POST['cf-turnstile-response'] ) ? (string) wp_unslash( $_POST['cf-turnstile-response'] ) : '';
+		$verified = irg_verify_turnstile( $token );
+		if ( is_wp_error( $verified ) ) {
+			wp_send_json_error( [ 'message' => $verified->get_error_message() ], 400 );
+		}
 	}
 
 	$name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
