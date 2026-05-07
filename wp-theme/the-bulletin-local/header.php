@@ -14,6 +14,19 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="profile" href="https://gmpg.org/xfn/11" />
 	<link rel="icon" type="image/svg+xml" href="<?php echo esc_url( TBL_URI . '/assets/images/logo-cropped.svg' ); ?>" />
+	<script>
+	// Apply saved text-zoom level before first paint to avoid flash. Mirrored
+	// by the click handler in footer.php; both must agree on storage key and
+	// allowed values.
+	(function () {
+		try {
+			var v = localStorage.getItem('tbl-text-zoom');
+			if (v === 'bigger' || v === 'quite-big') {
+				document.documentElement.setAttribute('data-text-zoom', v);
+			}
+		} catch (e) {}
+	})();
+	</script>
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

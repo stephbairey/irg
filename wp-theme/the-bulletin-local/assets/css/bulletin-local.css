@@ -1527,3 +1527,58 @@ a.tbl-issue-chip:hover, a.tbl-issue-chip:focus-visible {
    how the body class triggers it. (Server-side conditional handles desktop
    + mobile already; this is a belt for any custom-nav scenarios.) */
 .tbl-no-videos .tbl-videos-link { display: none !important; }
+
+/* ---------- text-size accessibility control ----------
+   Theme uses px throughout, so html { font-size } scaling does not cascade.
+   CSS zoom on <html> scales the entire UI proportionally — including text,
+   spacing, and icons — which matches what readers mean by "make it bigger."
+   At the highest level, viewport reflow (mobile breakpoints triggering
+   earlier) is expected, like the browser's own zoom. */
+html[data-text-zoom="bigger"]    { zoom: 1.1875; }
+html[data-text-zoom="quite-big"] { zoom: 1.375; }
+
+.tbl-text-zoom {
+	position: fixed;
+	bottom: 16px;
+	right: 16px;
+	z-index: 50;
+	display: inline-flex;
+	gap: 2px;
+	padding: 4px;
+	background: var(--color-card);
+	border: 1px solid var(--color-rule);
+	border-radius: var(--radius-pill);
+	box-shadow: var(--shadow-card);
+}
+.tbl-text-zoom-btn {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: var(--color-ink);
+	font-family: var(--font-body);
+	font-weight: 700;
+	cursor: pointer;
+	padding: 6px 10px;
+	min-width: 32px;
+	border-radius: var(--radius-pill);
+	line-height: 1;
+	transition: background .15s ease, color .15s ease;
+}
+.tbl-text-zoom-btn[data-zoom="default"]   { font-size: 13px; }
+.tbl-text-zoom-btn[data-zoom="bigger"]    { font-size: 16px; }
+.tbl-text-zoom-btn[data-zoom="quite-big"] { font-size: 19px; }
+.tbl-text-zoom-btn:hover {
+	background: var(--color-paper-2);
+}
+.tbl-text-zoom-btn:focus-visible {
+	background: var(--color-paper-2);
+	outline: 2px solid var(--color-ink-soft);
+	outline-offset: 2px;
+}
+.tbl-text-zoom-btn[aria-pressed="true"] {
+	background: var(--color-ink);
+	color: var(--color-on-dark);
+}
+@media print {
+	.tbl-text-zoom { display: none; }
+}
