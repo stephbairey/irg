@@ -1537,6 +1537,15 @@ a.tbl-issue-chip:hover, a.tbl-issue-chip:focus-visible {
 html[data-text-zoom="bigger"]    { zoom: 1.1875; }
 html[data-text-zoom="quite-big"] { zoom: 1.375; }
 
+/* Boost contrast at enlarged levels: lighten lilac on dark footer surfaces,
+   darken muted body copy. Readers who opt into bigger text usually benefit
+   from stronger contrast too. */
+html[data-text-zoom="bigger"],
+html[data-text-zoom="quite-big"] {
+	--color-ink-lilac: #d0bce3;
+	--color-muted:     #6e604e;
+}
+
 .tbl-text-zoom {
 	position: fixed;
 	bottom: 16px;
