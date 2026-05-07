@@ -25,7 +25,7 @@ $year = current_time( 'Y' );
 					<li><a href="https://raginggrannies.international/songs/" rel="noopener">Song Library</a></li>
 					<li><a href="https://raginggrannies.international/find-a-gaggle/" rel="noopener">Find a Gaggle</a></li>
 					<li><a href="https://raginggrannies.international/faq/" rel="noopener">FAQ</a></li>
-					<li><a href="https://raginggrannies.international/in-the-news/" rel="noopener">In the News</a></li>
+					<li><a href="https://raginggrannies.international/in-the-news/" rel="noopener">News</a></li>
 				</ul>
 			</div>
 

@@ -87,10 +87,10 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         {/* Desktop nav: visible at md+ */}
         <nav aria-label="Main" class="hidden md:flex items-center gap-7">
           <a href="/about/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/about") ? "text-red" : "text-text"]}>About</a>
-          <a href="/in-the-news/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/in-the-news") || path.startsWith("/photos") ? "text-red" : "text-text"]}>In the News</a>
+          <a href="/in-the-news/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/in-the-news") || path.startsWith("/photos") ? "text-red" : "text-text"]}>News</a>
           <a href="/ask/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/ask") ? "text-red" : "text-text"]}>Ask a Question</a>
           <a href="/find-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/find-a-gaggle") ? "text-red" : "text-text"]}>Find a Gaggle</a>
-          <a href="/start-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/start-a-gaggle") ? "text-red" : "text-text"]}>Start One</a>
+          <a href="/start-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/start-a-gaggle") ? "text-red" : "text-text"]}>Start a Gaggle</a>
           <a href="/songs/" class="px-[18px] py-[10px] rounded-full text-sm font-bold no-underline transition-colors text-white bg-red hover:bg-ink-soft">Songs</a>
         </nav>
 
@@ -123,10 +123,10 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       >
         <nav aria-label="Mobile" class="max-w-[1400px] mx-auto px-8 py-4 grid gap-1">
           <a href="/about/" class:list={["mobile-link", path.startsWith("/about") && "is-active"]}>About</a>
-          <a href="/in-the-news/" class:list={["mobile-link", (path.startsWith("/in-the-news") || path.startsWith("/photos")) && "is-active"]}>In the News</a>
+          <a href="/in-the-news/" class:list={["mobile-link", (path.startsWith("/in-the-news") || path.startsWith("/photos")) && "is-active"]}>News</a>
           <a href="/ask/" class:list={["mobile-link", path.startsWith("/ask") && "is-active"]}>Ask a Question</a>
           <a href="/find-a-gaggle/" class:list={["mobile-link", path.startsWith("/find-a-gaggle") && "is-active"]}>Find a Gaggle</a>
-          <a href="/start-a-gaggle/" class:list={["mobile-link", path.startsWith("/start-a-gaggle") && "is-active"]}>Start One</a>
+          <a href="/start-a-gaggle/" class:list={["mobile-link", path.startsWith("/start-a-gaggle") && "is-active"]}>Start a Gaggle</a>
           <a href="/songs/" class:list={["mobile-link mobile-link-pill", path.startsWith("/songs") && "is-active"]}>Songs</a>
         </nav>
       </div>
@@ -308,7 +308,7 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
             <li><a href="/photos/" class="text-on-dark no-underline hover:text-red">Photos</a></li>
             <li><a href="/videos/" class="text-on-dark no-underline hover:text-red">Videos</a></li>
             <li><a href="/fact-sheet/" class="text-on-dark no-underline hover:text-red">Fact sheet</a></li>
-            <li><a href="/in-the-news/" class="text-on-dark no-underline hover:text-red">In the News</a></li>
+            <li><a href="/in-the-news/" class="text-on-dark no-underline hover:text-red">News</a></li>
           </ul>
         </details>
         <!-- Connect -->

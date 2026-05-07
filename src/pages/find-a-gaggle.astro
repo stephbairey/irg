@@ -68,8 +68,8 @@ for (const country of Object.keys(byCountry)) {
     byCountry[country][region].sort((a, b) => a.name.localeCompare(b.name));
   }
 }
-// Country order: USA first, Canada second, then the rest alphabetical.
-const COUNTRY_ORDER = ["United States", "Canada"];
+// Country order: Canada first, USA second, then the rest alphabetical.
+const COUNTRY_ORDER = ["Canada", "United States"];
 const countries = Object.keys(byCountry).sort((a, b) => {
   const ai = COUNTRY_ORDER.indexOf(a);
   const bi = COUNTRY_ORDER.indexOf(b);
@@ -401,7 +401,7 @@ const gaggleListSchema = {
       color: var(--color-ink);
       margin: 0 0 16px;
       padding-bottom: 10px;
-      border-bottom: 2px solid var(--color-red);
+      border-bottom: 2px solid var(--color-ink-soft);
     }
     .dir-grid {
       display: grid;

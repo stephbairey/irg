@@ -258,6 +258,17 @@ html[data-text-zoom="quite-big"] {
   --color-muted:     #6e604e;
 }
 
+/* Specific kickers that read as accent-mustard at enlarged zoom levels.
+   `.kicker` would normally win over Tailwind's .text-mustard (cascade
+   order — utilities come before .kicker in the compiled stylesheet),
+   so the muted color shows at default. Adding a higher-specificity
+   selector scoped to the bigger zoom levels lets these three elements
+   pop without affecting other .kicker usages. */
+html[data-text-zoom="bigger"]    .kicker.text-mustard,
+html[data-text-zoom="quite-big"] .kicker.text-mustard {
+  color: var(--color-mustard);
+}
+
 .text-zoom {
   position: fixed;
   bottom: 16px;
