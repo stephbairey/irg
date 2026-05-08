@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.13.1
+ * Version: 3.14.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Plugin version. Used as the gate key for one-shot upgrade routines so a
 // version bump triggers them once, network-wide, then they go quiet again.
 // Keep in sync with the file header above.
-define( 'IRG_VERSION', '3.13.1' );
+define( 'IRG_VERSION', '3.14.0' );
 
 // Public host for cross-site URL builders (subsite-songs detail links, etc.).
 // Override in wp-config.php to point at a preview/dev URL.
@@ -51,7 +51,9 @@ add_action( 'rest_api_init', 'irg_register_subsites_endpoint' );
 add_action( 'rest_api_init', 'irg_register_contact_endpoint' );
 add_filter( 'rest_pre_serve_request', 'irg_contact_cors_headers', 10, 4 );
 add_action( 'rest_api_init', 'irg_register_submit_song_endpoint' );
+add_action( 'rest_api_init', 'irg_register_edit_song_endpoint' );
 add_filter( 'rest_pre_serve_request', 'irg_submit_song_cors_headers', 10, 4 );
+add_filter( 'rest_pre_serve_request', 'irg_edit_song_cors_headers', 10, 4 );
 
 // Subsite-songs cache invalidation (main-site context only).
 add_action( 'save_post_song', 'irg_subsite_songs_bust_on_save', 10, 1 );
@@ -1505,6 +1507,187 @@ function irg_handle_submit_song( WP_REST_Request $req ) {
 	] );
 
 	return [ 'ok' => true, 'post_id' => $post_id ];
+}
+
+// ---------------------------------------------------------------------------
+// Edit-song endpoint — receives an existing song's update payload from the
+// /edit-song/ page on the hub. Verifies SUBMIT_PASSWORD against the
+// IRG_SUBMIT_PASSWORD constant (defined in wp-config.php), Turnstile, and a
+// honeypot. Applies the edit directly — no draft / review step — so the
+// Song Librarian doesn't have to approve every granny correction. WP
+// revisions are enabled on the Song CPT, and every edit emails the
+// Librarian a link to the song's edit page so unwanted changes are visible
+// and one-click revertible.
+//
+// Editable subset: title, lyrics, tune, songwriter, gaggle, key/starting
+// note, YouTube link, date written/updated, source notes. Slug is
+// preserved (URLs stay stable across title rewordings). Issues taxonomy
+// stays Librarian-only (categorical decisions). YouTube link 2 is
+// intentionally not exposed even though the ACF field exists, to avoid
+// re-introducing a field we're phasing out.
+// ---------------------------------------------------------------------------
+
+function irg_register_edit_song_endpoint(): void {
+	register_rest_route( 'irg/v1', '/edit-song', [
+		'methods'             => 'POST',
+		'callback'            => 'irg_handle_edit_song',
+		'permission_callback' => '__return_true',
+	] );
+}
+
+function irg_edit_song_cors_headers( $served, $result, $request, $server ) {
+	if ( strpos( $request->get_route(), '/irg/v1/edit-song' ) !== 0 ) {
+		return $served;
+	}
+	$origin = isset( $_SERVER['HTTP_ORIGIN'] ) ? (string) $_SERVER['HTTP_ORIGIN'] : '';
+	if ( $origin && irg_contact_origin_allowed( $origin ) ) {
+		header( "Access-Control-Allow-Origin: {$origin}" );
+		header( 'Access-Control-Allow-Methods: POST, OPTIONS' );
+		header( 'Access-Control-Allow-Headers: Content-Type' );
+		header( 'Vary: Origin' );
+	}
+	return $served;
+}
+
+function irg_handle_edit_song( WP_REST_Request $req ) {
+	if ( ! is_main_site() ) {
+		return new WP_Error( 'irg_wrong_site', 'Songs can only be edited on the main site.', [ 'status' => 400 ] );
+	}
+
+	// Honeypot — bots that fill the field get a silent success.
+	$hp = (string) $req->get_param( 'hp' );
+	if ( $hp !== '' ) {
+		return [ 'ok' => true ];
+	}
+
+	// Turnstile pre-flight — required (matches hub /contact). Fails closed
+	// when IRG_TURNSTILE_SECRET isn't set so a misconfigured server can't
+	// silently skip the spam check.
+	$verified = irg_verify_turnstile( (string) $req->get_param( 'cf-turnstile-response' ) );
+	if ( is_wp_error( $verified ) ) {
+		return $verified;
+	}
+
+	// Password gate. Server-side verification is what makes direct-apply
+	// safe — the client SHA-256 gate is just UX. hash_equals avoids timing
+	// leaks.
+	if ( ! defined( 'IRG_SUBMIT_PASSWORD' ) || (string) IRG_SUBMIT_PASSWORD === '' ) {
+		return new WP_Error( 'irg_password_unset', 'Editing is misconfigured. Please contact a granny.', [ 'status' => 503 ] );
+	}
+	if ( ! hash_equals( (string) IRG_SUBMIT_PASSWORD, (string) $req->get_param( 'password' ) ) ) {
+		return new WP_Error( 'irg_bad_password', 'Wrong password.', [ 'status' => 401 ] );
+	}
+
+	// Target song must exist and be a song post.
+	$post_id = (int) $req->get_param( 'post_id' );
+	if ( $post_id <= 0 ) {
+		return new WP_Error( 'irg_bad_post_id', 'Missing or invalid song ID.', [ 'status' => 400 ] );
+	}
+	$post = get_post( $post_id );
+	if ( ! $post || $post->post_type !== 'song' ) {
+		return new WP_Error( 'irg_not_song', 'That song does not exist.', [ 'status' => 404 ] );
+	}
+
+	$title             = sanitize_text_field( (string) $req->get_param( 'title' ) );
+	$tune              = sanitize_text_field( (string) $req->get_param( 'tune' ) );
+	$songwriter        = sanitize_text_field( (string) $req->get_param( 'songwriter' ) );
+	$gaggle            = sanitize_text_field( (string) $req->get_param( 'gaggle' ) );
+	$lyrics_raw        = (string) $req->get_param( 'lyrics' );
+	$key_starting_note = sanitize_text_field( (string) $req->get_param( 'key_starting_note' ) );
+	$youtube_link      = esc_url_raw( trim( (string) $req->get_param( 'youtube_link' ) ) );
+	$date_written      = sanitize_text_field( (string) $req->get_param( 'date_written' ) );
+	$source_notes      = sanitize_text_field( (string) $req->get_param( 'source_notes' ) );
+
+	if ( $title === '' || $tune === '' || $songwriter === '' || $gaggle === '' ) {
+		return new WP_Error( 'irg_required', 'Title, tune, songwriter, and gaggle are all required.', [ 'status' => 400 ] );
+	}
+	if ( trim( wp_strip_all_tags( $lyrics_raw ) ) === '' ) {
+		return new WP_Error( 'irg_lyrics_required', 'Lyrics are required.', [ 'status' => 400 ] );
+	}
+	if ( $youtube_link !== '' && ! irg_is_youtube_url( $youtube_link ) ) {
+		return new WP_Error( 'irg_bad_youtube', 'YouTube link must be a youtube.com or youtu.be URL.', [ 'status' => 400 ] );
+	}
+
+	// Same allowlist as submit-song: the songbook treats bold/italic/
+	// underline as performance cues; everything else gets stripped.
+	$allowed_html = [
+		'p'      => [],
+		'br'     => [],
+		'strong' => [],
+		'b'      => [],
+		'em'     => [],
+		'i'      => [],
+		'u'      => [],
+	];
+	$lyrics = wp_kses( $lyrics_raw, $allowed_html );
+
+	// Update the post — title may change, slug intentionally does not.
+	$update = wp_update_post( [
+		'ID'         => $post_id,
+		'post_title' => $title,
+	], true );
+	if ( is_wp_error( $update ) ) {
+		return new WP_Error( 'irg_post_fail', 'Could not save the song update.', [ 'status' => 500 ] );
+	}
+
+	if ( function_exists( 'update_field' ) ) {
+		update_field( 'field_irg_lyrics', $lyrics, $post_id );
+		update_field( 'field_irg_key_or_starting_note', $key_starting_note, $post_id );
+		update_field( 'field_irg_youtube_link', $youtube_link, $post_id );
+		update_field( 'field_irg_date_written_or_updated', $date_written, $post_id );
+		update_field( 'field_irg_source_notes', $source_notes, $post_id );
+	} else {
+		update_post_meta( $post_id, 'lyrics', $lyrics );
+		update_post_meta( $post_id, 'key_or_starting_note', $key_starting_note );
+		update_post_meta( $post_id, 'youtube_link', $youtube_link );
+		update_post_meta( $post_id, 'date_written_or_updated', $date_written );
+		update_post_meta( $post_id, 'source_notes', $source_notes );
+	}
+
+	// Open taxonomies — comma-split so multi-author songs round-trip
+	// correctly. Empty inputs are guarded above (required-field check).
+	irg_edit_replace_terms( $post_id, 'tune',       $tune );
+	irg_edit_replace_terms( $post_id, 'songwriter', $songwriter );
+	irg_edit_replace_terms( $post_id, 'gaggle',     $gaggle );
+
+	irg_edit_song_send_notification( $post_id, [ 'title' => $title ] );
+
+	return [ 'ok' => true, 'post_id' => $post_id ];
+}
+
+// Replace the post's terms in $taxonomy with the comma-separated names in
+// $value. Creates terms that don't exist. Used for tune / songwriter /
+// gaggle on edit so multi-author songs ("Garnet De Grave, Susan Dutton")
+// round-trip without collapsing into a single combined term.
+function irg_edit_replace_terms( int $post_id, string $taxonomy, string $value ): void {
+	$names    = array_filter( array_map( 'trim', explode( ',', $value ) ), static fn( $n ) => $n !== '' );
+	$term_ids = [];
+	foreach ( $names as $name ) {
+		$term = term_exists( $name, $taxonomy );
+		if ( ! $term ) {
+			$term = wp_insert_term( $name, $taxonomy );
+		}
+		if ( is_wp_error( $term ) ) {
+			error_log( '[irg-edit] term op failed for ' . $taxonomy . ' "' . $name . '": ' . $term->get_error_message() );
+			continue;
+		}
+		$term_ids[] = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+	}
+	wp_set_object_terms( $post_id, $term_ids, $taxonomy );
+}
+
+function irg_edit_song_send_notification( int $post_id, array $fields ): void {
+	$edit_url = admin_url( 'post.php?post=' . $post_id . '&action=edit' );
+	$subject  = 'Song edited: ' . $fields['title'];
+	$body     = "A granny edited a song via /edit-song/.\n\n";
+	$body    .= "Title:    {$fields['title']}\n";
+	$body    .= "\nReview or revert via the Revisions panel on the edit screen:\n{$edit_url}\n";
+	$headers  = [ 'Content-Type: text/plain; charset=UTF-8' ];
+
+	$sent = wp_mail( IRG_SUBMIT_TO, $subject, $body, $headers );
+	if ( ! $sent ) {
+		error_log( '[irg-edit-song] wp_mail failed for post ' . $post_id );
+	}
 }
 
 // True if the URL contains a YouTube hostname (youtube.com or youtu.be).

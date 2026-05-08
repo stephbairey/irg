@@ -1,0 +1,706 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import crypto from "node:crypto";
+import songsData from "../../data/songs-consolidated.json";
+
+// Same gate as /submit/ — SUBMIT_PASSWORD is server-only; only the SHA-256
+// hex digest ships to the browser. The server endpoint also verifies the
+// password via the IRG_SUBMIT_PASSWORD constant in wp-config.php; the
+// client gate is just UX, not the actual auth boundary.
+const PW = (process.env.SUBMIT_PASSWORD ?? "").trim();
+const PW_HASH = PW ? crypto.createHash("sha256").update(PW).digest("hex") : "";
+
+const WP_BASE = (import.meta.env.PUBLIC_WP_URL ?? "").replace(/\/$/, "");
+const EDIT_ENDPOINT = WP_BASE ? `${WP_BASE}/wp-json/irg/v1/edit-song` : "";
+const TURNSTILE_SITEKEY = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? "";
+
+interface EditSong {
+  id: number;
+  title: string;
+  slug: string;
+  lyrics: string;
+  tune: string;
+  songwriter: string;
+  gaggle: string;
+  key_or_starting_note: string;
+  youtube_link: string;
+  date_written_or_updated: string;
+  source_notes: string;
+}
+
+// Slim the consolidated snapshot to what the edit form needs. WP-sourced
+// records carry an `original_wp_id` (the post ID we POST to the edit
+// endpoint); migration-era records without a post ID are skipped.
+const songs: EditSong[] = (songsData as Record<string, unknown>[])
+  .filter((s) => typeof s.original_wp_id === "number" && (s.original_wp_id as number) > 0)
+  .map((s) => ({
+    id: s.original_wp_id as number,
+    title: (s.title as string) ?? "",
+    slug: (s.slug as string) ?? "",
+    lyrics: (s.lyrics as string) ?? "",
+    tune: (s.tune as string) ?? "",
+    songwriter: (s.songwriter as string) ?? "",
+    gaggle: (s.gaggle as string) ?? "",
+    key_or_starting_note: (s.key_or_starting_note as string) ?? "",
+    youtube_link: (s.youtube_link as string) ?? "",
+    date_written_or_updated: (s.date_written_or_updated as string) ?? "",
+    source_notes: (s.source_notes as string) ?? "",
+  }))
+  .sort((a, b) => a.title.localeCompare(b.title));
+
+const formAvailable = !!PW_HASH && !!EDIT_ENDPOINT;
+
+// Autocomplete lists. Comma-split because some songs credit multiple
+// names in a single field ("Garnet De Grave, Susan Dutton").
+function uniqueSplit(values: string[]): string[] {
+  return [...new Set(values.flatMap((v) => v.split(",").map((s) => s.trim()).filter(Boolean)))].sort((a, b) =>
+    a.localeCompare(b),
+  );
+}
+const allTunes = uniqueSplit(songs.map((s) => s.tune));
+const allSongwriters = uniqueSplit(songs.map((s) => s.songwriter));
+const allGaggles = uniqueSplit(songs.map((s) => s.gaggle)).filter((n) => !/\s\(historical\)$/i.test(n));
+
+const songsJson = JSON.stringify(songs);
+---
+
+<BaseLayout title="Edit a Song">
+  <article class="max-w-[1400px] mx-auto px-5 md:px-8 pt-10 md:pt-12 pb-20">
+    <header class="text-center pb-8 md:pb-10 border-b border-muted mb-10 md:mb-12">
+      <div class="kicker text-red mb-4">For Grannies</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(36px,7.5vw,96px)">
+        Edit a Song
+      </h1>
+      <p class="text-[17px] md:text-[19px] text-text-soft max-w-[760px] mx-auto leading-snug">
+        Fix a typo, update a verse, change a credit. Search by songwriter name to find what you're looking for.
+      </p>
+    </header>
+
+    {!formAvailable ? (
+      <div class="max-w-[760px] mx-auto px-7 py-6 bg-paper-2 border border-dashed border-rule rounded-[10px] text-center">
+        <p class="text-[15px] text-text-soft m-0">
+          The edit form is being set up. Check back shortly.
+        </p>
+      </div>
+    ) : (
+      <div class="max-w-[760px] mx-auto">
+        {/* Stage 1: password gate */}
+        <section id="edit-gate" class="px-7 py-7 bg-paper-2 border border-muted rounded-[12px]">
+          <div class="kicker text-red mb-3">Granny check</div>
+          <h2 class="font-display text-ink text-[28px] leading-tight mb-3">Enter the gaggle password</h2>
+          <p class="text-[15px] text-text-soft leading-relaxed mb-5 max-w-[60ch]">
+            Same password as the song submission form. Ask any granny in your gaggle.
+          </p>
+          <form id="edit-pw-form" class="flex flex-wrap gap-3 items-center" novalidate>
+            <input
+              id="edit-pw-input"
+              type="password"
+              autocomplete="off"
+              placeholder="Password"
+              class="flex-1 min-w-[200px] px-4 py-3 text-[15px] bg-card text-ink border-[1.5px] border-muted rounded-lg focus:outline-none focus:border-red"
+              aria-label="Password"
+            />
+            <button type="submit" class="btn btn-pill">Unlock</button>
+          </form>
+          <p id="edit-pw-error" class="hidden text-red text-[14px] font-bold mt-3">That's not the right password. Ask a granny.</p>
+        </section>
+
+        {/* Stage 2: search + matching songs */}
+        <section id="edit-search-section" class="hidden">
+          <div class="px-7 py-6 bg-paper-2 border border-muted rounded-[12px] mb-6">
+            <label for="edit-search-input" class="kicker text-red mb-3 block">Find your song</label>
+            <input
+              id="edit-search-input"
+              type="text"
+              autocomplete="off"
+              placeholder="Type your name (or any songwriter's name)…"
+              list="dl-search-songwriters"
+              class="w-full px-4 py-3 text-[16px] bg-card text-ink border-[1.5px] border-muted rounded-lg focus:outline-none focus:border-red"
+            />
+            <datalist id="dl-search-songwriters">
+              {allSongwriters.map((n) => <option value={n} />)}
+            </datalist>
+            <p class="text-[13px] text-text-soft mt-3">
+              Type the songwriter's name to filter the list. Pick a song to edit it.
+            </p>
+          </div>
+          <div id="edit-search-results"></div>
+          <p id="edit-search-empty" class="hidden text-center text-text-soft italic py-6">
+            No songs found for that songwriter. Try a different spelling.
+          </p>
+        </section>
+
+        {/* Stage 3: edit form */}
+        <section id="edit-form-section" class="hidden">
+          <div class="mb-6">
+            <button type="button" id="edit-back-to-search" class="text-[14px] text-red font-bold no-underline hover:underline">
+              ← Back to song list
+            </button>
+          </div>
+
+          <form id="edit-form" class="submit-form" novalidate>
+            <input type="hidden" name="post_id" id="edit-post-id" />
+
+            <label class="sf-field">
+              <span class="sf-label">Song title</span>
+              <input type="text" name="title" id="edit-title" required maxlength="200" autocomplete="off" />
+              <span class="sf-hint">Editing the title doesn't change the page URL — those stay stable.</span>
+            </label>
+
+            <label class="sf-field">
+              <span class="sf-label">Tune</span>
+              <input type="text" name="tune" id="edit-tune" list="dl-tunes" required maxlength="200" autocomplete="off" />
+              <span class="sf-hint">The melody this song is sung to.</span>
+            </label>
+            <datalist id="dl-tunes">
+              {allTunes.map((t) => <option value={t} />)}
+            </datalist>
+
+            <div class="sf-field">
+              <span class="sf-label">Lyrics</span>
+              <div class="sf-editor-wrap">
+                <div class="sf-editor-toolbar" role="toolbar" aria-label="Formatting">
+                  <button type="button" data-mark="bold" aria-pressed="false" title="Bold (Ctrl+B)"><b>B</b></button>
+                  <button type="button" data-mark="italic" aria-pressed="false" title="Italic (Ctrl+I)"><i>I</i></button>
+                  <button type="button" data-mark="underline" aria-pressed="false" title="Underline (Ctrl+U)"><u>U</u></button>
+                </div>
+                <div id="edit-lyrics-editor" class="sf-editor" aria-label="Lyrics"></div>
+              </div>
+              <span class="sf-hint">Press Enter for a new stanza, Shift+Enter for a new line within a stanza. Bold, italic, and underline are performance marks.</span>
+            </div>
+
+            <label class="sf-field">
+              <span class="sf-label">Songwriter</span>
+              <input type="text" name="songwriter" id="edit-songwriter" list="dl-songwriters" required maxlength="200" autocomplete="off" />
+              <span class="sf-hint">For multiple songwriters, separate with commas.</span>
+            </label>
+            <datalist id="dl-songwriters">
+              {allSongwriters.map((s) => <option value={s} />)}
+            </datalist>
+
+            <label class="sf-field">
+              <span class="sf-label">Gaggle</span>
+              <input type="text" name="gaggle" id="edit-gaggle" list="dl-gaggles" required maxlength="200" autocomplete="off" />
+              <span class="sf-hint">The gaggle this song is associated with.</span>
+            </label>
+            <datalist id="dl-gaggles">
+              {allGaggles.map((g) => <option value={g} />)}
+            </datalist>
+
+            <label class="sf-field">
+              <span class="sf-label">YouTube link</span>
+              <input type="url" name="youtube_link" id="edit-youtube-link" maxlength="500" autocomplete="off" inputmode="url" />
+              <span class="sf-hint"><span class="sf-optional">Optional:</span> Link to a YouTube video of this song.</span>
+            </label>
+
+            <label class="sf-field">
+              <span class="sf-label">Date written or updated</span>
+              <input type="date" name="date_written" id="edit-date-written" />
+              <span class="sf-hint"><span class="sf-optional">Optional:</span> When this song was written or last updated.</span>
+            </label>
+
+            <label class="sf-field">
+              <span class="sf-label">Key or starting note</span>
+              <input type="text" name="key_starting_note" id="edit-key" maxlength="200" autocomplete="off" />
+              <span class="sf-hint"><span class="sf-optional">Optional:</span> Musical key or starting note (e.g., 'Key of G').</span>
+            </label>
+
+            <label class="sf-field">
+              <span class="sf-label">Source notes</span>
+              <input type="text" name="source_notes" id="edit-source-notes" maxlength="300" autocomplete="off" />
+              <span class="sf-hint"><span class="sf-optional">Optional:</span> Provenance or attribution.</span>
+            </label>
+
+            {/* Honeypot — bots fill this; real browsers don't see it. */}
+            <div class="sf-honeypot" aria-hidden="true">
+              <label>Don't fill this in if you're human <input type="text" name="hp" tabindex="-1" autocomplete="off" /></label>
+            </div>
+
+            {TURNSTILE_SITEKEY && (
+              <div class="flex justify-center">
+                <div class="cf-turnstile" data-sitekey={TURNSTILE_SITEKEY} data-theme="light"></div>
+              </div>
+            )}
+
+            <div class="sf-actions">
+              <button type="submit" class="sf-submit btn btn-pill">Save changes</button>
+              <span id="edit-status" class="sf-status" role="status" aria-live="polite"></span>
+            </div>
+          </form>
+        </section>
+
+        {/* Confirmation */}
+        <section id="edit-success" class="hidden text-center px-7 py-10 bg-paper-2 border border-muted rounded-[12px]">
+          <div class="kicker text-red mb-3">Saved</div>
+          <h2 class="font-display text-ink text-[36px] leading-tight mb-3">Your changes are live.</h2>
+          <p class="text-[17px] text-text-soft leading-relaxed max-w-[60ch] mx-auto">Thank you, Granny!</p>
+          <p class="text-[15px] text-text-soft leading-relaxed max-w-[60ch] mx-auto mt-3">
+            <a href="#" id="edit-another" class="submit-inline-link">Edit another song</a>.
+          </p>
+        </section>
+
+        {/* Build-time data + config carried into the bundled script. */}
+        <script type="application/json" id="edit-songs-data" set:html={songsJson} />
+        <div id="edit-config" data-pw-hash={PW_HASH} data-endpoint={EDIT_ENDPOINT} data-turnstile-sitekey={TURNSTILE_SITEKEY} hidden></div>
+      </div>
+    )}
+  </article>
+
+  {formAvailable && TURNSTILE_SITEKEY && (
+    <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+  )}
+
+  {formAvailable && (
+    <script>
+      import { Editor } from "@tiptap/core";
+      import StarterKit from "@tiptap/starter-kit";
+      import Underline from "@tiptap/extension-underline";
+
+      const $ = (s) => document.querySelector(s);
+      const SS_KEY = "irg-edit-unlocked";
+      const SS_PW_KEY = "irg-edit-pw"; // entered password kept in session for resubmits
+
+      const cfg = $("#edit-config");
+      const PW_HASH = cfg?.dataset.pwHash || "";
+      const EDIT_ENDPOINT = cfg?.dataset.endpoint || "";
+      const HAS_TURNSTILE = !!cfg?.dataset.turnstileSitekey;
+
+      const songsScript = document.getElementById("edit-songs-data");
+      const songs = songsScript ? JSON.parse(songsScript.textContent || "[]") : [];
+
+      const gateSection = $("#edit-gate");
+      const searchSection = $("#edit-search-section");
+      const formSection = $("#edit-form-section");
+      const successSection = $("#edit-success");
+      const pwForm = $("#edit-pw-form");
+      const pwInput = $("#edit-pw-input");
+      const pwError = $("#edit-pw-error");
+      const searchInput = $("#edit-search-input");
+      const searchResults = $("#edit-search-results");
+      const searchEmpty = $("#edit-search-empty");
+      const backLink = $("#edit-back-to-search");
+      const form = $("#edit-form");
+      const statusEl = $("#edit-status");
+      const editorEl = $("#edit-lyrics-editor");
+      const editAnotherLink = $("#edit-another");
+
+      let editor = null;
+      let currentSong = null; // the song being edited; null in stages 1 & 2
+
+      async function sha256Hex(text) {
+        const buf = new TextEncoder().encode(text);
+        const hash = await crypto.subtle.digest("SHA-256", buf);
+        return [...new Uint8Array(hash)]
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      }
+
+      function showStage(stage) {
+        gateSection?.classList.toggle("hidden", stage !== "gate");
+        searchSection?.classList.toggle("hidden", stage !== "search");
+        formSection?.classList.toggle("hidden", stage !== "form");
+        successSection?.classList.toggle("hidden", stage !== "success");
+      }
+
+      function initEditor() {
+        if (editor) return;
+        editor = new Editor({
+          element: editorEl,
+          extensions: [
+            StarterKit.configure({
+              heading: false,
+              bulletList: false,
+              orderedList: false,
+              listItem: false,
+              blockquote: false,
+              code: false,
+              codeBlock: false,
+              strike: false,
+              horizontalRule: false,
+            }),
+            Underline,
+          ],
+          content: "",
+          editorProps: {
+            attributes: {
+              class: "sf-editor-content",
+              "aria-label": "Lyrics editor",
+            },
+          },
+        });
+
+        const buttons = document.querySelectorAll(".sf-editor-toolbar [data-mark]");
+        const sync = () => {
+          buttons.forEach((b) => {
+            const mark = b.dataset.mark;
+            const active = editor.isActive(mark);
+            b.setAttribute("aria-pressed", active ? "true" : "false");
+            b.classList.toggle("is-active", active);
+          });
+        };
+        buttons.forEach((b) => {
+          b.addEventListener("click", () => {
+            const mark = b.dataset.mark;
+            const chain = editor.chain().focus();
+            if (mark === "bold") chain.toggleBold().run();
+            else if (mark === "italic") chain.toggleItalic().run();
+            else if (mark === "underline") chain.toggleUnderline().run();
+          });
+        });
+        editor.on("selectionUpdate", sync);
+        editor.on("transaction", sync);
+      }
+
+      function renderResults(query) {
+        const q = (query || "").trim().toLowerCase();
+        searchResults.innerHTML = "";
+        if (!q) {
+          searchEmpty.classList.add("hidden");
+          return;
+        }
+        const matches = songs
+          .filter((s) =>
+            s.songwriter
+              .split(",")
+              .map((n) => n.trim().toLowerCase())
+              .some((n) => n.includes(q)),
+          )
+          .slice(0, 100);
+
+        if (!matches.length) {
+          searchEmpty.classList.remove("hidden");
+          return;
+        }
+        searchEmpty.classList.add("hidden");
+        const list = document.createElement("ul");
+        list.className = "edit-results-list";
+        for (const s of matches) {
+          const li = document.createElement("li");
+          li.className = "edit-result-item";
+          li.innerHTML =
+            '<div class="edit-result-meta">' +
+            '<div class="edit-result-title"></div>' +
+            '<div class="edit-result-sub"></div>' +
+            "</div>" +
+            '<button type="button" class="btn btn-pill edit-result-btn">Edit</button>';
+          li.querySelector(".edit-result-title").textContent = s.title;
+          li.querySelector(".edit-result-sub").textContent =
+            (s.tune ? "Tune: " + s.tune : "") +
+            (s.songwriter ? (s.tune ? " · " : "") + s.songwriter : "");
+          li.querySelector(".edit-result-btn").addEventListener("click", () => openEditor(s));
+          list.appendChild(li);
+        }
+        searchResults.appendChild(list);
+      }
+
+      function openEditor(song) {
+        currentSong = song;
+        initEditor();
+        $("#edit-post-id").value = String(song.id);
+        $("#edit-title").value = song.title;
+        $("#edit-tune").value = song.tune;
+        $("#edit-songwriter").value = song.songwriter;
+        $("#edit-gaggle").value = song.gaggle;
+        $("#edit-youtube-link").value = song.youtube_link;
+        $("#edit-date-written").value = song.date_written_or_updated;
+        $("#edit-key").value = song.key_or_starting_note;
+        $("#edit-source-notes").value = song.source_notes;
+        editor.commands.setContent(song.lyrics || "", { parseOptions: { preserveWhitespace: "full" } });
+        statusEl.textContent = "";
+        statusEl.removeAttribute("data-state");
+        if (window.turnstile && typeof window.turnstile.reset === "function") {
+          window.turnstile.reset();
+        }
+        showStage("form");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // Resume unlocked state from session.
+      if (sessionStorage.getItem(SS_KEY) === "1") {
+        showStage("search");
+      }
+
+      pwForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        pwError.classList.add("hidden");
+        const entered = pwInput.value;
+        if (!entered) return;
+        const hash = await sha256Hex(entered);
+        if (hash === PW_HASH) {
+          sessionStorage.setItem(SS_KEY, "1");
+          sessionStorage.setItem(SS_PW_KEY, entered);
+          showStage("search");
+          searchInput.focus();
+        } else {
+          pwError.classList.remove("hidden");
+          pwInput.select();
+        }
+      });
+
+      searchInput?.addEventListener("input", (e) => renderResults(e.target.value));
+
+      backLink?.addEventListener("click", () => {
+        currentSong = null;
+        showStage("search");
+        if (window.turnstile && typeof window.turnstile.reset === "function") {
+          window.turnstile.reset();
+        }
+      });
+
+      editAnotherLink?.addEventListener("click", (e) => {
+        e.preventDefault();
+        currentSong = null;
+        searchInput.value = "";
+        renderResults("");
+        showStage("search");
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        statusEl.removeAttribute("data-state");
+        statusEl.textContent = "";
+
+        const password = sessionStorage.getItem(SS_PW_KEY) || "";
+        if (!password) {
+          statusEl.dataset.state = "error";
+          statusEl.textContent = "Session expired. Refresh and re-enter the password.";
+          return;
+        }
+
+        const fd = new FormData(form);
+        const post_id = parseInt((fd.get("post_id") || "").toString(), 10) || 0;
+        const title = (fd.get("title") || "").toString().trim();
+        const tune = (fd.get("tune") || "").toString().trim();
+        const songwriter = (fd.get("songwriter") || "").toString().trim();
+        const gaggle = (fd.get("gaggle") || "").toString().trim();
+        const lyricsHtml = editor ? editor.getHTML() : "";
+        const lyricsText = editor ? editor.getText().trim() : "";
+        const youtube_link = (fd.get("youtube_link") || "").toString().trim();
+        const date_written = (fd.get("date_written") || "").toString().trim();
+        const key_starting_note = (fd.get("key_starting_note") || "").toString().trim();
+        const source_notes = (fd.get("source_notes") || "").toString().trim();
+        const hp = (fd.get("hp") || "").toString();
+        const turnstile = HAS_TURNSTILE
+          ? (form.querySelector('[name="cf-turnstile-response"]')?.value || "")
+          : "";
+
+        if (!post_id) {
+          statusEl.dataset.state = "error";
+          statusEl.textContent = "Missing song reference. Pick the song again.";
+          return;
+        }
+        if (!title || !tune || !songwriter || !gaggle) {
+          statusEl.dataset.state = "error";
+          statusEl.textContent = "Title, tune, songwriter, and gaggle are required.";
+          return;
+        }
+        if (!lyricsText) {
+          statusEl.dataset.state = "error";
+          statusEl.textContent = "Lyrics can't be empty.";
+          return;
+        }
+
+        const submitBtn = form.querySelector("button[type=submit]");
+        submitBtn.disabled = true;
+        statusEl.dataset.state = "sending";
+        statusEl.textContent = "Saving…";
+
+        try {
+          const res = await fetch(EDIT_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              password,
+              post_id,
+              title,
+              tune,
+              songwriter,
+              gaggle,
+              lyrics: lyricsHtml,
+              youtube_link,
+              date_written,
+              key_starting_note,
+              source_notes,
+              hp,
+              "cf-turnstile-response": turnstile,
+            }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) {
+            throw new Error(data.message || `HTTP ${res.status}`);
+          }
+          showStage("success");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } catch (err) {
+          statusEl.dataset.state = "error";
+          statusEl.textContent =
+            "Couldn't save. " + (err && err.message ? err.message : "Please try again.");
+          submitBtn.disabled = false;
+          if (window.turnstile && typeof window.turnstile.reset === "function") {
+            window.turnstile.reset();
+          }
+        }
+      });
+    </script>
+  )}
+
+  <style is:global>
+    .submit-inline-link {
+      color: var(--color-red);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--color-red);
+      font-weight: 600;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .submit-inline-link:hover {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+
+    .submit-form {
+      display: grid;
+      gap: 22px;
+      margin-top: 8px;
+    }
+    .sf-field { display: grid; gap: 6px; }
+    .sf-label {
+      font: 800 12px/1.2 var(--font-body);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+    }
+    .sf-hint {
+      font-size: 13px;
+      color: var(--color-text-soft);
+      line-height: 1.4;
+    }
+    .submit-form input[type="text"],
+    .submit-form input[type="url"],
+    .submit-form input[type="date"],
+    .submit-form input[type="hidden"] + input[type="text"],
+    .submit-form select {
+      width: 100%;
+      padding: 12px 14px;
+      font: 400 16px/1.4 var(--font-body);
+      color: var(--color-ink);
+      background: var(--color-card);
+      border: 1.5px solid var(--color-muted);
+      border-radius: 10px;
+      transition: border-color 0.15s ease;
+    }
+    .submit-form input:focus,
+    .submit-form select:focus {
+      outline: none;
+      border-color: var(--color-red);
+    }
+    .sf-optional { color: var(--color-red); font-weight: 700; }
+
+    /* Honeypot — visually hidden but reachable in DOM. */
+    .sf-honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    /* TipTap editor (shared with /submit/) */
+    .sf-editor-toolbar {
+      display: flex;
+      gap: 4px;
+      padding: 6px;
+      background: var(--color-paper-2);
+      border: 1.5px solid var(--color-muted);
+      border-bottom: 0;
+      border-radius: 10px 10px 0 0;
+    }
+    .sf-editor-toolbar button {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: var(--color-ink);
+      font-family: var(--font-body);
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.12s ease, border-color 0.12s ease;
+    }
+    .sf-editor-toolbar button:hover {
+      background: var(--color-card);
+      border-color: var(--color-muted);
+    }
+    .sf-editor-toolbar button.is-active {
+      background: var(--color-ink);
+      border-color: var(--color-ink);
+      color: var(--color-on-dark);
+    }
+    .sf-editor {
+      min-height: 220px;
+      max-height: 540px;
+      overflow-y: auto;
+      background: var(--color-card);
+      border: 1.5px solid var(--color-muted);
+      border-radius: 0 0 10px 10px;
+      transition: border-color 0.15s ease;
+    }
+    .sf-editor:focus-within { border-color: var(--color-red); }
+    .sf-editor-content {
+      padding: 14px 16px;
+      min-height: 220px;
+      outline: none;
+      font: 400 16px/1.65 var(--font-body);
+      color: var(--color-ink);
+    }
+    .sf-editor-content p { margin: 0 0 12px; }
+    .sf-editor-content p:last-child { margin-bottom: 0; }
+    .sf-editor-content u { text-decoration: underline; }
+
+    .sf-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .sf-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .sf-status { font-size: 14px; color: var(--color-text-soft); }
+    .sf-status[data-state="sending"] { color: var(--color-ink-soft); font-weight: 700; }
+    .sf-status[data-state="error"] { color: var(--color-red); font-weight: 700; }
+
+    /* Search results list */
+    .edit-results-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .edit-result-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      background: var(--color-card);
+      border: 1.5px solid var(--color-muted);
+      border-radius: 10px;
+    }
+    .edit-result-meta { flex: 1; min-width: 0; }
+    .edit-result-title {
+      font: 700 16px/1.3 var(--font-body);
+      color: var(--color-ink);
+      margin-bottom: 4px;
+    }
+    .edit-result-sub {
+      font: 400 13px/1.4 var(--font-body);
+      color: var(--color-text-soft);
+    }
+    .edit-result-btn { flex: 0 0 auto; }
+  </style>
+</BaseLayout>
