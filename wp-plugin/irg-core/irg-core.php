@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.14.0
+ * Version: 3.15.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Plugin version. Used as the gate key for one-shot upgrade routines so a
 // version bump triggers them once, network-wide, then they go quiet again.
 // Keep in sync with the file header above.
-define( 'IRG_VERSION', '3.14.0' );
+define( 'IRG_VERSION', '3.15.0' );
 
 // Public host for cross-site URL builders (subsite-songs detail links, etc.).
 // Override in wp-config.php to point at a preview/dev URL.
@@ -52,6 +52,7 @@ add_action( 'rest_api_init', 'irg_register_contact_endpoint' );
 add_filter( 'rest_pre_serve_request', 'irg_contact_cors_headers', 10, 4 );
 add_action( 'rest_api_init', 'irg_register_submit_song_endpoint' );
 add_action( 'rest_api_init', 'irg_register_edit_song_endpoint' );
+add_action( 'rest_api_init', 'irg_register_admin_bulk_edit_endpoint' );
 add_filter( 'rest_pre_serve_request', 'irg_submit_song_cors_headers', 10, 4 );
 add_filter( 'rest_pre_serve_request', 'irg_edit_song_cors_headers', 10, 4 );
 
@@ -1688,6 +1689,158 @@ function irg_edit_song_send_notification( int $post_id, array $fields ): void {
 	if ( ! $sent ) {
 		error_log( '[irg-edit-song] wp_mail failed for post ' . $post_id );
 	}
+}
+
+// ---------------------------------------------------------------------------
+// Admin-only bulk song editor — used for one-off data cleanups (the first
+// pass: the songwriter-field normalization documented in
+// scripts/cleanup-songwriters.mjs). Auth IS the boundary here:
+// permission_callback requires `manage_options`, and Basic-auth via WP
+// application password is how the script in scripts/ reaches it. No
+// Turnstile, no public password gate — those are for unauthenticated paths.
+//
+// Body: { changes: [ { post_id, to_songwriter, source_notes?, gaggle_add? }, ... ] }
+//   to_songwriter — comma-separated names. Empty / "Unknown" attaches a
+//                   single "Unknown" term so the song still resolves on
+//                   the songwriter taxonomy archive.
+//   source_notes  — written ONLY if the existing source_notes is empty.
+//                   Conflicts are reported, not overwritten.
+//   gaggle_add    — additive: appends a gaggle term if not already
+//                   attached. Other gaggle terms remain.
+// ---------------------------------------------------------------------------
+
+function irg_register_admin_bulk_edit_endpoint(): void {
+	register_rest_route( 'irg/v1', '/admin-bulk-edit-songs', [
+		'methods'             => 'POST',
+		'callback'            => 'irg_handle_admin_bulk_edit_songs',
+		'permission_callback' => static function () {
+			return current_user_can( 'manage_options' );
+		},
+	] );
+}
+
+function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
+	if ( ! is_main_site() ) {
+		return new WP_Error( 'irg_wrong_site', 'Songs only exist on the main site.', [ 'status' => 400 ] );
+	}
+
+	$changes = $req->get_param( 'changes' );
+	if ( ! is_array( $changes ) ) {
+		return new WP_Error( 'irg_bad_payload', 'Expected a "changes" array.', [ 'status' => 400 ] );
+	}
+
+	$applied            = 0;
+	$skipped_not_song   = [];
+	$source_conflicts   = [];
+	$errors             = [];
+
+	foreach ( $changes as $change ) {
+		if ( ! is_array( $change ) ) {
+			continue;
+		}
+		$post_id      = isset( $change['post_id'] ) ? (int) $change['post_id'] : 0;
+		$to_writer    = isset( $change['to_songwriter'] ) ? (string) $change['to_songwriter'] : '';
+		$source_notes = isset( $change['source_notes'] ) ? (string) $change['source_notes'] : '';
+		$gaggle_add   = isset( $change['gaggle_add'] ) ? (string) $change['gaggle_add'] : '';
+
+		if ( $post_id <= 0 ) {
+			$errors[] = [ 'post_id' => $post_id, 'reason' => 'invalid post_id' ];
+			continue;
+		}
+		$post = get_post( $post_id );
+		if ( ! $post || $post->post_type !== 'song' ) {
+			$skipped_not_song[] = $post_id;
+			continue;
+		}
+
+		// Songwriter — empty / "Unknown" both resolve to a single "Unknown" term.
+		$names = array_filter(
+			array_map( 'trim', explode( ',', $to_writer ) ),
+			static fn( $n ) => $n !== ''
+		);
+		if ( empty( $names ) || ( count( $names ) === 1 && strcasecmp( $names[0], 'unknown' ) === 0 ) ) {
+			$names = [ 'Unknown' ];
+		}
+		$term_ids = [];
+		foreach ( $names as $name ) {
+			$term = term_exists( $name, 'songwriter' );
+			if ( ! $term ) {
+				$term = wp_insert_term( $name, 'songwriter' );
+			}
+			if ( is_wp_error( $term ) ) {
+				$errors[] = [ 'post_id' => $post_id, 'reason' => 'term op failed for ' . $name . ': ' . $term->get_error_message() ];
+				continue 2;
+			}
+			$term_ids[] = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+		}
+		wp_set_object_terms( $post_id, $term_ids, 'songwriter' );
+
+		// Source notes — write only if currently empty. Existing values are
+		// preserved (this is data cleanup, not data overwrite).
+		if ( $source_notes !== '' ) {
+			$current = function_exists( 'get_field' )
+				? (string) get_field( 'field_irg_source_notes', $post_id )
+				: (string) get_post_meta( $post_id, 'source_notes', true );
+			if ( trim( $current ) === '' ) {
+				if ( function_exists( 'update_field' ) ) {
+					update_field( 'field_irg_source_notes', $source_notes, $post_id );
+				} else {
+					update_post_meta( $post_id, 'source_notes', $source_notes );
+				}
+			} else {
+				$source_conflicts[] = [
+					'post_id' => $post_id,
+					'existing' => $current,
+					'attempted' => $source_notes,
+				];
+			}
+		}
+
+		// Gaggle — additive: keep existing terms, append the new one if not present.
+		if ( $gaggle_add !== '' ) {
+			$current_terms = wp_get_object_terms( $post_id, 'gaggle', [ 'fields' => 'names' ] );
+			if ( is_wp_error( $current_terms ) ) {
+				$current_terms = [];
+			}
+			$has = false;
+			foreach ( (array) $current_terms as $name ) {
+				if ( strcasecmp( (string) $name, $gaggle_add ) === 0 ) {
+					$has = true;
+					break;
+				}
+			}
+			if ( ! $has ) {
+				$term = term_exists( $gaggle_add, 'gaggle' );
+				if ( ! $term ) {
+					$term = wp_insert_term( $gaggle_add, 'gaggle' );
+				}
+				if ( ! is_wp_error( $term ) ) {
+					$tid = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+					wp_set_object_terms( $post_id, [ $tid ], 'gaggle', /* append */ true );
+				}
+			}
+		}
+
+		// Bump the post's modified time so caches/snapshots see this as a
+		// real change. wp_update_post on its own without changes is a
+		// no-op; passing post_modified explicitly forces the update.
+		wp_update_post( [
+			'ID'                => $post_id,
+			'post_modified'     => current_time( 'mysql' ),
+			'post_modified_gmt' => current_time( 'mysql', 1 ),
+		] );
+
+		$applied++;
+	}
+
+	return [
+		'ok'                 => true,
+		'applied'            => $applied,
+		'skipped_not_song'   => $skipped_not_song,
+		'source_conflicts'   => $source_conflicts,
+		'errors'             => $errors,
+		'total_input'        => count( $changes ),
+	];
 }
 
 // True if the URL contains a YouTube hostname (youtube.com or youtu.be).
