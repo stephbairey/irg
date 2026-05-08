@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.15.0
+ * Version: 3.16.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Plugin version. Used as the gate key for one-shot upgrade routines so a
 // version bump triggers them once, network-wide, then they go quiet again.
 // Keep in sync with the file header above.
-define( 'IRG_VERSION', '3.15.0' );
+define( 'IRG_VERSION', '3.16.0' );
 
 // Public host for cross-site URL builders (subsite-songs detail links, etc.).
 // Override in wp-config.php to point at a preview/dev URL.
@@ -1699,14 +1699,18 @@ function irg_edit_song_send_notification( int $post_id, array $fields ): void {
 // application password is how the script in scripts/ reaches it. No
 // Turnstile, no public password gate — those are for unauthenticated paths.
 //
-// Body: { changes: [ { post_id, to_songwriter, source_notes?, gaggle_add? }, ... ] }
+// Body: { changes: [ { post_id, to_songwriter?, source_notes?, gaggle_add?, lyrics_set? }, ... ] }
 //   to_songwriter — comma-separated names. Empty / "Unknown" attaches a
 //                   single "Unknown" term so the song still resolves on
-//                   the songwriter taxonomy archive.
+//                   the songwriter taxonomy archive. If omitted, the
+//                   songwriter taxonomy is left untouched.
 //   source_notes  — written ONLY if the existing source_notes is empty.
 //                   Conflicts are reported, not overwritten.
 //   gaggle_add    — additive: appends a gaggle term if not already
 //                   attached. Other gaggle terms remain.
+//   lyrics_set    — replaces the lyrics ACF field outright. Sanitized
+//                   server-side with the same allowlist as /submit/ so a
+//                   compromised script can't sneak <script> tags in.
 // ---------------------------------------------------------------------------
 
 function irg_register_admin_bulk_edit_endpoint(): void {
@@ -1739,9 +1743,12 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 			continue;
 		}
 		$post_id      = isset( $change['post_id'] ) ? (int) $change['post_id'] : 0;
+		$has_writer   = array_key_exists( 'to_songwriter', $change );
 		$to_writer    = isset( $change['to_songwriter'] ) ? (string) $change['to_songwriter'] : '';
 		$source_notes = isset( $change['source_notes'] ) ? (string) $change['source_notes'] : '';
 		$gaggle_add   = isset( $change['gaggle_add'] ) ? (string) $change['gaggle_add'] : '';
+		$has_lyrics   = array_key_exists( 'lyrics_set', $change );
+		$lyrics_set   = isset( $change['lyrics_set'] ) ? (string) $change['lyrics_set'] : '';
 
 		if ( $post_id <= 0 ) {
 			$errors[] = [ 'post_id' => $post_id, 'reason' => 'invalid post_id' ];
@@ -1753,27 +1760,50 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 			continue;
 		}
 
-		// Songwriter — empty / "Unknown" both resolve to a single "Unknown" term.
-		$names = array_filter(
-			array_map( 'trim', explode( ',', $to_writer ) ),
-			static fn( $n ) => $n !== ''
-		);
-		if ( empty( $names ) || ( count( $names ) === 1 && strcasecmp( $names[0], 'unknown' ) === 0 ) ) {
-			$names = [ 'Unknown' ];
-		}
-		$term_ids = [];
-		foreach ( $names as $name ) {
-			$term = term_exists( $name, 'songwriter' );
-			if ( ! $term ) {
-				$term = wp_insert_term( $name, 'songwriter' );
+		// Songwriter — only touch the taxonomy when the caller supplied the
+		// field. Empty / "Unknown" both resolve to a single "Unknown" term.
+		if ( $has_writer ) {
+			$names = array_filter(
+				array_map( 'trim', explode( ',', $to_writer ) ),
+				static fn( $n ) => $n !== ''
+			);
+			if ( empty( $names ) || ( count( $names ) === 1 && strcasecmp( $names[0], 'unknown' ) === 0 ) ) {
+				$names = [ 'Unknown' ];
 			}
-			if ( is_wp_error( $term ) ) {
-				$errors[] = [ 'post_id' => $post_id, 'reason' => 'term op failed for ' . $name . ': ' . $term->get_error_message() ];
-				continue 2;
+			$term_ids = [];
+			foreach ( $names as $name ) {
+				$term = term_exists( $name, 'songwriter' );
+				if ( ! $term ) {
+					$term = wp_insert_term( $name, 'songwriter' );
+				}
+				if ( is_wp_error( $term ) ) {
+					$errors[] = [ 'post_id' => $post_id, 'reason' => 'term op failed for ' . $name . ': ' . $term->get_error_message() ];
+					continue 2;
+				}
+				$term_ids[] = (int) ( is_array( $term ) ? $term['term_id'] : $term );
 			}
-			$term_ids[] = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+			wp_set_object_terms( $post_id, $term_ids, 'songwriter' );
 		}
-		wp_set_object_terms( $post_id, $term_ids, 'songwriter' );
+
+		// Lyrics — replace outright when supplied. Same allowlist as
+		// /submit/ and the public /edit-song/ endpoint.
+		if ( $has_lyrics ) {
+			$allowed_html = [
+				'p'      => [],
+				'br'     => [],
+				'strong' => [],
+				'b'      => [],
+				'em'     => [],
+				'i'      => [],
+				'u'      => [],
+			];
+			$clean_lyrics = wp_kses( $lyrics_set, $allowed_html );
+			if ( function_exists( 'update_field' ) ) {
+				update_field( 'field_irg_lyrics', $clean_lyrics, $post_id );
+			} else {
+				update_post_meta( $post_id, 'lyrics', $clean_lyrics );
+			}
+		}
 
 		// Source notes — write only if currently empty. Existing values are
 		// preserved (this is data cleanup, not data overwrite).
