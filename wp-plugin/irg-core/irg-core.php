@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.13.0
+ * Version: 3.13.1
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Plugin version. Used as the gate key for one-shot upgrade routines so a
 // version bump triggers them once, network-wide, then they go quiet again.
 // Keep in sync with the file header above.
-define( 'IRG_VERSION', '3.13.0' );
+define( 'IRG_VERSION', '3.13.1' );
 
 // Public host for cross-site URL builders (subsite-songs detail links, etc.).
 // Override in wp-config.php to point at a preview/dev URL.
@@ -1217,7 +1217,7 @@ function irg_upload_is_for_press_photo( int $attachment_id ): bool {
 
 // ---------------------------------------------------------------------------
 // Contact form endpoint — receives the /contact/ form, verifies Cloudflare
-// Turnstile server-side, and forwards to press@raginggrannies.org via
+// Turnstile server-side, and forwards to connect@raginggrannies.org via
 // wp_mail. Public endpoint; Turnstile + a honeypot field are the gates.
 //
 // Required server-side config: define( 'IRG_TURNSTILE_SECRET', '...' ) in
@@ -1225,7 +1225,7 @@ function irg_upload_is_for_press_photo( int $attachment_id ): bool {
 // PUBLIC_TURNSTILE_SITEKEY in the Astro env vars.
 // ---------------------------------------------------------------------------
 
-const IRG_CONTACT_TO       = 'press@raginggrannies.org';
+const IRG_CONTACT_TO       = 'connect@raginggrannies.org';
 const IRG_CONTACT_MAX_NAME = 200;
 const IRG_CONTACT_MAX_MSG  = 8000;
 
