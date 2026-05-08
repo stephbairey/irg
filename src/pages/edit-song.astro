@@ -43,7 +43,10 @@ const songs: EditSong[] = (songsData as Record<string, unknown>[])
     gaggle: (s.gaggle as string) ?? "",
     key_or_starting_note: (s.key_or_starting_note as string) ?? "",
     youtube_link: (s.youtube_link as string) ?? "",
-    date_written_or_updated: (s.date_written_or_updated as string) ?? "",
+    // Snapshot stores dates as ISO datetimes ("2026-04-29T00:00:00+00:00").
+    // <input type="date"> requires plain YYYY-MM-DD — slice the time off
+    // or the browser rejects the value and shows the empty placeholder.
+    date_written_or_updated: ((s.date_written_or_updated as string) ?? "").slice(0, 10),
     source_notes: (s.source_notes as string) ?? "",
   }))
   .sort((a, b) => a.title.localeCompare(b.title));
