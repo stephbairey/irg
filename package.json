@@ -23,6 +23,7 @@
     "@tiptap/starter-kit": "^3.22.5",
     "astro": "^6.1.0",
     "astro-icon": "^1.1.0",
+    "fast-xml-parser": "^5.5.7",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^3.22.0",
     "pdf-lib": "^1.17.1"
