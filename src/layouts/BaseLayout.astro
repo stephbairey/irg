@@ -91,6 +91,9 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
           <a href="/find-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/find-a-gaggle") ? "text-red" : "text-text"]}>Find a Gaggle</a>
           <a href="/start-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/start-a-gaggle") ? "text-red" : "text-text"]}>Start a Gaggle</a>
           <a href="/songs/" class="px-[18px] py-[10px] rounded-full text-sm font-bold no-underline transition-colors text-white bg-red hover:bg-ink-soft">Songs</a>
+          <a href="/search/" aria-label="Search" class:list={["inline-flex items-center justify-center w-9 h-9 rounded-full no-underline hover:text-red transition-colors", path.startsWith("/search") ? "text-red" : "text-text"]}>
+            <svg viewBox="0 0 24 24" class="w-[20px] h-[20px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+          </a>
         </nav>
 
         {/* Mobile hamburger: visible below md */}
@@ -125,6 +128,7 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
           <a href="/in-the-news/" class:list={["mobile-link", (path.startsWith("/in-the-news") || path.startsWith("/photos")) && "is-active"]}>News</a>
           <a href="/find-a-gaggle/" class:list={["mobile-link", path.startsWith("/find-a-gaggle") && "is-active"]}>Find a Gaggle</a>
           <a href="/start-a-gaggle/" class:list={["mobile-link", path.startsWith("/start-a-gaggle") && "is-active"]}>Start a Gaggle</a>
+          <a href="/search/" class:list={["mobile-link", path.startsWith("/search") && "is-active"]}>Search</a>
           <a href="/songs/" class:list={["mobile-link mobile-link-pill", path.startsWith("/songs") && "is-active"]}>Songs</a>
         </nav>
       </div>
@@ -264,7 +268,14 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       }
     </style>
 
-    <slot />
+    <!-- Pagefind indexes only [data-pagefind-body] regions site-wide, so this
+         wrapper keeps the shared header/nav/footer out of search results. No
+         type meta here: song detail pages set type:Song; the search UI defaults
+         everything else to "Page". (Pagefind takes the first meta for a key, so
+         a default here would override the song pages' own value.) -->
+    <main data-pagefind-body>
+      <slot />
+    </main>
 
     <!-- Footer -->
     <footer class="mt-16 md:mt-24 bg-ink text-on-dark pt-12 md:pt-14 pb-8">

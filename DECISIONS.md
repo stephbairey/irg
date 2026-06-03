@@ -732,6 +732,21 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Does not change**: the consolidated snapshot stays complete, `scripts/snapshot-songs.mjs` stays a full WP mirror, and the Songs CPT / `gaggle` taxonomy / add-edit-delete capabilities in `irg-core` are untouched.
 - **Revisit if**: more gaggles opt out and the two-place sync becomes error-prone (then promote to a WP admin toggle the snapshot reads, making WP the single source of truth), or a gaggle wants per-song rather than whole-gaggle control.
 
+## D053 — Site-wide search via Pagefind (static post-build index)
+
+- **Status**: Decided
+- **Date**: 2026-06-03
+- **Context**: The site had no global search, only the client-side filter on `/songs/`. We wanted full-text search across all main-site content (lyrics included, not just titles), reached from a magnifying glass in the nav. The public site is a static Astro build on Cloudflare Pages with no server runtime, and WordPress can't be queried at build or request time (Imunify360 bot-block). So the index must be built from the static output and searched client-side.
+- **Options considered**:
+  - **Client-side JS index (MiniSearch/FlexSearch/Lunr)** — real full-text, but the entire index (all lyrics across ~1,000 songs) ships to every visitor up front (multi-MB). Reinvents what Pagefind does.
+  - **Fuse.js** — fuzzy match over an in-memory array, no inverted index; loads all content client-side, slow at full-lyrics scale. Wrong tool past a few hundred titles.
+  - **Hosted/edge service (Algolia, Meilisearch, Orama Cloud)** — fast and typo-tolerant, but adds a vendor, API keys, and a sync step plus a runtime dependency. Against the static/no-vendor ethos; overkill.
+  - **Pagefind** — purpose-built static search: runs as a post-build step over `dist/`, indexes the rendered HTML (so lyrics are indexed for free), and fragments the index so the browser only downloads the slivers it needs as you type. Free, MIT, open source; no server, no vendor, no API key.
+- **Choice**: Pagefind v1, added as a devDependency and run as the `postbuild` npm script (`pagefind --site dist`), so it runs automatically after `astro build` with no Cloudflare dashboard change. Indexing is scoped with the opt-in `data-pagefind-body` attribute on the BaseLayout `<main>` wrapper, which keeps shared header/nav/footer chrome out of results site-wide; utility/form pages (`edit-song`, `submit`, the standalone `test` page) and the `/search` page itself carry `data-pagefind-ignore`. A `type` meta (`Page` default, `Song` on song detail pages) drives a result-type chip. A dedicated `/search` page (linked from a nav magnifying glass, desktop + mobile) drives Pagefind's JS API with a custom brand-matched UI (reuses the songs-page input pill and list-row styling), highlighted excerpts, a shareable `?q=` param, and graceful fallback when the index is absent.
+- **Scope**: main Astro site only (hub pages, songs + lyrics, news, photos/videos, aggregated gaggle actions). Seattle songs stay excluded automatically since their pages aren't built into `dist/` (D052). The 60+ WordPress subsites are a separate origin and out of scope for v1.
+- **Trade-off / caveat**: the Pagefind index only exists after a build, so search does not work under `astro dev` — local testing is `npm run build && npm run preview`. The `/search` page degrades gracefully (try/catch around the dynamic import) so dev doesn't error.
+- **Revisit if**: we want subsite content searchable (would need per-subsite indexing + federation, or pulling subsite pages into the build); OR typo-tolerance / instant-search-as-you-type at scale becomes a priority (re-evaluate a hosted service); OR index size or build time grows enough to warrant tuning Pagefind's chunking.
+
 ## Open decisions (not yet resolved)
 
 - **Song taxonomy structure**: 17 issue categories finalized (D016, split in D021). Song librarian may still refine E&D/G&P boundaries or request additions.

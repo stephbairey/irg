@@ -1,0 +1,169 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Search"
+  description="Search the International Raging Grannies site: songs, lyrics, gaggles, and pages."
+>
+  {/* data-pagefind-ignore keeps this page (and its static copy) out of its own
+      index. The search index itself (/pagefind/) is generated post-build, so
+      search only works against `npm run build` output, not `astro dev`. */}
+  <div class="max-w-[900px] mx-auto px-5 md:px-8 pt-10 md:pt-14 pb-20" data-pagefind-ignore>
+    <div class="kicker text-red mb-3">Search</div>
+    <h1 class="font-display text-ink leading-[.98] mb-4" style="font-size:clamp(40px,9vw,84px)">Search the site</h1>
+    <p class="text-[17px] md:text-[19px] text-text-soft max-w-[640px] leading-normal mb-8">
+      Look through every song, lyric, and page. Try a line you remember, a tune, an issue, or a gaggle.
+    </p>
+
+    <!-- Search input pill -->
+    <div class="flex items-center gap-3.5 px-5 py-4 bg-card border-2 border-muted rounded-full transition-colors focus-within:border-red" style="box-shadow:var(--shadow-card)">
+      <svg viewBox="0 0 24 24" class="w-[20px] h-[20px] text-ink flex-none" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+      <input
+        type="search"
+        id="site-search"
+        autocomplete="off"
+        autofocus
+        enterkeyhint="search"
+        placeholder="Search songs, lyrics, and pages..."
+        aria-label="Search the site"
+        class="flex-1 border-0 bg-transparent text-lg md:text-xl text-ink outline-none placeholder:text-muted"
+      />
+      <button id="site-search-clear" type="button" class="hidden font-[800] text-red text-[13px] px-2.5 py-1 bg-transparent border-0 cursor-pointer">Clear</button>
+    </div>
+
+    <p id="search-status" class="text-sm text-text-soft mt-5 min-h-[1.25rem]" aria-live="polite"></p>
+
+    <div id="search-results" class="mt-2"></div>
+
+    <p id="search-empty" class="hidden text-center text-text-soft py-16 text-lg">
+      No matches. Try fewer or different words, or
+      <a href="/songs/" class="text-red font-bold no-underline hover:underline">browse the song library</a>.
+    </p>
+  </div>
+
+  <style>
+    /* Pagefind wraps matched terms in <mark>; tint them with the brand mustard. */
+    .search-excerpt :global(mark) {
+      background: var(--color-mustard);
+      color: var(--color-ink);
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+  </style>
+
+  <script>
+    const input = document.getElementById("site-search") as HTMLInputElement;
+    const clearBtn = document.getElementById("site-search-clear") as HTMLButtonElement;
+    const statusEl = document.getElementById("search-status") as HTMLParagraphElement;
+    const resultsEl = document.getElementById("search-results") as HTMLDivElement;
+    const emptyEl = document.getElementById("search-empty") as HTMLParagraphElement;
+
+    const MAX_RESULTS = 30;
+
+    let pagefind: any = null;
+    let initFailed = false;
+    let debounce: ReturnType<typeof setTimeout>;
+
+    // Load the Pagefind runtime on demand. The bundle only exists in the built
+    // site (/pagefind/), so this fails gracefully under `astro dev`.
+    async function getPagefind() {
+      if (pagefind || initFailed) return pagefind;
+      try {
+        // Non-literal specifier so the bundler leaves this as a runtime import
+        // (the /pagefind/ bundle only exists in the built site, not at compile time).
+        const mod = "/pagefind/pagefind.js";
+        pagefind = await import(/* @vite-ignore */ mod);
+        await pagefind.init();
+      } catch {
+        initFailed = true;
+        pagefind = null;
+      }
+      return pagefind;
+    }
+
+    function esc(s: string) {
+      return (s || "").replace(/[&<>"]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string,
+      );
+    }
+
+    function rowHtml(d: any) {
+      const type = d?.meta?.type || "Page";
+      const title = d?.meta?.title || d.url;
+      const excerpt = d.excerpt || "";
+      return `<a href="${esc(d.url)}" class="grid grid-cols-[1fr_auto] gap-6 items-start py-[22px] px-1 border-b border-rule text-text no-underline transition-all hover:bg-paper-2 hover:px-5 group">
+        <div class="min-w-0">
+          <span class="block font-display text-ink text-[26px] md:text-[30px] leading-tight mb-2 group-hover:text-red transition-colors">${esc(title)}</span>
+          <p class="search-excerpt text-[15px] text-text-soft leading-normal m-0">${excerpt}</p>
+        </div>
+        <span class="chip flex-none mt-1.5" style="font-size:12px;padding:3px 9px">${esc(type)}</span>
+      </a>`;
+    }
+
+    async function run(raw: string) {
+      const q = (raw || "").trim();
+
+      // Keep the URL shareable / back-button friendly.
+      const url = new URL(location.href);
+      if (q) url.searchParams.set("q", q);
+      else url.searchParams.delete("q");
+      history.replaceState(null, "", url);
+
+      clearBtn.classList.toggle("hidden", !q);
+
+      if (!q) {
+        resultsEl.innerHTML = "";
+        emptyEl.classList.add("hidden");
+        statusEl.textContent = "";
+        return;
+      }
+
+      const pf = await getPagefind();
+      if (!pf) {
+        statusEl.textContent =
+          "Search is being prepared. Please try again in a moment, or browse the song library.";
+        return;
+      }
+
+      statusEl.textContent = "Searching…";
+      const search = await pf.search(q);
+      const items = await Promise.all(
+        search.results.slice(0, MAX_RESULTS).map((r: any) => r.data()),
+      );
+
+      if (!items.length) {
+        resultsEl.innerHTML = "";
+        emptyEl.classList.remove("hidden");
+        statusEl.textContent = `No matches for "${q}".`;
+        return;
+      }
+
+      emptyEl.classList.add("hidden");
+      const total = search.results.length;
+      const shown = items.length;
+      statusEl.textContent =
+        total > shown
+          ? `Showing the top ${shown} of ${total} matches for "${q}".`
+          : `${total} ${total === 1 ? "match" : "matches"} for "${q}".`;
+      resultsEl.innerHTML = items.map(rowHtml).join("");
+    }
+
+    input.addEventListener("input", () => {
+      clearTimeout(debounce);
+      debounce = setTimeout(() => run(input.value), 200);
+    });
+    clearBtn.addEventListener("click", () => {
+      input.value = "";
+      input.focus();
+      run("");
+    });
+
+    // Run an initial search when arriving with ?q= (shared link or nav).
+    const initial = new URL(location.href).searchParams.get("q");
+    if (initial) {
+      input.value = initial;
+      run(initial);
+    }
+  </script>
+</BaseLayout>
