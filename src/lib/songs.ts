@@ -67,6 +67,7 @@ const SONG_FIELDS = `
 `;
 
 const CONSOLIDATED_PATH = resolve(process.cwd(), "data/songs-consolidated.json");
+const CENTRAL_HIDDEN_PATH = resolve(process.cwd(), "data/central-hidden-gaggles.json");
 
 // Match WordPress sanitize_title() for the slug fields the live CPT exposes.
 // ASCII-fold via Unicode normalization, lowercase, collapse non-alphanumerics
@@ -82,6 +83,32 @@ function slugify(s: string): string {
 
 function nullIfEmpty(s: string | null | undefined): string | null {
   return s ? s : null;
+}
+
+// Gaggles that have opted to hide their songs from the central archive. Their
+// songs stay in the consolidated snapshot (and live on their own subsite), but
+// are excluded from every main-site surface that derives from fetchAllSongs()
+// and from the llms.txt corpus. Config values are gaggle slugs, matching the
+// subsite path / ?gaggle= convention; we slugify both sides to compare. The
+// theme carries a mirrored list (tbl_hidden_from_central) for its own links.
+let cachedHidden: Set<string> | null = null;
+function centralHiddenGaggles(): Set<string> {
+  if (cachedHidden) return cachedHidden;
+  cachedHidden = new Set<string>();
+  try {
+    if (existsSync(CENTRAL_HIDDEN_PATH)) {
+      const cfg = JSON.parse(readFileSync(CENTRAL_HIDDEN_PATH, "utf8")) as { gaggles?: string[] };
+      for (const slug of cfg.gaggles ?? []) cachedHidden.add(slugify(slug));
+    }
+  } catch (err) {
+    console.warn(`[songs] could not parse ${CENTRAL_HIDDEN_PATH}: ${(err as Error).message}`);
+  }
+  return cachedHidden;
+}
+
+function isCentralHidden(gaggleName: string | null | undefined): boolean {
+  if (!gaggleName) return false;
+  return centralHiddenGaggles().has(slugify(gaggleName));
 }
 
 function consolidatedToSong(r: ConsolidatedRecord): Song {
@@ -112,7 +139,14 @@ function loadFromJson(): Song[] | null {
     const raw = JSON.parse(readFileSync(CONSOLIDATED_PATH, "utf8")) as ConsolidatedRecord[];
     if (!Array.isArray(raw)) return null;
     return raw
-      .filter((r) => r && !r.duplicate_of && typeof r.title === "string" && r.title.length > 0)
+      .filter(
+        (r) =>
+          r &&
+          !r.duplicate_of &&
+          typeof r.title === "string" &&
+          r.title.length > 0 &&
+          !isCentralHidden(r.gaggle),
+      )
       .map(consolidatedToSong);
   } catch (err) {
     console.warn(`[songs] could not parse ${CONSOLIDATED_PATH}: ${(err as Error).message}`);
@@ -166,7 +200,9 @@ async function fetchAllSongsFromGraphQL(): Promise<Song[]> {
     cursor = data.songs.pageInfo.endCursor;
   }
 
-  return all;
+  // Mirror the consolidated-JSON path: hide opted-out gaggles from the central
+  // archive even when falling back to live WPGraphQL in local dev.
+  return all.filter((s) => !isCentralHidden(s.gaggles.nodes[0]?.name));
 }
 
 export async function fetchSongBySlug(slug: string): Promise<Song | null> {

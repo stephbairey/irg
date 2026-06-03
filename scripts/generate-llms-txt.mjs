@@ -18,6 +18,19 @@ const OUT_DIR = resolve(ROOT, "public");
 
 const SONGS_PATH = resolve(ROOT, "data/songs-consolidated.json");
 const GAGGLES_PATH = resolve(ROOT, "data/gaggle-locations.json");
+const CENTRAL_HIDDEN_PATH = resolve(ROOT, "data/central-hidden-gaggles.json");
+
+// Gaggles that opted out of the central archive (see src/lib/songs.ts). Their
+// songs are excluded from this external-crawler corpus too. Slugs, compared via
+// slugifyFallback() against each song's gaggle name.
+const CENTRAL_HIDDEN = (() => {
+  try {
+    const cfg = JSON.parse(readFileSync(CENTRAL_HIDDEN_PATH, "utf8"));
+    return new Set((cfg.gaggles ?? []).map(slugifyFallback));
+  } catch {
+    return new Set();
+  }
+})();
 
 // Count is interpolated into the herstory page description below; computed
 // here so a single source (gaggle-locations.json) drives the number wherever
@@ -158,7 +171,14 @@ function loadSongs() {
   }
   const raw = JSON.parse(readFileSync(SONGS_PATH, "utf8"));
   return raw
-    .filter((s) => s && !s.duplicate_of && s.title && (s.slug || s.title))
+    .filter(
+      (s) =>
+        s &&
+        !s.duplicate_of &&
+        s.title &&
+        (s.slug || s.title) &&
+        !CENTRAL_HIDDEN.has(slugifyFallback(s.gaggle || "")),
+    )
     .map((s) => ({
       title: s.title,
       slug: s.slug || slugifyFallback(s.title),

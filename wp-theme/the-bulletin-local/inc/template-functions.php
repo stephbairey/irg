@@ -91,10 +91,48 @@ function tbl_hero_image_url(): string {
 }
 
 /**
+ * Gaggle slugs whose songs are hidden from the central Astro archive.
+ *
+ * MIRRORS data/central-hidden-gaggles.json in the irg repo — the Astro/build
+ * side is the source of truth for what's filtered out of the central library;
+ * this list exists only so the theme stops linking subsite visitors to a
+ * now-empty `?gaggle=<slug>` view. Keep the two in sync when a gaggle opts in
+ * or out.
+ *
+ * @return string[]
+ */
+function tbl_hidden_from_central(): array {
+	return [ 'seattle' ];
+}
+
+/**
+ * True when this subsite's gaggle is hidden from the central archive.
+ */
+function tbl_is_central_hidden(): bool {
+	$slug = tbl_gaggle_slug();
+	return $slug !== '' && in_array( $slug, tbl_hidden_from_central(), true );
+}
+
+/**
+ * Central Astro library URL for this gaggle. Normally pre-filtered by the
+ * gaggle slug; but for gaggles hidden from the central archive
+ * (tbl_hidden_from_central), the filtered view would be empty, so we point at
+ * the unfiltered library instead.
+ */
+function tbl_central_songs_url(): string {
+	$slug = tbl_gaggle_slug();
+	if ( $slug === '' || tbl_is_central_hidden() ) {
+		return 'https://raginggrannies.international/songs/';
+	}
+	return 'https://raginggrannies.international/songs/?gaggle=' . rawurlencode( $slug );
+}
+
+/**
  * URL the Songs pill should point to. When the subsite has the local
  * songs page enabled (Gaggle Settings → Display songs on this subsite),
  * the pill links to that subsite-local page. Otherwise it falls through
- * to the central Astro library, pre-filtered by this gaggle.
+ * to the central Astro library (pre-filtered by this gaggle, unless the
+ * gaggle is hidden from the central archive).
  *
  * The Astro page does a case-insensitive lookup against the song-
  * library's gaggle taxonomy term names, so the subsite slug resolves
@@ -104,11 +142,7 @@ function tbl_songs_url(): string {
 	if ( (int) tbl_get_option( 'show_local_songs' ) === 1 ) {
 		return home_url( '/songs/' );
 	}
-	$slug = tbl_gaggle_slug();
-	if ( $slug === '' ) {
-		return 'https://raginggrannies.international/songs/';
-	}
-	return 'https://raginggrannies.international/songs/?gaggle=' . rawurlencode( $slug );
+	return tbl_central_songs_url();
 }
 
 /**

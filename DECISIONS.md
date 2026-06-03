@@ -620,7 +620,7 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 
 ## D045 — Chatbot UX: dedicated /ask page, no floating widget, nav link
 
-- **Status**: Decided
+- **Status**: Superseded by D051 (2026-06-03) — the on-site "Ask" chatbot was archived at the committee's request.
 - **Date**: 2026-04-30
 - **Context**: The "Ask the website" chatbot (L3 of the agent layer) needs a UX that fits IRG's primary demographic — grannies aged 65–85, many on smaller phones or low-vision adapters. Standard SaaS chatbot UX is a floating widget that pops over content. W3C WCAG-AGE guidance and Nielsen Norman Group research on users 65+ both flag floating chat as a problem for older audiences (covers content, moves unexpectedly, tap targets too small, expects multi-turn conversation).
 - **Options considered**:
@@ -705,6 +705,32 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: Single page at `raginggrannies.org/privacy/` (currently `raginggrannies.international/privacy/` pre-cutover). Astro footer (`src/layouts/BaseLayout.astro`) and Bulletin Local footer (`footer.php`) both carry a "Privacy" link in the bottom bar. Gaggle Notes / FAQs that touch privacy concerns (member rosters, photo consent) can link to the canonical policy rather than restate it.
 - **Contact**: `webgranny@raginggrannies.org` is the privacy contact (handles access, deletion, correction, portability requests). Single inbox keeps requests centralized; a granny re-routes to a gaggle if the request is about gaggle-local data.
 - **Revisit if**: a gaggle has materially different data practices (e.g. runs paid programs, sells merch, holds donor data) that warrant their own addendum. At that point keep the canonical hub policy and add a subsite-specific addendum page that links back to it.
+
+## D051 — Archive the on-site "Ask" AI chatbot; keep llms.txt for external discovery (supersedes D045)
+
+- **Status**: Decided
+- **Date**: 2026-06-03
+- **Context**: The IRG committee decided they did not want an AI feature on the site. D045's "Ask the website" chatbot (the L3 RAG-over-Claude `/ask` page) is the on-site AI feature in question. The `llms.txt` / `llms-full.txt` files (D039) are a separate concern: they are metadata for *external* AI tools (ChatGPT, Perplexity, Claude web) discovering and citing the public site, not an on-site feature.
+- **Choice**:
+  - **Archive the chatbot.** `src/pages/ask.astro` and `functions/api/ask.ts` moved to `_archive/ask-a-question/`; the orphaned `functions/admin/chatbot-status.ts` (spend/transcript dashboard) and `scripts/build-rag-index.mjs` (embeddings builder, the embedding-prebuild half of D041) moved there too. The three "Ask a Question" nav links (desktop, mobile, footer) removed from `src/layouts/BaseLayout.astro`. Stale chatbot copy removed from `src/pages/privacy.astro`. The committed `public/embeddings.json` (~7.2 MB) deleted from the working tree (git history retains it; regenerable from the archived script). The `embed` npm script removed.
+  - **Keep `llms.txt` (reaffirms D039).** The generator stays in the `prebuild` chain. The committee's objection is to an interactive on-site bot, not to being discoverable/citable by external AI tools. Removing it would only reduce reach with no privacy benefit (the site is already public).
+- **Why archive, not delete**: fully reversible if the committee changes its mind. Restoration steps are documented in `_archive/ask-a-question/README.md`.
+- **Out of scope**: the MCP surface (D042–D044) and markdown-twin work (D040) were not touched. `src/lib/public-filter.ts` (D046) remains in place as the documented boundary even though its agent-layer consumers are dormant.
+- **Revisit if**: the committee reverses course (restore from `_archive/`), or decides to opt out of external AI indexing too (then revisit D039 and drop the `llms.txt` generator + add crawler directives).
+
+## D052 — Per-gaggle opt-out from the central song archive, via repo config (Seattle)
+
+- **Status**: Decided
+- **Date**: 2026-06-03
+- **Context**: The Seattle gaggle (~448 songs) wants their songs hidden from the main-site central song archive while keeping them visible on their own subsite and still editable on the main site. The two surfaces read from different sources: the Astro main site reads `data/songs-consolidated.json` (`src/lib/songs.ts`), while the subsite renders songs directly from WordPress (`irg_get_subsite_songs()` / single-song rewrite in the theme). Builds on the subsite-local song archive (D034) and its single-song detail pages (D035).
+- **Options considered**:
+  - **WP admin toggle** mirroring the `show_local_songs` opt-in — granny-manageable single source of truth, but the build-time snapshot would need to read a per-subsite option (extra plumbing).
+  - **Per-song flag** — wrong granularity; the request is "all of our songs."
+  - **Repo config list filtered at data-load time** — a committed `data/central-hidden-gaggles.json` of hidden gaggle slugs; consumers exclude matches.
+- **Choice**: `data/central-hidden-gaggles.json` (`{ "gaggles": ["seattle"] }`) is the source of truth. `src/lib/songs.ts` excludes hidden gaggles in `loadFromJson()` (and the live-WP fallback), which covers every Astro song surface (archive, single pages, by-issue/by-tune, search, the gaggle filter) since all derive from `fetchAllSongs()`. `scripts/generate-llms-txt.mjs` applies the same filter so the external corpus excludes them too. Songs stay in the consolidated snapshot — the filter is at consumption, so it is non-destructive and instantly reversible. The WordPress theme carries a documented mirror list (`tbl_hidden_from_central()` in `inc/template-functions.php`) so a hidden gaggle's subsite points its "Browse the central library" links at the unfiltered `/songs/` instead of an empty `?gaggle=<slug>` view.
+- **Trade-off**: the theme mirror duplicates the slug list (the repo config can't be read from WP). Acceptable given how rarely gaggles opt in/out; both spots are commented to keep them in sync.
+- **Does not change**: the consolidated snapshot stays complete, `scripts/snapshot-songs.mjs` stays a full WP mirror, and the Songs CPT / `gaggle` taxonomy / add-edit-delete capabilities in `irg-core` are untouched.
+- **Revisit if**: more gaggles opt out and the two-place sync becomes error-prone (then promote to a WP admin toggle the snapshot reads, making WP the single source of truth), or a gaggle wants per-song rather than whole-gaggle control.
 
 ## Open decisions (not yet resolved)
 

@@ -12,8 +12,9 @@
 get_header();
 
 $enabled = (int) tbl_get_option( 'show_local_songs' ) === 1;
-$slug    = tbl_gaggle_slug();
-$central = $slug !== '' ? 'https://raginggrannies.international/songs/?gaggle=' . rawurlencode( $slug ) : 'https://raginggrannies.international/songs/';
+// Central library link — unfiltered for gaggles hidden from the central
+// archive (their ?gaggle= view would be empty), otherwise pre-filtered.
+$central = tbl_central_songs_url();
 ?>
 
 <article class="tbl-page tbl-songs">

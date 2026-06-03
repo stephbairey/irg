@@ -3,6 +3,7 @@
 @theme {
   --color-paper: #faf3e3;
   --color-paper-2: #ede4ca;
+  --color-pale-lavender: #eae6ed;
   --color-card: #FFFEF7;
   --color-ink: #2A1847;
   --color-ink-soft: #57228C;
@@ -35,7 +36,7 @@ body {
   font-size: 18px;
   line-height: 1.55;
   color: var(--color-text);
-  background: var(--color-paper);
+  background: var(--color-pale-lavender);
   -webkit-font-smoothing: antialiased;
 }
 

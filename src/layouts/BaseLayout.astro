@@ -77,9 +77,9 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
     <header class="sticky top-0 z-50 border-b-[1.5px] border-rule bg-paper" style="backdrop-filter:saturate(1.1)">
       <div class="flex justify-between items-center max-w-[1400px] mx-auto px-8 py-4">
         <a href="/" class="flex items-center gap-3 no-underline text-ink" aria-label="Raging Grannies International, Home">
-          <img src="/logo-cropped.svg" alt="" class="w-[38px] h-[38px] object-contain" />
+          <img src="/logo-cropped.svg" alt="" class="w-[100px] h-[100px] object-contain" />
           <div>
-            <span class="font-display text-2xl leading-none text-ink block">Raging Grannies</span>
+            <span class="font-display text-[3em] leading-none text-ink block">Raging Grannies</span>
             <span class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-muted block mt-1">International Network · Est. 1987</span>
           </div>
         </a>
@@ -88,7 +88,6 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         <nav aria-label="Main" class="hidden md:flex items-center gap-7">
           <a href="/about/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/about") ? "text-red" : "text-text"]}>About</a>
           <a href="/in-the-news/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/in-the-news") || path.startsWith("/photos") ? "text-red" : "text-text"]}>News</a>
-          <a href="/ask/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/ask") ? "text-red" : "text-text"]}>Ask a Question</a>
           <a href="/find-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/find-a-gaggle") ? "text-red" : "text-text"]}>Find a Gaggle</a>
           <a href="/start-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/start-a-gaggle") ? "text-red" : "text-text"]}>Start a Gaggle</a>
           <a href="/songs/" class="px-[18px] py-[10px] rounded-full text-sm font-bold no-underline transition-colors text-white bg-red hover:bg-ink-soft">Songs</a>
@@ -124,7 +123,6 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         <nav aria-label="Mobile" class="max-w-[1400px] mx-auto px-8 py-4 grid gap-1">
           <a href="/about/" class:list={["mobile-link", path.startsWith("/about") && "is-active"]}>About</a>
           <a href="/in-the-news/" class:list={["mobile-link", (path.startsWith("/in-the-news") || path.startsWith("/photos")) && "is-active"]}>News</a>
-          <a href="/ask/" class:list={["mobile-link", path.startsWith("/ask") && "is-active"]}>Ask a Question</a>
           <a href="/find-a-gaggle/" class:list={["mobile-link", path.startsWith("/find-a-gaggle") && "is-active"]}>Find a Gaggle</a>
           <a href="/start-a-gaggle/" class:list={["mobile-link", path.startsWith("/start-a-gaggle") && "is-active"]}>Start a Gaggle</a>
           <a href="/songs/" class:list={["mobile-link mobile-link-pill", path.startsWith("/songs") && "is-active"]}>Songs</a>
@@ -274,8 +272,8 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         <!-- Brand column -->
         <div class="mb-2 md:mb-0">
           <div class="flex items-center gap-3 mb-4">
-            <img src="/logo-full.svg" alt="" class="h-[54px] brightness-0 invert opacity-90" />
-            <span class="font-display text-2xl text-on-dark">Raging Grannies</span>
+            <img src="/logo-full.svg" alt="" class="h-[125px] brightness-0 invert opacity-90" />
+            <span class="font-display text-[3em] text-on-dark">Raging Grannies</span>
           </div>
           <p class="text-[15px] text-ink-lilac leading-relaxed max-w-[340px]">
             A network of women over 50, singing satire into the face of injustice as long as it's needed.
@@ -316,7 +314,6 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
           <summary>Connect</summary>
           <ul class="space-y-2 text-[15px]">
             <li><a href="/contact/" class="text-on-dark no-underline hover:text-red">Contact</a></li>
-            <li><a href="/ask/" class="text-on-dark no-underline hover:text-red">Ask a question</a></li>
           </ul>
         </details>
       </div>
