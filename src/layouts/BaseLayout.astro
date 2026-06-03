@@ -277,8 +277,12 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       <slot />
     </main>
 
+    <!-- Paper band between page content and the dark footer (replaces the
+         footer's old top margin, which showed the lavender page behind it). -->
+    <div class="bg-paper h-16 md:h-24" aria-hidden="true"></div>
+
     <!-- Footer -->
-    <footer class="mt-16 md:mt-24 bg-ink text-on-dark pt-12 md:pt-14 pb-8">
+    <footer class="bg-ink text-on-dark pt-12 md:pt-14 pb-8">
       <div class="grid grid-cols-1 md:grid-cols-[1.7fr_1fr_1fr_1.2fr_1fr] gap-0 md:gap-12 max-w-[1200px] mx-auto px-5 md:px-8">
         <!-- Brand column -->
         <div class="mb-2 md:mb-0">
