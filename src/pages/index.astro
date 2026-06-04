@@ -99,7 +99,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
 
 <BaseLayout title="Home">
   <!-- Masthead -->
-  <section class="bg-pale-lavender pt-12 pb-8">
+  <section class="bg-paper pt-12 pb-8">
     <div class="max-w-[1400px] mx-auto px-5 md:px-8">
       <div class="flex flex-col items-center gap-1 text-center md:flex-row md:justify-between md:text-left text-muted font-bold text-xs tracking-[.1em] uppercase border-b border-rule pb-3 mb-5">
         <span>Welcome, friend</span>
@@ -117,9 +117,9 @@ const featuredLyrics = featured?.songDetails?.lyrics
 
   <!-- Front Page Grid -->
   <section class="bg-paper max-w-[1400px] mx-auto px-5 md:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-[3fr_4fr_3fr]">
+    <div class="grid grid-cols-1 md:grid-cols-[3fr_4fr_3fr] border border-muted">
       <!-- Lead story -->
-      <div class="p-5 md:p-7 border-t border-muted">
+      <div class="p-5 md:p-7">
         <div class="kicker text-red mb-3.5">From the Songbook</div>
         {featured && (
           <>
@@ -140,7 +140,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
       </div>
 
       <!-- Who we are + From the archive -->
-      <div class="border-t border-muted">
+      <div class="bg-paper-2">
         <div class="p-5 md:p-7 bg-paper-2">
           <div class="kicker text-red mb-3.5">Who we are</div>
           <p class="text-[17px] leading-normal mb-3.5">
@@ -191,7 +191,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
       </div>
 
       <!-- On The Streets -->
-      <div class="p-5 md:p-7 border-t border-muted">
+      <div class="p-5 md:p-7">
         <div class="kicker text-red mb-3.5">On the streets</div>
         <h2 class="font-display text-ink text-[28px] leading-tight mb-4 m-0">Dispatches</h2>
         {latestActions.length === 0 ? (
@@ -264,7 +264,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
   </section>
 
   <!-- About Strip -->
-  <section class="py-12 md:py-[72px] bg-pale-lavender border-t border-b border-rule">
+  <section class="py-12 md:py-[72px] bg-paper-2 border-t border-b border-rule">
     <div class="max-w-[1200px] mx-auto px-5 md:px-8 grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-8 md:gap-14 items-center">
       <figure class="p-3.5 pt-3.5 pb-0 bg-on-dark mx-auto md:mx-0 max-w-[400px] md:max-w-none" style="transform:rotate(-1.5deg);box-shadow:0 14px 36px rgba(0,0,0,.18);border:1px solid rgba(0,0,0,.04)">
         <img src="/granny-movement.jpg" alt="Raging Grannies of Madison" class="w-full aspect-[4/3] object-cover" style="filter:saturate(.9) contrast(1.02)" />
@@ -287,7 +287,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
   </section>
 
   <!-- FAQ Teaser -->
-  <section class="py-14 md:py-24 bg-pale-lavender">
+  <section class="py-14 md:py-24 bg-paper">
     <div class="max-w-[1200px] mx-auto px-5 md:px-8 grid grid-cols-1 md:grid-cols-[340px_1fr] gap-8 md:gap-16 items-start">
       <div class="md:sticky md:top-6">
         <figure class="hidden md:block mb-6 p-2.5 pt-2.5 pb-0 bg-on-dark max-w-[300px]" style="transform:rotate(1.5deg);box-shadow:0 10px 28px rgba(0,0,0,.18)">
