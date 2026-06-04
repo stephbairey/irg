@@ -66,39 +66,52 @@ function stripHtml(html: string): string {
     .trim();
 }
 
-// Pick a random featured song whose lyrics fall within a target word count.
-// Build-time only; runs once per build. If the primary range yields nothing,
-// widen by 10 words on each side and try again.
+// Homepage-eligible songs: approved for the homepage (allowlist, D054) AND
+// within the featured length window (prefer the tight band; widen only if the
+// tight band is empty). The lead column re-rolls in the browser on every load
+// (see the inline script below), so we ship the whole pool; the server renders
+// one random pick for no-JS readers and crawlers.
 function wordCount(html: string): number {
   return stripHtml(html).split(/\s+/).filter(Boolean).length;
 }
-function pickFeatured(min: number, max: number) {
-  const eligible = allSongs.filter((s) => {
-    // Allowlist (default-deny): only songs the song librarian has approved for
-    // the homepage are eligible. Keeps partisan / candidate-specific songs out
-    // of the shop window while leaving them in the archive.
+function eligibleSongs(min: number, max: number) {
+  return allSongs.filter((s) => {
+    // Allowlist (default-deny): only librarian-approved songs are eligible, so
+    // partisan / candidate-specific songs stay out of the shop window.
     if (!s.songDetails?.featureOnHomepage) return false;
     const lyrics = s.songDetails?.lyrics;
     if (!lyrics) return false;
     const wc = wordCount(lyrics);
     return wc >= min && wc <= max;
   });
-  if (eligible.length === 0) return null;
-  return eligible[Math.floor(Math.random() * eligible.length)];
 }
-const featured = pickFeatured(175, 195) ?? pickFeatured(165, 205);
-
+function lyricExcerpt(html: string | null | undefined): string {
+  return html
+    ? stripHtml(html)
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean)
+        .slice(0, 32)
+        .join("\n")
+    : "";
+}
+const tightPool = eligibleSongs(175, 195);
+const featuredPool = (tightPool.length ? tightPool : eligibleSongs(165, 205)).map((s) => ({
+  slug: s.slug,
+  title: s.title,
+  songwriter: s.songwriters.nodes[0]?.name ?? "",
+  gaggle: s.gaggles.nodes[0]?.name ?? "",
+  tune: s.tunes.nodes[0]?.name ?? "",
+  excerpt: lyricExcerpt(s.songDetails?.lyrics),
+}));
+const featuredPoolJson = JSON.stringify(featuredPool);
+// Server-side initial pick (build-time random) so the lead column is never empty
+// for no-JS / SEO; the inline script swaps in a fresh random pick on each load.
+const featured = featuredPool.length
+  ? featuredPool[Math.floor(Math.random() * featuredPool.length)]
+  : null;
 
 const yearsSinging = new Date().getFullYear() - 1987;
-
-const featuredLyrics = featured?.songDetails?.lyrics
-  ? stripHtml(featured.songDetails.lyrics)
-      .split("\n")
-      .map((l) => l.trim())
-      .filter(Boolean)
-      .slice(0, 32)
-      .join("\n")
-  : "";
 ---
 
 <BaseLayout title="Home">
@@ -125,32 +138,34 @@ const featuredLyrics = featured?.songDetails?.lyrics
       <!-- Lead story -->
       <div class="p-5 md:p-7">
         <div class="kicker text-red mb-3.5">From the Songbook</div>
-        {featured ? (
-          <>
-            <h2 class="font-display text-ink text-[40px] md:text-[56px] leading-[.98] mb-2.5">
-              <a href={`/songs/${featured.slug}/`} class="text-ink no-underline hover:text-red transition-colors">{featured.title}</a>
-            </h2>
-            <p class="text-sm text-text-soft pb-4 border-b border-rule mb-5">
-              By <strong class="text-ink">{featured.songwriters.nodes[0]?.name}</strong>
-              {featured.gaggles.nodes[0] && <> · {featured.gaggles.nodes[0].name} Gaggle</>}
-              {featured.tunes.nodes[0] && <> · to the tune of <em class="text-ink-soft">{featured.tunes.nodes[0].name}</em></>}
-            </p>
-            <div class="text-[17px] leading-relaxed text-text whitespace-pre-line mb-4">{featuredLyrics}</div>
-            <a href={`/songs/${featured.slug}/`} class="inline-flex items-center gap-1.5 font-[800] text-red no-underline hover:underline">
-              Read full lyrics →
-            </a>
-          </>
-        ) : (
-          <>
-            <h2 class="font-display text-ink text-[40px] md:text-[56px] leading-[.98] mb-2.5">The Songbook</h2>
-            <p class="text-[17px] leading-relaxed text-text mb-5">
-              Nearly {totalSongs.toLocaleString()} satirical songs by gaggles across four continents, set to tunes you already know. Browse by issue, tune, or gaggle, and find one to sing.
-            </p>
-            <a href="/songs/" class="inline-flex items-center gap-1.5 font-[800] text-red no-underline hover:underline">
-              Explore the songbook →
-            </a>
-          </>
-        )}
+        <div id="featured-slot">
+          {featured ? (
+            <>
+              <h2 class="font-display text-ink text-[40px] md:text-[56px] leading-[.98] mb-2.5">
+                <a href={`/songs/${featured.slug}/`} class="text-ink no-underline hover:text-red transition-colors">{featured.title}</a>
+              </h2>
+              <p class="text-sm text-text-soft pb-4 border-b border-rule mb-5">
+                By <strong class="text-ink">{featured.songwriter}</strong>
+                {featured.gaggle && <> · {featured.gaggle} Gaggle</>}
+                {featured.tune && <> · to the tune of <em class="text-ink-soft">{featured.tune}</em></>}
+              </p>
+              <div class="text-[17px] leading-relaxed text-text whitespace-pre-line mb-4">{featured.excerpt}</div>
+              <a href={`/songs/${featured.slug}/`} class="inline-flex items-center gap-1.5 font-[800] text-red no-underline hover:underline">
+                Read full lyrics →
+              </a>
+            </>
+          ) : (
+            <>
+              <h2 class="font-display text-ink text-[40px] md:text-[56px] leading-[.98] mb-2.5">The Songbook</h2>
+              <p class="text-[17px] leading-relaxed text-text mb-5">
+                Nearly {totalSongs.toLocaleString()} satirical songs by gaggles across four continents, set to tunes you already know. Browse by issue, tune, or gaggle, and find one to sing.
+              </p>
+              <a href="/songs/" class="inline-flex items-center gap-1.5 font-[800] text-red no-underline hover:underline">
+                Explore the songbook →
+              </a>
+            </>
+          )}
+        </div>
       </div>
 
       <!-- Who we are + From the archive -->
@@ -227,6 +242,41 @@ const featuredLyrics = featured?.songDetails?.lyrics
 
     </div>
   </section>
+
+  {/* Re-roll the featured song on every page load (client-side) from the
+      approved pool. is:inline + placement right after the slot keeps the swap
+      before paint, so there's no visible flash of the server-rendered pick. */}
+  <script is:inline define:vars={{ featuredPoolJson }}>
+    (function () {
+      const slot = document.getElementById("featured-slot");
+      if (!slot) return;
+      let pool;
+      try {
+        pool = JSON.parse(featuredPoolJson);
+      } catch {
+        return;
+      }
+      if (!Array.isArray(pool) || pool.length < 2) return; // nothing to vary
+      const esc = (s) =>
+        String(s == null ? "" : s).replace(/[&<>"]/g, (c) =>
+          ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+        );
+      const s = pool[Math.floor(Math.random() * pool.length)];
+      const href = "/songs/" + s.slug + "/";
+      const meta =
+        'By <strong class="text-ink">' + esc(s.songwriter) + "</strong>" +
+        (s.gaggle ? " · " + esc(s.gaggle) + " Gaggle" : "") +
+        (s.tune ? ' · to the tune of <em class="text-ink-soft">' + esc(s.tune) + "</em>" : "");
+      slot.innerHTML =
+        '<h2 class="font-display text-ink text-[40px] md:text-[56px] leading-[.98] mb-2.5">' +
+        '<a href="' + href + '" class="text-ink no-underline hover:text-red transition-colors">' +
+        esc(s.title) + "</a></h2>" +
+        '<p class="text-sm text-text-soft pb-4 border-b border-rule mb-5">' + meta + "</p>" +
+        '<div class="text-[17px] leading-relaxed text-text whitespace-pre-line mb-4">' +
+        esc(s.excerpt) + "</div>" +
+        '<a href="' + href + '" class="inline-flex items-center gap-1.5 font-[800] text-red no-underline hover:underline">Read full lyrics →</a>';
+    })();
+  </script>
 
   <!-- Issues Grid -->
   <section class="py-14 md:py-20 bg-paper">
