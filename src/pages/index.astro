@@ -2,9 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { fetchAllSongs } from "../lib/songs";
 import { fetchLatestActions } from "../lib/actions";
-import { getActiveGaggleCount } from "../lib/gaggles";
+import { getActiveGaggleCountLabel } from "../lib/gaggles";
 
-const activeGaggleCount = getActiveGaggleCount();
+const activeGaggleCount = getActiveGaggleCountLabel();
 
 const [allSongs, latestActions] = await Promise.all([
   fetchAllSongs(),

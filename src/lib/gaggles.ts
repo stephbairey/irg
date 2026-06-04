@@ -40,3 +40,11 @@ export function getGaggleLocations(): GaggleLocation[] {
 export function getActiveGaggleCount(): number {
   return getGaggleLocations().length;
 }
+
+// Display label for the active-gaggle count, obfuscated to the nearest ten with
+// a trailing "+" (committee request: the exact number is volatile and reads as
+// falsely precise). 61 -> "60+", 76 -> "70+", 121 -> "120+". Use this anywhere
+// the count is shown to readers; use getActiveGaggleCount() for arithmetic.
+export function getActiveGaggleCountLabel(): string {
+  return `${Math.floor(getActiveGaggleCount() / 10) * 10}+`;
+}
