@@ -49,6 +49,7 @@ const SONG_FIELDS = `
     youtubeLink2
     dateWrittenOrUpdated
     sourceNotes
+    featureOnHomepage
   }
   issues { nodes { name } }
   songwriters { nodes { name } }
@@ -120,6 +121,7 @@ function toRecord(node) {
     date_written_or_updated: sd.dateWrittenOrUpdated ?? "",
     date_published: (node.date ?? "").slice(0, 10),
     source_notes: sd.sourceNotes ?? "",
+    feature_on_homepage: sd.featureOnHomepage ?? false,
     duplicate_of: null,
     needs_review: false,
     review_notes: "",

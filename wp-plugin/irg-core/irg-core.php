@@ -297,6 +297,17 @@ function irg_register_acf_fields(): void {
 				'required'          => 0,
 				'show_in_graphql'   => 1,
 			],
+			[
+				'key'               => 'field_irg_feature_on_homepage',
+				'label'             => 'Feature on homepage',
+				'name'              => 'feature_on_homepage',
+				'type'              => 'true_false',
+				'instructions'      => 'Approve this song for the random featured song on the homepage. Keep partisan or candidate-specific songs unchecked — the homepage is non-partisan.',
+				'required'          => 0,
+				'ui'                => 1,
+				'default_value'     => 0,
+				'show_in_graphql'   => 1,
+			],
 		],
 		'location'              => [
 			[
@@ -1749,6 +1760,8 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 		$gaggle_add   = isset( $change['gaggle_add'] ) ? (string) $change['gaggle_add'] : '';
 		$has_lyrics   = array_key_exists( 'lyrics_set', $change );
 		$lyrics_set   = isset( $change['lyrics_set'] ) ? (string) $change['lyrics_set'] : '';
+		$has_feature  = array_key_exists( 'feature_on_homepage', $change );
+		$feature_val  = ! empty( $change['feature_on_homepage'] );
 
 		if ( $post_id <= 0 ) {
 			$errors[] = [ 'post_id' => $post_id, 'reason' => 'invalid post_id' ];
@@ -1848,6 +1861,16 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 					$tid = (int) ( is_array( $term ) ? $term['term_id'] : $term );
 					wp_set_object_terms( $post_id, [ $tid ], 'gaggle', /* append */ true );
 				}
+			}
+		}
+
+		// Homepage feature flag — approve/unapprove for the random featured
+		// song on the homepage. Set only when the caller supplies the key.
+		if ( $has_feature ) {
+			if ( function_exists( 'update_field' ) ) {
+				update_field( 'field_irg_feature_on_homepage', $feature_val ? 1 : 0, $post_id );
+			} else {
+				update_post_meta( $post_id, 'feature_on_homepage', $feature_val ? 1 : 0 );
 			}
 		}
 

@@ -74,6 +74,10 @@ function wordCount(html: string): number {
 }
 function pickFeatured(min: number, max: number) {
   const eligible = allSongs.filter((s) => {
+    // Allowlist (default-deny): only songs the song librarian has approved for
+    // the homepage are eligible. Keeps partisan / candidate-specific songs out
+    // of the shop window while leaving them in the archive.
+    if (!s.songDetails?.featureOnHomepage) return false;
     const lyrics = s.songDetails?.lyrics;
     if (!lyrics) return false;
     const wc = wordCount(lyrics);
@@ -121,7 +125,7 @@ const featuredLyrics = featured?.songDetails?.lyrics
       <!-- Lead story -->
       <div class="p-5 md:p-7">
         <div class="kicker text-red mb-3.5">From the Songbook</div>
-        {featured && (
+        {featured ? (
           <>
             <h2 class="font-display text-ink text-[40px] md:text-[56px] leading-[.98] mb-2.5">
               <a href={`/songs/${featured.slug}/`} class="text-ink no-underline hover:text-red transition-colors">{featured.title}</a>
@@ -134,6 +138,16 @@ const featuredLyrics = featured?.songDetails?.lyrics
             <div class="text-[17px] leading-relaxed text-text whitespace-pre-line mb-4">{featuredLyrics}</div>
             <a href={`/songs/${featured.slug}/`} class="inline-flex items-center gap-1.5 font-[800] text-red no-underline hover:underline">
               Read full lyrics →
+            </a>
+          </>
+        ) : (
+          <>
+            <h2 class="font-display text-ink text-[40px] md:text-[56px] leading-[.98] mb-2.5">The Songbook</h2>
+            <p class="text-[17px] leading-relaxed text-text mb-5">
+              Nearly {totalSongs.toLocaleString()} satirical songs by gaggles across four continents, set to tunes you already know. Browse by issue, tune, or gaggle, and find one to sing.
+            </p>
+            <a href="/songs/" class="inline-flex items-center gap-1.5 font-[800] text-red no-underline hover:underline">
+              Explore the songbook →
             </a>
           </>
         )}

@@ -13,6 +13,7 @@ export interface Song {
     youtubeLink2: string | null;
     dateWrittenOrUpdated: string | null;
     sourceNotes: string | null;
+    featureOnHomepage: boolean;
   };
   issues: { nodes: { name: string }[] };
   songwriters: { nodes: { name: string }[] };
@@ -45,6 +46,7 @@ interface ConsolidatedRecord {
   date_written_or_updated: string;
   date_published: string;
   source_notes: string;
+  feature_on_homepage?: boolean;
   duplicate_of: string | null;
 }
 
@@ -59,6 +61,7 @@ const SONG_FIELDS = `
     youtubeLink2
     dateWrittenOrUpdated
     sourceNotes
+    featureOnHomepage
   }
   issues { nodes { name } }
   songwriters { nodes { name } }
@@ -125,6 +128,7 @@ function consolidatedToSong(r: ConsolidatedRecord): Song {
       youtubeLink2: nullIfEmpty(r.youtube_link_2),
       dateWrittenOrUpdated: nullIfEmpty(r.date_written_or_updated),
       sourceNotes: nullIfEmpty(r.source_notes),
+      featureOnHomepage: !!r.feature_on_homepage,
     },
     issues: { nodes: (r.issues ?? []).map((name) => ({ name })) },
     songwriters: { nodes: r.songwriter ? [{ name: r.songwriter }] : [] },

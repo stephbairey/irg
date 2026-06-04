@@ -747,6 +747,20 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Trade-off / caveat**: the Pagefind index only exists after a build, so search does not work under `astro dev` — local testing is `npm run build && npm run preview`. The `/search` page degrades gracefully (try/catch around the dynamic import) so dev doesn't error.
 - **Revisit if**: we want subsite content searchable (would need per-subsite indexing + federation, or pulling subsite pages into the build); OR typo-tolerance / instant-search-as-you-type at scale becomes a priority (re-evaluate a hosted service); OR index size or build time grows enough to warrant tuning Pagefind's chunking.
 
+## D054 — Curate the homepage featured song via a WP allowlist field
+
+- **Status**: Decided
+- **Date**: 2026-06-04
+- **Context**: The homepage's random "From the Songbook" feature (`pickFeatured()` in `src/pages/index.astro`) surfaced any song within a lyrics word-count window. Some songs name specific politicians, which conflicts with IRG's non-partisan stance. Gaggles can write whatever they like (the songs stay in the archive), but the homepage shop window should only show vetted songs.
+- **Options considered**:
+  - **Denylist (default-allow)** — block flagged songs; simplest upkeep, but a newly imported partisan song could surface on the homepage before anyone flags it.
+  - **Repo allowlist of slugs** (the D052 pattern) — dev-curated, fast to ship, but not self-serve for the song librarian.
+  - **WP allowlist field (default-deny)** — a per-song "Feature on homepage" flag the librarian controls in admin.
+- **Choice**: allowlist (default-deny) via a new ACF `true_false` field `feature_on_homepage` on the Song CPT (`group_irg_song_fields` in `wp-plugin/irg-core/irg-core.php`, `show_in_graphql`, exposed as `featureOnHomepage`). `scripts/snapshot-songs.mjs` pulls it into `data/songs-consolidated.json`; `src/lib/songs.ts` threads it onto `Song`; `pickFeatured()` requires `featureOnHomepage` AND the existing tight length window (175–195, widening to 165–205). When the approved pool is empty, the lead column renders a graceful "The Songbook" fallback card (CTA to `/songs/`) rather than a song or a blank column, so an unapproved song is never shown and the layout never breaks. The admin bulk endpoint accepts a `feature_on_homepage` key, and `scripts/approve-homepage-songs.mjs` can bulk-approve an initial set by slug.
+- **Why WP-side (vs D052's repo config)**: the curator here is the song librarian, an ongoing editorial role, so the flag belongs in WP admin where they already work — not in the repo. D052's gaggle opt-out was a rare, Maya-owned toggle, which justified repo config there.
+- **Rollout**: deploy the plugin (`node scripts/deploy-plugin.mjs`) so `featureOnHomepage` exists in GraphQL → approve an initial set (admin ticks or the seed script) → `npm run snapshot` → commit the new JSON + frontend → push. The fallback card makes the ordering safe (homepage shows the card until approvals land).
+- **Revisit if**: the approved pool is hard to keep healthy (then add a curation list view / count in admin), or curation should expand beyond the homepage feature (e.g. a general "showcase" flag reused elsewhere).
+
 ## Open decisions (not yet resolved)
 
 - **Song taxonomy structure**: 17 issue categories finalized (D016, split in D021). Song librarian may still refine E&D/G&P boundaries or request additions.
