@@ -85,7 +85,7 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         </a>
 
         {/* Desktop nav: visible at md+ */}
-        <nav aria-label="Main" class="hidden md:flex items-center gap-7">
+        <nav aria-label="Main" class="nav-desktop items-center gap-7">
           <a href="/about/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/about") ? "text-red" : "text-text"]}>About</a>
           <a href="/in-the-news/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/in-the-news") || path.startsWith("/photos") ? "text-red" : "text-text"]}>News</a>
           <a href="/find-a-gaggle/" class:list={["font-bold text-[15px] no-underline hover:text-red transition-colors", path.startsWith("/find-a-gaggle") ? "text-red" : "text-text"]}>Find a Gaggle</a>
@@ -99,7 +99,7 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         {/* Mobile hamburger: visible below md */}
         <button
           id="nav-toggle"
-          class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-md text-ink hover:bg-paper-2 transition-colors"
+          class="nav-toggle inline-flex items-center justify-center w-11 h-11 rounded-md text-ink hover:bg-paper-2 transition-colors"
           type="button"
           aria-label="Open menu"
           aria-expanded="false"
@@ -120,7 +120,7 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       {/* Mobile menu drawer: slides down from header on toggle */}
       <div
         id="mobile-menu"
-        class="md:hidden hidden bg-light-cream border-t border-rule"
+        class="nav-drawer hidden bg-light-cream border-t border-rule"
         aria-hidden="true"
       >
         <nav aria-label="Mobile" class="max-w-[1400px] mx-auto px-8 py-4 grid gap-1">
@@ -174,10 +174,17 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
           }
         });
 
-        // If user resizes/rotates above md, force-close so state stays sane.
-        const mq = window.matchMedia("(min-width: 768px)");
-        mq.addEventListener("change", (e) => {
-          if (e.matches) setOpen(false);
+        // Keep state sane when the desktop nav becomes visible — whether from a
+        // resize/rotate or from a zoom change shifting the collapse point. We
+        // read the CSS result (hamburger hidden ⇒ desktop nav showing) rather
+        // than duplicating the per-zoom breakpoints here.
+        function sync() {
+          if (getComputedStyle(btn).display === "none") setOpen(false);
+        }
+        window.addEventListener("resize", sync);
+        new MutationObserver(sync).observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["data-text-zoom"],
         });
       })();
 
@@ -252,19 +259,73 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       .footer-section[open] > summary::after { transform: rotate(180deg); }
       .footer-section > ul { padding: 0 0 16px; }
 
-      @media (min-width: 768px) {
-        /* Desktop: render exactly like before — heading + always-visible list,
-           no toggle UI. The summary becomes a plain heading. */
-        .footer-section { border-bottom: 0; }
-        .footer-section > summary {
-          cursor: default;
-          pointer-events: none;
-          padding: 0;
-          margin-bottom: 16px;
+      /* Zoom-aware collapse point. The onscreen text-size control (A / A+ / A++)
+         applies CSS zoom to <html> (see global.css), so bigger text needs a
+         wider physical viewport before the horizontal nav and the footer
+         columns fit. Media queries evaluate against the *physical* width
+         regardless of zoom, so we gate the "expanded" layout on width AND the
+         data-text-zoom level: A ≥800px, A+ ≥940px, A++ ≥1090px; below each
+         threshold the hamburger + footer accordions take over. The three bands
+         carry identical declarations. */
+      .nav-desktop { display: none; } /* mobile default; hamburger shown via its inline-flex */
+
+      /* A (default zoom): expand at ≥800px. Covers the no-attribute case (JS
+         removes data-text-zoom at the default level) and an explicit "default". */
+      @media (min-width: 800px) {
+        html:not([data-text-zoom]),
+        html[data-text-zoom="default"] {
+          & .nav-desktop { display: flex; }
+          & .nav-toggle  { display: none; }
+          & .nav-drawer  { display: none; }
+          & .footer-grid { grid-template-columns: 1.7fr 1fr 1fr 1.2fr 1fr; gap: 3rem; }
+          & .footer-section { border-bottom: 0; }
+          & .footer-section > summary {
+            cursor: default;
+            pointer-events: none;
+            padding: 0;
+            margin-bottom: 16px;
+          }
+          & .footer-section > summary::after { content: ""; display: none; }
+          & .footer-section > ul { display: block; padding: 0; }
         }
-        .footer-section > summary::after { content: ""; display: none; }
-        .footer-section:not([open]) > ul,
-        .footer-section[open] > ul { display: block; padding: 0; }
+      }
+
+      /* A+ (bigger): expand at ≥940px. */
+      @media (min-width: 940px) {
+        html[data-text-zoom="bigger"] {
+          & .nav-desktop { display: flex; }
+          & .nav-toggle  { display: none; }
+          & .nav-drawer  { display: none; }
+          & .footer-grid { grid-template-columns: 1.7fr 1fr 1fr 1.2fr 1fr; gap: 3rem; }
+          & .footer-section { border-bottom: 0; }
+          & .footer-section > summary {
+            cursor: default;
+            pointer-events: none;
+            padding: 0;
+            margin-bottom: 16px;
+          }
+          & .footer-section > summary::after { content: ""; display: none; }
+          & .footer-section > ul { display: block; padding: 0; }
+        }
+      }
+
+      /* A++ (quite-big): expand at ≥1090px. */
+      @media (min-width: 1090px) {
+        html[data-text-zoom="quite-big"] {
+          & .nav-desktop { display: flex; }
+          & .nav-toggle  { display: none; }
+          & .nav-drawer  { display: none; }
+          & .footer-grid { grid-template-columns: 1.7fr 1fr 1fr 1.2fr 1fr; gap: 3rem; }
+          & .footer-section { border-bottom: 0; }
+          & .footer-section > summary {
+            cursor: default;
+            pointer-events: none;
+            padding: 0;
+            margin-bottom: 16px;
+          }
+          & .footer-section > summary::after { content: ""; display: none; }
+          & .footer-section > ul { display: block; padding: 0; }
+        }
       }
     </style>
 
@@ -283,7 +344,7 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
 
     <!-- Footer -->
     <footer class="bg-ink text-on-dark pt-12 md:pt-14 pb-8">
-      <div class="grid grid-cols-1 md:grid-cols-[1.7fr_1fr_1fr_1.2fr_1fr] gap-0 md:gap-12 max-w-[1200px] mx-auto px-5 md:px-8">
+      <div class="footer-grid grid grid-cols-1 gap-0 max-w-[1200px] mx-auto px-5 md:px-8">
         <!-- Brand column -->
         <div class="mb-2 md:mb-0">
           <div class="flex items-center gap-3 mb-4">
@@ -400,19 +461,25 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       }
       // Footer link accordions: collapsed on mobile, fully expanded on desktop.
       // CSS alone can't reliably override the browser's ::details-content
-      // rendering for closed <details>, so we drive the [open] attribute from
-      // a media query. Has to run AFTER the footer parses, hence is:inline at
-      // end of body (the bundled <script> after </header> ran too early and
-      // querySelectorAll returned 0 elements).
+      // rendering for closed <details>, so we drive the [open] attribute to
+      // match. The expand point is zoom-aware (same per-zoom breakpoints as the
+      // nav), so we read the CSS result off the hamburger toggle — hidden means
+      // the desktop layout is active — instead of duplicating thresholds. Has
+      // to run AFTER the footer parses, hence is:inline at end of body.
       (function () {
         const sections = document.querySelectorAll(".footer-section");
         if (!sections.length) return;
-        const mq = window.matchMedia("(min-width: 768px)");
-        const apply = function () {
-          for (const s of sections) s.open = mq.matches;
+        const toggle = document.getElementById("nav-toggle");
+        const sync = function () {
+          const expanded = toggle && getComputedStyle(toggle).display === "none";
+          for (const s of sections) s.open = expanded;
         };
-        apply();
-        mq.addEventListener("change", apply);
+        sync();
+        window.addEventListener("resize", sync);
+        new MutationObserver(sync).observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["data-text-zoom"],
+        });
       })();
     </script>
   </body>
