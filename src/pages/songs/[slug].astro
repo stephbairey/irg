@@ -101,7 +101,7 @@ if (youtubeEmbed) {
     <section class="pt-8 pb-10 md:pb-14 border-b border-rule">
       <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-8 md:gap-14 items-start">
         <!-- Left: metadata -->
-        <div>
+        <div class="min-w-0">
           {issues.length > 0 && (
             <div class="flex flex-wrap gap-2 mb-4">
               {issues.map((issue) => (
@@ -159,8 +159,10 @@ if (youtubeEmbed) {
           </div>
         </div>
 
-        <!-- Right: aside card -->
-        <div class="grid gap-6">
+        <!-- Right: aside card. min-w-0 lets this track shrink below the
+             iframe's 300px intrinsic width; without it the video blows the
+             grid out and overflows narrow viewports (Kindle Fire). -->
+        <div class="grid gap-6 min-w-0">
           {hasVideo && youtubeEmbed ? (
             <div class="p-6 bg-ink text-on-dark rounded-[10px]">
               <div class="kicker text-mustard mb-3">Listen</div>
@@ -252,7 +254,7 @@ if (youtubeEmbed) {
           </div>
 
           <!-- Lyrics card -->
-          <div class="lyrics-card bg-card border border-rule rounded-2xl p-6 md:p-[48px_56px_40px] relative order-first md:order-last" style="box-shadow:var(--shadow-card)">
+          <div class="lyrics-card min-w-0 bg-card border border-rule rounded-2xl p-6 md:p-[48px_56px_40px] relative order-first md:order-last" style="box-shadow:var(--shadow-card)">
             <!-- Top stripe -->
             <div class="absolute top-0 left-10 right-10 h-1 rounded-b-sm" style="background:repeating-linear-gradient(90deg,var(--color-red) 0 20px,var(--color-ink) 20px 40px,var(--color-mustard) 40px 60px)"></div>
 
