@@ -25,6 +25,7 @@ const songsJson = JSON.stringify(
     n: s.tunes.nodes[0]?.name ?? "",
     i: s.issues.nodes.map((i) => i.name),
     y: s.date?.slice(0, 4) ?? "",
+    d: s.date ?? "",
   })),
 );
 ---
@@ -67,9 +68,9 @@ const songsJson = JSON.stringify(
           <label class="font-[800] text-xs tracking-[.1em] uppercase text-muted">Sort</label>
           <div class="relative">
             <select id="lib-sort" class="appearance-none px-3.5 py-2.5 pr-9 text-sm font-bold bg-card text-ink border-[1.5px] border-muted rounded-lg cursor-pointer min-h-[40px]">
+              <option value="newest" selected>Newest</option>
               <option value="a-z">A → Z</option>
               <option value="z-a">Z → A</option>
-              <option value="newest">Newest</option>
             </select>
             <svg viewBox="0 0 24 24" class="absolute right-3 top-1/2 -translate-y-1/2 w-[14px] h-[14px] text-ink pointer-events-none" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
           </div>
@@ -132,7 +133,7 @@ const songsJson = JSON.stringify(
     const PER_PAGE = 50;
 
     let filters = { q: "", issue: "", gaggle: "", tune: "", songwriter: "" };
-    let sort = "a-z";
+    let sort = "newest";
     let page = 1;
 
     const $ = (s) => document.querySelector(s);
@@ -222,7 +223,7 @@ const songsJson = JSON.stringify(
       const s = [...songs];
       if (sort === "a-z") s.sort((a, b) => a.t.localeCompare(b.t));
       else if (sort === "z-a") s.sort((a, b) => b.t.localeCompare(a.t));
-      else if (sort === "newest") s.sort((a, b) => (b.y || "0").localeCompare(a.y || "0"));
+      else if (sort === "newest") s.sort((a, b) => (b.d || "0").localeCompare(a.d || "0"));
       return s;
     }
 
@@ -336,8 +337,8 @@ const songsJson = JSON.stringify(
     resetBtn.addEventListener("click", () => {
       filters = { q: "", issue: "", gaggle: "", tune: "", songwriter: "" };
       searchInput.value = "";
-      sort = "a-z";
-      sortSelect.value = "a-z";
+      sort = "newest";
+      sortSelect.value = "newest";
       page = 1;
       render();
     });
