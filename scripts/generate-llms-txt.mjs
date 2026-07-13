@@ -95,7 +95,7 @@ const PAGES = [
   {
     path: "/contact/",
     title: "Contact",
-    desc: "Questions about the international network, song library, or movement as a whole — route to the right Granny.",
+    desc: "Questions about the international disorganization, the Song Library, or the movement as a whole — route to the right Granny.",
   },
 ];
 
@@ -115,10 +115,10 @@ const FAQ = [
   {
     section: "How Gaggles Work",
     qa: [
-      ["Is there a central organization?", "No, on purpose. Each gaggle is fully autonomous. The international network is deliberately disorganized — no dues, no bylaws, no central committee."],
+      ["Is there a central organization?", "No, on purpose. Each gaggle is fully autonomous. We call ourselves the international disorganization for a reason: no dues, no bylaws, no central committee."],
       ["How do I start a gaggle?", "A few good women of a certain age, a shared sense of outrage, and willingness to sing in public. See /start-a-gaggle/ for the full guide."],
       ["Are there meetings? Officers?", "Most gaggles meet to rehearse and plan actions; how they organize is up to them. Decisions by consensus, free from hierarchy."],
-      ["Do the Raging Grannies take donations?", "The international network does not. Most gaggles operate informally and self-fund. Support the issues we sing about."],
+      ["Do the Raging Grannies take donations?", "The international disorganization does not. Most gaggles operate informally and self-fund. Support the issues we sing about."],
     ],
   },
   {
@@ -128,7 +128,7 @@ const FAQ = [
       ["Why parody songs instead of original music?", "Familiar tunes save rehearsal time. The contrast between a beloved tune and lyrics that name what nobody wants to name is what makes the joke work."],
       ["What's the song library?", "/songs/ — nearly 1,500 songs by Raging Grannies worldwide. Search by issue, gaggle, or tune. Every song has a printable songsheet."],
       ["Can I use a Raging Grannies song at my own event?", "Yes, with credit. Songs are part of an activist commons. Alter lyrics to fit your situation — that's the tradition."],
-      ["Do you record albums or sell music?", "Mostly no. We're a live, in-public form; the songbook is the durable artifact."],
+      ["Do you record albums or sell music?", "Mostly no. We're a live, in-public form; the Song Library is the durable artifact."],
       ["How do I submit a song I wrote?", "Submissions are open to Raging Grannies only. See /submit/."],
     ],
   },
@@ -145,7 +145,7 @@ const FAQ = [
   {
     section: "Press and Getting Involved",
     qa: [
-      ["I'm a journalist. Who do I contact?", "Specific gaggle? Reach out via their page. International network / songbook / movement-wide questions? See /contact/."],
+      ["I'm a journalist. Who do I contact?", "Specific gaggle? Reach out via their page. International disorganization / Song Library / movement-wide questions? See /contact/."],
       ["Can a gaggle perform at our event?", "Most gaggles will come if the issue aligns. Reach out to the nearest one. No booking fee; covering travel is appreciated. Activism with hats, not a polished concert."],
       ["I'm not a Granny but I want to support. What can I do?", "Show up to actions. Share songs and posts. Donate to local issues. Tell your friends."],
       ["Can I license a Raging Grannies photo or song?", "Photos belong to whoever took them. Songs are usually freely available for nonprofit and educational use with credit. For commercial use, contact the gaggle the song came from."],

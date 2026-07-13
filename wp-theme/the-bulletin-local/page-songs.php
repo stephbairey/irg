@@ -19,7 +19,7 @@ $central = tbl_central_songs_url();
 
 <article class="tbl-page tbl-songs">
 	<header class="tbl-page-head">
-		<div class="tbl-kicker">From the songbook</div>
+		<div class="tbl-kicker">From the Song Library</div>
 		<h1 class="tbl-page-title">Songs</h1>
 		<p class="tbl-page-deck">Songs we've sung, written, and added to the central library.</p>
 	</header>

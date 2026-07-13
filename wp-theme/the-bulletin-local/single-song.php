@@ -45,7 +45,7 @@ $astro_host = defined( 'IRG_PUBLIC_HOST' ) ? rtrim( IRG_PUBLIC_HOST, '/' ) : 'ht
 
 	<article class="tbl-page tbl-song-detail">
 		<header class="tbl-page-head">
-			<div class="tbl-kicker">From the songbook</div>
+			<div class="tbl-kicker">From the Song Library</div>
 			<h1 class="tbl-page-title"><?php echo esc_html( (string) ( $song['title'] ?? '' ) ); ?></h1>
 		</header>
 
