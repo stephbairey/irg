@@ -2,6 +2,138 @@
   "pressPhotos": {
     "nodes": [
       {
+        "databaseId": 5924,
+        "title": "Raging Grannies at Tesla",
+        "slug": "raging-grannies-at-tesla",
+        "photoCategories": {
+          "nodes": [
+            {
+              "name": "Rally",
+              "slug": "rally"
+            }
+          ]
+        },
+        "pressPhotoDetails": {
+          "photographerCredit": "Photo: SF Bay Area Raging Grannies",
+          "caption": "Four Raging Grannies in colorful hats and layered clothing stand on a sidewalk outside a Tesla dealership, one holding a “MELT I.C.E.” sign, another carrying a megaphone, and another raising a peace sign.",
+          "usageRights": "Free for editorial use with credit to the International Raging Grannies",
+          "photo": {
+            "node": {
+              "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-08-scaled.png",
+              "altText": "Four Raging Grannies in colorful hats and layered clothing stand on a sidewalk outside a Tesla dealership, one holding a “MELT I.C.E.” sign, another carrying a megaphone, and another raising a peace sign.",
+              "mediaDetails": {
+                "width": 1920,
+                "height": 2560,
+                "sizes": [
+                  {
+                    "name": "medium",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-08-225x300.png",
+                    "width": "225",
+                    "height": "300"
+                  },
+                  {
+                    "name": "large",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-08-768x1024.png",
+                    "width": "768",
+                    "height": "1024"
+                  },
+                  {
+                    "name": "thumbnail",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-08-150x150.png",
+                    "width": "150",
+                    "height": "150"
+                  },
+                  {
+                    "name": "medium_large",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-08-768x1024.png",
+                    "width": "768",
+                    "height": "1024"
+                  },
+                  {
+                    "name": "1536x1536",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-08-1152x1536.png",
+                    "width": "1152",
+                    "height": "1536"
+                  },
+                  {
+                    "name": "2048x2048",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-08-1536x2048.png",
+                    "width": "1536",
+                    "height": "2048"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        "databaseId": 5921,
+        "title": "Raging Grannies Raise Fists",
+        "slug": "5921",
+        "photoCategories": {
+          "nodes": [
+            {
+              "name": "Rally",
+              "slug": "rally"
+            }
+          ]
+        },
+        "pressPhotoDetails": {
+          "photographerCredit": "Photo: SF Bay Area Raging Grannies",
+          "caption": "Four Raging Grannies wearing sun hats, colorful aprons, and long skirts stand in an outdoor plaza with raised fists, holding a handmade banner that reads “Raging Grannies.”",
+          "usageRights": "Free for editorial use with credit to the International Raging Grannies",
+          "photo": {
+            "node": {
+              "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-07-scaled.png",
+              "altText": "Four Raging Grannies wearing sun hats, colorful aprons, and long skirts stand in an outdoor plaza with raised fists, holding a handmade banner that reads “Raging Grannies.”",
+              "mediaDetails": {
+                "width": 2560,
+                "height": 1920,
+                "sizes": [
+                  {
+                    "name": "medium",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-07-300x225.png",
+                    "width": "300",
+                    "height": "225"
+                  },
+                  {
+                    "name": "large",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-07-1024x768.png",
+                    "width": "1024",
+                    "height": "768"
+                  },
+                  {
+                    "name": "thumbnail",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-07-150x150.png",
+                    "width": "150",
+                    "height": "150"
+                  },
+                  {
+                    "name": "medium_large",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-07-768x576.png",
+                    "width": "768",
+                    "height": "576"
+                  },
+                  {
+                    "name": "1536x1536",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-07-1536x1152.png",
+                    "width": "1536",
+                    "height": "1152"
+                  },
+                  {
+                    "name": "2048x2048",
+                    "sourceUrl": "https://cms.raginggrannies.international/wp-content/uploads/2026/07/raging-grannies-photo-07-2048x1536.png",
+                    "width": "2048",
+                    "height": "1536"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
         "databaseId": 5510,
         "title": "Raging Grannies Give Singing Testimony at a Hearing",
         "slug": "raging-grannies-give-singing-testimony-at-a-hearing",
@@ -275,7 +407,7 @@
       {
         "name": "Rally",
         "slug": "rally",
-        "count": 1
+        "count": 3
       }
     ]
   }
