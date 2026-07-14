@@ -118,7 +118,7 @@ const FAQ = [
       ["Is there a central organization?", "No, on purpose. Each gaggle is fully autonomous. We call ourselves the international disorganization for a reason: no dues, no bylaws, no central committee."],
       ["How do I start a gaggle?", "A few good women of a certain age, a shared sense of outrage, and willingness to sing in public. See /start-a-gaggle/ for the full guide."],
       ["Are there meetings? Officers?", "Most gaggles meet to rehearse and plan actions; how they organize is up to them. Decisions by consensus, free from hierarchy."],
-      ["Do the Raging Grannies take donations?", "The international disorganization does not. Most gaggles operate informally and self-fund. Support the issues we sing about."],
+      ["Do the Raging Grannies take donations?", "The international disorganization does not. Most gaggles operate informally and self-fund; some appreciate an honorarium to cover costs. Contact your local gaggle via /find-a-gaggle/."],
     ],
   },
   {
