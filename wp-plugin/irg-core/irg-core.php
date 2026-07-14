@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.16.0
+ * Version: 3.17.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Plugin version. Used as the gate key for one-shot upgrade routines so a
 // version bump triggers them once, network-wide, then they go quiet again.
 // Keep in sync with the file header above.
-define( 'IRG_VERSION', '3.16.0' );
+define( 'IRG_VERSION', '3.17.0' );
 
 // Public host for cross-site URL builders (subsite-songs detail links, etc.).
 // Override in wp-config.php to point at a preview/dev URL.
@@ -47,6 +47,7 @@ add_action( 'restrict_manage_posts', 'irg_song_admin_filter_dropdowns' );
 
 add_action( 'rest_api_init', 'irg_register_deploy_endpoint' );
 add_action( 'rest_api_init', 'irg_register_theme_deploy_endpoint' );
+add_action( 'rest_api_init', 'irg_register_media_regenerate_endpoint' );
 add_action( 'rest_api_init', 'irg_register_subsites_endpoint' );
 add_action( 'rest_api_init', 'irg_register_contact_endpoint' );
 add_filter( 'rest_pre_serve_request', 'irg_contact_cors_headers', 10, 4 );
@@ -877,6 +878,96 @@ function irg_handle_plugin_upload( WP_REST_Request $req ) {
 		'network'     => is_multisite(),
 		'active'      => is_multisite() ? is_plugin_active_for_network( $plugin_file ) : is_plugin_active( $plugin_file ),
 	];
+}
+
+// ---------------------------------------------------------------------------
+// Media metadata regenerate endpoint — rebuild attachment metadata and
+// intermediate sizes after a file has been replaced on disk (file manager /
+// FTP swaps leave _wp_attachment_metadata describing the old file). No
+// WP-CLI on this host, so this is the REST stand-in for `wp media regenerate`.
+// ---------------------------------------------------------------------------
+
+function irg_register_media_regenerate_endpoint(): void {
+	register_rest_route( 'irg/v1', '/media-regenerate', [
+		'methods'             => 'POST',
+		'callback'            => 'irg_handle_media_regenerate',
+		'permission_callback' => function () {
+			return is_multisite() ? is_super_admin() : current_user_can( 'manage_options' );
+		},
+		'args'                => [
+			'ids'     => [ 'required' => true, 'type' => 'array', 'items' => [ 'type' => 'integer' ] ],
+			'blog'    => [ 'type' => 'integer', 'default' => 0 ],
+			'dry_run' => [ 'type' => 'boolean', 'default' => false ],
+		],
+	] );
+}
+
+function irg_handle_media_regenerate( WP_REST_Request $req ) {
+	$ids     = array_map( 'intval', (array) $req->get_param( 'ids' ) );
+	$blog    = (int) $req->get_param( 'blog' );
+	$dry_run = (bool) $req->get_param( 'dry_run' );
+
+	$switched = false;
+	if ( $blog && is_multisite() && $blog !== get_current_blog_id() ) {
+		switch_to_blog( $blog );
+		$switched = true;
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	wp_raise_memory_limit( 'image' );
+
+	$report = [];
+	foreach ( $ids as $id ) {
+		$row = [ 'id' => $id ];
+
+		$post = get_post( $id );
+		if ( ! $post || $post->post_type !== 'attachment' ) {
+			$row['error'] = 'not an attachment';
+			$report[]     = $row;
+			continue;
+		}
+
+		$path             = get_attached_file( $id, true );
+		$row['file']      = $path;
+		$row['exists']    = $path && file_exists( $path );
+		$old_meta         = wp_get_attachment_metadata( $id );
+		$row['old_meta']  = [
+			'width'  => $old_meta['width'] ?? null,
+			'height' => $old_meta['height'] ?? null,
+			'sizes'  => isset( $old_meta['sizes'] ) ? array_keys( (array) $old_meta['sizes'] ) : [],
+		];
+
+		if ( $row['exists'] ) {
+			$dims        = @getimagesize( $path );
+			$row['disk'] = $dims ? [ 'width' => $dims[0], 'height' => $dims[1] ] : null;
+		}
+
+		if ( $dry_run || ! $row['exists'] ) {
+			$report[] = $row;
+			continue;
+		}
+
+		$new_meta = wp_generate_attachment_metadata( $id, $path );
+		if ( is_wp_error( $new_meta ) ) {
+			$row['error'] = $new_meta->get_error_message();
+		} elseif ( empty( $new_meta ) ) {
+			$row['error'] = 'wp_generate_attachment_metadata returned empty (check PHP memory / image type)';
+		} else {
+			wp_update_attachment_metadata( $id, $new_meta );
+			$row['new_meta'] = [
+				'width'  => $new_meta['width'] ?? null,
+				'height' => $new_meta['height'] ?? null,
+				'sizes'  => isset( $new_meta['sizes'] ) ? array_keys( (array) $new_meta['sizes'] ) : [],
+			];
+		}
+		$report[] = $row;
+	}
+
+	if ( $switched ) {
+		restore_current_blog();
+	}
+
+	return [ 'ok' => true, 'dry_run' => $dry_run, 'report' => $report ];
 }
 
 // ---------------------------------------------------------------------------
