@@ -16,12 +16,16 @@ const allTunes = [
   ...new Set(allSongs.flatMap((s) => s.tunes.nodes.map((t) => t.name))),
 ].sort();
 
+const allSongwriters = [
+  ...new Set(allSongs.flatMap((s) => s.songwriters.nodes.map((w) => w.name))),
+].sort();
+
 const songsJson = JSON.stringify(
   allSongs.map((s) => ({
     t: s.title,
     s: s.slug,
     g: s.gaggles.nodes[0]?.name ?? "",
-    w: s.songwriters.nodes[0]?.name ?? "",
+    w: s.songwriters.nodes.map((w) => w.name),
     n: s.tunes.nodes[0]?.name ?? "",
     i: s.issues.nodes.map((i) => i.name),
     y: s.date?.slice(0, 4) ?? "",
@@ -68,7 +72,11 @@ const songsJson = JSON.stringify(
           <label class="font-[800] text-xs tracking-[.1em] uppercase text-muted">Sort</label>
           <div class="relative">
             <select id="lib-sort" class="appearance-none px-3.5 py-2.5 pr-9 text-sm font-bold bg-card text-ink border-[1.5px] border-muted rounded-lg cursor-pointer min-h-[40px]">
-              <option value="newest" selected>Newest</option>
+              {/* Default load order is a per-visit shuffle; the hidden option
+                  labels that state without offering "random" as a choice.
+                  Reset returns to it. */}
+              <option value="" selected hidden>Shuffled</option>
+              <option value="newest">Newest</option>
               <option value="a-z">A → Z</option>
               <option value="z-a">Z → A</option>
             </select>
@@ -89,6 +97,7 @@ const songsJson = JSON.stringify(
           { id: "lib-issue", label: "Issue", placeholder: "All issues", options: allIssues },
           { id: "lib-gaggle", label: "Gaggle", placeholder: "All gaggles", options: allGaggles },
           { id: "lib-tune", label: "Tune", placeholder: "All tunes", options: allTunes },
+          { id: "lib-songwriter", label: "Written By", placeholder: "All songwriters", options: allSongwriters },
         ].map(({ id, label, placeholder, options }) => (
           <div>
             <label for={id} class="kicker text-ink mb-2 block">{label}</label>
@@ -133,8 +142,20 @@ const songsJson = JSON.stringify(
     const PER_PAGE = 50;
 
     let filters = { q: "", issue: "", gaggle: "", tune: "", songwriter: "" };
-    let sort = "newest";
+    let sort = "random";
     let page = 1;
+
+    // One shuffle per page load (Fisher-Yates). Stored as a rank map so the
+    // "random" order is stable across filtering and pagination within a visit.
+    const shuffleRank = new Map();
+    {
+      const idx = ALL.map((_, i) => i);
+      for (let i = idx.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [idx[i], idx[j]] = [idx[j], idx[i]];
+      }
+      idx.forEach((songIndex, rank) => shuffleRank.set(ALL[songIndex], rank));
+    }
 
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => document.querySelectorAll(s);
@@ -154,6 +175,7 @@ const songsJson = JSON.stringify(
       issue: $("#lib-issue"),
       gaggle: $("#lib-gaggle"),
       tune: $("#lib-tune"),
+      songwriter: $("#lib-songwriter"),
     };
 
     // Filter ALL songs by an arbitrary subset of filter keys. Pass `excluding`
@@ -166,7 +188,7 @@ const songsJson = JSON.stringify(
         if (excluding !== "issue" && filters.issue && !s.i.includes(filters.issue)) return false;
         if (excluding !== "gaggle" && filters.gaggle && s.g !== filters.gaggle) return false;
         if (excluding !== "tune" && filters.tune && s.n !== filters.tune) return false;
-        if (excluding !== "songwriter" && filters.songwriter && s.w !== filters.songwriter) return false;
+        if (excluding !== "songwriter" && filters.songwriter && !s.w.includes(filters.songwriter)) return false;
         return true;
       });
     }
@@ -187,6 +209,8 @@ const songsJson = JSON.stringify(
         for (const s of songs) if (s.g) set.add(s.g);
       } else if (key === "tune") {
         for (const s of songs) if (s.n) set.add(s.n);
+      } else if (key === "songwriter") {
+        for (const s of songs) for (const v of s.w) set.add(v);
       }
       return [...set].sort((a, b) => a.localeCompare(b));
     }
@@ -217,6 +241,7 @@ const songsJson = JSON.stringify(
       rebuildDropdown("issue", "All issues");
       rebuildDropdown("gaggle", "All gaggles");
       rebuildDropdown("tune", "All tunes");
+      rebuildDropdown("songwriter", "All songwriters");
     }
 
     function sortSongs(songs) {
@@ -224,6 +249,7 @@ const songsJson = JSON.stringify(
       if (sort === "a-z") s.sort((a, b) => a.t.localeCompare(b.t));
       else if (sort === "z-a") s.sort((a, b) => b.t.localeCompare(a.t));
       else if (sort === "newest") s.sort((a, b) => (b.d || "0").localeCompare(a.d || "0"));
+      else s.sort((a, b) => shuffleRank.get(a) - shuffleRank.get(b));
       return s;
     }
 
@@ -242,7 +268,7 @@ const songsJson = JSON.stringify(
             ${s.n ? `<em class="text-ink-soft italic">${s.n}</em>` : ""}
             ${s.n && s.g ? '<span class="text-ink-lilac mx-1.5">·</span>' : ""}
             ${s.g || ""}
-            ${s.w ? '<span class="text-ink-lilac mx-1.5">·</span>' + s.w : ""}
+            ${s.w.length ? '<span class="text-ink-lilac mx-1.5">·</span>' + s.w.join(", ") : ""}
           </div>
           <div class="flex gap-2 items-center flex-wrap">${chips}</div>
         </div>
@@ -302,12 +328,12 @@ const songsJson = JSON.stringify(
     });
 
     sortSelect.addEventListener("change", () => {
-      sort = sortSelect.value;
+      sort = sortSelect.value || "random";
       page = 1;
       render();
     });
 
-    for (const key of ["issue", "gaggle", "tune"]) {
+    for (const key of ["issue", "gaggle", "tune", "songwriter"]) {
       taxSelects[key]?.addEventListener("change", () => {
         filters[key] = taxSelects[key].value;
         page = 1;
@@ -337,8 +363,8 @@ const songsJson = JSON.stringify(
     resetBtn.addEventListener("click", () => {
       filters = { q: "", issue: "", gaggle: "", tune: "", songwriter: "" };
       searchInput.value = "";
-      sort = "newest";
-      sortSelect.value = "newest";
+      sort = "random";
+      sortSelect.value = "";
       page = 1;
       render();
     });
@@ -366,7 +392,7 @@ const songsJson = JSON.stringify(
       filters.gaggle = canonicalize(gaggleNames, params.get("gaggle"));
     }
     if (params.get("songwriter")) {
-      const songwriterNames = [...new Set(ALL.map((s) => s.w).filter(Boolean))];
+      const songwriterNames = [...new Set(ALL.flatMap((s) => s.w))];
       filters.songwriter = canonicalize(songwriterNames, params.get("songwriter"));
     }
     render();
