@@ -1,0 +1,2150 @@
+{
+  "summary": {
+    "total": 185,
+    "by_kind": {
+      "rule": 109,
+      "split": 76
+    },
+    "notes_conflicts_expected": 0,
+    "flagged": {
+      "Mary Ray Worley, Wisconsin RGs": {
+        "why": "\"Wisconsin RGs\" — map to the \"Madison\" gaggle term or create one?",
+        "songs": [
+          "forward-together"
+        ]
+      },
+      "Raging Grannies Action League": {
+        "why": "Same RGAL question as above.",
+        "songs": [
+          "mask-up-america"
+        ]
+      },
+      "Pachamama": {
+        "why": "Granny nickname or something else?",
+        "songs": [
+          "feminist-environmentalists"
+        ]
+      },
+      "Lee": {
+        "why": "First-name-only, 11 songs. Merge into \"Lee Stanfield\" (Tucson)?",
+        "songs": [
+          "pandemic-parody",
+          "science-here-science-there",
+          "kavanauseas-everywhere",
+          "its-beginning-to-look-a-lot-like-impeachment",
+          "another-saturday-night",
+          "american-congress",
+          "aint-no-sunshine-since-hes-here",
+          "macjustice-operation-streamline",
+          "move-to-amend-version-2",
+          "flip-flop-mcsally-youre-screwed",
+          "ode-to-corporate-motherhood"
+        ]
+      },
+      "Georgia": {
+        "why": "Person's name or the U.S. state?",
+        "songs": [
+          "im-a-warhead"
+        ]
+      },
+      "Side": {
+        "why": "Junk value — what was intended?",
+        "songs": [
+          "gaggle-against-gmos"
+        ]
+      },
+      "the Bellingham Grannies": {
+        "why": "No \"Bellingham\" gaggle term exists — create one?",
+        "songs": [
+          "white-privilege"
+        ]
+      },
+      "Lisa Kaufman, Bellingham Grannies": {
+        "why": "No \"Bellingham\" gaggle term exists — create one?",
+        "songs": [
+          "if-i-only-had-a-brain"
+        ]
+      },
+      "the Tacoma Raging Grannies": {
+        "why": "No \"Tacoma\" gaggle term exists — create one?",
+        "songs": [
+          "eighty-seven-billion"
+        ]
+      },
+      "Madison, original lyrics by Nelson": {
+        "why": "Is \"Madison\" the gaggle or a person? Who is Nelson?",
+        "songs": [
+          "obama-we-were-hopeful"
+        ]
+      },
+      "Gail Sredanovic, Raging Grannies Action League San Francisco": {
+        "why": "Which gaggle term should \"Raging Grannies Action League\" map to? (No RGAL term exists; nearest is \"San Francisco Bay Area\".)",
+        "songs": [
+          "how-much-for-a-bailout"
+        ]
+      },
+      "Gail Sredanovic, Raging Grannies Action League, SF Bay Area": {
+        "why": "Same RGAL question as above.",
+        "songs": [
+          "roll-out-the-barrels"
+        ]
+      },
+      "Montreal?": {
+        "why": "Uncertain attribution — confirm Montreal gaggle or leave Unknown?",
+        "songs": [
+          "shoes-shoes-glorious-shoes",
+          "military-spending-peace-round"
+        ]
+      },
+      "Eleanor Chithalen, Hamilton, ON Grannies": {
+        "why": "No \"Hamilton\" gaggle term exists — create one? (Songwriter would become \"Eleanor Chithalen\".)",
+        "songs": [
+          "gandhi-and-grannies"
+        ]
+      },
+      "Eleanor Chithalen, Hamilton Grans": {
+        "why": "Same Hamilton question as above.",
+        "songs": [
+          "sell-em-all-privatizing"
+        ]
+      }
+    }
+  },
+  "changes": [
+    {
+      "kind": "rule",
+      "post_id": 1060,
+      "slug": "quit-your-job",
+      "title": "Quit Your Job!",
+      "from": "Raging Grannies SF Bay Area/Palo Alto",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "San Francisco Bay Area",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 1044,
+      "slug": "house-of-the-epstein-crimes",
+      "title": "House of the Epstein Crimes",
+      "from": "Marcy Matasick and Sandy Schwartz",
+      "to_songwriter": "Marcy Matasick, Sandy Schwartz",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 1029,
+      "slug": "immigrants-make-america-great",
+      "title": "Immigrants Make America Great",
+      "from": "Marcy Matasick and Paige Grant",
+      "to_songwriter": "Marcy Matasick, Paige Grant",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1020,
+      "slug": "draw-the-line",
+      "title": "Draw the Line",
+      "from": "Raging Grannies, Guelph",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Guelph",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1019,
+      "slug": "bill-5-must-fall",
+      "title": "Bill 5 Must Fall",
+      "from": "Raging Grannies, Guelph",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Guelph",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1018,
+      "slug": "ontario-will-rise",
+      "title": "Ontario Will Rise",
+      "from": "Raging Grannies, Guelph",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Guelph",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1017,
+      "slug": "no-war-this-time",
+      "title": "No War This Time",
+      "from": "Raging Grannies, Guelph",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Guelph",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1016,
+      "slug": "if-we-had-healthcare",
+      "title": "If We Had Healthcare",
+      "from": "Raging Grannies, Guelph",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Guelph",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1015,
+      "slug": "climate-woes",
+      "title": "Climate Woes",
+      "from": "Raging Grannies, Guelph",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Guelph",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1014,
+      "slug": "rent-control",
+      "title": "Rent Control",
+      "from": "Raging Grannies, Guelph",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Guelph",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1013,
+      "slug": "renoviction-hopes",
+      "title": "Renoviction Hopes",
+      "from": "Raging Grannies, Guelph",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Guelph",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1012,
+      "slug": "are-you-listening-provincial-governments-indifference",
+      "title": "Are You Listening? (Provincial Government’s Indifference)",
+      "from": "Raging Grannies, Guelph",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Guelph",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1011,
+      "slug": "oh-doug-ford",
+      "title": "Oh, Doug Ford!",
+      "from": "Raging Grannies, Guelph",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Guelph",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 1007,
+      "slug": "grannies-hokey-pokey",
+      "title": "Grannies Hokey Pokey",
+      "from": "Debaura James and Marty Eberhardt",
+      "to_songwriter": "Debaura James, Marty Eberhardt",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 1003,
+      "slug": "gotta-stop-the-raids",
+      "title": "Gotta Stop the Raids",
+      "from": "Linda Hassemer and Marcy Matasick",
+      "to_songwriter": "Linda Hassemer, Marcy Matasick",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 998,
+      "slug": "solidarity-with-minneapolis",
+      "title": "Solidarity with Minneapolis",
+      "from": "SF Bay Area Raging Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "San Francisco Bay Area",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 992,
+      "slug": "we-sing-their-names-amazing-grace-version",
+      "title": "We Sing Their Names (Amazing Grace Version)",
+      "from": "Original Lyrics: Vicki Ryder. Modifications to fit Amazing Grace, Pamela Blyth",
+      "to_songwriter": "Vicki Ryder",
+      "source_notes": "Modifications to fit Amazing Grace by Pamela Blyth",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 973,
+      "slug": "silent-night-peaceful-night",
+      "title": "Silent Night, Peaceful Night",
+      "from": "Pam Couture and Vicki Ryder",
+      "to_songwriter": "Pam Couture, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 972,
+      "slug": "peaceful-christmas",
+      "title": "Peaceful Christmas",
+      "from": "Rochester Raging Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Rochester",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 964,
+      "slug": "join-the-call-for-arms-embargo",
+      "title": "Join the Call for Arms Embargo",
+      "from": "SF Bay Area/SF Peninsula Raging Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "San Francisco Bay Area",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 963,
+      "slug": "you-cant-stomp-masking-and-vaccinating-version",
+      "title": "You Can’t Stomp (Masking and Vaccinating Version)",
+      "from": "Granny Ruth adapted from original composition by Vicki Ryder",
+      "to_songwriter": "Granny Ruth",
+      "source_notes": "Adapted from original composition by Vicki Ryder",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 960,
+      "slug": "no-brainer",
+      "title": "No Brainer",
+      "from": "Hank Tusinski (edited by Lee)",
+      "to_songwriter": "Hank Tusinski",
+      "source_notes": "Edited by Lee",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 946,
+      "slug": "local-elections",
+      "title": "Local Elections",
+      "from": "Emily Miller and Paula Miller",
+      "to_songwriter": "Emily Miller, Paula Miller",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1503,
+      "slug": "the-sex-song-or-do-it-with-consent",
+      "title": "The Sex Song or Do It With Consent",
+      "from": "Laurie RostholderTune: Old McDonald Had a Farm",
+      "to_songwriter": "Laurie Rostholder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 926,
+      "slug": "no-more-donald",
+      "title": "NO MORE DONALD!!!",
+      "from": "Hank Tusinski and Lee Stanfield",
+      "to_songwriter": "Hank Tusinski, Lee Stanfield",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 922,
+      "slug": "now-youve-pissed-off-granny",
+      "title": "Now You’ve Pissed Off Granny!",
+      "from": "Original by Vicki Ryder (Updated by Lee Stanfield)",
+      "to_songwriter": "Vicki Ryder",
+      "source_notes": "Updated by Lee Stanfield",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 918,
+      "slug": "all-you-fascists-bound-to-lose",
+      "title": "ALL YOU FASCISTS BOUND TO LOSE",
+      "from": "various",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 913,
+      "slug": "our-country-is-really-sick",
+      "title": "Our Country Is Really Sick!",
+      "from": "Hank Tusinski and Lee Stanfield",
+      "to_songwriter": "Hank Tusinski, Lee Stanfield",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 912,
+      "slug": "passing-the-torch",
+      "title": "Passing the Torch",
+      "from": "Hank Tusinski (edited by Lee)",
+      "to_songwriter": "Hank Tusinski",
+      "source_notes": "Edited by Lee",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 895,
+      "slug": "proportional-representation",
+      "title": "Proportional Representation",
+      "from": "Kate Chung and Lee Stanfield",
+      "to_songwriter": "Kate Chung, Lee Stanfield",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 890,
+      "slug": "r-u-ready-4-world-war-3",
+      "title": "R U Ready 4 World War 3?",
+      "from": "Hank Tusinski and Lee Stanfield",
+      "to_songwriter": "Hank Tusinski, Lee Stanfield",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 886,
+      "slug": "solidarity-with-portland",
+      "title": "Solidarity with Portland",
+      "from": "SF Bay Area Raging Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "San Francisco Bay Area",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 884,
+      "slug": "loverly-redistricting",
+      "title": "Loverly Redistricting",
+      "from": "Davis CA gaggle",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Davis",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 883,
+      "slug": "win-our-democracy-back-with-prop-50",
+      "title": "Win Our Democracy Back With Prop 50",
+      "from": "Davis CA gaggle",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Davis",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 882,
+      "slug": "release-all-the-files-arrest-trump",
+      "title": "Release All the Files & Arrest Trump!",
+      "from": "Hank Tusinski and Lee Stanfield",
+      "to_songwriter": "Hank Tusinski, Lee Stanfield",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 864,
+      "slug": "tough-on-selected-crime",
+      "title": "Tough On Selected Crime",
+      "from": "Original by Nora Freeman (Revised by Lee Stanfield)",
+      "to_songwriter": "Nora Freeman",
+      "source_notes": "Revised by Lee Stanfield",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 861,
+      "slug": "unrelenting",
+      "title": "Unrelenting",
+      "from": "Hank Tusinski (edited by Lee)",
+      "to_songwriter": "Hank Tusinski",
+      "source_notes": "Edited by Lee",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 859,
+      "slug": "fossil-fueled-tragedies",
+      "title": "Fossil-Fueled Tragedies",
+      "from": "Piedmont Raging Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Piedmont",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 857,
+      "slug": "alligator-alcatraz",
+      "title": "Alligator Alcatraz",
+      "from": "Margaret Villani and Paula Miller",
+      "to_songwriter": "Margaret Villani, Paula Miller",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 854,
+      "slug": "fascist-donald-has-a-game",
+      "title": "Fascist Donald Has a Game",
+      "from": "Emily Miller and Paula Miller and Phil Miller",
+      "to_songwriter": "Emily Miller, Paula Miller, Phil Miller",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 849,
+      "slug": "maga-conspiracies",
+      "title": "MAGA Conspiracies",
+      "from": "Emily Miller and Paula Miller",
+      "to_songwriter": "Emily Miller, Paula Miller",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 844,
+      "slug": "to-trump-release-the-epstein-files",
+      "title": "To Trump: Release the Epstein Files!",
+      "from": "Hank Tusinski and Lee Stanfield",
+      "to_songwriter": "Hank Tusinski, Lee Stanfield",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 826,
+      "slug": "into-the-wild-blue-yonder",
+      "title": "Into the Wild Blue Yonder",
+      "from": "Jo-Hanna Read and Juanita Tamayo",
+      "to_songwriter": "Jo-Hanna Read, Juanita Tamayo",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 817,
+      "slug": "take-your-bans-off-my-body",
+      "title": "Take Your Bans Off My Body",
+      "from": "various",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 814,
+      "slug": "peace-on-earth-is-what-were-for",
+      "title": "Peace On Earth Is What We’re For",
+      "from": "New Mexico Raging Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "New Mexico",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 808,
+      "slug": "were-so-sick-of-politicians",
+      "title": "We’re So Sick of Politicians",
+      "from": "Hank Tusinski (edited by Lee)",
+      "to_songwriter": "Hank Tusinski",
+      "source_notes": "Edited by Lee",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 796,
+      "slug": "when-we-see-injustice-we-show-up",
+      "title": "When We See Injustice We Show Up",
+      "from": "Originally by Granny Rowan (Revised by Lee Stanfield)",
+      "to_songwriter": "Granny Rowan",
+      "source_notes": "Revised by Lee Stanfield",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 787,
+      "slug": "beneath-the-nuclear-umbrella-expanded",
+      "title": "Beneath the Nuclear Umbrella – Expanded",
+      "from": "Victoria BC Grannies; additional lyrics by Vicki Ryder",
+      "to_songwriter": "Unknown",
+      "source_notes": "By the Victoria BC Grannies; additional lyrics by Vicki Ryder",
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 775,
+      "slug": "trumps-big-betrayal-bill",
+      "title": "Trump’s Big Betrayal Bill",
+      "from": "Margaret Villani of Piedmont RGs (Updated by Lee)",
+      "to_songwriter": "Margaret Villani",
+      "source_notes": "Updated by Lee",
+      "gaggle_add": "Piedmont",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 745,
+      "slug": "no-king-and-i",
+      "title": "No King And I",
+      "from": "Pittsburgh Gaggle",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Pittsburgh",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 738,
+      "slug": "cry-for-gaza",
+      "title": "Cry For Gaza",
+      "from": "various (updated by Marcy Matasick)",
+      "to_songwriter": "Unknown",
+      "source_notes": "By various grannies; updated by Marcy Matasick",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 736,
+      "slug": "no-bounds-of-mercy",
+      "title": "NO BOUNDS OF MERCY",
+      "from": "Kathy Barket and Marcy Matasick",
+      "to_songwriter": "Kathy Barket, Marcy Matasick",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 729,
+      "slug": "the-climate-it-is-a-changing",
+      "title": "The Climate It Is A-Changing",
+      "from": "various",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 728,
+      "slug": "stop-the-coup",
+      "title": "Stop the Coup",
+      "from": "Chris Harrell and Marcy Matasick",
+      "to_songwriter": "Chris Harrell, Marcy Matasick",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 727,
+      "slug": "angry-people",
+      "title": "Angry People",
+      "from": "Chris Harrell and Marcy Matasick",
+      "to_songwriter": "Chris Harrell, Marcy Matasick",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 724,
+      "slug": "oh-tillis-do-your-job-or-insert-congress-or-other-politicians-name",
+      "title": "Oh, Tillis, Do Your Job! (or insert Congress or other politician’s name) )",
+      "from": "Ferrilyn Sourdiffe and Lyn McCoy",
+      "to_songwriter": "Ferrilyn Sourdiffe, Lyn McCoy",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 716,
+      "slug": "you-cant-stomp-on-me-inauguration-protest",
+      "title": "You Can’t Stomp on Me (Inauguration Protest)",
+      "from": "Gaggle",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 706,
+      "slug": "fifty-ways-to-save-your-mother-earth",
+      "title": "Fifty Ways to Save Your Mother (Earth)",
+      "from": "Marcy Matasick and Paige Grant",
+      "to_songwriter": "Marcy Matasick, Paige Grant",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 705,
+      "slug": "vote-this-fall-chords",
+      "title": "Vote This Fall (Chords)",
+      "from": "Nancy Brown, Connie Peabody (Chords)",
+      "to_songwriter": "Nancy Brown, Connie Peabody",
+      "source_notes": "Chords by Connie Peabody",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 702,
+      "slug": "put-all-the-guns-aside-chords",
+      "title": "Put All The Guns Aside (Chords)",
+      "from": "David Norman and Ferrilyn Sourdiffe",
+      "to_songwriter": "David Norman, Ferrilyn Sourdiffe",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 700,
+      "slug": "children-of-gaza",
+      "title": "Children of Gaza",
+      "from": "Marcy Matasick and Sally-Alice Thompson",
+      "to_songwriter": "Marcy Matasick, Sally-Alice Thompson",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 699,
+      "slug": "put-all-the-guns-aside",
+      "title": "Put All the Guns Aside",
+      "from": "David Norman and Ferrilyn Sourdiffe",
+      "to_songwriter": "David Norman, Ferrilyn Sourdiffe",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 697,
+      "slug": "you-cant-stop-the-abortion-pill",
+      "title": "You Can’t Stop the Abortion Pill",
+      "from": "Several Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 695,
+      "slug": "are-you-woke",
+      "title": "Are You Woke?",
+      "from": "Barbara Mars and Dorothy Cresswell",
+      "to_songwriter": "Barbara Mars, Dorothy Cresswell",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 694,
+      "slug": "stealing-public-education",
+      "title": "Stealing Public Education",
+      "from": "Dorothy Cresswell and Joyce Riddel",
+      "to_songwriter": "Dorothy Cresswell, Joyce Riddel",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 689,
+      "slug": "you-are-my-sunshine",
+      "title": "YOU ARE MY SUNSHINE",
+      "from": "various grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 688,
+      "slug": "pissed-off-grannies-and-the-era",
+      "title": "Pissed-Off Grannies and the ERA",
+      "from": "Chris Carlson and Ellen Canavan and Jade Dell",
+      "to_songwriter": "Chris Carlson, Ellen Canavan, Jade Dell",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 677,
+      "slug": "one-human-family",
+      "title": "One Human Family",
+      "from": "Rosalia Haduch and Vicki Ryder",
+      "to_songwriter": "Rosalia Haduch, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 673,
+      "slug": "our-vision",
+      "title": "Our Vision",
+      "from": "Marcy Matasick and Sally-Alice Thompson",
+      "to_songwriter": "Marcy Matasick, Sally-Alice Thompson",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 671,
+      "slug": "drones-in-the-sky",
+      "title": "Drones In the Sky",
+      "from": "Marcy Matasick and Pam Frazer-Walters",
+      "to_songwriter": "Marcy Matasick, Pam Frazer-Walters",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 670,
+      "slug": "war-vs-climate",
+      "title": "War vs Climate",
+      "from": "Marcy Matasick and Sally-Alice Thompson",
+      "to_songwriter": "Marcy Matasick, Sally-Alice Thompson",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 666,
+      "slug": "youve-got-to-change",
+      "title": "You’ve Got to Change!",
+      "from": "Chris Carlson and Ellen Canavan and Jade Dell",
+      "to_songwriter": "Chris Carlson, Ellen Canavan, Jade Dell",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 664,
+      "slug": "merci-no-coup",
+      "title": "Merci, NO COUP",
+      "from": "Candice Davies and Jade Dell and Vicki Ryder",
+      "to_songwriter": "Candice Davies, Jade Dell, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 658,
+      "slug": "god-bless-our-planet-earth",
+      "title": "God Bless Our Planet Earth",
+      "from": "Marcy Matasick and Sally-Alice Thompson",
+      "to_songwriter": "Marcy Matasick, Sally-Alice Thompson",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 654,
+      "slug": "black-lives-matter",
+      "title": "Black Lives Matter",
+      "from": "Marcy Matasick and Sally-Alice Thompson",
+      "to_songwriter": "Marcy Matasick, Sally-Alice Thompson",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 651,
+      "slug": "why-did-all-the-seniors-die",
+      "title": "Why Did all the Seniors Die",
+      "from": "Lise Bernier and Margaret Godbeer",
+      "to_songwriter": "Lise Bernier, Margaret Godbeer",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 650,
+      "slug": "rbgs-last-wish",
+      "title": "RBG’s Last Wish",
+      "from": "Anna Katherine and Marcy Matasick",
+      "to_songwriter": "Anna Katherine, Marcy Matasick",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 649,
+      "slug": "save-our-postal-service-redux",
+      "title": "Save Our Postal Service (Redux)",
+      "from": "Ellen Canavan and Jade Dell and Libby Johnson and Vicki Ryder",
+      "to_songwriter": "Ellen Canavan, Jade Dell, Libby Johnson, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 648,
+      "slug": "vote",
+      "title": "Vote!",
+      "from": "Andrée Deveault and Ellen Moore",
+      "to_songwriter": "Andrée Deveault, Ellen Moore",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 647,
+      "slug": "the-vote-song",
+      "title": "The Vote Song",
+      "from": "Montreal Raging Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Montreal",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 645,
+      "slug": "no-more-plastic",
+      "title": "No More Plastic",
+      "from": "Ellen Moore and Lise Bernier",
+      "to_songwriter": "Ellen Moore, Lise Bernier",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 642,
+      "slug": "selling-arms-to-saudi-arabia",
+      "title": "Selling Arms to Saudi Arabia",
+      "from": "Leah Simkin and Margaret Godbeer",
+      "to_songwriter": "Leah Simkin, Margaret Godbeer",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 638,
+      "slug": "raging-for-social-security",
+      "title": "Raging for Social Security",
+      "from": "Nancy Goedert and Vicki Ryder",
+      "to_songwriter": "Nancy Goedert, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 636,
+      "slug": "i-couldnt-sleep-last-night",
+      "title": "I Couldn’t Sleep Last Night",
+      "from": "Lisa Silva and Marcy Matasick",
+      "to_songwriter": "Lisa Silva, Marcy Matasick",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 635,
+      "slug": "trumps-legacy",
+      "title": "Trump’s Legacy",
+      "from": "Barb Tiwald and Marcy Matasick",
+      "to_songwriter": "Barb Tiwald, Marcy Matasick",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 634,
+      "slug": "another-war",
+      "title": "Another War",
+      "from": "Marcy Matasick and Sally-Alice Thompson",
+      "to_songwriter": "Marcy Matasick, Sally-Alice Thompson",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 628,
+      "slug": "if-you-want-to-save-our-planet",
+      "title": "If You Want To Save Our Planet",
+      "from": "Davis CA gaggle",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Davis",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 615,
+      "slug": "our-favorite-things-davis-gaggle-version",
+      "title": "Our Favorite Things – Davis Gaggle Version",
+      "from": "Granny Carol (modified from original version by Nora Freeman, NYC Metro)",
+      "to_songwriter": "Granny Carol",
+      "source_notes": "Modified from original version by Nora Freeman, NYC Metro",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 606,
+      "slug": "taken-away-updated",
+      "title": "Taken Away (Updated)",
+      "from": "Sue Gracey and Vicki Ryder",
+      "to_songwriter": "Sue Gracey, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 593,
+      "slug": "for-our-grandchildrens-sake",
+      "title": "For Our Grandchildren’s Sake",
+      "from": "Marcy Matasick, Albuquerque RG/((Revised for Tucson Gaggle 08/08/17) by Lee",
+      "to_songwriter": "Marcy Matasick",
+      "source_notes": "Albuquerque RG; revised for Tucson Gaggle 8/8/17 by Lee",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 586,
+      "slug": "now-now-now-anti-gun-violence",
+      "title": "Now! Now! Now! (Anti-gun violence)",
+      "from": "Peggy Dempsey and Vicki Ryder",
+      "to_songwriter": "Peggy Dempsey, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 581,
+      "slug": "wine-bottle-song",
+      "title": "Wine Bottle Song",
+      "from": "Ellen Moore and Helen Van Veeren",
+      "to_songwriter": "Ellen Moore, Helen Van Veeren",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 573,
+      "slug": "we-can-be-changable",
+      "title": "We Can Be Changable",
+      "from": "Western Mass Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Western Massachusetts",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 562,
+      "slug": "my-country-tis-of-thee-2019",
+      "title": "My Country ’tis of Thee 2019",
+      "from": "Tucson Raging Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Tucson",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 546,
+      "slug": "homeless-puff-2018",
+      "title": "Homeless Puff (2018)",
+      "from": "Marcia Reaver original lyrics by Nora Freeman, NYC Metro",
+      "to_songwriter": "Marcia Reaver",
+      "source_notes": "Original lyrics by Nora Freeman, NYC Metro",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 541,
+      "slug": "people-power",
+      "title": "People Power",
+      "from": "Jade Dell and Vicki Ryder",
+      "to_songwriter": "Jade Dell, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": "Revised by Lee"
+    },
+    {
+      "kind": "split",
+      "post_id": 535,
+      "slug": "things-that-go-trump-in-the-night",
+      "title": "Things That Go Trump In the Night",
+      "from": "Marcy Matasick and Sally-Alice Thompson",
+      "to_songwriter": "Marcy Matasick, Sally-Alice Thompson",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 515,
+      "slug": "stop-gun-violence",
+      "title": "Stop Gun Violence",
+      "from": "Marcy Matasick and Sally-Alice Thompson",
+      "to_songwriter": "Marcy Matasick, Sally-Alice Thompson",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 514,
+      "slug": "gerrymandring",
+      "title": "Gerrymand’ring",
+      "from": "Jane Hare and Vicki Ryder",
+      "to_songwriter": "Jane Hare, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 510,
+      "slug": "down-on-hiroshima-2019",
+      "title": "Down on Hiroshima (2019)",
+      "from": "Connie Graves and Vicki Ryder",
+      "to_songwriter": "Connie Graves, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 504,
+      "slug": "raging-grannies-strong",
+      "title": "Raging Grannies Strong!",
+      "from": "UnCon Grannies 2016 (Chorus by Vicki Ryder)",
+      "to_songwriter": "Unknown",
+      "source_notes": "Written collectively by the UnCon Grannies, 2016; chorus by Vicki Ryder",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 482,
+      "slug": "song-of-the-great-climate-march",
+      "title": "Song of the Great Climate March",
+      "from": "From Raging Grannies Songbook 1993",
+      "to_songwriter": "Unknown",
+      "source_notes": "From the Raging Grannies Songbook (1993)",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 463,
+      "slug": "hello-christian-right",
+      "title": "Hello Christian Right",
+      "from": "Nora Freeman, NYC Metro gaggle",
+      "to_songwriter": "Nora Freeman",
+      "source_notes": null,
+      "gaggle_add": "New York City Metro",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 461,
+      "slug": "we-rage-to-end-all-war-updated-to-include-syria",
+      "title": "We Rage to End All War, updated to include Syria",
+      "from": "Kathy Russell, Sunny Armer, (revision of song by Vicki Ryder)",
+      "to_songwriter": "Kathy Russell, Sunny Armer",
+      "source_notes": "Revision of song by Vicki Ryder",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 460,
+      "slug": "realize-the-dream-march-on-washington",
+      "title": "Realize the Dream (March on Washington)",
+      "from": "The Triangle (NC) Raging Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Triangle",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 459,
+      "slug": "song-for-the-homeless",
+      "title": "Song for the Homeless",
+      "from": "Kay Pitts and Nancy Hatcher",
+      "to_songwriter": "Kay Pitts, Nancy Hatcher",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1158,
+      "slug": "its-a-sad-old-flag",
+      "title": "It’s a Sad Old Flag",
+      "from": "Sunny Armer. New York Metro Grannies",
+      "to_songwriter": "Sunny Armer",
+      "source_notes": null,
+      "gaggle_add": "New York City Metro",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 1130,
+      "slug": "gm-foods-are-good-for-me",
+      "title": "GM Foods Are Good for Me",
+      "from": "the Halifax Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Halifax",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 433,
+      "slug": "last-night-i-had-the-strangest-dream",
+      "title": "Last Night I Had The Strangest Dream",
+      "from": "Fresno",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Fresno",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 430,
+      "slug": "weve-always-paid-our-taxes-2012",
+      "title": "We’ve Always Paid our Taxes 2012",
+      "from": "Evie Shobin and Jan Harwood and Vicki Ryder",
+      "to_songwriter": "Evie Shobin, Jan Harwood, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 429,
+      "slug": "where-do-our-taxe-go",
+      "title": "Where Do Our Taxe$ Go?",
+      "from": "Jane Hare and Vicki Ryder",
+      "to_songwriter": "Jane Hare, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 428,
+      "slug": "bring-back-our-tax-dollars",
+      "title": "Bring Back Our Tax Dollars",
+      "from": "Jane Hare and Vicki Ryder",
+      "to_songwriter": "Jane Hare, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 421,
+      "slug": "marcelo-lucero",
+      "title": "Marcelo Lucero",
+      "from": "Nora Freeman and Sunny Armer",
+      "to_songwriter": "Nora Freeman, Sunny Armer",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 418,
+      "slug": "dont-get-sick",
+      "title": "Don’t Get Sick",
+      "from": "Nora Freeman and Sunny Armer",
+      "to_songwriter": "Nora Freeman, Sunny Armer",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 417,
+      "slug": "under-our-skin",
+      "title": "Under Our Skin",
+      "from": "Corinne Willinger and Nora Freeman",
+      "to_songwriter": "Corinne Willinger, Nora Freeman",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 413,
+      "slug": "hammer-for-mumia",
+      "title": "Hammer For Mumia",
+      "from": "Nora Freeman and Sunny Armer",
+      "to_songwriter": "Nora Freeman, Sunny Armer",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 412,
+      "slug": "ows-solidarity-forever",
+      "title": "OWS Solidarity Forever!",
+      "from": "Mercy Van Vlack and Susan Lee",
+      "to_songwriter": "Mercy Van Vlack, Susan Lee",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 411,
+      "slug": "occupy-the-world",
+      "title": "Occupy the World",
+      "from": "Corinne Willinger and Nora Freeman",
+      "to_songwriter": "Corinne Willinger, Nora Freeman",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 409,
+      "slug": "deck-the-capitol",
+      "title": "Deck the Capitol",
+      "from": "Alice Sutter and Corinne Willinger and Sunny Armer",
+      "to_songwriter": "Alice Sutter, Corinne Willinger, Sunny Armer",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 404,
+      "slug": "carols-for-a-hurting-christmas",
+      "title": "Carols for a Hurting Christmas",
+      "from": "Rose DeShaw, Kingston, Ontario",
+      "to_songwriter": "Rose DeShaw",
+      "source_notes": null,
+      "gaggle_add": "Kingston (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 361,
+      "slug": "how-much-are-those-wars",
+      "title": "How Much Are Those Wars?",
+      "from": "Nora Freeman and Sunny Armer",
+      "to_songwriter": "Nora Freeman, Sunny Armer",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 359,
+      "slug": "guns-and-bombs",
+      "title": "Guns and Bombs",
+      "from": "Nora Freeman, NYC Metro Raging Grannies",
+      "to_songwriter": "Nora Freeman",
+      "source_notes": null,
+      "gaggle_add": "New York City Metro",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 358,
+      "slug": "we-rage-to-end-all-war",
+      "title": "We Rage to End All War",
+      "from": "Sunny Armer (revision of song byVicki Ryde,r Rochester)",
+      "to_songwriter": "Sunny Armer",
+      "source_notes": "Revision of song by Vicki Ryder, Rochester",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 355,
+      "slug": "wars-not-the-way",
+      "title": "War’s Not the Way",
+      "from": "NYC Metro, original lyrics by Vicki Ryder, Rochester",
+      "to_songwriter": "Vicki Ryder",
+      "source_notes": "NYC Metro version; original lyrics by Vicki Ryder, Rochester",
+      "gaggle_add": "New York City Metro",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 353,
+      "slug": "corporate-persons-have-the-right-to-vote",
+      "title": "Corporate Persons Have the Right to Vote",
+      "from": "Nora Freeman and Sunny Armer",
+      "to_songwriter": "Nora Freeman, Sunny Armer",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 352,
+      "slug": "corporations-run-the-world",
+      "title": "Corporations Run The World",
+      "from": "Corinne Willinger and Sunny Armer",
+      "to_songwriter": "Corinne Willinger, Sunny Armer",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 337,
+      "slug": "weve-always-paid-our-taxes-tax-day-2010",
+      "title": "We’ve Always Paid Our Taxes (Tax Day 2010)",
+      "from": "Evie Shobin and Jan Harwood and Vicki Ryder",
+      "to_songwriter": "Evie Shobin, Jan Harwood, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 318,
+      "slug": "are-you-sleeping",
+      "title": "Are You Sleeping?",
+      "from": "Detroit",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Metro Detroit",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 303,
+      "slug": "the-homeless-song",
+      "title": "The Homeless Song",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 302,
+      "slug": "medicare",
+      "title": "Medicare",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 301,
+      "slug": "raging-granny-rap",
+      "title": "Raging Granny Rap",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 300,
+      "slug": "half-the-sky",
+      "title": "Half the Sky",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 299,
+      "slug": "unicorn-grizzly-song",
+      "title": "Unicorn Grizzly Song",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 298,
+      "slug": "water-song",
+      "title": "Water Song",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 297,
+      "slug": "take-me-out-to-the-clearcut",
+      "title": "Take Me Out to the Clearcut",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 296,
+      "slug": "gaggle-of-grannies",
+      "title": "Gaggle of Grannies",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 295,
+      "slug": "aging-raging-grannies",
+      "title": "Aging Raging Grannies",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 294,
+      "slug": "corporate-farm",
+      "title": "Corporate Farm",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 293,
+      "slug": "the-family-jewels",
+      "title": "The Family Jewels",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 292,
+      "slug": "oh-dear-what-can-the-matter-be",
+      "title": "Oh Dear What Can The Matter Be",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 291,
+      "slug": "capitalism",
+      "title": "Capitalism",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 290,
+      "slug": "toilet-tissue",
+      "title": "Toilet Tissue",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 289,
+      "slug": "poverty-in-winter",
+      "title": "Poverty in Winter",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 288,
+      "slug": "were-the-women",
+      "title": "We’re the Women",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 287,
+      "slug": "corporations",
+      "title": "Corporations",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 286,
+      "slug": "bottled-water",
+      "title": "Bottled Water",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 285,
+      "slug": "insufficiently-poor",
+      "title": "Insufficiently Poor",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 276,
+      "slug": "the-climate-it-is-a-changin",
+      "title": "The Climate – It Is A-Changin’",
+      "from": "Sunny Armer revision of Molly Walsh, Montreal lyrics",
+      "to_songwriter": "Sunny Armer",
+      "source_notes": "Revision of lyrics by Molly Walsh, Montreal",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 273,
+      "slug": "standin-in-the-need-of-single-payer",
+      "title": "Standin’ in the Need of Single Payer",
+      "from": "Lee Burkholder and Vicki Ryder",
+      "to_songwriter": "Lee Burkholder, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 264,
+      "slug": "cuba-cuba",
+      "title": "Cuba, Cuba",
+      "from": "Pat Moss and Vicki Ryder",
+      "to_songwriter": "Pat Moss, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 263,
+      "slug": "doo-dah-cuba",
+      "title": "Doo Dah Cuba!",
+      "from": "Judy Halley and Vicki Ryder",
+      "to_songwriter": "Judy Halley, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 244,
+      "slug": "water-is-life",
+      "title": "Water is Life",
+      "from": "Catherine Verrall Regina, Sask grans",
+      "to_songwriter": "Catherine Verrall",
+      "source_notes": null,
+      "gaggle_add": "Regina (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 228,
+      "slug": "pack-up-our-cars-and-trucks",
+      "title": "Pack Up Our Cars and Trucks",
+      "from": "Toronto Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Toronto",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 227,
+      "slug": "step-we-gaily",
+      "title": "Step We Gaily",
+      "from": "Catherine Verrall Regina, Sask grans",
+      "to_songwriter": "Catherine Verrall",
+      "source_notes": null,
+      "gaggle_add": "Regina (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 224,
+      "slug": "come-ride-the-bus-with-me",
+      "title": "Come Ride The Bus With Me",
+      "from": "Catherine Verrall Regina, Sask grans",
+      "to_songwriter": "Catherine Verrall",
+      "source_notes": null,
+      "gaggle_add": "Regina (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 217,
+      "slug": "theres-no-business-like-warnuke-business",
+      "title": "There’s No Business Like WarNuke Business",
+      "from": "NYC Metro",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "New York City Metro",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 208,
+      "slug": "bicycle-song",
+      "title": "Bicycle Song",
+      "from": "From Raging Grannies Songbook 1993",
+      "to_songwriter": "Unknown",
+      "source_notes": "From the Raging Grannies Songbook (1993)",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 207,
+      "slug": "the-bank-as-your-best-friend",
+      "title": "The Bank As Your Best Friend",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 205,
+      "slug": "beneath-the-nuclear-umbrella",
+      "title": "Beneath The Nuclear Umbrella",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 203,
+      "slug": "globalization-we-love-you",
+      "title": "Globalization We Love You",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 200,
+      "slug": "the-f-word",
+      "title": "The “F” Word",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 198,
+      "slug": "the-cloning-song",
+      "title": "The Cloning Song",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 197,
+      "slug": "advice-on-canadian-economy",
+      "title": "Advice on Canadian Economy",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 196,
+      "slug": "food-for-thought",
+      "title": "Food For Thought",
+      "from": "Halton Grannies",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Halton (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 183,
+      "slug": "another-side-recruiters",
+      "title": "Another Side (Recruiters)",
+      "from": "Marcy Matasick and Ruth Imber",
+      "to_songwriter": "Marcy Matasick, Ruth Imber",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 180,
+      "slug": "lorena-bobbit",
+      "title": "Lorena Bobbit",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 179,
+      "slug": "terminator-guys",
+      "title": "Terminator Guys",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 178,
+      "slug": "laredo",
+      "title": "Laredo",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 177,
+      "slug": "free-trade-trot",
+      "title": "Free Trade Trot",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 176,
+      "slug": "helping-the-arms-trade-grow",
+      "title": "Helping The Arms Trade Grow",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 175,
+      "slug": "clayquot-tree-huggers",
+      "title": "Clayquot Tree Huggers",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 174,
+      "slug": "clayoquot-jail-song",
+      "title": "Clayoquot Jail Song",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 173,
+      "slug": "another-way",
+      "title": "Another Way",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 158,
+      "slug": "mammogram-song",
+      "title": "Mammogram Song",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 155,
+      "slug": "attacked-by-forces-of-gravity",
+      "title": "Attacked By Forces Of Gravity",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 154,
+      "slug": "geriatric-sex",
+      "title": "Geriatric Sex",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 153,
+      "slug": "csis-csis-canadas-fbi",
+      "title": "CSIS, CSIS (Canada’s FBI)",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 151,
+      "slug": "barbie-song",
+      "title": "Barbie Song",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 141,
+      "slug": "gran-of-many-sorrows",
+      "title": "Gran of Many Sorrows",
+      "from": "Eleanor Chithalen and Rose DeShaw",
+      "to_songwriter": "Eleanor Chithalen, Rose DeShaw",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 119,
+      "slug": "water-system-failure",
+      "title": "Water System Failure",
+      "from": "Halifax unconvention collaboration",
+      "to_songwriter": "Unknown",
+      "source_notes": "Halifax unConvention collaboration",
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 61,
+      "slug": "dear-bank",
+      "title": "Dear Bank",
+      "from": "Eva Monroe, Halifax Gaggle",
+      "to_songwriter": "Eva Monroe",
+      "source_notes": null,
+      "gaggle_add": "Halifax",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 40,
+      "slug": "thats-what-its-all-about",
+      "title": "That’s What It’s All About",
+      "from": "Sharon Ann Wurmann and Vicki Lewin Ryder",
+      "to_songwriter": "Sharon Ann Wurmann, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "rule",
+      "post_id": 33,
+      "slug": "santa-doesnt-like-war-toys",
+      "title": "Santa Doesn’t Like War Toys",
+      "from": "Victoria Grans",
+      "to_songwriter": "Unknown",
+      "source_notes": null,
+      "gaggle_add": "Victoria (historical)",
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 32,
+      "slug": "bailout",
+      "title": "Bailout!",
+      "from": "Sunny Armer and Vicki Ryder",
+      "to_songwriter": "Sunny Armer, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    },
+    {
+      "kind": "split",
+      "post_id": 22,
+      "slug": "get-out-and-vote",
+      "title": "Get Out and Vote",
+      "from": "Peggy Dempsey and Vicki Ryder",
+      "to_songwriter": "Peggy Dempsey, Vicki Ryder",
+      "source_notes": null,
+      "gaggle_add": null,
+      "existing_source_notes": ""
+    }
+  ]
+}

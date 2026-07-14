@@ -38,7 +38,9 @@ interface ConsolidatedRecord {
   lyrics: string;
   tune: string;
   songwriter: string;
+  songwriters?: string[]; // raw term list; joined `songwriter` kept for script compat
   gaggle: string;
+  gaggles?: string[];
   issues: string[];
   key_or_starting_note: string;
   youtube_link: string;
@@ -131,8 +133,12 @@ function consolidatedToSong(r: ConsolidatedRecord): Song {
       featureOnHomepage: !!r.feature_on_homepage,
     },
     issues: { nodes: (r.issues ?? []).map((name) => ({ name })) },
-    songwriters: { nodes: r.songwriter ? [{ name: r.songwriter }] : [] },
-    gaggles: { nodes: r.gaggle ? [{ name: r.gaggle }] : [] },
+    songwriters: {
+      nodes: (r.songwriters ?? (r.songwriter ? [r.songwriter] : [])).map((name) => ({ name })),
+    },
+    gaggles: {
+      nodes: (r.gaggles ?? (r.gaggle ? [r.gaggle] : [])).map((name) => ({ name })),
+    },
     tunes: { nodes: r.tune ? [{ name: r.tune }] : [] },
   };
 }

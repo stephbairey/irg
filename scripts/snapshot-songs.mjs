@@ -113,7 +113,11 @@ function toRecord(node) {
     lyrics: sd.lyrics ?? "",
     tune: joinNodes(node.tunes, " / "),
     songwriter: joinNodes(node.songwriters, " and "),
+    // Raw term lists. The joined strings above predate multi-term cleanup
+    // and stay for script compat; the frontend should read the arrays.
+    songwriters: (node.songwriters?.nodes ?? []).map((n) => n.name).filter(Boolean),
     gaggle: joinNodes(node.gaggles, ", "),
+    gaggles: (node.gaggles?.nodes ?? []).map((n) => n.name).filter(Boolean),
     issues: (node.issues?.nodes ?? []).map((n) => n.name).filter(Boolean),
     key_or_starting_note: sd.keyOrStartingNote ?? "",
     youtube_link: sd.youtubeLink ?? "",
