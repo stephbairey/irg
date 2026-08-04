@@ -483,10 +483,17 @@ Added by this plan, on top of the existing `docs/HANDOFF.md` Phase 2 list:
 
 ## Resume checklist
 
-- [ ] A1 close `submit-song` (honeypot, Turnstile, password) + frontend
-- [ ] A2 shared comma-split helper
-- [ ] A3 host-allowlist YouTube validation
-- [ ] A4 surface dropped issue terms
+- [x] A1 close `submit-song` (honeypot, Turnstile, password) + frontend
+- [x] A2 shared comma-split helper
+- [x] A3 host-allowlist YouTube validation
+- [x] A4 surface dropped issue terms
+      Shipped 2026-08-04 in `9bb6529`, plugin 3.18.0 deployed and
+      network-active. Verified: an unauthenticated POST to
+      `/wp-json/irg/v1/submit-song` returns 400 `irg_turnstile_missing`
+      before any post is created. Frontend was pushed before the plugin
+      deploy on purpose, since the extra params are ignored by the old
+      endpoint while the reverse order would have rejected live
+      submissions until Pages rebuilt.
 - [ ] B shared combobox, 7 inputs, 3-char gate, ARIA
 - [ ] C1 PHP exporter, byte-match against `npm run snapshot`
 - [ ] C2 debounced publish hook
