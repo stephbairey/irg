@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import FeedbackWidget from "../components/FeedbackWidget.astro";
 import { wpQuery } from "../lib/graphql";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -150,6 +151,9 @@ const categoriesJson = JSON.stringify(categories);
         <p class="text-[17px] md:text-[20px] leading-[1.5] text-text mt-5 max-w-[60ch]">
           High-resolution images free for editorial use. Please credit the photographer.
         </p>
+        {/* E3: permanent photo-submission prompt, in the hero so it sits
+            above the fold on desktop. */}
+        <FeedbackWidget variant="send-photos" />
       </div>
     </section>
 

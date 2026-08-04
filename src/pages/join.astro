@@ -1,0 +1,136 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getActiveGaggleCountLabel } from "../lib/gaggles";
+
+const gaggleCount = getActiveGaggleCountLabel();
+
+// Straight content page (pre-cutover plan, workstream E4): the footer's
+// "Actions" column links here. No new plumbing; every path off this page
+// already exists.
+const steps = [
+  {
+    title: "Find your gaggle",
+    body: `There are ${gaggleCount} gaggles across North America and beyond. Check the map, find the one nearest you, and reach out through their page. Most gaggles welcome a curious newcomer at a rehearsal before anyone mentions commitment.`,
+    href: "/find-a-gaggle/",
+    cta: "Open the map",
+  },
+  {
+    title: "No gaggle nearby? Start one.",
+    body: "All it takes is a few good women of that certain age, a shared sense of outrage, and the willingness to sing about it in public. Our starter kit covers the rest: picking your issues, writing your first song, finding your granny garb.",
+    href: "/start-a-gaggle/",
+    cta: "Get the starter kit",
+  },
+  {
+    title: "Not sure yet? Ask us anything.",
+    body: "Wondering whether you're granny enough, what rehearsals look like, or how the hats work? We have answers, and an inbox read by an actual granny.",
+    href: "/faq/",
+    cta: "Read the FAQ",
+  },
+];
+---
+
+<BaseLayout
+  title="Join the Raging Grannies"
+  description="How to join a Raging Grannies gaggle near you, or start your own. No grandchildren required."
+>
+  <article class="max-w-[1400px] mx-auto px-5 md:px-8 pt-10 md:pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-8 md:pb-10 border-b border-muted mb-10 md:mb-12">
+      <div class="kicker text-red mb-4">Become one of us</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(36px,7.5vw,96px)">
+        Join the Raging Grannies
+      </h1>
+      <p class="text-[17px] md:text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+        If you're a woman of a certain age with a sense of humor and a sense of outrage, we've been waiting for you.
+      </p>
+    </header>
+
+    {/* Who counts as a granny */}
+    <section class="max-w-[760px] mx-auto mb-14">
+      <div class="kicker text-red mb-2">First, the fine print</div>
+      <h2 class="font-display text-ink text-[40px] leading-tight mb-5">No grandchildren required</h2>
+      <p class="text-[17px] leading-relaxed text-text mb-4">
+        "Granny" is a state of mind. You don't need grandchildren, and you don't even need children. You need to care
+        about the world they're inheriting, and be willing to put on a flowered hat and sing about it where people can
+        hear you.
+      </p>
+      <p class="text-[17px] leading-relaxed text-text mb-4">
+        Most gaggles set 50 as the floor, and most limit membership to women. There's real power in subverting the
+        stereotype of the quiet, harmless grandmother, and that's a big part of why we're effective. Every gaggle sets
+        its own rules, so ask the one near you.
+      </p>
+      <p class="text-[17px] leading-relaxed text-text">
+        There are no dues, no bylaws, and no central committee to approve you. Each gaggle is autonomous. If they'll
+        have you and you'll have them, you're a Raging Granny.
+      </p>
+    </section>
+
+    {/* Steps */}
+    <section class="max-w-[1080px] mx-auto mb-16">
+      <div class="kicker text-red mb-2">Three ways in</div>
+      <h2 class="font-display text-ink text-[40px] leading-tight mb-8">Here's how</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {steps.map((s) => (
+          <a href={s.href} class="join-card">
+            <div>
+              <h3 class="font-display text-ink text-[26px] leading-tight mb-2.5">{s.title}</h3>
+              <p class="text-[15px] text-text-soft leading-snug m-0">{s.body}</p>
+            </div>
+            <div class="join-card-cta">
+              {s.cta} <span aria-hidden="true">→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    {/* What to expect */}
+    <section class="max-w-[760px] mx-auto">
+      <div class="kicker text-red mb-2">What you're signing up for</div>
+      <h2 class="font-display text-ink text-[40px] leading-tight mb-5">Rehearsals, rallies, and rage</h2>
+      <p class="text-[17px] leading-relaxed text-text mb-4">
+        Most gaggles meet regularly to rehearse and plan actions. Decisions happen by consensus, songs get written
+        around kitchen tables, and then everyone shows up somewhere public and sings truth to power in three-part
+        near-harmony. Nobody will audition you. Enthusiasm counts for more than pitch.
+      </p>
+      <p class="text-[17px] leading-relaxed text-text">
+        Want a taste first? Browse the <a href="/songs/" class="join-inline-link">Song Library</a> and imagine yourself
+        singing one on a street corner. If that thought makes you grin, you already know.
+      </p>
+    </section>
+  </article>
+
+  <style>
+    .join-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px 26px;
+      background: var(--color-card);
+      border: 1.5px solid var(--color-muted);
+      border-radius: 12px;
+      text-decoration: none;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+    .join-card:hover {
+      border-color: var(--color-ink);
+      transform: translateY(-2px);
+    }
+    .join-card-cta {
+      font: 800 14px/1 var(--font-body);
+      color: var(--color-red);
+    }
+    .join-inline-link {
+      color: var(--color-red);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--color-red);
+      font-weight: 600;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .join-inline-link:hover {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,277 @@
+---
+// Shared feedback widget (pre-cutover plan, workstream E3 / D060).
+//
+// Collapsed to a call-to-action button; clicking reveals a small form inline
+// so the reader never leaves the page. Posts to the existing contact endpoint
+// as application/x-www-form-urlencoded — a simple CORS request with no
+// preflight (D041); that constraint must be preserved. The endpoint requires
+// name, a valid email, message, honeypot, and Turnstile.
+//
+// Turnstile loads lazily on first open (explicit render), so mounting this on
+// every page adds no third-party JS until someone actually opens the form.
+//
+// Deliberately not red: red is reserved for buttons, map pins, and data
+// callouts. This uses the ink/lavender side of the token set.
+import { FEEDBACK_VARIANTS, type FeedbackVariantName } from "../lib/feedback-config";
+
+interface Props {
+  variant: FeedbackVariantName;
+}
+const { variant } = Astro.props;
+const cfg = FEEDBACK_VARIANTS[variant];
+
+const EMAIL = "connect@raginggrannies.org";
+const TURNSTILE_SITEKEY = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? "";
+const WP_BASE = (import.meta.env.PUBLIC_WP_URL ?? "").replace(/\/$/, "");
+const CONTACT_ENDPOINT = WP_BASE ? `${WP_BASE}/wp-json/irg/v1/contact` : "";
+// Same availability gate as contact.astro: without a sitekey or endpoint the
+// form could only fail server-side, so degrade to a mailto link instead.
+const formAvailable = !!TURNSTILE_SITEKEY && !!CONTACT_ENDPOINT;
+const mailtoHref = `mailto:${EMAIL}?subject=${encodeURIComponent(cfg?.reason ?? "Feedback")}`;
+---
+
+{cfg?.enabled && (
+  <aside
+    class="fbw"
+    data-feedback
+    data-variant={variant}
+    data-reason={cfg.reason}
+    data-endpoint={formAvailable ? CONTACT_ENDPOINT : null}
+    data-sitekey={formAvailable ? TURNSTILE_SITEKEY : null}
+    aria-label={cfg.heading}
+  >
+    <div class="fbw-card">
+      <div class="fbw-kicker">{cfg.kicker}</div>
+      <h2 class="fbw-heading">{cfg.heading}</h2>
+      <p class="fbw-blurb">{cfg.blurb}</p>
+
+      {formAvailable ? (
+        <>
+          <button type="button" class="fbw-cta btn btn-pill-ink">{cfg.cta}</button>
+          <form class="fbw-form" hidden novalidate>
+            <div class="fbw-grid">
+              <label class="fbw-field">
+                <span class="fbw-label">Your name</span>
+                <input type="text" name="name" required maxlength="200" autocomplete="name" />
+              </label>
+              <label class="fbw-field">
+                <span class="fbw-label">Email</span>
+                <input type="email" name="email" required maxlength="200" autocomplete="email" />
+              </label>
+            </div>
+            <label class="fbw-field">
+              <span class="fbw-label">Message</span>
+              <textarea name="message" required minlength="10" maxlength="8000" rows="4" placeholder={cfg.placeholder}></textarea>
+            </label>
+            {/* Honeypot — hidden from real users; bots fill it in. */}
+            <div class="fbw-hp" aria-hidden="true">
+              <label>Don't fill this in if you're human <input type="text" name="hp" tabindex="-1" autocomplete="off" /></label>
+            </div>
+            <div class="fbw-turnstile"></div>
+            <div class="fbw-actions">
+              <button type="submit" class="btn btn-pill-ink">Send it</button>
+              <span class="fbw-status" role="status" aria-live="polite"></span>
+            </div>
+          </form>
+          <p class="fbw-thanks" hidden>Got it. Thank you! A granny reads every one.</p>
+        </>
+      ) : (
+        <a href={mailtoHref} class="fbw-cta btn btn-pill-ink">{cfg.cta}</a>
+      )}
+    </div>
+  </aside>
+)}
+
+<script>
+  // Turnstile is shared across widgets and with pages that load api.js
+  // themselves (contact, submit, edit-song): reuse window.turnstile when it
+  // exists, wait on an already-present script tag, inject otherwise.
+  let turnstilePromise = null;
+  function ensureTurnstile() {
+    if (!turnstilePromise) {
+      turnstilePromise = new Promise((resolve, reject) => {
+        const poll = () => {
+          if (window.turnstile) return resolve(window.turnstile);
+          if (Date.now() > deadline) return reject(new Error("Turnstile failed to load"));
+          setTimeout(poll, 100);
+        };
+        const deadline = Date.now() + 15000;
+        if (window.turnstile) return resolve(window.turnstile);
+        if (!document.querySelector('script[src^="https://challenges.cloudflare.com/turnstile/"]')) {
+          const s = document.createElement("script");
+          s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+          s.async = true;
+          s.onerror = () => reject(new Error("Turnstile failed to load"));
+          document.head.appendChild(s);
+        }
+        poll();
+      });
+    }
+    return turnstilePromise;
+  }
+
+  function initFeedback(root) {
+    const endpoint = root.dataset.endpoint;
+    if (!endpoint) return; // mailto fallback build — nothing to wire
+    const reason = root.dataset.reason || "Feedback";
+    const sitekey = root.dataset.sitekey;
+    const cta = root.querySelector(".fbw-cta");
+    const form = root.querySelector(".fbw-form");
+    const status = root.querySelector(".fbw-status");
+    const thanks = root.querySelector(".fbw-thanks");
+    const tsContainer = root.querySelector(".fbw-turnstile");
+    let widgetId = null;
+
+    cta.addEventListener("click", () => {
+      cta.hidden = true;
+      form.hidden = false;
+      form.querySelector('[name="name"]')?.focus();
+      ensureTurnstile()
+        .then((ts) => {
+          if (widgetId === null && tsContainer) {
+            widgetId = ts.render(tsContainer, { sitekey, theme: "light" });
+          }
+        })
+        .catch(() => {
+          status.dataset.state = "err";
+          status.textContent = "The spam check didn't load. Please try again later, or use the contact page.";
+        });
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      status.dataset.state = "sending";
+      status.textContent = "Sending…";
+
+      const fd = new FormData(form);
+      const body = new URLSearchParams();
+      body.set("name", String(fd.get("name") || ""));
+      body.set("email", String(fd.get("email") || ""));
+      // The endpoint writes its own subject, so the variant reason and the
+      // page it came from ride at the top of the message body.
+      body.set(
+        "message",
+        "[" + reason + "] " + location.pathname + "\n\n" + String(fd.get("message") || ""),
+      );
+      body.set("hp", String(fd.get("hp") || ""));
+      const ts = window.turnstile;
+      body.set("cf-turnstile-response", ts && widgetId !== null ? ts.getResponse(widgetId) || "" : "");
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      try {
+        const res = await fetch(endpoint, {
+          method: "POST",
+          body,
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        });
+        let data = {};
+        try { data = await res.json(); } catch {}
+        if (res.ok && data.ok) {
+          form.hidden = true;
+          thanks.hidden = false;
+          return;
+        }
+        status.dataset.state = "err";
+        status.textContent =
+          (data && data.message) || "Something went wrong. Please try again, or use the contact page.";
+      } catch {
+        status.dataset.state = "err";
+        status.textContent = "Network error. Please try again, or use the contact page.";
+      }
+      submitBtn.disabled = false;
+      if (window.turnstile && widgetId !== null) window.turnstile.reset(widgetId);
+    });
+  }
+
+  document.querySelectorAll("[data-feedback]").forEach(initFeedback);
+</script>
+
+<style is:global>
+  .fbw {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px 0;
+  }
+  .fbw-card {
+    background: var(--color-pale-lavender);
+    border: 1.5px solid var(--color-ink-lilac);
+    border-radius: 14px;
+    padding: 26px 28px;
+  }
+  .fbw-kicker {
+    font: 800 11px/1.2 var(--font-body);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    margin-bottom: 8px;
+  }
+  .fbw-heading {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.15;
+    color: var(--color-ink);
+    margin: 0 0 8px;
+  }
+  .fbw-blurb {
+    font: 400 15px/1.5 var(--font-body);
+    color: var(--color-text-soft);
+    max-width: 60ch;
+    margin: 0 0 16px;
+  }
+  .fbw-form { display: grid; gap: 14px; }
+  .fbw-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .fbw-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .fbw-field { display: grid; gap: 5px; }
+  .fbw-label {
+    font: 800 11px/1.2 var(--font-body);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+  .fbw-form input[type="text"],
+  .fbw-form input[type="email"],
+  .fbw-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--color-card);
+    border: 1.5px solid var(--color-ink-lilac);
+    border-radius: 8px;
+    font: 400 15px/1.5 var(--font-body);
+    color: var(--color-text);
+    outline: 0;
+    transition: border-color 0.15s;
+  }
+  .fbw-form input:focus,
+  .fbw-form textarea:focus {
+    border-color: var(--color-ink-soft);
+  }
+  .fbw-form textarea { resize: vertical; min-height: 96px; }
+  .fbw-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .fbw-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .fbw-status { font: 600 14px/1.4 var(--font-body); color: var(--color-text-soft); }
+  .fbw-status[data-state="sending"] { color: var(--color-ink-soft); }
+  .fbw-status[data-state="err"] { color: var(--color-red); font-weight: 700; }
+  .fbw-thanks {
+    font: 700 16px/1.5 var(--font-body);
+    color: var(--color-ink);
+    margin: 0;
+  }
+</style>

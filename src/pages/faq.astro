@@ -4,8 +4,17 @@ import { getActiveGaggleCountLabel } from "../lib/gaggles";
 
 const gaggleCount = getActiveGaggleCountLabel();
 
-type QA = { q: string; a: string };
+type QA = { q: string; a: string; id?: string };
 type Section = { id: string; title: string; intro: string; items: QA[] };
+
+// Per-question anchor ids (E5): explicit `id` wins; otherwise derived from
+// the question text. Makes every answer deep-linkable, e.g. the footer's
+// "Send a Photo" link opens #send-a-photo directly.
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 
 const sections: Section[] = [
   {
@@ -126,6 +135,11 @@ const sections: Section[] = [
         a: `Most gaggles are happy to come sing if the issue aligns with our work. Reach out to the gaggle nearest you. There's no booking fee, but covering reasonable travel costs is appreciated. Don't expect a polished concert. Expect activism with hats.`,
       },
       {
+        id: "send-a-photo",
+        q: "I have photos of grannies in action. How do I send them?",
+        a: `Email them to <a href="mailto:webgranny@raginggrannies.org">webgranny@raginggrannies.org</a>, along with the gaggle name, where and when the photos were taken, and who took them so we can give proper credit. A real upload button is on the wish list; until it arrives, the Web Granny's inbox is the drop box.`,
+      },
+      {
         q: "I'm not a Granny but I want to support the work. What can I do?",
         a: `Show up to actions. Share songs and posts. Donate to the local issues we're singing about. Tell your friends. And if you're a woman of that certain age with a sense of humor and a sense of outrage, maybe it's time to stop supporting and start singing.`,
       },
@@ -197,7 +211,7 @@ const faqSchema = {
 
             <div>
               {section.items.map((item) => (
-                <details class="border-b border-rule py-5 group">
+                <details id={item.id ?? slugify(item.q)} class="border-b border-rule py-5 group scroll-mt-28">
                   <summary class="flex justify-between items-center cursor-pointer list-none font-display text-ink text-[22px] leading-tight gap-4">
                     <span>{item.q}</span>
                     <span class="text-muted text-xl transition-transform group-open:rotate-180 shrink-0">▾</span>
@@ -230,6 +244,23 @@ const faqSchema = {
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  // Deep links to individual questions (E5): when the hash names a <details>,
+  // open it and scroll it into view. Native anchor scrolling can't open a
+  // closed <details>, so we do both. Runs on load and on hash changes so
+  // sidebar-style navigation within the page works too.
+  function openFromHash() {
+    const id = decodeURIComponent(location.hash.slice(1));
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (!(el instanceof HTMLDetailsElement)) return; // section ids keep default behavior
+    el.open = true;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  openFromHash();
+  window.addEventListener("hashchange", openFromHash);
+</script>
 
 <style>
   .faq-prose :global(a) {

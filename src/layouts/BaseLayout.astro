@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import JsonLd from "../components/JsonLd.astro";
+import FeedbackWidget from "../components/FeedbackWidget.astro";
 
 interface Props {
   title: string;
@@ -57,7 +58,9 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Rum+Raisin&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/svg+xml" href="/logo-cropped.svg" />
+    {/* No favicon during the logo-placeholder period (E1/D064): browsers 404
+        on /favicon.ico and fall back to a generic tab icon. Restore a link
+        here when the ranked-choice logo vote concludes. */}
     <script is:inline>
       // Apply saved text-zoom level before first paint to avoid flash. The
       // click handler at the bottom of body keeps the visible state in sync.
@@ -77,7 +80,7 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
     <header class="sticky top-0 z-50 border-b-[1.5px] border-rule bg-light-cream" style="backdrop-filter:saturate(1.1)">
       <div class="flex justify-between items-center max-w-[1400px] mx-auto px-8 py-4">
         <a href="/" class="flex items-center gap-3 no-underline text-ink" aria-label="Raging Grannies International, Home">
-          <img src="/logo-cropped.svg" alt="" class="w-[100px] h-[100px] object-contain" />
+          <img src="/logo-placeholder-cropped.svg" alt="" class="w-[100px] h-[100px] object-contain" />
           <div>
             <span class="font-display text-[3em] leading-[1.2em] text-ink block">Raging Grannies</span>
             <span class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-muted block mt-1">International Disorganization · Est. 1987</span>
@@ -338,6 +341,11 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       <slot />
     </main>
 
+    <!-- Launch feedback (E3): every page type gets it, above the footer.
+         Temporary for the first months post-launch; switched off in
+         src/lib/feedback-config.ts, not here. -->
+    <FeedbackWidget variant="launch" />
+
     <!-- Paper band between page content and the dark footer (replaces the
          footer's old top margin, which showed the lavender page behind it). -->
     <div class="bg-paper h-16 md:h-24" aria-hidden="true"></div>
@@ -348,21 +356,24 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         <!-- Brand column -->
         <div class="mb-2 md:mb-0">
           <div class="flex items-center gap-3 mb-4">
-            <img src="/logo-full.svg" alt="" class="h-[125px] brightness-0 invert opacity-90" />
+            {/* Placeholder is drawn in light #ECEAF0 for this dark footer, so
+                the old brightness-0 invert filter (which forced the real logo
+                white) is dropped for the placeholder period. */}
+            <img src="/logo-placeholder-full.svg" alt="" class="h-[125px] opacity-90" />
             <span class="font-display text-[3em] leading-[1.2em] text-on-dark">Raging Grannies</span>
           </div>
           <p class="text-[15px] text-ink-lilac leading-relaxed max-w-[340px]">
             A network of mature women, singing satire into the face of injustice as long as it's needed.
           </p>
         </div>
-        <!-- Songs -->
+        <!-- Actions (was "The Songs"; renamed per the July 28 committee, E4) -->
         <details class="footer-section">
-          <summary>The Songs</summary>
+          <summary>Actions</summary>
           <ul class="space-y-2 text-[15px]">
-            <li><a href="/songs/" class="text-on-dark no-underline hover:text-red">Browse</a></li>
-            <li><a href="/songs/by-issue/" class="text-on-dark no-underline hover:text-red">By issue</a></li>
-            <li><a href="/songs/by-tune/" class="text-on-dark no-underline hover:text-red">By tune</a></li>
+            <li><a href="/join/" class="text-on-dark no-underline hover:text-red">Join the Raging Grannies</a></li>
             <li><a href="/submit/" class="text-on-dark no-underline hover:text-red">Add a Song</a></li>
+            <li><a href="/faq/#send-a-photo" class="text-on-dark no-underline hover:text-red">Send a Photo</a></li>
+            <li><a href="/contact/" class="text-on-dark no-underline hover:text-red">Get Help</a></li>
           </ul>
         </details>
         <!-- About -->

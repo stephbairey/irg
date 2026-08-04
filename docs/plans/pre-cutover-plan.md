@@ -515,11 +515,21 @@ Added by this plan, on top of the existing `docs/HANDOFF.md` Phase 2 list:
       deploy wording de-aspirationalized (snapshots + push today, C makes
       the WP hook real); HANDOFF.md decision count fixed (was "50", now
       66). Date-param no-action note already lived in this doc.
-- [ ] E1 logo placeholder, favicon removal, footer filter check
-- [ ] E2 three copy corrections
-- [ ] E3 shared feedback component + 3 variants
-- [ ] E4 footer restructure + Join page
-- [ ] E5 photo FAQ entry + per-question ids and hash-open
+- [x] E1 logo placeholder, favicon removal, footer filter check
+- [x] E2 three copy corrections
+- [x] E3 shared feedback component + 3 variants
+- [x] E4 footer restructure + Join page
+- [x] E5 photo FAQ entry + per-question ids and hash-open
+      E1-E5 shipped 2026-08-04. Notes: the sticky header kept "International
+      Disorganization · Est. 1987"; the homepage masthead dateline got new
+      copy ("All the rage that's fit to sing" / "From Victoria, BC to
+      everywhere"). The footer placeholder SVG is drawn in light #ECEAF0, so
+      the brightness-0 invert filter was dropped as predicted. Feedback
+      widget loads Turnstile lazily on first open (explicit render), so the
+      site-wide mount adds no third-party JS until someone clicks; when env
+      is missing it degrades to a mailto CTA. Verified with 23 headless
+      checks incl. song-detail mount, above-the-fold photos placement,
+      hash-open FAQ, and JSON-LD numberOfItems staying an integer.
 - [ ] E6 confirm tablet intent with committee (decision, not code)
 - [ ] F1 press exclusions, filtered in both places
 - [ ] F2 ingest diagnosis, health check, workflow cleanup

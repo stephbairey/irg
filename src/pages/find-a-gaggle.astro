@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import FeedbackWidget from "../components/FeedbackWidget.astro";
+import { getActiveGaggleCountLabel } from "../lib/gaggles";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -134,7 +136,7 @@ const gaggleListSchema = {
       </h1>
       <p class="text-[17px] md:text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
         {total > 0 ? (
-          <>There are {total} gaggles of Raging Grannies across North America and around the world. Find one near you, or start your own.</>
+          <>There are {getActiveGaggleCountLabel()} gaggles of Raging Grannies across North America and around the world. Find one near you, or start your own.</>
         ) : (
           <>Gaggles span North America and beyond. The map's loading. Find one near you, or start your own.</>
         )}
@@ -212,6 +214,9 @@ const gaggleListSchema = {
         </a>
       </div>
     </section>
+
+    {/* E3: permanent "gaggle not listed" prompt for corrections to the map. */}
+    <FeedbackWidget variant="gaggle-not-listed" />
   </article>
 
   {/* Data block: read by the bundled script below. type=application/json keeps it inert. */}

@@ -119,9 +119,12 @@ const yearsSinging = new Date().getFullYear() - 1987;
   <section class="bg-paper pt-12 pb-8">
     <div class="max-w-[1400px] mx-auto px-5 md:px-8">
       <div class="flex flex-col items-center gap-1 text-center md:flex-row md:justify-between md:text-left text-muted font-bold text-xs tracking-[.1em] uppercase border-b border-rule pb-3 mb-5">
+        {/* The sticky header directly above already says "International
+            Disorganization · Est. 1987" (E2: it keeps them; this dateline
+            stopped repeating them). */}
         <span>Welcome, friend</span>
-        <span>The International Disorganization</span>
-        <span>Est. Victoria, BC · 1987</span>
+        <span>All the rage that's fit to sing</span>
+        <span>From Victoria, BC to everywhere</span>
       </div>
       <h1 class="font-display text-center text-ink leading-[.9] tracking-tight" style="font-size:clamp(56px,12vw,160px)">
         Raging Grannies
@@ -137,7 +140,7 @@ const yearsSinging = new Date().getFullYear() - 1987;
     <div class="grid grid-cols-1 md:grid-cols-[3fr_4fr_3fr] border border-muted">
       <!-- Lead story -->
       <div class="p-5 md:p-7">
-        <div class="kicker text-red mb-3.5">From the Song Library</div>
+        <div class="kicker text-red mb-3.5">One of Our Songs</div>
         <div id="featured-slot">
           {featured ? (
             <>
