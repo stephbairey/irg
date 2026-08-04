@@ -252,7 +252,7 @@ Hosting infrastructure details: `docs/infrastructure/irg-hosting.md`.
 
 ## Decision log
 
-`DECISIONS.md` carries 50 decision entries (D001 through D050). Notable ones:
+`DECISIONS.md` carries 66 decision entries (D001 through D066; D055 onward record the 2026-08-04 pre-cutover plan decisions). Notable ones:
 
 - **D001 to D008**: stack and architecture (multisite, Astro, CF Pages, headless WP, GraphQL, custom theme)
 - **D027 (superseded by D047)**: press feed

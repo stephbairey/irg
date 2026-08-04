@@ -18,7 +18,7 @@ Maya Bairey (developer, `stephbairey` on GitHub) is the IRG "Web Granny" — she
 - **CMS**: WordPress Multisite at `raginggrannies.international`, hosted on a dedicated Nixihost account (separate from Maya's personal hosting)
 - **Content API**: WPGraphQL (installed on the multisite)
 - **Frontend**: Astro at `raginggrannies.org` (eventually; during dev, on Cloudflare Pages default URL)
-- **Deploy**: Cloudflare Pages, auto-rebuild on content change via webhook from WP
+- **Deploy**: Cloudflare Pages, auto-rebuild on every push to `main`. Song content reaches the build via committed JSON snapshots (`data/songs-consolidated.json`); a WP push-to-deploy pipeline that commits the snapshot on song publish/edit is planned (pre-cutover plan, workstream C) but not built yet
 - **Repo**: `github.com/stephbairey/irg`
 
 No commerce. No email marketing integration (for now). The E-Vine members-only listserv remains a separate system.
@@ -33,7 +33,8 @@ raginggrannies.international     →  WordPress Multisite on Nixihost (admin/CMS
   ├── /calgary/                      Calgary gaggle subsite
   └── ... (one subsite per gaggle)
                                      ↓ WPGraphQL (one endpoint per subsite)
-                                     ↓ deploy webhook on publish/update
+                                     ↓ committed JSON snapshots → git push → rebuild
+                                     ↓ (WP push-to-deploy on publish/edit: planned, workstream C)
                                      ↓
 raginggrannies.org               →  Astro static build on Cloudflare Pages
                                      Hub pages, song archive, gaggle pages

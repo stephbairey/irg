@@ -223,10 +223,11 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
   - ACF GUI (easy to edit in WP admin, but field config lives in the database — not version-controlled, lost if database is reset, not portable)
   - `acf_add_local_field_group()` in `irg-core.php` (version-controlled, portable, deploys with the plugin, but requires code changes to modify fields)
 - **Choice**: Register via `acf_add_local_field_group()` in the irg-core plugin.
-- **Rationale**: The song data model is finalized. Keeping field definitions in code means they're version-controlled, deploy automatically with the plugin, and survive database resets. The ACF GUI still shows them as read-only for reference. All 6 fields have `show_in_graphql => true` for WPGraphQL for ACF exposure. The field group's `graphql_field_name` is `songDetails`, so queries use `song { songDetails { lyrics keyOrStartingNote ... } }`.
-- **Fields**: lyrics (wysiwyg), key_or_starting_note (text), youtube_link (url), youtube_link_2 (url), date_written_or_updated (date_picker), source_notes (text).
+- **Rationale**: The song data model is finalized. Keeping field definitions in code means they're version-controlled, deploy automatically with the plugin, and survive database resets. The ACF GUI still shows them as read-only for reference. All seven fields have `show_in_graphql => true` for WPGraphQL for ACF exposure. The field group's `graphql_field_name` is `songDetails`, so queries use `song { songDetails { lyrics keyOrStartingNote ... } }`.
+- **Fields** (seven): lyrics (wysiwyg), key_or_starting_note (text), youtube_link (url), youtube_link_2 (url), date_written_or_updated (date_picker), source_notes (text), feature_on_homepage (true_false, added later by D054).
 - **Removed in v2.1.0**: `tune` and `songwriter` ACF text fields. These duplicated the Tune and Songwriter taxonomies already registered on the Songs CPT. Taxonomies are the correct model — they allow filtering/grouping songs by tune or songwriter across the archive. Text fields would have been flat strings with no relational capability. Since fields registered via `acf_add_local_field_group()` can't be removed from the ACF admin UI (they're read-only), the code change was required.
 - **Note**: The default WP `editor` was removed from the CPT `supports` array since lyrics now live in the ACF WYSIWYG field. The standard editor would be redundant and confusing for granny editors.
+- **Relabel (2026-07-14, commit `9e2a1cb`, irg-core 3.17.1)**: `source_notes` is labeled "Additional Notes" in the WP admin field and on the submit/edit forms. The machine name, the JSON key, and the GraphQL field remain `source_notes`/`sourceNotes`. This split is deliberate: the label is what grannies see, while renaming the key would ripple through the snapshot script, the consolidated JSON, and every consumer for a purely cosmetic change.
 - **Revisit if**: The song librarian needs additional fields, or if ACF GUI editing becomes necessary for non-developer contributors.
 
 ## D019 — Issue taxonomy seeded with 17 default terms on activation
@@ -760,6 +761,104 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Why WP-side (vs D052's repo config)**: the curator here is the song librarian, an ongoing editorial role, so the flag belongs in WP admin where they already work — not in the repo. D052's gaggle opt-out was a rare, Maya-owned toggle, which justified repo config there.
 - **Rollout**: deploy the plugin (`node scripts/deploy-plugin.mjs`) so `featureOnHomepage` exists in GraphQL → approve an initial set (admin ticks or the seed script) → `npm run snapshot` → commit the new JSON + frontend → push. The fallback card makes the ordering safe (homepage shows the card until approvals land).
 - **Revisit if**: the approved pool is hard to keep healthy (then add a curation list view / count in admin), or curation should expand beyond the homepage feature (e.g. a general "showcase" flag reused elsewhere).
+
+## D055 — Keep both song exporters until the pushed path is trusted
+
+- **Status**: Decided
+- **Date**: 2026-08-04
+- **Context**: Workstream C (pre-cutover plan) adds a PHP exporter inside irg-core that pushes `data/songs-consolidated.json` to the repo. `scripts/snapshot-songs.mjs` produces the same file locally.
+- **Choice**: Keep both. The PHP exporter's output must byte-match a fresh `npm run snapshot` before the push pipeline is wired up, and the local script stays as a manual escape hatch afterward.
+- **Rationale**: A local, human-triggered path stays available while the automated path proves itself. The byte-match check is the drift guard.
+- **Revisit if**: The pushed path has run cleanly for a while — retiring the script is Phase 2.
+
+## D056 — Deploy push fires on every song publish and edit, burst-collapsed
+
+- **Status**: Decided
+- **Date**: 2026-08-04
+- **Context**: The librarian expects a saved song to reach the public site without waiting on Maya. But bulk passes happen too: the 2026-08-03 cleanup touched 185 songs in one sitting.
+- **Choice**: Hook `transition_post_status` for songs, firing on publish and on edits to published songs, debounced ~60 seconds via `wp_schedule_single_event` so a burst collapses into one push.
+- **Rationale**: Immediacy matters more than commit tidiness; the debounce keeps a bulk pass from producing hundreds of commits (185 edits become one).
+
+## D057 — The deploy Worker rejects suspicious payloads
+
+- **Status**: Decided
+- **Date**: 2026-08-04
+- **Context**: The worst realistic failure of push-to-deploy is a silent partial export clobbering 1,470 songs in the committed JSON.
+- **Choice**: The Worker refuses to commit when the payload is not valid JSON, does not match the record shape, has zero songs, or drops below 95% of the committed count. An explicit override flag covers legitimate bulk deletions. Rejection returns an error, logs WP-side, and emails Maya — but never fails the librarian's save.
+- **Rationale**: Fail closed on the data file, fail open on the editorial workflow.
+
+## D058 — One shared combobox component for both song forms
+
+- **Status**: Decided; shipped 2026-08-04 (`2cda8ca`)
+- **Date**: 2026-08-04
+- **Context**: Seven autocomplete inputs across `/submit/` and `/edit-song/` used native `<datalist>`, which cannot be styled (the dropdown is browser chrome) and cannot be gated by typed length.
+- **Choice**: One shared `src/components/Combobox.astro` (3-character gate, ARIA combobox pattern, keyboard support, free text with a visible no-match notice, comma-aware matching on songwriter fields) replaces all seven.
+- **Rationale**: With seven instances, divergent behaviour would be its own bug. The no-match notice makes new-term creation deliberate, pairing with the A2 comma-split fix.
+
+## D059 — Ship the submission-hardening workstream in one pass
+
+- **Status**: Decided; shipped 2026-08-04 (`9bb6529`, irg-core 3.18.0)
+- **Date**: 2026-08-04
+- **Context**: A1 through A4 (close the open endpoint, comma-split contributors, real YouTube validation, surface dropped issue terms) all live in the same two functions in `irg-core.php`.
+- **Choice**: One change, one deploy, frontend pushed before the plugin so extra request params are ignored rather than live submissions rejected.
+- **Rationale**: Splitting four edits to the same code into four deploys adds risk instead of reducing it.
+
+## D060 — One shared feedback component, page-configurable variants
+
+- **Status**: Decided (build is workstream E3)
+- **Date**: 2026-08-04
+- **Context**: The July 28 Intergaggle Communications meeting asked for launch feedback on every page, a "gaggle not listed" prompt on Find a Gaggle, and a "send us photos" prompt on Photos.
+- **Choice**: One component and one config module; each variant declared once with an on/off flag, pages opt in by name. Posts to the existing `/irg/v1/contact` endpoint as `application/x-www-form-urlencoded` (preserving the no-preflight constraint, D041), with Turnstile.
+- **Rationale**: The three variants are the same affordance with different reasons. Config-driven means the launch-only variant switches off in one line after the first few months.
+
+## D061 — "60+" gaggle count applies to human copy only
+
+- **Status**: Decided (copy change is workstream E2)
+- **Date**: 2026-08-04
+- **Context**: Find a Gaggle renders the exact computed gaggle count; the committee prefers the softer "60+" phrasing. But the page's JSON-LD `numberOfItems` and `llms.txt` also carry the count.
+- **Choice**: Human-facing copy uses `getActiveGaggleCountLabel()` (floors to the nearest ten, appends "+"). JSON-LD and `llms.txt` keep the real integer.
+- **Rationale**: `numberOfItems` needs an integer, and structured-data consumers benefit from the real count; only prose readers benefit from the rounded one.
+
+## D062 — Shuffle stays the song library default sort
+
+- **Status**: Decided
+- **Date**: 2026-08-04
+- **Context**: The June committee punch list asked for newest-first. `2c70d0e` (2026-07-13) shipped newest-first as the default; one day later `9e2a1cb` (2026-07-14) replaced it with a per-visit shuffle, leaving two commits that contradict each other and no recorded resolution.
+- **Choice**: Shuffle is the default, reaffirmed in the 2026-08-04 pre-cutover sessions and superseding the June ask. Newest remains a selectable option in the sort control.
+- **Rationale**: Shuffle surfaces the deep archive (1,400+ songs) instead of the same recent handful on every visit; newest-first is one click away for those who want it.
+- **Revisit if**: The committee re-raises it — point them at this entry first.
+
+## D063 — Hub logo hidden during the placeholder period; JSON-LD logo untouched
+
+- **Status**: Decided (swap is workstream E1)
+- **Date**: 2026-08-04
+- **Context**: A ranked-choice logo vote is underway. The committee wants the current mark off the hub until it concludes.
+- **Choice**: Swap header and footer to the staged placeholder SVGs on the hub only. The JSON-LD `logo` property keeps pointing at `logo-cropped.svg`, which stays in `public/`. Subsites keep the current mark (their JSON-LD declares no logo property, so nothing structured is affected).
+- **Rationale**: Hiding is purely visual; breaking structured data over a temporary placeholder would be self-inflicted. Per-subsite logo settings are Phase 2.
+
+## D064 — Favicon removed with no replacement
+
+- **Status**: Decided (removal is workstream E1)
+- **Date**: 2026-08-04
+- **Context**: The favicon derives from the mark being retired by the logo vote.
+- **Choice**: Remove the favicon link entirely; browsers 404 on `/favicon.ico` and fall back to a generic tab icon.
+- **Rationale**: A generic icon is acceptable for the placeholder period; inventing an interim favicon is wasted work.
+
+## D065 — Press exclusions hand-edited until push-to-deploy lands
+
+- **Status**: Decided (file and filtering are workstream F1)
+- **Date**: 2026-08-04
+- **Context**: There is no way to remove an article from the news feed; hand-edits to `data/press-clippings.json` get undone by the ingest bot. The proper fix is a gated curation page, but that needs the workstream C Worker to reach the repo.
+- **Choice**: Add `data/press-exclusions.json`, filtered at ingest and at build (the D052 pattern), keyed on `url`. Maya hand-edits the file until C lands; the gated curation page (F3) follows.
+- **Rationale**: Avoids blocking the removal mechanism on the deploy automation. Non-destructive and instantly reversible.
+
+## D066 — Photo submissions go to email, not an upload endpoint
+
+- **Status**: Decided (FAQ entry is workstream E5)
+- **Date**: 2026-08-04
+- **Context**: The committee wants a way for grannies to send photos. No public upload path exists anywhere in the codebase.
+- **Choice**: An FAQ entry directing photos to `webgranny@raginggrannies.org`, deep-linked from the footer. Real uploads deferred to Phase 2.
+- **Rationale**: A public upload endpoint is a large new abuse surface (file handling, MIME/size limits, storage) that deserves its own considered design, not a side effect of a copy task.
 
 ## Open decisions (not yet resolved)
 

@@ -17,8 +17,8 @@ Six workstreams:
 
 ## Decisions ledger
 
-Everything settled across the 2026-08-04 sessions. These become D055 onward
-in `DECISIONS.md` when execution starts.
+Everything settled across the 2026-08-04 sessions. Recorded in `DECISIONS.md`
+as D055 through D066 (workstream D, 2026-08-04).
 
 | Decision | Rationale |
 |---|---|
@@ -508,7 +508,13 @@ Added by this plan, on top of the existing `docs/HANDOFF.md` Phase 2 list:
 - [ ] C4 safety check with override
 - [ ] C5 secrets in both places
 - [ ] C6 failure email
-- [ ] D docs, D055 onward, shuffle resolution, date-param no-action note
+- [x] D docs, D055 onward, shuffle resolution, date-param no-action note
+      Shipped 2026-08-04. D018 corrected (seven fields) and carries the
+      Additional Notes relabel note; ledger recorded as D055-D066 with the
+      shuffle-versus-newest contradiction resolved in D062; CLAUDE.md
+      deploy wording de-aspirationalized (snapshots + push today, C makes
+      the WP hook real); HANDOFF.md decision count fixed (was "50", now
+      66). Date-param no-action note already lived in this doc.
 - [ ] E1 logo placeholder, favicon removal, footer filter check
 - [ ] E2 three copy corrections
 - [ ] E3 shared feedback component + 3 variants
