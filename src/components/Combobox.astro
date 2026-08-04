@@ -1,0 +1,289 @@
+---
+// Shared autocomplete combobox for the song forms (pre-cutover plan, workstream B).
+// Replaces the native <datalist> inputs: the datalist dropdown is browser chrome
+// that can't be styled or gated by typed length, and both were requirements.
+//
+// Renders a real named <input>, so the pages' FormData handling and
+// getElementById wiring keep working unchanged. Selecting a suggestion
+// dispatches a bubbling `input` event so listeners (e.g. the edit page's
+// songwriter search filter) fire exactly as they would for typing.
+//
+// Behaviour: suggestions appear after 3 typed characters; up/down + Enter +
+// Escape keyboard support; ARIA 1.2 combobox pattern; free text always
+// allowed, with an optional "no match" notice so new-term creation is visible.
+interface Props {
+  id: string;
+  name?: string;
+  options: string[];
+  required?: boolean;
+  maxlength?: number;
+  placeholder?: string;
+  /** Shown in the panel when nothing matches. Omit to just hide the panel. */
+  noMatchMessage?: string;
+  /** Match and replace only the segment after the last comma (multi-name fields). */
+  commaSeparated?: boolean;
+  /** Extra classes for the <input> (for instances outside .submit-form). */
+  inputClass?: string;
+}
+const {
+  id,
+  name,
+  options,
+  required = false,
+  maxlength,
+  placeholder,
+  noMatchMessage,
+  commaSeparated = false,
+  inputClass,
+} = Astro.props;
+---
+
+<div class="cbx" data-cbx data-no-match={noMatchMessage} data-comma={commaSeparated ? "1" : null}>
+  <input
+    type="text"
+    id={id}
+    name={name}
+    required={required}
+    maxlength={maxlength}
+    placeholder={placeholder}
+    class={inputClass}
+    autocomplete="off"
+    role="combobox"
+    aria-expanded="false"
+    aria-autocomplete="list"
+    aria-haspopup="listbox"
+    aria-controls={`${id}-listbox`}
+  />
+  <ul id={`${id}-listbox`} class="cbx-panel" role="listbox" hidden></ul>
+  <script type="application/json" set:html={JSON.stringify(options)} />
+  <span class="cbx-live sr-only" role="status" aria-live="polite"></span>
+</div>
+
+<script>
+  const MIN_CHARS = 3;
+  const MAX_ITEMS = 50;
+
+  function initCombobox(root) {
+    const input = root.querySelector("input");
+    const panel = root.querySelector(".cbx-panel");
+    const live = root.querySelector(".cbx-live");
+    const options = JSON.parse(root.querySelector("script")?.textContent || "[]");
+    const noMatchMessage = root.dataset.noMatch || "";
+    const commaSeparated = root.dataset.comma === "1";
+
+    let items = []; // currently rendered suggestion strings
+    let active = -1; // index into items, -1 = none highlighted
+    let open = false;
+    let suppress = false; // guards the synthetic input event fired on select
+
+    function lastCommaIndex() {
+      return commaSeparated ? input.value.lastIndexOf(",") : -1;
+    }
+
+    function currentTerm() {
+      const i = lastCommaIndex();
+      return (i === -1 ? input.value : input.value.slice(i + 1)).trim();
+    }
+
+    function close() {
+      open = false;
+      active = -1;
+      panel.hidden = true;
+      panel.innerHTML = "";
+      input.setAttribute("aria-expanded", "false");
+      input.removeAttribute("aria-activedescendant");
+    }
+
+    function setActive(next) {
+      const prev = panel.querySelector('[aria-selected="true"]');
+      if (prev) {
+        prev.setAttribute("aria-selected", "false");
+        prev.classList.remove("is-active");
+      }
+      active = next;
+      if (active < 0) {
+        input.removeAttribute("aria-activedescendant");
+        return;
+      }
+      const el = panel.querySelector(`#${panel.id}-opt-${active}`);
+      if (!el) return;
+      el.setAttribute("aria-selected", "true");
+      el.classList.add("is-active");
+      input.setAttribute("aria-activedescendant", el.id);
+      el.scrollIntoView({ block: "nearest" });
+    }
+
+    function select(choice) {
+      const i = lastCommaIndex();
+      input.value = i === -1 ? choice : input.value.slice(0, i + 1) + " " + choice;
+      // Let page scripts react as if the user typed it (bubbling like a real
+      // input event); suppress our own listener so the panel doesn't reopen.
+      suppress = true;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      suppress = false;
+      close();
+      input.focus();
+    }
+
+    function update() {
+      const q = currentTerm().toLowerCase();
+      if (q.length < MIN_CHARS) {
+        close();
+        return;
+      }
+      const starts = [];
+      const contains = [];
+      for (const o of options) {
+        const lo = o.toLowerCase();
+        if (lo.startsWith(q)) starts.push(o);
+        else if (lo.includes(q)) contains.push(o);
+      }
+      items = starts.concat(contains).slice(0, MAX_ITEMS);
+
+      panel.innerHTML = "";
+      if (!items.length && !noMatchMessage) {
+        close();
+        return;
+      }
+
+      const head = document.createElement("li");
+      head.className = "cbx-head";
+      head.setAttribute("role", "presentation");
+      head.textContent = "Suggestions";
+      panel.appendChild(head);
+
+      if (!items.length) {
+        const empty = document.createElement("li");
+        empty.className = "cbx-empty";
+        empty.setAttribute("role", "presentation");
+        empty.textContent = noMatchMessage;
+        panel.appendChild(empty);
+        live.textContent = noMatchMessage;
+      } else {
+        items.forEach((item, i) => {
+          const li = document.createElement("li");
+          li.id = `${panel.id}-opt-${i}`;
+          li.setAttribute("role", "option");
+          li.setAttribute("aria-selected", "false");
+          li.textContent = item;
+          // mousedown would blur the input and close the panel before click
+          // lands; block it so selection happens on click (a touch scroll
+          // over the panel then can't trigger an accidental select).
+          li.addEventListener("mousedown", (e) => e.preventDefault());
+          li.addEventListener("click", () => select(item));
+          panel.appendChild(li);
+        });
+        live.textContent =
+          items.length +
+          (items.length === 1 ? " suggestion. " : " suggestions. ") +
+          "Use up and down arrows to browse, Enter to choose.";
+      }
+
+      active = -1;
+      input.removeAttribute("aria-activedescendant");
+      panel.hidden = false;
+      open = true;
+      input.setAttribute("aria-expanded", "true");
+    }
+
+    input.addEventListener("input", () => {
+      if (!suppress) update();
+    });
+
+    input.addEventListener("focus", () => {
+      if (currentTerm().length >= MIN_CHARS) update();
+    });
+
+    input.addEventListener("blur", close);
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!open) {
+          update();
+          if (!open) return;
+        }
+        if (!items.length) return;
+        const next =
+          e.key === "ArrowDown"
+            ? (active + 1) % items.length
+            : active <= 0
+              ? items.length - 1
+              : active - 1;
+        setActive(next);
+      } else if (e.key === "Enter") {
+        if (open && active >= 0) {
+          e.preventDefault();
+          select(items[active]);
+        } else if (open && items.length) {
+          // Suggestions visible but none chosen: swallow one Enter so
+          // browsing the list can't accidentally submit the form.
+          e.preventDefault();
+          close();
+        } else if (open) {
+          close(); // "no match" notice: close and let the submit proceed
+        }
+      } else if (e.key === "Escape") {
+        if (open) {
+          e.preventDefault();
+          close();
+        }
+      } else if (e.key === "Tab") {
+        close();
+      }
+    });
+  }
+
+  document.querySelectorAll("[data-cbx]").forEach(initCombobox);
+</script>
+
+<style is:global>
+  .cbx {
+    position: relative;
+  }
+  .cbx-panel {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: var(--color-card);
+    border: 1.5px solid var(--color-muted);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(44, 42, 34, 0.18);
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  .cbx-head {
+    padding: 4px 10px 6px;
+    font: 800 11px/1.2 var(--font-body);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-soft);
+    border-bottom: 1px solid var(--color-pale-lavender);
+    margin-bottom: 4px;
+  }
+  .cbx-panel li[role="option"] {
+    padding: 9px 10px;
+    border-radius: 6px;
+    font: 400 15px/1.35 var(--font-body);
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+  .cbx-panel li[role="option"]:hover {
+    background: var(--color-pale-lavender);
+  }
+  .cbx-panel li[role="option"].is-active {
+    background: var(--color-ink);
+    color: var(--color-on-dark);
+  }
+  .cbx-empty {
+    padding: 9px 10px;
+    font: 600 14px/1.45 var(--font-body);
+    font-style: italic;
+    color: var(--color-text-soft);
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Combobox from "../components/Combobox.astro";
 import { fetchAllSongs } from "../lib/songs";
 import crypto from "node:crypto";
 
@@ -93,23 +94,31 @@ const today = new Date().toISOString().slice(0, 10);
         {/* Submission form */}
         <section id="submit-form-section" class="hidden">
           <form id="submit-form" class="submit-form" novalidate>
-            <label class="sf-field">
-              <span class="sf-label">Song title</span>
-              <input type="text" name="title" list="dl-titles" required maxlength="200" autocomplete="off" />
+            <div class="sf-field">
+              <label class="sf-label" for="submit-title">Song title</label>
+              <Combobox
+                id="submit-title"
+                name="title"
+                options={titles}
+                required
+                maxlength={200}
+                noMatchMessage="No match. This will be a new song."
+              />
               <span class="sf-hint">If your title matches an existing song, pick it from the list. Otherwise, type a new one.</span>
-            </label>
-            <datalist id="dl-titles">
-              {titles.map((t) => <option value={t} />)}
-            </datalist>
+            </div>
 
-            <label class="sf-field">
-              <span class="sf-label">Tune</span>
-              <input type="text" name="tune" list="dl-tunes" required maxlength="200" autocomplete="off" />
+            <div class="sf-field">
+              <label class="sf-label" for="submit-tune">Tune</label>
+              <Combobox
+                id="submit-tune"
+                name="tune"
+                options={tunes}
+                required
+                maxlength={200}
+                noMatchMessage="No match. This will create a new tune."
+              />
               <span class="sf-hint">The melody you set the lyrics to. Pick from the list if it's a familiar one, or type a new tune.</span>
-            </label>
-            <datalist id="dl-tunes">
-              {tunes.map((t) => <option value={t} />)}
-            </datalist>
+            </div>
 
             <div class="sf-field">
               <span class="sf-label">Lyrics</span>
@@ -124,14 +133,19 @@ const today = new Date().toISOString().slice(0, 10);
               <span class="sf-hint">Press Enter to start a new stanza. Press Shift+Enter for a new line within a stanza. Bold, italic, and underline are performance marks.</span>
             </div>
 
-            <label class="sf-field">
-              <span class="sf-label">Songwriter</span>
-              <input type="text" name="songwriter" list="dl-songwriters" required maxlength="200" autocomplete="off" />
-              <span class="sf-hint">The granny (or grannies) who wrote the lyrics.</span>
-            </label>
-            <datalist id="dl-songwriters">
-              {songwriters.map((s) => <option value={s} />)}
-            </datalist>
+            <div class="sf-field">
+              <label class="sf-label" for="submit-songwriter">Songwriter</label>
+              <Combobox
+                id="submit-songwriter"
+                name="songwriter"
+                options={songwriters}
+                required
+                maxlength={200}
+                commaSeparated
+                noMatchMessage="No match. This will create a new songwriter."
+              />
+              <span class="sf-hint">The granny (or grannies) who wrote the lyrics. For more than one, separate with commas.</span>
+            </div>
 
             <label class="sf-field">
               <span class="sf-label">Gaggle</span>

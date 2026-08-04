@@ -494,7 +494,14 @@ Added by this plan, on top of the existing `docs/HANDOFF.md` Phase 2 list:
       deploy on purpose, since the extra params are ignored by the old
       endpoint while the reverse order would have rejected live
       submissions until Pages rebuilt.
-- [ ] B shared combobox, 7 inputs, 3-char gate, ARIA
+- [x] B shared combobox, 7 inputs, 3-char gate, ARIA
+      Shipped 2026-08-04. `src/components/Combobox.astro` replaces all seven
+      datalist inputs (3 on submit, 4 on edit-song). Comma-aware matching on
+      both songwriter fields pairs with A2. Selecting dispatches a bubbling
+      `input` event, so the edit page's search-by-songwriter filter still
+      fires; verified with headless-browser tests (3-char gate, arrow/Enter/
+      Escape, click select, comma append, no-match notice, blur close, live
+      region announcement).
 - [ ] C1 PHP exporter, byte-match against `npm run snapshot`
 - [ ] C2 debounced publish hook
 - [ ] C3 Worker with HMAC auth and GitHub commit
