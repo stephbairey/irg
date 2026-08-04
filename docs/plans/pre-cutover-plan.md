@@ -531,6 +531,16 @@ Added by this plan, on top of the existing `docs/HANDOFF.md` Phase 2 list:
       checks incl. song-detail mount, above-the-fold photos placement,
       hash-open FAQ, and JSON-LD numberOfItems staying an integer.
 - [ ] E6 confirm tablet intent with committee (decision, not code)
-- [ ] F1 press exclusions, filtered in both places
-- [ ] F2 ingest diagnosis, health check, workflow cleanup
+- [x] F1 press exclusions, filtered in both places
+- [x] F2 ingest diagnosis, health check, workflow cleanup
+      Shipped 2026-08-04 (D067). Diagnosis: the self-sealing cutoff was
+      confirmed as the killer — the live feed held 100 items back to 2005,
+      91 missing from the archive; UA blocking did NOT reproduce (200 OK
+      with the bot UA). Fix: cutoff removed (dedupe is the gate), dedupe
+      key now title+source, all skips counted and logged; first run
+      backfilled the archive 37 → 131. Exclusions live in
+      `data/press-exclusions.json` via shared `src/lib/press-exclusions.mjs`
+      (ingest + build filter, url or normalised title). Health check
+      `scripts/press-health-check.mjs` fails the workflow after 30 quiet
+      days; `THENEWSAPI_KEY` and The News API comment removed.
 - [ ] F3 gated curation page (after C)

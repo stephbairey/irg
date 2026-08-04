@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
+// @ts-expect-error — plain .mjs module shared with scripts/fetch-press.mjs
+import { loadExclusions, isExcluded } from "../lib/press-exclusions.mjs";
 
 interface Clipping {
   title: string;
@@ -23,6 +25,11 @@ if (existsSync(ARCHIVE)) {
     items = [];
   }
 }
+// F1/D065: filter at read as well as at ingest, so adding an exclusion hides
+// an already-archived item on the next build without touching the archive.
+const exclusions = loadExclusions(resolve(process.cwd(), "data/press-exclusions.json"));
+items = items.filter((c) => !isExcluded(c, exclusions));
+
 items.sort((a, b) => (b.published_at || "").localeCompare(a.published_at || ""));
 
 const totalCount = items.length;

@@ -1,0 +1,5 @@
+{
+  "note": "Hand-edited blocklist for the In the News page (workstream F1 / D065). An item is excluded when its url matches an entry in `urls` exactly, or its title matches an entry in `titles` after normalisation (lowercase, punctuation stripped). Applied on ingest by scripts/fetch-press.mjs and at build by src/pages/in-the-news.astro, so removing an entry here brings an archived item back on the next deploy. Prefer urls; they are unambiguous.",
+  "urls": [],
+  "titles": []
+}

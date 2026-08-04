@@ -14,7 +14,16 @@
 //   - Missing/invalid archive → starts fresh with [].
 //   - Network error, non-2xx, malformed XML → logs a warning and exits 0.
 //     The build continues using whatever's already in the archive.
-//   - Dedupes by normalised title (lowercase, punctuation/whitespace stripped).
+//   - Dedupes by normalised title + source (F2: title-only dedupe silently
+//     dropped syndicated affiliate headlines from different outlets).
+//   - Skips anything in data/press-exclusions.json (F1).
+//   - No date cutoff (F2): the old "newest archived minus a day" window was
+//     self-sealing — Google News surfaces local stories days late and keeps
+//     months of history in the feed, all of which the window discarded
+//     forever. Dedupe alone is the gate now, which also makes each run a
+//     backfill of whatever the feed still carries.
+//
+// Every skip is counted and logged; a run must never silently drop items.
 //
 // Runs as part of `npm run prebuild` ahead of the songsheet generator, plus
 // daily via .github/workflows/fetch-press.yml.
@@ -23,18 +32,17 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { XMLParser } from "fast-xml-parser";
+import { normaliseTitle, loadExclusions, isExcluded } from "../src/lib/press-exclusions.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 const ARCHIVE = resolve(ROOT, "data/press-clippings.json");
+const EXCLUSIONS = resolve(ROOT, "data/press-exclusions.json");
 
-function normaliseTitle(t) {
-  return String(t || "")
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\p{P}\p{S}]/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+// Same-headline-same-outlet is a duplicate; same headline from a different
+// outlet is a distinct (syndicated) story and stays.
+function dedupeKey(title, source) {
+  return `${normaliseTitle(title)}|${normaliseTitle(source)}`;
 }
 
 function loadArchive() {
@@ -64,7 +72,7 @@ function trimTitleSuffix(title, source) {
   return title.endsWith(suffix) ? title.slice(0, -suffix.length).trim() : title;
 }
 
-async function fetchFromGoogleNews(latestArchivedDate) {
+async function fetchFromGoogleNews() {
   const params = new URLSearchParams({
     // Quoted phrase so the index returns matches for "raging grannies"
     // exactly, not articles that mention the words separately.
@@ -115,17 +123,6 @@ async function fetchFromGoogleNews(latestArchivedDate) {
     return [];
   }
 
-  // Skip anything older than (latest known - 1 day) so we don't waste cycles
-  // on items we've already deduped against. The buffer covers same-day
-  // arrivals that landed in the feed late.
-  let cutoffMs = 0;
-  if (latestArchivedDate) {
-    const d = new Date(`${latestArchivedDate}T00:00:00Z`);
-    if (!Number.isNaN(d.getTime())) {
-      cutoffMs = d.getTime() - 24 * 3600 * 1000;
-    }
-  }
-
   const out = [];
   for (const it of items) {
     const rawTitle = String(it.title ?? "").trim();
@@ -144,7 +141,6 @@ async function fetchFromGoogleNews(latestArchivedDate) {
     const pubDate = String(it.pubDate ?? "").trim();
     const dt = pubDate ? new Date(pubDate) : null;
     if (!dt || Number.isNaN(dt.getTime())) continue;
-    if (cutoffMs && dt.getTime() < cutoffMs) continue;
 
     out.push({
       title: trimTitleSuffix(rawTitle, source),
@@ -163,19 +159,24 @@ async function fetchFromGoogleNews(latestArchivedDate) {
 
 (async () => {
   const existing = loadArchive();
-  const seenTitles = new Set(existing.map((a) => normaliseTitle(a.title)));
-  const latestArchivedDate = existing
-    .map((a) => a.published_at)
-    .filter((d) => typeof d === "string" && d.length >= 10)
-    .sort()
-    .pop();
+  const exclusions = loadExclusions(EXCLUSIONS);
+  const seen = new Set(existing.map((a) => dedupeKey(a.title, a.source)));
 
-  const fetched = await fetchFromGoogleNews(latestArchivedDate);
+  const fetched = await fetchFromGoogleNews();
   const newOnes = [];
+  let dupes = 0;
+  let excluded = 0;
   for (const item of fetched) {
-    const norm = normaliseTitle(item.title);
-    if (!norm || seenTitles.has(norm)) continue;
-    seenTitles.add(norm);
+    if (isExcluded(item, exclusions)) {
+      excluded++;
+      continue;
+    }
+    const key = dedupeKey(item.title, item.source);
+    if (!normaliseTitle(item.title) || seen.has(key)) {
+      dupes++;
+      continue;
+    }
+    seen.add(key);
     newOnes.push(item);
   }
 
@@ -186,7 +187,9 @@ async function fetchFromGoogleNews(latestArchivedDate) {
   writeFileSync(ARCHIVE, JSON.stringify(combined, null, 2) + "\n", "utf8");
 
   console.log(
-    `Press clippings: ${existing.length} existing, ${newOnes.length} new, ${combined.length} total`,
+    `Press clippings: fetched ${fetched.length} from the feed — ` +
+      `${newOnes.length} new, ${dupes} already archived, ${excluded} excluded. ` +
+      `Archive: ${existing.length} → ${combined.length}.`,
   );
 })().catch((err) => {
   // Last-resort safety net: never fail the build.

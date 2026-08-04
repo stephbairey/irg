@@ -1,14 +1,17 @@
 name: Fetch press clippings
 
-# Daily run that pulls new "Raging Grannies" coverage from The News API
-# (via scripts/fetch-press.mjs) and commits any new entries to
+# Daily run that pulls new "Raging Grannies" coverage from Google News
+# RSS (via scripts/fetch-press.mjs, D047) and commits any new entries to
 # data/press-clippings.json. The push triggers Cloudflare Pages to
 # rebuild the site, which is how the new clippings end up on
 # /in-the-news/.
 #
-# Failure-tolerant: the script catches all API errors and exits 0, so
-# this workflow only commits when there's a real diff. Quiet days are
-# no-ops.
+# Failure-tolerant: the script catches all fetch/parse errors and exits
+# 0, so this workflow only commits when there's a real diff. Quiet days
+# are no-ops. The health-check step at the end is the alarm on top: it
+# fails the run (and GitHub emails about it) when nothing has been
+# ingested for 30 days, so a silently dead feed can't hide behind
+# green runs (F2).
 
 on:
   schedule:
@@ -41,8 +44,6 @@ jobs:
         run: npm ci
 
       - name: Run fetch-press.mjs
-        env:
-          THENEWSAPI_KEY: ${{ secrets.THENEWSAPI_KEY }}
         run: node scripts/fetch-press.mjs
 
       - name: Commit if archive changed
@@ -58,3 +59,8 @@ jobs:
           NEW_COUNT=$(git diff --cached --shortstat data/press-clippings.json | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo "?")
           git commit -m "chore(press): auto-fetch new clippings" -m "Lines added: $NEW_COUNT (commit by GitHub Actions)."
           git push
+
+      # Runs after the commit so a stale-feed alert never blocks a commit
+      # (when the feed is stale there is nothing to commit anyway).
+      - name: Health check — alert if the feed has gone quiet
+        run: node scripts/press-health-check.mjs

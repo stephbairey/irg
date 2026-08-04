@@ -860,6 +860,15 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: An FAQ entry directing photos to `webgranny@raginggrannies.org`, deep-linked from the footer. Real uploads deferred to Phase 2.
 - **Rationale**: A public upload endpoint is a large new abuse surface (file handling, MIME/size limits, storage) that deserves its own considered design, not a side effect of a copy task.
 
+## D067 — Press ingest: no date cutoff, title+source dedupe, 30-day health alarm
+
+- **Status**: Decided; shipped 2026-08-04
+- **Date**: 2026-08-04
+- **Context**: The F2 diagnosis (pre-cutover plan) confirmed the ingest's date window was self-sealing: `cutoffMs` was the newest archived `published_at` minus a day, while Google News keeps months of history in the feed and surfaces local stories late. Measured live: the feed held 100 items back to 2005, 91 of which the archive lacked. UA blocking was not reproducible (200 with the bot UA), so the six-week ingest gap is attributed to the cutoff plus quiet stretches. Dedupe was title-only, so syndicated affiliate headlines from different outlets collided; only one such collision existed in the live feed.
+- **Choice**: Remove the date cutoff entirely and let dedupe be the only gate, which turns every run into a backfill of whatever the feed still carries (first run: 37 → 131 clippings). Dedupe key becomes normalised title + source, so the same outlet never repeats but a syndicated headline from a second outlet is kept. Every skip is counted and logged. A separate CI step (`scripts/press-health-check.mjs`) fails the workflow when no ingest has happened in 30 days (`PRESS_MAX_QUIET_DAYS` to tune), so GitHub emails instead of six weeks of green no-op runs.
+- **Rationale**: The dedupe set already guarantees idempotency; the cutoff only ever destroyed information. A false alarm during a quiet month costs one email; a silently dead feed cost six weeks of missed coverage.
+- **Revisit if**: syndication ever floods the page with near-identical headlines (then consider capping per-headline sources), or 30 days proves too chatty or too slow.
+
 ## Open decisions (not yet resolved)
 
 - **Song taxonomy structure**: 17 issue categories finalized (D016, split in D021). Song librarian may still refine E&D/G&P boundaries or request additions.
