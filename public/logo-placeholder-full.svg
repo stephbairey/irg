@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 250" width="170" height="250" role="img" aria-labelledby="t1">
+  <title id="t1">Logo coming soon</title>
+  <style>
+    .box { fill: none; stroke: #ECEAF0; stroke-width: 3; stroke-dasharray: 11 8; stroke-linecap: round; opacity: .55; }
+    .lead { fill: #ECEAF0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 700; font-size: 40px; letter-spacing: 1px; }
+    .sub { fill: #ECEAF0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 500; font-size: 22px; letter-spacing: 3px; opacity: .85; }
+  </style>
+  <rect class="box" x="6.5" y="6.5" width="157" height="237" rx="16"/>
+  <text class="lead" x="85" y="112" text-anchor="middle">LOGO</text>
+  <text class="sub" x="85" y="148" text-anchor="middle">COMING</text>
+  <text class="sub" x="85" y="176" text-anchor="middle">SOON</text>
+</svg>
