@@ -232,12 +232,14 @@ Hosting infrastructure details: `docs/infrastructure/irg-hosting.md`.
 
 ## What's pending before cutover
 
+0. **Song pipeline hardening and push-to-deploy.** Planned 2026-08-04, execution deferred until song curation finishes. Closes the unauthenticated `submit-song` endpoint, replaces the native datalists with a real combobox, and automates snapshot-to-deploy by having WP push outbound to a Cloudflare Worker (Imunify360 blocks inbound, so CI can never pull). Full plan: `docs/plans/song-pipeline-hardening.md`.
 1. **Gaggle feedback meeting** (~2026-05-20). Calendar event. Whatever surfaces becomes new tasks.
 2. **DNS cutover plan and execution.** `raginggrannies.org` from FastComet to Cloudflare Pages; `cms.raginggrannies.org` set up to point at Nixihost. Plan needed to avoid downtime; only flip when ready.
 3. **Email forwarders for the other 59 gaggles** in Nixihost cPanel. Logistical, not engineering. Can wait until each gaggle is claimed.
 
 ## Phase 2 (deferred)
 
+- **Retire `scripts/snapshot-songs.mjs`.** Once the WP-side exporter and deploy Worker (see `docs/plans/song-pipeline-hardening.md`, workstream C) have proven themselves in production, the local manual snapshot script becomes redundant. Kept for now as an escape hatch.
 - **L4 — MCP server** (D042 to D044). Separate Cloudflare Worker at `mcp.raginggrannies.org`. Design doc valid; pick up post-cutover.
 - **Streaming responses on `/ask`** (SSE wiring for Anthropic).
 - **Soft-alert email** when chatbot daily spend crosses $0.25 (the flag is set in code; no email sent).
