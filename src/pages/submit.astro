@@ -14,6 +14,7 @@ const PW_HASH = PW
 
 const WP_BASE = (import.meta.env.PUBLIC_WP_URL ?? "").replace(/\/$/, "");
 const SUBMIT_ENDPOINT = WP_BASE ? `${WP_BASE}/wp-json/irg/v1/submit-song` : "";
+const TURNSTILE_SITEKEY = import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? "";
 
 // Pull autocomplete data straight off the cached song fetch so we don't
 // re-query GraphQL just for taxonomy term lists.
@@ -37,7 +38,10 @@ const tunes = [
   ...new Set(allSongs.flatMap((s) => s.tunes.nodes.map((n) => n.name).filter(Boolean))),
 ].sort((a, b) => a.localeCompare(b));
 
-const formAvailable = !!PW_HASH && !!SUBMIT_ENDPOINT;
+// Turnstile is required server-side, so a missing sitekey would render a form
+// that always fails with "spam check did not load". Degrade to the notice
+// instead, matching contact.astro.
+const formAvailable = !!PW_HASH && !!SUBMIT_ENDPOINT && !!TURNSTILE_SITEKEY;
 
 // Default Date Written field to today (ISO yyyy-mm-dd) so a quick submit
 // stamps it correctly. The submitter can override.
@@ -174,6 +178,17 @@ const today = new Date().toISOString().slice(0, 10);
               <span class="sf-hint"><span class="sf-optional">Optional:</span> Provenance or attribution (e.g., 'from the Victoria Grannies Songbook, 1993').</span>
             </label>
 
+            {/* Honeypot — bots fill this; real browsers don't see it. */}
+            <div class="sf-honeypot" aria-hidden="true">
+              <label>Don't fill this in if you're human <input type="text" name="hp" tabindex="-1" autocomplete="off" /></label>
+            </div>
+
+            {TURNSTILE_SITEKEY && (
+              <div class="flex justify-center">
+                <div class="cf-turnstile" data-sitekey={TURNSTILE_SITEKEY} data-theme="light"></div>
+              </div>
+            )}
+
             <div class="sf-actions">
               <button type="submit" class="sf-submit btn btn-pill">Submit song</button>
               <span id="submit-status" class="sf-status" role="status" aria-live="polite"></span>
@@ -186,6 +201,7 @@ const today = new Date().toISOString().slice(0, 10);
           <div class="kicker text-red mb-3">Submitted</div>
           <h2 class="font-display text-ink text-[36px] leading-tight mb-3">Your song has been submitted for review.</h2>
           <p class="text-[17px] text-text-soft leading-relaxed max-w-[60ch] mx-auto">Thank you, Granny!</p>
+          <p id="submit-unknown-issues" class="hidden text-[15px] text-ink font-semibold leading-relaxed max-w-[60ch] mx-auto mt-4 px-5 py-3 bg-paper-2 border border-dashed border-rule rounded-[10px]"></p>
           <p class="text-[15px] text-text-soft leading-relaxed max-w-[60ch] mx-auto mt-3">
             The song librarian will review and publish it. Want to <a href="#" id="submit-another" class="submit-inline-link">submit another</a>?
           </p>
@@ -194,10 +210,14 @@ const today = new Date().toISOString().slice(0, 10);
         {/* Build-time config carried into the bundled script via data attrs.
             (define:vars + ES import statements aren't compatible: define:vars
             emits an unbundled inline script.) */}
-        <div id="submit-config" data-pw-hash={PW_HASH} data-endpoint={SUBMIT_ENDPOINT} hidden></div>
+        <div id="submit-config" data-pw-hash={PW_HASH} data-endpoint={SUBMIT_ENDPOINT} data-turnstile-sitekey={TURNSTILE_SITEKEY} hidden></div>
       </div>
     )}
   </article>
+
+  {formAvailable && TURNSTILE_SITEKEY && (
+    <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+  )}
 
   {formAvailable && (
     <script>
@@ -207,10 +227,12 @@ const today = new Date().toISOString().slice(0, 10);
 
       const $ = (s) => document.querySelector(s);
       const SS_KEY = "irg-submit-unlocked";
+      const SS_PW_KEY = "irg-submit-pw"; // entered password kept in session; the endpoint verifies it
 
       const cfg = $("#submit-config");
       const PW_HASH = cfg?.dataset.pwHash || "";
       const SUBMIT_ENDPOINT = cfg?.dataset.endpoint || "";
+      const HAS_TURNSTILE = !!cfg?.dataset.turnstileSitekey;
 
       const gateSection = $("#submit-gate");
       const formSection = $("#submit-form-section");
@@ -240,9 +262,23 @@ const today = new Date().toISOString().slice(0, 10);
         if (!editor) initEditor();
       }
 
-      function showSuccess() {
+      function showSuccess(unknownIssues) {
         formSection.classList.add("hidden");
         successSection.classList.remove("hidden");
+        // Should never fire: the issue checkboxes are generated from the live
+        // term list. If it does, say so rather than letting the terms vanish.
+        const warn = $("#submit-unknown-issues");
+        if (warn) {
+          if (unknownIssues && unknownIssues.length) {
+            warn.textContent =
+              "One thing: we couldn't file it under " +
+              unknownIssues.join(", ") +
+              ". The song librarian has been told and will sort it out.";
+            warn.classList.remove("hidden");
+          } else {
+            warn.classList.add("hidden");
+          }
+        }
       }
 
       function initEditor() {
@@ -307,6 +343,9 @@ const today = new Date().toISOString().slice(0, 10);
         const hash = await sha256Hex(entered);
         if (hash === PW_HASH) {
           sessionStorage.setItem(SS_KEY, "1");
+          // The plaintext goes to the endpoint on submit — the hash comparison
+          // above is only UX, the server-side check is what actually gates.
+          sessionStorage.setItem(SS_PW_KEY, entered);
           showForm();
         } else {
           pwError.classList.remove("hidden");
@@ -320,6 +359,14 @@ const today = new Date().toISOString().slice(0, 10);
         if (editor) editor.commands.clearContent();
         statusEl.textContent = "";
         statusEl.removeAttribute("data-state");
+        // The submit handler disables this and only re-enables on error, so a
+        // second submission would otherwise land on a dead button.
+        const btn = form.querySelector("button[type=submit]");
+        if (btn) btn.disabled = false;
+        // Fresh widget for the next submission; the previous token is spent.
+        if (window.turnstile && typeof window.turnstile.reset === "function") {
+          window.turnstile.reset();
+        }
         showForm();
       });
 
@@ -328,12 +375,23 @@ const today = new Date().toISOString().slice(0, 10);
         statusEl.removeAttribute("data-state");
         statusEl.textContent = "";
 
+        const password = sessionStorage.getItem(SS_PW_KEY) || "";
+        if (!password) {
+          statusEl.dataset.state = "error";
+          statusEl.textContent = "Session expired. Refresh and re-enter the password.";
+          return;
+        }
+
         const fd = new FormData(form);
         const title = (fd.get("title") || "").toString().trim();
         const tune = (fd.get("tune") || "").toString().trim();
         const songwriter = (fd.get("songwriter") || "").toString().trim();
         const gaggle = (fd.get("gaggle") || "").toString().trim();
         const issuesArr = fd.getAll("issues").map((v) => v.toString());
+        const hp = (fd.get("hp") || "").toString();
+        const turnstile = HAS_TURNSTILE
+          ? (form.querySelector('[name="cf-turnstile-response"]')?.value || "")
+          : "";
         const lyricsHtml = editor ? editor.getHTML() : "";
         const lyricsText = editor ? editor.getText().trim() : "";
 
@@ -369,6 +427,7 @@ const today = new Date().toISOString().slice(0, 10);
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+              password,
               title,
               tune,
               lyrics: lyricsHtml,
@@ -379,18 +438,24 @@ const today = new Date().toISOString().slice(0, 10);
               youtube_link: youtubeLink,
               date_written: dateWritten,
               source_notes: sourceNotes,
+              hp,
+              "cf-turnstile-response": turnstile,
             }),
           });
           const data = await res.json().catch(() => ({}));
           if (!res.ok || !data.ok) {
             throw new Error(data.message || `HTTP ${res.status}`);
           }
-          showSuccess();
+          showSuccess(data.unknown_issues || []);
         } catch (err) {
           statusEl.dataset.state = "error";
           statusEl.textContent =
             "Couldn't submit. " + (err && err.message ? err.message : "Please try again.");
           submitBtn.disabled = false;
+          // Turnstile tokens are single-use; without a reset the retry fails.
+          if (window.turnstile && typeof window.turnstile.reset === "function") {
+            window.turnstile.reset();
+          }
         }
       });
     </script>
@@ -550,6 +615,15 @@ const today = new Date().toISOString().slice(0, 10);
       cursor: pointer;
     }
     .sf-checkbox input { accent-color: var(--color-red); }
+
+    /* Honeypot — visually hidden but reachable in DOM. */
+    .sf-honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
 
     /* Actions */
     .sf-actions {

@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.17.1
+ * Version: 3.18.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -1469,6 +1469,11 @@ function irg_handle_contact( WP_REST_Request $req ) {
 // Song submission endpoint (D031) — granny-only form at /submit/ POSTs here.
 // Creates a draft Song, attaches taxonomy terms (creating tune/songwriter/
 // gaggle on the fly if new; issues must already exist), emails the librarian.
+//
+// Gated by honeypot + Turnstile + server-side password, same three guards as
+// /edit-song. The endpoint creates taxonomy terms on demand, so leaving it
+// open meant anyone with curl could pollute the songwriter/tune/gaggle
+// vocabularies as well as the drafts queue.
 // ---------------------------------------------------------------------------
 
 const IRG_SUBMIT_TO = 'songlibrarian@raginggrannies.org';
@@ -1499,6 +1504,31 @@ function irg_handle_submit_song( WP_REST_Request $req ) {
 	// Songs CPT lives on the main site only. Block off-network attempts cleanly.
 	if ( ! is_main_site() ) {
 		return new WP_Error( 'irg_wrong_site', 'Songs can only be submitted on the main site.', [ 'status' => 400 ] );
+	}
+
+	// Honeypot — bots that fill the field get a silent success.
+	$hp = (string) $req->get_param( 'hp' );
+	if ( $hp !== '' ) {
+		return [ 'ok' => true ];
+	}
+
+	// Turnstile pre-flight — required, same as /contact and /edit-song. Fails
+	// closed when IRG_TURNSTILE_SECRET isn't set so a misconfigured server
+	// can't silently skip the spam check.
+	$verified = irg_verify_turnstile( (string) $req->get_param( 'cf-turnstile-response' ) );
+	if ( is_wp_error( $verified ) ) {
+		return $verified;
+	}
+
+	// Password gate. The client-side SHA-256 gate on /submit/ is UX only —
+	// this is the check that actually keeps the drafts queue and the open
+	// tune/songwriter/gaggle taxonomies from being filled by anyone with
+	// curl. hash_equals avoids timing leaks.
+	if ( ! defined( 'IRG_SUBMIT_PASSWORD' ) || (string) IRG_SUBMIT_PASSWORD === '' ) {
+		return new WP_Error( 'irg_password_unset', 'Submissions are misconfigured. Please contact a granny.', [ 'status' => 503 ] );
+	}
+	if ( ! hash_equals( (string) IRG_SUBMIT_PASSWORD, (string) $req->get_param( 'password' ) ) ) {
+		return new WP_Error( 'irg_bad_password', 'Wrong password.', [ 'status' => 401 ] );
 	}
 
 	$title      = sanitize_text_field( (string) $req->get_param( 'title' ) );
@@ -1573,9 +1603,9 @@ function irg_handle_submit_song( WP_REST_Request $req ) {
 		if ( $source_notes !== '' )      update_post_meta( $post_id, 'source_notes', $source_notes );
 	}
 
-	irg_submit_attach_term( $post_id, 'tune', $tune );
-	irg_submit_attach_term( $post_id, 'songwriter', $songwriter );
-	irg_submit_attach_term( $post_id, 'gaggle', $gaggle );
+	irg_set_terms_from_csv( $post_id, 'tune',       $tune );
+	irg_set_terms_from_csv( $post_id, 'songwriter', $songwriter );
+	irg_set_terms_from_csv( $post_id, 'gaggle',     $gaggle );
 
 	$issue_ids       = [];
 	$unknown_issues  = [];
@@ -1607,9 +1637,13 @@ function irg_handle_submit_song( WP_REST_Request $req ) {
 		'key_starting_note' => $key_starting_note,
 		'youtube_link'      => $youtube_link,
 		'date_written'      => $date_written,
+		'unknown_issues'    => $unknown_issues,
 	] );
 
-	return [ 'ok' => true, 'post_id' => $post_id ];
+	// Report dropped issue terms back to the submitter too. The checkboxes are
+	// generated from the live term list, so this should never fire — which is
+	// exactly why it must not stay buried in error_log if it ever does.
+	return [ 'ok' => true, 'post_id' => $post_id, 'unknown_issues' => $unknown_issues ];
 }
 
 // ---------------------------------------------------------------------------
@@ -1749,20 +1783,25 @@ function irg_handle_edit_song( WP_REST_Request $req ) {
 
 	// Open taxonomies — comma-split so multi-author songs round-trip
 	// correctly. Empty inputs are guarded above (required-field check).
-	irg_edit_replace_terms( $post_id, 'tune',       $tune );
-	irg_edit_replace_terms( $post_id, 'songwriter', $songwriter );
-	irg_edit_replace_terms( $post_id, 'gaggle',     $gaggle );
+	irg_set_terms_from_csv( $post_id, 'tune',       $tune );
+	irg_set_terms_from_csv( $post_id, 'songwriter', $songwriter );
+	irg_set_terms_from_csv( $post_id, 'gaggle',     $gaggle );
 
 	irg_edit_song_send_notification( $post_id, [ 'title' => $title ] );
 
 	return [ 'ok' => true, 'post_id' => $post_id ];
 }
 
-// Replace the post's terms in $taxonomy with the comma-separated names in
+// Set the post's terms in $taxonomy from the comma-separated names in
 // $value. Creates terms that don't exist. Used for tune / songwriter /
-// gaggle on edit so multi-author songs ("Garnet De Grave, Susan Dutton")
-// round-trip without collapsing into a single combined term.
-function irg_edit_replace_terms( int $post_id, string $taxonomy, string $value ): void {
+// gaggle on BOTH submit and edit so multi-author songs ("Garnet De Grave,
+// Susan Dutton") round-trip without collapsing into a single combined term
+// — the exact mess scripts/cleanup-songwriters.mjs exists to undo.
+//
+// $append is explicit rather than implied: wp_set_object_terms() replaces
+// by default, which is right for an edit and harmless on a fresh draft, but
+// silently destructive if this is ever reused on a populated post.
+function irg_set_terms_from_csv( int $post_id, string $taxonomy, string $value, bool $append = false ): void {
 	$names    = array_filter( array_map( 'trim', explode( ',', $value ) ), static fn( $n ) => $n !== '' );
 	$term_ids = [];
 	foreach ( $names as $name ) {
@@ -1771,12 +1810,16 @@ function irg_edit_replace_terms( int $post_id, string $taxonomy, string $value )
 			$term = wp_insert_term( $name, $taxonomy );
 		}
 		if ( is_wp_error( $term ) ) {
-			error_log( '[irg-edit] term op failed for ' . $taxonomy . ' "' . $name . '": ' . $term->get_error_message() );
+			error_log( '[irg-core] term op failed for ' . $taxonomy . ' "' . $name . '": ' . $term->get_error_message() );
 			continue;
 		}
 		$term_ids[] = (int) ( is_array( $term ) ? $term['term_id'] : $term );
 	}
-	wp_set_object_terms( $post_id, $term_ids, $taxonomy );
+	if ( ! $term_ids && ! $append ) {
+		// Nothing parseable. Leave existing terms alone rather than wiping them.
+		return;
+	}
+	wp_set_object_terms( $post_id, $term_ids, $taxonomy, $append );
 }
 
 function irg_edit_song_send_notification( int $post_id, array $fields ): void {
@@ -1987,30 +2030,26 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 	];
 }
 
-// True if the URL contains a YouTube hostname (youtube.com or youtu.be).
-// Used to reject obvious non-YouTube URLs in the optional video fields.
+// True if the URL is an http(s) URL whose host is YouTube. Matches on the
+// parsed host, not a substring: "https://evil.example/?x=youtube.com" is
+// not a YouTube link, and a substring check said it was.
 function irg_is_youtube_url( string $url ): bool {
-	$url = strtolower( $url );
-	return strpos( $url, 'youtube.com' ) !== false || strpos( $url, 'youtu.be' ) !== false;
-}
-
-// Look up a term in the given taxonomy. Create it if missing. Attach to the post.
-// Used for tune / songwriter / gaggle (open taxonomies — submitters can extend).
-function irg_submit_attach_term( int $post_id, string $taxonomy, string $name ): void {
-	$name = trim( $name );
-	if ( $name === '' ) {
-		return;
+	$scheme = strtolower( (string) wp_parse_url( $url, PHP_URL_SCHEME ) );
+	if ( $scheme !== 'http' && $scheme !== 'https' ) {
+		return false;
 	}
-	$term = term_exists( $name, $taxonomy );
-	if ( ! $term ) {
-		$term = wp_insert_term( $name, $taxonomy );
-	}
-	if ( is_wp_error( $term ) ) {
-		error_log( '[irg-submit] term op failed for ' . $taxonomy . ' "' . $name . '": ' . $term->get_error_message() );
-		return;
-	}
-	$term_id = (int) ( is_array( $term ) ? $term['term_id'] : $term );
-	wp_set_object_terms( $post_id, [ $term_id ], $taxonomy );
+	$host = strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
+	$allowed = [
+		'youtube.com',
+		'www.youtube.com',
+		'm.youtube.com',
+		'music.youtube.com',
+		'youtube-nocookie.com',
+		'www.youtube-nocookie.com',
+		'youtu.be',
+		'www.youtu.be',
+	];
+	return in_array( $host, $allowed, true );
 }
 
 function irg_submit_send_notification( int $post_id, array $fields ): void {
@@ -2030,6 +2069,11 @@ function irg_submit_send_notification( int $post_id, array $fields ): void {
 	}
 	if ( ! empty( $fields['date_written'] ) ) {
 		$body .= "Written:    {$fields['date_written']}\n";
+	}
+	if ( ! empty( $fields['unknown_issues'] ) ) {
+		$body .= "\n!! These issues were submitted but do not exist as terms, so they\n";
+		$body .= "!! were NOT attached to the song: " . implode( ', ', $fields['unknown_issues'] ) . "\n";
+		$body .= "!! Add them by hand on the edit screen if they belong.\n";
 	}
 	$body    .= "\nReview and publish: {$edit_url}\n";
 	$headers  = [ 'Content-Type: text/plain; charset=UTF-8' ];
