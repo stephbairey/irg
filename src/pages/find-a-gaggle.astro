@@ -178,7 +178,7 @@ const gaggleListSchema = {
                         <li>
                           {liveSlugs.has(g.slug) ? (
                             <a
-                              href={`https://${g.slug}.raginggrannies.org/`}
+                              href={`https://cms.raginggrannies.international/${g.slug}/`}
                               class="dir-link"
                               rel="noopener"
                             >{g.aka || g.name}</a>
@@ -296,7 +296,11 @@ const gaggleListSchema = {
         const markerEl = document.createElement("div");
         markerEl.className = "gaggle-marker";
 
-        const subsiteUrl = `https://${encodeURIComponent(g.slug)}.raginggrannies.org/`;
+        // Subsites are linked at their multisite path URLs for launch (D068).
+        // The <slug>.raginggrannies.org subdomain pattern returns when the
+        // post-launch domain-mapping workstream lands; most of those
+        // subdomains have no DNS records today.
+        const subsiteUrl = `https://cms.raginggrannies.international/${encodeURIComponent(g.slug)}/`;
         const contactHtml = g.hasSubsite
           ? `<div class="gp-contact"><a href="${escHtml(subsiteUrl)}">Visit this gaggle's website →</a></div>`
           : `<div class="gp-contact gp-contact-soft">Site coming soon</div>`;

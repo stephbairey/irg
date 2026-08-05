@@ -869,6 +869,20 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Rationale**: The dedupe set already guarantees idempotency; the cutoff only ever destroyed information. A false alarm during a quiet month costs one email; a silently dead feed cost six weeks of missed coverage.
 - **Revisit if**: syndication ever floods the page with near-identical headlines (then consider capping per-headline sources), or 30 days proves too chatty or too slow.
 
+## D068 — DNS cutover plan: Pages custom domain, Email Routing, cms-path gaggle links, .net → /songs/
+
+- **Status**: Decided 2026-08-05; runbook in `docs/plans/dns-cutover.md`
+- **Date**: 2026-08-05
+- **Context**: Launch time. Both domains' zones already sit on Cloudflare nameservers in the same account as the Pages project, so cutover needs no registrar action (the domains' owner, Kathleen Russell, is only needed for the deferred domain transfer). Meanwhile the QA pass found that no mail forwarded through FastComet/antispamcloud has reached Gmail since 2026-05-08, and that most `<slug>.raginggrannies.org` subdomains the Find a Gaggle page links to have no DNS records.
+- **Choice**:
+  - `raginggrannies.org` + `www` become custom domains on the Pages project; the Cache Everything page rule is deleted.
+  - MX moves to Cloudflare Email Routing at cutover, retiring FastComet mail and antispamcloud for the domain. This is also the mail-outage fix; one live contact-form submission after launch verifies it.
+  - Find a Gaggle links point at `cms.raginggrannies.international/<slug>/` for launch (all 60 work today; the bare `raginggrannies.international` host 404s subsite paths, only `cms.` serves them). Subdomain mapping is a post-launch workstream, after which links switch back.
+  - `raginggrannies.net` blanket-301s to `/songs/` on the new site (it was the song archive).
+  - The CMS domain stays `cms.raginggrannies.international`; a `cms.raginggrannies.org` rename is deferred indefinitely.
+- **Rationale**: Everything above is a Cloudflare-dashboard change with instant rollback (zone file exported first). Old FastComet infrastructure keeps serving gaggle subdomains, MainWP, and staging untouched until per-gaggle retirement.
+- **Revisit if**: the domain-mapping workstream lands (switch gaggle links back to subdomains), or old .net song URLs deserve deep-mapping to new slugs.
+
 ## Open decisions (not yet resolved)
 
 - **Song taxonomy structure**: 17 issue categories finalized (D016, split in D021). Song librarian may still refine E&D/G&P boundaries or request additions.
