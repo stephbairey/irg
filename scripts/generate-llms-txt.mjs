@@ -177,7 +177,8 @@ function loadSongs() {
         !s.duplicate_of &&
         s.title &&
         (s.slug || s.title) &&
-        !CENTRAL_HIDDEN.has(slugifyFallback(s.gaggle || "")),
+        // D069: homepage-flagged songs are public even from hidden gaggles.
+        (s.feature_on_homepage || !CENTRAL_HIDDEN.has(slugifyFallback(s.gaggle || ""))),
     )
     .map((s) => ({
       title: s.title,

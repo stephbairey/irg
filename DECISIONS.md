@@ -893,3 +893,29 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Image hosting strategy**: WP media library vs. Cloudflare Images vs. other.
 - **Song deduplication resolution**: 99 duplicate pairs identified. Song librarian decides which version to keep per pair.
 - **Admin edit links**: see D025. Deferred pending a second use case.
+
+## D069 — Homepage-flagged songs are published centrally even from a hidden gaggle
+
+- **Status**: Decided
+- **Date**: 2026-08-28
+- **Context**: IRGC's August homepage list (21 songs, two Word docs) includes nine Seattle songs, submitted by Seattle. D052 hides all Seattle songs from every central surface, so none could be featured and their `/songs/<slug>/` links would 404. Maya confirmed the Seattle songs on the committee's list can be published.
+- **Options considered**: retag the nine to another gaggle (wrong: they are Seattle songs); drop them from the pool (contradicts the committee); a per-song override.
+- **Choice**: `feature_on_homepage` doubles as per-song consent. `src/lib/songs.ts` `loadFromJson()` and `scripts/generate-llms-txt.mjs` keep a song when the flag is set even if its gaggle is in `central-hidden-gaggles.json`; `scripts/list-homepage-candidates.mjs` mirrors it. The other ~439 Seattle songs stay hidden. This is D052's stated "per-song control" revisit condition, resolved narrowly.
+- **Trade-off**: the flag now means two things (shop window + central visibility). Acceptable because the librarian only sets it for vetted songs, and vetted-for-homepage implies public.
+- **Revisit if**: a gaggle wants a song public centrally without featuring it on the homepage (then split into a second flag).
+
+## D070 — Drop the homepage featured-song length window
+
+- **Status**: Decided
+- **Date**: 2026-08-28
+- **Context**: D054 kept a 175-195 word window (fallback 165-205) from the pre-allowlist days, when it tamed a ~1,400-song random pool. The committee's curated list runs 59-264 words; the window would silently feature four of the 21 and ignore the rest.
+- **Choice**: `eligibleSongs()` in `src/pages/index.astro` filters on the allowlist and non-empty lyrics only. `lyricExcerpt()` (32 lines) still caps the column. `scripts/list-homepage-candidates.mjs` reports word counts as information, not a filter.
+- **Revisit if**: the pool grows large enough that very short or very long lyrics make the lead column look wrong; then a soft preference (not a hard filter) is the fix.
+
+## D071 — Bulk-edit endpoint gains replace-style setters and create (plugin 3.19.0)
+
+- **Status**: Decided
+- **Date**: 2026-08-28
+- **Context**: The homepage refresh needed tune, issues, and overwrite-style source notes on existing songs, plus one new song (the Triangle "Radical Environmentalists" revision), without hand-entry in WP admin for 21 songs. `admin-bulk-edit-songs` only had `to_songwriter`, `lyrics_set`, fill-if-empty `source_notes`, `gaggle_add`, `feature_on_homepage`.
+- **Choice**: add `tune_set`, `issues_set` (comma-separated, replace; empty leaves terms alone via `irg_set_terms_from_csv`), `source_notes_set` (overwrite), and `create_title` (creates a published song when `post_id` is absent; finds an existing song by exact title on re-run so the call is idempotent). Response gains `created`. Driven by `scripts/homepage-refresh.mjs` + `data/homepage-refresh/changes.json`, which double as the audit trail.
+- **Revisit if**: creates happen often enough to want a proper import path (then workstream C's exporter/importer pair).

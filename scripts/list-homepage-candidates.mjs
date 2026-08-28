@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// List songs whose lyrics fall in the homepage featured-song length window, to
-// help curate the "Feature on homepage" allowlist (D054). Read-only.
+// List the homepage featured-song pool and its word counts, to help curate
+// the "Feature on homepage" allowlist (D054). Read-only.
 //
-// Mirrors pickFeatured() in src/pages/index.astro exactly: same stripHtml +
-// word-count, the same eligibility filters fetchAllSongs() applies (drop
-// duplicates, require a title, exclude central-hidden gaggles like Seattle per
-// D052), and the same length bands. Approval status is ignored — this is the
-// pool you'd choose approvals FROM.
+// Mirrors src/pages/index.astro: the eligibility filters fetchAllSongs()
+// applies (drop duplicates, require a title, exclude central-hidden gaggles
+// per D052 unless the song is homepage-flagged per D069) and the same
+// stripHtml + word-count. There is no length window since D070; word counts
+// are informational. Approved songs are listed first.
 //
 // Usage: node scripts/list-homepage-candidates.mjs
 //   -> prints a summary and writes data/homepage-candidates.csv
@@ -19,11 +19,6 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SONGS = resolve(ROOT, "data/songs-consolidated.json");
 const HIDDEN = resolve(ROOT, "data/central-hidden-gaggles.json");
 const OUT = resolve(ROOT, "data/homepage-candidates.csv");
-
-// Tight band pickFeatured tries first; wider band is the fallback. The homepage
-// will never feature a song outside the wider band.
-const TIGHT = [175, 195];
-const WIDE = [165, 205];
 
 function slugify(s) {
   return String(s)
@@ -64,33 +59,34 @@ const rows = [];
 for (const s of songs) {
   if (!s || s.duplicate_of) continue;
   if (typeof s.title !== "string" || !s.title) continue;
-  if (s.gaggle && hidden.has(slugify(s.gaggle))) continue;
+  const approved = !!s.feature_on_homepage;
+  const hiddenGaggle = !!(s.gaggle && hidden.has(slugify(s.gaggle)));
+  if (hiddenGaggle && !approved) continue;
   const lyrics = s.lyrics;
   if (!lyrics) continue;
-  const wc = wordCount(lyrics);
-  if (wc < WIDE[0] || wc > WIDE[1]) continue;
   rows.push({
     slug: s.slug || slugify(s.title),
     title: s.title,
     gaggle: s.gaggle || "",
     songwriter: s.songwriter || "",
-    words: wc,
-    band: wc >= TIGHT[0] && wc <= TIGHT[1] ? "tight" : "wide",
+    words: wordCount(lyrics),
+    approved: approved ? "yes" : "",
+    hidden_gaggle_override: hiddenGaggle ? "yes" : "",
   });
 }
 
-rows.sort((a, b) => a.words - b.words || a.title.localeCompare(b.title));
+rows.sort((a, b) => (b.approved > a.approved ? 1 : b.approved < a.approved ? -1 : 0) || a.words - b.words || a.title.localeCompare(b.title));
 
 const csv = [
-  "slug,title,gaggle,songwriter,words,band",
+  "slug,title,gaggle,songwriter,words,approved,hidden_gaggle_override",
   ...rows.map((r) =>
-    [r.slug, r.title, r.gaggle, r.songwriter, r.words, r.band]
+    [r.slug, r.title, r.gaggle, r.songwriter, r.words, r.approved, r.hidden_gaggle_override]
       .map((v) => `"${String(v).replace(/"/g, '""')}"`)
       .join(","),
   ),
 ].join("\n");
 writeFileSync(OUT, csv + "\n");
 
-const tight = rows.filter((r) => r.band === "tight").length;
-console.log(`Candidates in ${WIDE[0]}-${WIDE[1]} words: ${rows.length} (${tight} in the tight ${TIGHT[0]}-${TIGHT[1]} band)`);
+const approved = rows.filter((r) => r.approved).length;
+console.log(`${rows.length} eligible songs, ${approved} approved for the homepage`);
 console.log(`Wrote ${OUT}`);

@@ -1,0 +1,340 @@
+
+======================================================================
+One Human Family  ->  one-human-family
+  DOC  tune/credits: Tune: “John Brown’s Body” aka “Battle Hymn of the Republic” | Lyrics by Vicki Ryder (Triangle NC)
+  LIB  tune="John Brown's Body" writers=['Rosalia Haduch', 'Vicki Ryder'] gaggle=['Triangle'] date='2022-05-21T00:00:00+00:00' notes='' key='' yt='https://www.youtube.com/watch?v=StFB2g0urhA'
+  LYRICS: doc 19 lines, lib 19 lines, 15 identical lines (normalized)
+  [replace] doc 8-8 / lib 8-8
+     DOC: We must learn to live together as we raise our voice in song,
+     LIB: We must learn to live together as we reap what we have sown;
+  [replace] doc 11-11 / lib 11-11
+     DOC: And so we work incessantly for nations to disarm.
+     LIB: And we will work incessantly for nations to disarm.
+  [replace] doc 17-18 / lib 17-18
+     DOC: Now’s the time to come together working for a brighter day
+     DOC: As we demand a better way!
+     LIB: Now’s the time to come together on this grand Memorial Day
+     LIB: And demand a better way!
+
+======================================================================
+Radical Environmentalists  ->  radical-environmentalists-florida-revision-2010
+  DOC  tune/credits: Original Lyrics by Kay Thode (Seattle) | Revisions by Vicki Ryder (Triangle NC) and Triangle Raging Grannies | Tune: “She’ll Be Comin’ ‘Round the Mountain”
+  LIB  tune="She'll Be Comin' 'Round the Mountain" writers=['Vicki Ryder'] gaggle=['Rochester'] date='' notes='' key='' yt='http://youtu.be/Ghd-xL5gAjc?t=32'
+  LYRICS: doc 23 lines, lib 19 lines, 7 identical lines (normalized)
+  [replace] doc 1-2 / lib 1-1
+     DOC: Oh, we’re radical environmentalists,
+     DOC: Yes, we’re radical environmentalists,
+     LIB: Oh, we’re radical environmentalists,Yes, we’re radical environmentalists,
+  [replace] doc 4-5 / lib 3-9
+     DOC: And our rivers in good order.
+     DOC: Oh, we’re radical environmentalists.
+     LIB: And our beaches in good order. Oh,
+     LIB: We’re radical environmentalists!
+     LIB: Oh, we like our veggies without pesticides,
+     LIB: And our food without those hormones placed inside.
+     LIB: We like fish without PCBs,
+     LIB: And forests that still have trees, Oh,
+     LIB: We’re radical environmentalists!
+  [replace] doc 7-7 / lib 11-11
+     DOC: And we know that frackin’ kills... we ain’t no fools!
+     LIB: ‘Cause we know that they’ll run out, we ain’t no fools!
+  [delete] doc 11-15 / lib 15-14
+     DOC: We’ve seen drilling, we’ve seen fracking in our time,
+     DOC: So we’ll stand against those oil and gas pipelines.
+     DOC: We don’t want toxic gas and oil
+     DOC: In our water or our soil,
+     DOC: ’Cause we’re radical environmentalists.
+  [replace] doc 18-23 / lib 17-19
+     DOC: And with all these wars we’re fighting,
+     DOC: It’s really getting’ fright’ning
+     DOC: ’Cause we’ll all be gone if we can’t co-exist.
+     DOC: So we must do what we oughta,
+     DOC: For our grandsons and granddaughters,
+     DOC: And be radical environmentalists.
+     LIB: So get out and tell the others
+     LIB: That the Earth is still our mother….
+     LIB: Then you’ll be a true environmentalist.
+
+======================================================================
+The Raging Grannies’ Handy-Dandy All-Purpose Generic Protest Song  ->  the-raging-grannies-handy-dandy-all-purpose-generic-protest-song
+  DOC  tune/credits: Lyrics by Vicki Ryder (Triangle NC) | Tune: “This Land Is Your Land” | NOTE: Change the lyrics in italics to reflect your Gaggle’s current concerns.
+  LIB  tune='This Land Is Your Land' writers=['Vicki Ryder'] gaggle=['Rochester'] date='' notes='' key='' yt='http://www.youtube.com/watch?v=phq0MsER74M'
+  LYRICS: doc 20 lines, lib 20 lines, 17 identical lines (normalized)
+  [replace] doc 3-3 / lib 3-3
+     DOC: It’s how we protest for peace and justice,
+     LIB: It’s got no purpose except to protest,
+  [replace] doc 10-11 / lib 10-11
+     DOC: Or health insurance that doesn’t cure us;
+     DOC: Deporting immigrants or nuclear weapons…
+     LIB: Or privatizing Social Security;
+     LIB: Or job outsourcing or nuclear weapons…
+
+======================================================================
+The Grannies’ Twist  ->  the-grannies-twist
+  DOC  tune/credits: Lyrics by Granny Carol (Davis, California) | Tune: “The Twist”
+  LIB  tune='The Twist' writers=['Granny Carol'] gaggle=['Davis'] date='2026-07-14T00:00:00+00:00' notes='' key='' yt=''
+  LYRICS: doc 25 lines, lib 25 lines, 18 identical lines (normalized)
+  [replace] doc 7-7 / lib 7-7
+     DOC: ‘Nam and Nukes, Women’s Rights
+     LIB: Nam and Nukes, Women’s Rights
+  [replace] doc 11-12 / lib 11-12
+     DOC: REPEAT CHORUS
+     DOC: Call us Babies, Tell us to grow up’
+     LIB: CHORUS AGAIN
+     LIB: Call us Babies, Tells us to grow up’
+  [replace] doc 14-14 / lib 14-14
+     DOC: Rubber bullets, Tear gas too
+     LIB: Rubber bullets, Teargas too
+  [replace] doc 18-18 / lib 18-18
+     DOC: REPEAT CHORUS
+     LIB: CHORUS AGAIN
+  [replace] doc 20-20 / lib 20-20
+     DOC: Not gonna shut up, not ‘til we’re through
+     LIB: Not gonna shut up, not till we’re through
+  [replace] doc 25-25 / lib 25-25
+     DOC: REPEAT CHORUS
+     LIB: CHORUS AGAIN
+
+======================================================================
+When Raging Grans Come Marching In  ->  when-raging-grans-come-marching-in
+  DOC  tune/credits: Lyrics by Barbara Seifred (Montreal) | Tune: “When the Saints Come Marching In”
+  LIB  tune='When the Saints Come Marching In' writers=['Barbara Seifred'] gaggle=['Montreal'] date='1989-07-14T00:00:00+00:00' notes='' key='' yt=''
+  LYRICS: doc 12 lines, lib 12 lines, 8 identical lines (normalized)
+  [replace] doc 8-11 / lib 8-11
+     DOC: And for clean water, air, and ground.
+     DOC: Our common future / starts today,
+     DOC: To those in power we say “Hey –
+     DOC: You’d better listen to the Raging Grannies’ clamour;
+     LIB: And for clean air, water and ground.
+     LIB: Or common future / starts right today,
+     LIB: To those in power we say Hey –
+     LIB: You better listen to Grandma’s clamour;
+
+======================================================================
+Raging Grannies Strong!  ->  raging-grannies-strong
+  DOC  tune/credits: Lyrics by UnCon Grannies 2016 | Chorus #1 and #2 by Vicki Ryder (Triangle NC) | Tune: “Solidarity” Forever” (aka “John Brown’s Body” or “Battle Hymn of the Republic”) | NOTE: Change the lyrics in italics to reflect your Gaggle’s current concerns.
+  LIB  tune='Solidarity Forever' writers=['Unknown'] gaggle=['Unknown'] date='' notes='Written collectively by the UnCon Grannies, 2016; chorus by Vicki Ryder' key='' yt='http://www.youtube.com/watch?v=Ly5ZKjjxMNM'
+  LYRICS: doc 29 lines, lib 30 lines, 24 identical lines (normalized)
+  [replace] doc 4-4 / lib 4-5
+     DOC: Our steps they might be slow, and ’though our boobs are hanging low,
+     LIB: Our steps they might be slow,
+     LIB: And ’though our boobs are hanging low,
+  [replace] doc 8-8 / lib 9-9
+     DOC: While poor folks sleep on sidewalks, Grannies seek another way…
+     LIB: While people sleep on sidewalks, Grannies seek another way…
+  [replace] doc 19-19 / lib 20-20
+     DOC: REPEAT CHORUS #1 or #2
+     LIB: REPEAT CHORUS #2
+  [replace] doc 24-24 / lib 25-25
+     DOC: REPEAT CHORUS #1 or #2
+     LIB: REPEAT CHORUS #2
+  [replace] doc 29-29 / lib 30-30
+     DOC: REPEAT CHORUS #1 or #2
+     LIB: REPEAT CHORUS #2
+
+======================================================================
+Do You Hear The Women Sing?  ->  do-you-hear-the-women-sing
+  DOC  tune/credits: Lyrics by Deb Scott (Sacramento, CA) | Tune: “Do You Hear The People Sing?” (from Les Miserables)
+  LIB  tune='Do You Hear the People Sing? from Les Miserables' writers=['Deb Scott'] gaggle=['Sacramento'] date='2026-02-04T00:00:00+00:00' notes='' key='E' yt=''
+  LYRICS: doc 28 lines, lib 28 lines, 28 identical lines (normalized)
+  -> lyrics IDENTICAL line for line
+
+======================================================================
+We’re Rising Up  ->  were-rising-up
+  DOC  tune/credits: Lyrics by: Vicki Ryder (Triangle NC) | Tune: Solidarity Forever ” (aka “John Brown’s Body” or “Battle Hymn of the Republic”)
+  LIB  tune='Battle Hymn of the Republic' writers=['Unlisted Songwriter'] gaggle=['Seattle'] date='' notes='' key='' yt=''
+  LYRICS: doc 24 lines, lib 22 lines, 20 identical lines (normalized)
+  [replace] doc 10-10 / lib 10-10
+     DOC: We rise in [name your town] today to say it’s a disgrace
+     LIB: We rise in Seattle // to say it’s a disgrace
+  [delete] doc 14-14 / lib 14-13
+     DOC: REPEAT CHORUS
+  [replace] doc 19-20 / lib 18-18
+     DOC: REPEAT CHORUS
+     DOC: We sung today for justice, and it’s not just for the sport.
+     LIB: We dance today for justice, and it’s not just for the sport.
+
+======================================================================
+Grab Your Hat Little Granny  ->  grab-your-hat-little-granny
+  DOC  tune/credits: Lyrics by Deb Scott (Sacramento, CA) | Tune: Traditional lullaby, slave era “Didn’t Leave Nobody but the Baby” | (as Sung in the movie “O Brother, Where Art Thou”) | Dedicated to Granny Pennie Taylor who passed away on January 16, 2026 | (Note on end of line pauses: dash= hold for 2 beats, 3 dots= hold  for 4 beats)
+  LIB  tune="Didn't Leave Nobody but the Baby" writers=['Deb Scott'] gaggle=['Sacramento'] date='2026-01-28T00:00:00+00:00' notes='Dedicated to Granny Pennie Taylor who passed away on January 16, 2026' key='B (Note on end of line pauses: dash= hold for 2 beats, 3 dots= hold for 4 beats)' yt='https://www.youtube.com/watch?v=JIN7RphRieU'
+  LYRICS: doc 24 lines, lib 25 lines, 23 identical lines (normalized)
+  [replace] doc 20-20 / lib 20-21
+     DOC: While the whole damn world goes to Ha…desRage on little Gran-ny
+     LIB: While the whole damn world goes to Ha…des
+     LIB: Rage on little Gran-ny
+
+======================================================================
+To Save the Earth  ->  to-save-the-earth
+  DOC  tune/credits: Lyrics by Vicki Ryder (Triangle NC) | Tune: “Billy Boy”
+  LIB  tune='Billy Boy' writers=['Vicki Ryder'] gaggle=['Triangle'] date='1970-01-01T00:00:00+00:00' notes='' key='' yt='https://www.youtube.com/watch?v=T0MqRq5qnco'
+  LYRICS: doc 30 lines, lib 30 lines, 30 identical lines (normalized)
+  -> lyrics IDENTICAL line for line
+
+======================================================================
+Hey Look Us Over  ->  hey-look-us-over
+  DOC  tune/credits: Lyrics by Cindy Jackson, Elizabeth Dequine, Jo-Hanna Read, Nel Mascall (Seattle, WA) | Tune: “Hey Look Me Over”
+  LIB  tune='Hey, Look Me Over' writers=['Cindy Jackson, Elizabeth Dequine, Jo-Hanna Read, Nel Mascall'] gaggle=['Seattle'] date='' notes='' key='' yt=''
+  LYRICS: doc 16 lines, lib 16 lines, 16 identical lines (normalized)
+  -> lyrics IDENTICAL line for line
+
+======================================================================
+When We See Injustice We Show Up  ->  when-we-see-injustice-we-show-up
+  DOC  tune/credits: Original lyrics by Granny Rowan | Revisions by Lee Stanfield (Tucson, AZ) | Tune: :She’ll Be Comin’ ‘Round the Mountain:
+  LIB  tune="She'll Be Comin' 'Round the Mountain" writers=['Granny Rowan'] gaggle=['San Jose & Santa Clara County'] date='1970-01-01T00:00:00+00:00' notes='Revised by Lee Stanfield' key='' yt=''
+  LYRICS: doc 15 lines, lib 15 lines, 15 identical lines (normalized)
+  -> lyrics IDENTICAL line for line
+
+======================================================================
+People Power  ->  people-power
+  DOC  tune/credits: Original Lyrics by Lee Stanfield (Tucson, AZ)) | Revised by Jade Dell and Vicki Ryder (Triangle NC) | Tune: “Oh Susannah”
+  LIB  tune='Oh Sussannah' writers=['Jade Dell', 'Vicki Ryder'] gaggle=['Tucson'] date='5122-01-18T00:00:00+00:00' notes='Revised by Lee' key='' yt='http://youtu.be/gpshc8g1W7s'
+  LYRICS: doc 29 lines, lib 31 lines, 19 identical lines (normalized)
+  [insert] doc 1-0 / lib 1-1
+     LIB: “People Power!” (Tune: “Oh, Susannah!”)
+  [replace] doc 2-3 / lib 3-4
+     DOC: As we stand in solidarity and raise an urgent song!
+     DOC: We’ve come together, black and white, and tan and red and brown,
+     LIB: and we stand in solidarity and raise an urgent song!
+     LIB: We’ve come together, black and white and yellow, red and brown,
+  [replace] doc 6-9 / lib 7-9
+     DOC: And we stand with “me too” women takin’ down those who abuse.
+     DOC: We want Medicare for All (the Bill called H six sev-en six,)
+     DOC: And public schools need funding, not just a one-time fix!
+     DOC: CHORUS #1
+     LIB: and we stand with me too women takin’ down those who abuse.
+     LIB: We want Medicare for All as in H R six sev-en six,
+     LIB: and public schools need full funding, not just a one-time fix!
+  [replace] doc 18-18 / lib 18-18
+     DOC: And our Social Safety Nets we will fight fiercely to retain.
+     LIB: Our Social Safety Nets we will fight fiercely to retain.
+  [replace] doc 21-21 / lib 21-23
+     DOC: REPEAT CHORUS #1
+     LIB: People power! Together we will stand
+     LIB: to reclaim our rights with all our might
+     LIB: across this troubled land!
+  [delete] doc 26-26 / lib 28-27
+     DOC: CHORUS #2
+  [replace] doc 28-28 / lib 29-29
+     DOC: As we sing and march for justice
+     LIB: as our Moral March moves forward.
+  [insert] doc 30-29 / lib 31-31
+     LIB: (Repeat last chorus)
+
+======================================================================
+We’re Not Giving Up  ->  were-not-giving-up
+  DOC  tune/credits: Lyrics by Sara Williams (Madison, WI) &amp; Vicki Ryder (Triangle, NC) | Tune: “We Shall Not Be Moved”
+  LIB  tune='We Shall Not Be Moved' writers=['Sara Williams'] gaggle=['Madison'] date='' notes='' key='' yt='http://www.youtube.com/watch?v=duvoETGVvYU'
+  LYRICS: doc 28 lines, lib 21 lines, 12 identical lines (normalized)
+  [replace] doc 1-3 / lib 1-1
+     DOC: CHORUS:
+     DOC: We are not, we’re not giving up!
+     DOC: We are not ever giving up!
+     LIB: CHORUS: We are not, we’re not giving up!We are not EVER giving up!
+  [insert] doc 10-9 / lib 8-8
+     LIB: (Individual Grannies:) Stop! Floss! Feed the dog! Water the garden!
+  [replace] doc 11-11 / lib 10-10
+     DOC: The Resistance isn’t dying, we’re not giving up
+     LIB: The Left is not dying, we’re not giving up
+  [replace] doc 14-15 / lib 13-17
+     DOC: REPEAT CHORUS
+     DOC: We’re up against Big Dollar, but we’re not giving up
+     LIB: CHORUS: We are not, we’re not giving up!
+     LIB: We are not EVER giving up!
+     LIB: We know we’re in this struggle for the long haul —
+     LIB: We’re not giving up.
+     LIB: We’re up against Big Dollar, we’re not giving up
+  [replace] doc 19-28 / lib 21-21
+     DOC: REPEAT CHORUS
+     DOC: We’re not afraid to sing out loud and we’re not giving in
+     DOC: Singing strong and singing proud, together we will win!
+     DOC: We know we’re in this struggle for the long haul
+     DOC: We’re not giving up.
+     DOC: We’ve fought this fight for many years so all folks could be free
+     DOC: To live their lives in peace as one great human family!
+     DOC: So we’re stayin’ in this struggle for the long haul
+     DOC: We’re not giving up.
+     DOC: REPEAT CHORUS
+     LIB: CHORUS
+
+======================================================================
+Cheer for Choice  ->  cheer-for-choice
+  DOC  tune/credits: Lyrics by: Jo-Hanna Read | Gaggle: Seattle | Tune: The Fish Cheer by Country Joe and the Fish
+  LIB  tune='The Fish Cheer by Country Joe and the Fish' writers=['Jo-Hanna Read'] gaggle=['Seattle'] date='2025-04-01T00:00:00+00:00' notes='' key='' yt=''
+  LYRICS: doc 30 lines, lib 33 lines, 27 identical lines (normalized)
+  [insert] doc 1-0 / lib 1-1
+     LIB: [Verse 1]
+  [replace] doc 7-7 / lib 8-8
+     DOC: Chorus:
+     LIB: [Chorus]
+  [insert] doc 17-16 / lib 18-18
+     LIB: [Verse 2]
+  [replace] doc 23-23 / lib 25-26
+     DOC: Chorus
+     LIB: [Chorus]
+     LIB: [Verse 3]
+  [replace] doc 30-30 / lib 33-33
+     DOC: Chorus
+     LIB: [Chorus]
+
+======================================================================
+Won’t Know Much  ->  wont-know-much
+  DOC  tune/credits: Lyrics by: Jo-Hanna Read | Gaggle: Seattle | Tune: Wonderful World by Sam Cooke
+  LIB  tune='Wonderful World by Sam Cooke' writers=['Jo-Hanna Read'] gaggle=['Seattle'] date='' notes='' key='' yt=''
+  LYRICS: doc 26 lines, lib 26 lines, 25 identical lines (normalized)
+  [replace] doc 15-15 / lib 15-15
+     DOC: bridge:
+     LIB: [bridge:]
+
+======================================================================
+Criminal Grans  ->  criminal-grans
+  DOC  tune/credits: Tune: Lili Marlene
+  LIB  tune='Lili Marlene' writers=['Unlisted Songwriter'] gaggle=['Seattle'] date='' notes='' key='' yt=''
+  LYRICS: doc 26 lines, lib 26 lines, 26 identical lines (normalized)
+  -> lyrics IDENTICAL line for line
+
+======================================================================
+Hokus Pokus  ->  hokus-pokus
+  DOC  tune/credits: Gaggle: Seattle | Tune: Hokey Pokey
+  LIB  tune='Hokey Pokey' writers=['Unlisted Songwriter'] gaggle=['Seattle'] date='' notes='' key='' yt=''
+  LYRICS: doc 17 lines, lib 24 lines, 17 identical lines (normalized)
+  [insert] doc 15-14 / lib 15-21
+     LIB: They say new fashions are in
+     LIB: And our hairstyles are out.
+     LIB: We Grannies don’t care
+     LIB: Their wisdom we doubt.
+     LIB: Let’s change to comfy clothing
+     LIB: And throw the high heels out.
+     LIB: That’s what it’s all about!
+
+======================================================================
+Gaggle Make Good Trouble  ->  gaggle-make-good-trouble
+  DOC  tune/credits: Lyrics by Pia Rostholder | Gaggle: Seattle | Tune: Side by Side
+  LIB  tune='' writers=['Pia Rostholder'] gaggle=['Seattle'] date='' notes='' key='' yt=''
+  LYRICS: doc 20 lines, lib 21 lines, 20 identical lines (normalized)
+  [insert] doc 1-0 / lib 1-1
+     LIB: Lyrics mostly by Pia Rostholder
+
+======================================================================
+Peace, Peace  ->  peace-peace
+  DOC  tune/credits: Gaggle: Seattle | Tune: Rose, Rose, Rose Red
+  LIB  tune='' writers=['Unlisted Songwriter'] gaggle=['Seattle'] date='' notes='' key='' yt=''
+  LYRICS: doc 17 lines, lib 17 lines, 17 identical lines (normalized)
+  -> lyrics IDENTICAL line for line
+
+======================================================================
+Granny with an Attitude  ->  granny-with-an-attitude
+  DOC  tune/credits: Gaggle: Seattle | Tune: Rap
+  LIB  tune='' writers=['Unlisted Songwriter'] gaggle=['Seattle'] date='' notes='' key='' yt=''
+  LYRICS: doc 14 lines, lib 16 lines, 11 identical lines (normalized)
+  [insert] doc 1-0 / lib 1-2
+     LIB: from the E-Vine
+     LIB: Rap
+  [replace] doc 6-7 / lib 8-9
+     DOC: Check out Ruben’s women and Marilyn Monroe.
+     DOC: Then along came Twiggy and the skinny look was in.
+     LIB: Check out Ruben’s full figured women and Marilyn Monroe.
+     LIB: Then along came Twiggie and the skinny look was in.
+  [replace] doc 10-10 / lib 12-12
+     DOC: Money to be spent on medications that defy it.
+     LIB: Money to be spent on gadgets that defy it.

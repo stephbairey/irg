@@ -101,6 +101,9 @@ function tbl_hero_image_url(): string {
  *
  * @return string[]
  */
+// D069: a song flagged "feature on homepage" is published centrally even from
+// a hidden gaggle; that is a per-song exception handled in the Astro build and
+// does not change this whole-gaggle list.
 function tbl_hidden_from_central(): array {
 	return [ 'seattle' ];
 }

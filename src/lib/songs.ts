@@ -155,7 +155,11 @@ function loadFromJson(): Song[] | null {
           !r.duplicate_of &&
           typeof r.title === "string" &&
           r.title.length > 0 &&
-          !isCentralHidden(r.gaggle),
+          // D069: a song the librarian flagged for the homepage is published
+          // centrally even when its gaggle opted out (D052). The flag is the
+          // gaggle's per-song consent; everything else from that gaggle stays
+          // hidden.
+          (r.feature_on_homepage || !isCentralHidden(r.gaggle)),
       )
       .map(consolidatedToSong);
   } catch (err) {

@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.18.0
+ * Version: 3.19.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -1879,6 +1879,7 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 	}
 
 	$applied            = 0;
+	$created            = [];
 	$skipped_not_song   = [];
 	$source_conflicts   = [];
 	$errors             = [];
@@ -1896,6 +1897,40 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 		$lyrics_set   = isset( $change['lyrics_set'] ) ? (string) $change['lyrics_set'] : '';
 		$has_feature  = array_key_exists( 'feature_on_homepage', $change );
 		$feature_val  = ! empty( $change['feature_on_homepage'] );
+		// 3.19.0 (homepage refresh, D069): replace-style setters and create.
+		$has_tune     = array_key_exists( 'tune_set', $change );
+		$tune_set     = isset( $change['tune_set'] ) ? (string) $change['tune_set'] : '';
+		$has_issues   = array_key_exists( 'issues_set', $change );
+		$issues_set   = isset( $change['issues_set'] ) ? (string) $change['issues_set'] : '';
+		$has_notes    = array_key_exists( 'source_notes_set', $change );
+		$notes_set    = isset( $change['source_notes_set'] ) ? (string) $change['source_notes_set'] : '';
+		$create_title = isset( $change['create_title'] ) ? sanitize_text_field( (string) $change['create_title'] ) : '';
+
+		// Create: no post_id, a create_title, and no published song with that
+		// exact title already (so a re-run is idempotent).
+		if ( $post_id <= 0 && $create_title !== '' ) {
+			$existing = get_posts( [
+				'post_type'      => 'song',
+				'post_status'    => 'any',
+				'title'          => $create_title,
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+			] );
+			if ( ! empty( $existing ) ) {
+				$post_id = (int) $existing[0];
+			} else {
+				$post_id = wp_insert_post( [
+					'post_type'   => 'song',
+					'post_status' => 'publish',
+					'post_title'  => $create_title,
+				], true );
+				if ( is_wp_error( $post_id ) ) {
+					$errors[] = [ 'post_id' => 0, 'reason' => 'create failed: ' . $post_id->get_error_message() ];
+					continue;
+				}
+				$created[] = [ 'post_id' => $post_id, 'title' => $create_title ];
+			}
+		}
 
 		if ( $post_id <= 0 ) {
 			$errors[] = [ 'post_id' => $post_id, 'reason' => 'invalid post_id' ];
@@ -1998,6 +2033,24 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 			}
 		}
 
+		// Tune / issues — replace outright when supplied (comma-separated names;
+		// empty string clears). Uses the same CSV helper as /submit-song.
+		if ( $has_tune ) {
+			irg_set_terms_from_csv( $post_id, 'tune', $tune_set );
+		}
+		if ( $has_issues ) {
+			irg_set_terms_from_csv( $post_id, 'issue', $issues_set );
+		}
+
+		// Source notes, overwrite variant (source_notes above is fill-if-empty).
+		if ( $has_notes ) {
+			if ( function_exists( 'update_field' ) ) {
+				update_field( 'field_irg_source_notes', sanitize_text_field( $notes_set ), $post_id );
+			} else {
+				update_post_meta( $post_id, 'source_notes', sanitize_text_field( $notes_set ) );
+			}
+		}
+
 		// Homepage feature flag — approve/unapprove for the random featured
 		// song on the homepage. Set only when the caller supplies the key.
 		if ( $has_feature ) {
@@ -2023,6 +2076,7 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 	return [
 		'ok'                 => true,
 		'applied'            => $applied,
+		'created'            => $created,
 		'skipped_not_song'   => $skipped_not_song,
 		'source_conflicts'   => $source_conflicts,
 		'errors'             => $errors,

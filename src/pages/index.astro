@@ -66,23 +66,18 @@ function stripHtml(html: string): string {
     .trim();
 }
 
-// Homepage-eligible songs: approved for the homepage (allowlist, D054) AND
-// within the featured length window (prefer the tight band; widen only if the
-// tight band is empty). The lead column re-rolls in the browser on every load
-// (see the inline script below), so we ship the whole pool; the server renders
-// one random pick for no-JS readers and crawlers.
-function wordCount(html: string): number {
-  return stripHtml(html).split(/\s+/).filter(Boolean).length;
-}
-function eligibleSongs(min: number, max: number) {
+// Homepage-eligible songs: approved for the homepage (allowlist, D054). The
+// pool is exactly the committee's curated list, so there is no length window
+// any more (D070); lyricExcerpt() caps what the column shows. The lead column
+// re-rolls in the browser on every load (see the inline script below), so we
+// ship the whole pool; the server renders one random pick for no-JS readers
+// and crawlers.
+function eligibleSongs() {
   return allSongs.filter((s) => {
     // Allowlist (default-deny): only librarian-approved songs are eligible, so
     // partisan / candidate-specific songs stay out of the shop window.
     if (!s.songDetails?.featureOnHomepage) return false;
-    const lyrics = s.songDetails?.lyrics;
-    if (!lyrics) return false;
-    const wc = wordCount(lyrics);
-    return wc >= min && wc <= max;
+    return !!s.songDetails?.lyrics;
   });
 }
 function lyricExcerpt(html: string | null | undefined): string {
@@ -95,8 +90,7 @@ function lyricExcerpt(html: string | null | undefined): string {
         .join("\n")
     : "";
 }
-const tightPool = eligibleSongs(175, 195);
-const featuredPool = (tightPool.length ? tightPool : eligibleSongs(165, 205)).map((s) => ({
+const featuredPool = eligibleSongs().map((s) => ({
   slug: s.slug,
   title: s.title,
   songwriter: s.songwriters.nodes[0]?.name ?? "",

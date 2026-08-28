@@ -1,0 +1,32 @@
+{
+  "_comment": "IRGC homepage refresh, 2026-08-28. Consumed by scripts/homepage-refresh.mjs. 'lyrics' = read lyrics/<slug>.html. Every song here gets feature_on_homepage=true; the previous 36 are unapproved separately via old-featured.txt.",
+  "changes": [
+    { "slug": "one-human-family", "lyrics": true },
+    { "slug": "radical-environmentalists", "create_title": "Radical Environmentalists", "lyrics": true,
+      "tune_set": "She'll Be Comin' 'Round the Mountain", "to_songwriter": "Kay Thode, Vicki Ryder", "gaggle_add": "Triangle",
+      "issues_set": "Environment & Energy, War & Peace",
+      "source_notes_set": "Original lyrics by Kay Thode (Seattle); revised by Vicki Ryder and the Triangle Raging Grannies" },
+    { "slug": "the-raging-grannies-handy-dandy-all-purpose-generic-protest-song", "lyrics": true,
+      "source_notes_set": "Change the lyrics in italics to reflect your gaggle's current concerns" },
+    { "slug": "the-grannies-twist", "lyrics": true },
+    { "slug": "when-raging-grans-come-marching-in", "lyrics": true },
+    { "slug": "raging-grannies-strong", "lyrics": true, "to_songwriter": "UnCon Grannies 2016, Vicki Ryder",
+      "source_notes_set": "Written collectively by the UnCon Grannies, 2016; choruses by Vicki Ryder. Change the lyrics in italics to reflect your gaggle's current concerns" },
+    { "slug": "do-you-hear-the-women-sing" },
+    { "slug": "were-rising-up", "lyrics": true, "to_songwriter": "Vicki Ryder", "gaggle_add": "Triangle", "tune_set": "Solidarity Forever" },
+    { "slug": "grab-your-hat-little-granny" },
+    { "slug": "to-save-the-earth" },
+    { "slug": "hey-look-us-over" },
+    { "slug": "when-we-see-injustice-we-show-up" },
+    { "slug": "people-power", "lyrics": true, "to_songwriter": "Lee Stanfield, Jade Dell, Vicki Ryder", "tune_set": "Oh Susanna",
+      "source_notes_set": "Original lyrics by Lee Stanfield (Tucson); revised by Jade Dell and Vicki Ryder (Triangle)" },
+    { "slug": "were-not-giving-up", "lyrics": true, "to_songwriter": "Sara Williams, Vicki Ryder" },
+    { "slug": "cheer-for-choice", "lyrics": true },
+    { "slug": "wont-know-much", "lyrics": true },
+    { "slug": "criminal-grans" },
+    { "slug": "hokus-pokus", "lyrics": true },
+    { "slug": "gaggle-make-good-trouble", "lyrics": true, "tune_set": "Side by Side" },
+    { "slug": "peace-peace", "tune_set": "Rose Rose Rose Red" },
+    { "slug": "granny-with-an-attitude", "lyrics": true, "tune_set": "Rap" }
+  ]
+}
