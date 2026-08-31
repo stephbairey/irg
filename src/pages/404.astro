@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found"
+  description="That page isn't here. Search the site or browse the song library."
+>
+  {/* data-pagefind-ignore keeps the 404 page out of the search index. */}
+  <div class="max-w-[900px] mx-auto px-5 md:px-8 pt-10 md:pt-14 pb-20 text-center" data-pagefind-ignore>
+    <div class="kicker text-red mb-3">404</div>
+    <h1 class="font-display text-ink leading-[.98] mb-4" style="font-size:clamp(40px,9vw,84px)">
+      Well, this is awkward
+    </h1>
+    <p class="text-[17px] md:text-[19px] text-text-soft max-w-[640px] mx-auto leading-normal mb-9">
+      That page isn't here. Maybe it moved when we rebuilt the site, maybe the link was
+      wrong, or maybe it never existed at all. We're grannies, not archivists. Try a
+      search; nearly everything we have is a few keystrokes away.
+    </p>
+
+    {/* Search input pill: plain GET form to /search/, which runs ?q= on load */}
+    <form action="/search/" method="get" role="search" class="max-w-[640px] mx-auto text-left">
+      <div class="flex items-center gap-3.5 px-5 py-4 bg-card border-2 border-muted rounded-full transition-colors focus-within:border-red" style="box-shadow:var(--shadow-card)">
+        <svg viewBox="0 0 24 24" class="w-[20px] h-[20px] text-ink flex-none" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+        <input
+          type="search"
+          name="q"
+          autocomplete="off"
+          autofocus
+          enterkeyhint="search"
+          placeholder="Search songs, lyrics, and pages..."
+          aria-label="Search the site"
+          class="flex-1 border-0 bg-transparent text-lg md:text-xl text-ink outline-none placeholder:text-muted"
+        />
+        <button type="submit" class="font-[800] text-red text-[13px] px-2.5 py-1 bg-transparent border-0 cursor-pointer">Search</button>
+      </div>
+    </form>
+
+    <p class="text-[15px] text-text-soft mt-8">
+      Or head somewhere that definitely exists:
+    </p>
+    <p class="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-3 text-[16px]">
+      <a href="/" class="text-red font-bold no-underline hover:underline">Home</a>
+      <a href="/songs/" class="text-red font-bold no-underline hover:underline">Song library</a>
+      <a href="/find-a-gaggle/" class="text-red font-bold no-underline hover:underline">Find a gaggle</a>
+      <a href="/contact/" class="text-red font-bold no-underline hover:underline">Contact us</a>
+    </p>
+  </div>
+</BaseLayout>
