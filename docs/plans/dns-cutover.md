@@ -183,3 +183,67 @@ Post-launch punch list added during execution:
   when convenient.
 - Mail deferred items (see entry above): never-spam filter, old filter
   review, outbound "Send mail as" via SMTP relay.
+
+**2026-08-31 — APEX FLIPPED. Cutover complete; site live on Pages.**
+
+Executed (Maya, via claude.ai session):
+- All fifteen CNAME→apex subdomains reviewed against the probe
+  inventory. FIVE pinned as A → 45.33.84.79 proxied: portland, seattle,
+  calgary, montreal, westernmass. Portland verified before and after
+  (200, LiteSpeed header, unchanged rendering).
+- `maint` and `mail` deliberately NOT pinned (plan said 7; Maya cut it
+  to 5). maint belongs to the old multisite; mail is unneeded with MX
+  on Cloudflare. Both now follow the apex and 522 — intentional, same
+  disposition as the dead placeholders.
+- Apex A record deleted; CNAME `@` → irg-8vx.pages.dev, proxied. Zone
+  SSL/TLS mode untouched.
+- GOTCHA for the runbook: only `www` had been added as a Pages custom
+  domain, so after the DNS flip the apex 522'd (Cloudflare resolving,
+  Pages refusing the hostname) while www worked. Fix: Pages → Set up a
+  custom domain → `raginggrannies.org`. The existing record matched, so
+  Pages just claimed the hostname and self-verified — ignore the
+  misleading "add a CNAME at your DNS provider" panel it shows even
+  when the zone is in the same account. Now Active, SSL issued.
+
+.net path-suffix item CLOSED (reverses the 08-30/31 open item): Maya's
+final decision is "Preserve path suffix" stays ON. Old deep paths land
+on non-existent /songs/... URLs and die there — the wanted outcome; no
+1:1 mapping. Note: until `src/pages/404.astro` ships they soft-404
+(homepage with HTTP 200), so the 404 page is what actually delivers
+this. Still no blanket re-verify needed.
+
+Verify pass (terminal Claude, 2026-08-31) — ALL PASS:
+- Apex serves the Astro build: 200, `server: cloudflare`, no LiteSpeed
+  header, title "Home · Raging Grannies"; http→https 301 works. www
+  200, same build.
+- .net redirects: root → 301 `https://raginggrannies.org/songs/`;
+  `/tag/some-old-song/` → 301 `.../songs/tag/some-old-song/` (suffix
+  preserved, per decision above; lands as soft-404 until 404.astro).
+- Pinned subdomains all serve their old sites: portland 200 with
+  LiteSpeed header + "Portland Raging Grannies" title; seattle 200
+  ("Seattle Raging Grannies"); calgary 301 → /wp/ → 200; montreal 200;
+  westernmass 200.
+- maint 522 as intended.
+- MX intact: route1/2/3.mx.cloudflare.net; apex resolves via CF
+  flattening (172.67.206.155 / 104.21.37.90).
+- Local note: WSL's resolver held a stale negative cache for the bare
+  apex right after the flip (Python/DoH resolved fine); harmless,
+  expires on its own.
+
+Still on Maya: contact form + feedback widget test from a non-Gmail,
+non-Nixihost sender; Search Console sitemap submission.
+
+Post-launch, tracked, not blocking:
+- `src/pages/404.astro` (see above — now also the mechanism for the
+  intended .net deep-path 404s).
+- Delete disabled www page rule; delete dead subdomain DNS records at
+  leisure.
+- Gaggle migrations to the new multisite: Calgary (87 posts/10 pages),
+  Western Mass (2/7), Montreal (6 pages) all use Elementor — content
+  won't render on import without Elementor network-wide; theme
+  conversion is a per-gaggle conversation, not a unilateral decision.
+  Seattle needs a drift check for posts created after its initial
+  export. Portland already migrated.
+- Mail: Gmail shouldNeverSpam filter for *@raginggrannies.org; review
+  old filters trashing WP mail from staging/maint/bnb; outbound "Send
+  mail as" via SMTP relay (Email Routing is receive-only).
