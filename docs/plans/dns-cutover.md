@@ -106,3 +106,80 @@ values and re-enable the page rule. Propagation is instant (proxied records).
   over the blanket /songs/ redirect).
 - Domain transfer away from Kathleen's registrar account (deferred; needs
   the owner).
+
+## Execution log
+
+**2026-08-30** — Step 0 + pre-flight done (Maya): FastComet full backup
+downloaded; cPanel forwarder export in `\rollback` (six real aliases on
+raginggrannies.org, all → webgranny@gmail.com; every other domain was
+fail/blackhole); zone files exported; Turnstile hostnames added.
+
+Email Routing brought live EARLY (ahead of the site cutover — mail had
+been dead since May, so there was nothing to protect): active on BOTH
+zones. No per-alias rules; single catch-all → webgranny@gmail.com covers
+all six aliases identically (deliberate; not an outstanding task).
+Gotcha: the wizard's "remove conflicting records in place" detects the
+FastComet MX / antispamcloud SPF conflict but refuses to activate —
+delete the records manually, then Activate. Sender audit: antispamcloud
+was the only SPF include; no Brevo/Sendinblue records; wizard SPF
+accepted as-is. Verified: test mail reaches webgranny@gmail.com.
+Testing note: send from a non-Gmail, non-Nixihost account (Gmail drops
+same-origin forwarded copies on duplicate Message-ID; bairey.com mail is
+delivered locally by Nixihost and never reaches Cloudflare).
+
+Deferred post-launch: Gmail never-spam filter for *@raginggrannies.org;
+review old anti-WP-noise filters; outbound "Send mail as" via SMTP relay
+(Email Routing is receive-only).
+
+**2026-08-30/31 — cutover partially executed, PAUSED at the apex.**
+
+Done:
+- Turnstile hostnames added (org + www).
+- Email Routing LIVE on both zones (see entry above): catch-all →
+  webgranny@gmail.com, verified working.
+- `www.raginggrannies.org` custom domain Active and serving the Astro
+  site.
+- "Cache Everything" page rule on www: toggled OFF (disabled, not
+  deleted — delete at leisure).
+- raginggrannies.net Bulk Redirect list + rule deployed and working
+  (org, www, deep paths all 301). OPEN ITEM: the deployed rule was still
+  PRESERVING path suffixes on last test (`/tag/x` →
+  `raginggrannies.org/songs/tag/x`), against the intended flat →
+  `/songs/`. Maya re-saved "Preserve path suffix" off; RE-VERIFY.
+  Decision (Maya): no 1:1 song-URL mapping ever — old links renew via
+  Google re-crawl.
+
+NOT done — the apex, paused for a step-back on subsites:
+- `raginggrannies.org` apex still serves the OLD FastComet site
+  (`x-turbo-charged-by: LiteSpeed` header is the tell).
+- Blocker found by Maya in the zone export: FIFTEEN subdomains are
+  CNAME → apex (proxied) and would follow the apex to Pages and break.
+  Plan agreed (full detail + probe inventory in
+  `letter-to-claude-ai-apex-cutover.md` beside this file):
+  1. Pin the 7 live ones as A → 45.33.84.79 proxied: portland, seattle,
+     calgary, montreal, westernmass, maint, mail. (portland is the
+     critical one: live PRG site + newsletter logo hotlink.)
+  2. Leave dead placeholders (bnb, international, lethbridge,
+     maintenance, testing-donotdelete) and already-broken
+     *.staging.* unpinned — they follow the apex and error; fine.
+  3. Delete the apex A 45.33.84.79 only.
+  4. Add `raginggrannies.org` under the Pages project's custom domains.
+  5. Do NOT change the zone SSL/TLS mode.
+  Maya is executing this via a claude.ai session with the letter.
+
+After the apex flips, the terminal Claude runs the verify pass:
+- apex serves Astro (no LiteSpeed header), www ok, song page loads,
+  .net redirect lands FLAT on /songs/, pinned subdomains still serve
+  FastComet sites (esp. portland + its newsletter logo URL).
+- Maya: contact form + feedback widget test from a NON-Gmail,
+  non-Nixihost sender; Search Console: submit
+  https://raginggrannies.org/sitemap-index.xml.
+
+Post-launch punch list added during execution:
+- NEW SITE HAS NO 404 PAGE: Cloudflare Pages serves the homepage with
+  HTTP 200 for every unknown path (soft-404). Add `src/pages/404.astro`
+  — matters for the Google renewal of old song URLs.
+- Delete the disabled www page rule; delete dead subdomain DNS records
+  when convenient.
+- Mail deferred items (see entry above): never-spam filter, old filter
+  review, outbound "Send mail as" via SMTP relay.
