@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.20.0
+ * Version: 3.20.1
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -1095,7 +1095,17 @@ function irg_handle_subsites() {
 		if ( ! $details ) {
 			continue;
 		}
+		// Path-based slug for subdirectory sites. Domain-mapped sites have
+		// path "/", so fall back to the per-site 'irg_slug' option (set at
+		// mapping time; keeps slugs like "western-mass" stable when the
+		// mapped host is "westernmass..."), then to the host's first label.
 		$slug = trim( (string) $details->path, '/' );
+		if ( $slug === '' ) {
+			$slug = (string) get_blog_option( $id, 'irg_slug', '' );
+		}
+		if ( $slug === '' ) {
+			$slug = (string) strtok( (string) $details->domain, '.' );
+		}
 		if ( $slug === '' ) {
 			continue;
 		}

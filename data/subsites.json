@@ -1,5 +1,35 @@
 [
   {
+    "id": 2,
+    "slug": "portland",
+    "name": "Portland",
+    "url": "https://portland.raginggrannies.org"
+  },
+  {
+    "id": 3,
+    "slug": "seattle",
+    "name": "Seattle",
+    "url": "https://seattle.raginggrannies.org"
+  },
+  {
+    "id": 4,
+    "slug": "montreal",
+    "name": "Montreal",
+    "url": "https://montreal.raginggrannies.org"
+  },
+  {
+    "id": 7,
+    "slug": "calgary",
+    "name": "Calgary",
+    "url": "https://calgary.raginggrannies.org"
+  },
+  {
+    "id": 61,
+    "slug": "western-mass",
+    "name": "Western Massachusetts",
+    "url": "https://westernmass.raginggrannies.org"
+  },
+  {
     "id": 5,
     "slug": "antigonish",
     "name": "Antigonish Raging Grannies",
@@ -28,12 +58,6 @@
     "slug": "bowling-green",
     "name": "Bowling Green Raging Grannies",
     "url": "http://cms.raginggrannies.international/bowling-green"
-  },
-  {
-    "id": 7,
-    "slug": "calgary",
-    "name": "Calgary Raging Grannies",
-    "url": "http://cms.raginggrannies.international/calgary"
   },
   {
     "id": 25,
@@ -198,12 +222,6 @@
     "url": "http://cms.raginggrannies.international/milwaukee"
   },
   {
-    "id": 4,
-    "slug": "montreal",
-    "name": "Montreal",
-    "url": "http://cms.raginggrannies.international/montreal"
-  },
-  {
     "id": 41,
     "slug": "new-haven",
     "name": "New Haven Raging Grannies",
@@ -240,12 +258,6 @@
     "url": "http://cms.raginggrannies.international/port-townsend"
   },
   {
-    "id": 2,
-    "slug": "portland",
-    "name": "Portland",
-    "url": "https://cms.raginggrannies.international/portland"
-  },
-  {
     "id": 46,
     "slug": "redding",
     "name": "Redding Raging Grannies",
@@ -274,12 +286,6 @@
     "slug": "santa-cruz",
     "name": "Santa Cruz Raging Grannies",
     "url": "http://cms.raginggrannies.international/santa-cruz"
-  },
-  {
-    "id": 3,
-    "slug": "seattle",
-    "name": "Seattle",
-    "url": "http://cms.raginggrannies.international/seattle"
   },
   {
     "id": 49,
@@ -346,12 +352,6 @@
     "slug": "walnut-creek",
     "name": "Walnut Creek Raging Grannies",
     "url": "http://cms.raginggrannies.international/walnut-creek"
-  },
-  {
-    "id": 61,
-    "slug": "western-mass",
-    "name": "Western Massachusetts Raging Grannies",
-    "url": "http://cms.raginggrannies.international/western-mass"
   },
   {
     "id": 20,
