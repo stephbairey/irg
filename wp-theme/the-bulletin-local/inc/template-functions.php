@@ -359,6 +359,21 @@ function tbl_get_gaggle_notes( int $limit = 6 ): WP_Query {
 }
 
 /**
+ * Whether this gaggle has a published Photos page. Gates the Photos links
+ * in the nav, footer, and 404 page so gaggles without a gallery don't
+ * advertise one (same pattern as tbl_has_member_map_page).
+ */
+function tbl_has_photos_page(): bool {
+	static $cached = null;
+	if ( $cached !== null ) {
+		return $cached;
+	}
+	$page   = get_page_by_path( 'photos' );
+	$cached = ( $page instanceof WP_Post && $page->post_status === 'publish' );
+	return $cached;
+}
+
+/**
  * True if this subsite has a published page at the "member-map" slug.
  * Used to gate the "Grannies Only" nav item so gaggles that haven't set
  * up a members-only page don't show a dead link. Cached per-request.

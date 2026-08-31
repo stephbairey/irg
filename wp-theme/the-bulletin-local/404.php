@@ -17,7 +17,9 @@ get_header();
 	<ul class="tbl-404-links">
 		<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/actions/' ) ); ?>">Actions</a></li>
-		<li><a href="<?php echo esc_url( home_url( '/photos/' ) ); ?>">Photos</a></li>
+		<?php if ( tbl_has_photos_page() ) : ?>
+			<li><a href="<?php echo esc_url( home_url( '/photos/' ) ); ?>">Photos</a></li>
+		<?php endif; ?>
 		<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Contact</a></li>
 	</ul>
 </article>

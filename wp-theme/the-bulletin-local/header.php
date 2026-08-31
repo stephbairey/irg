@@ -49,7 +49,9 @@
 				<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"<?php echo is_front_page() ? ' aria-current="page"' : ''; ?>>Home</a></li>
 				<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"<?php echo is_page( 'about' ) ? ' aria-current="page"' : ''; ?>>About</a></li>
 				<li><a href="<?php echo esc_url( home_url( '/actions/' ) ); ?>"<?php echo ( is_home() || is_singular( 'post' ) || is_archive() ) ? ' aria-current="page"' : ''; ?>>Actions</a></li>
-				<li><a href="<?php echo esc_url( home_url( '/photos/' ) ); ?>"<?php echo is_page( 'photos' ) ? ' aria-current="page"' : ''; ?>>Photos</a></li>
+				<?php if ( tbl_has_photos_page() ) : ?>
+					<li><a href="<?php echo esc_url( home_url( '/photos/' ) ); ?>"<?php echo is_page( 'photos' ) ? ' aria-current="page"' : ''; ?>>Photos</a></li>
+				<?php endif; ?>
 				<?php if ( tbl_get_option( 'youtube_channel_url' ) ) : ?>
 					<li><a href="<?php echo esc_url( home_url( '/videos/' ) ); ?>"<?php echo is_page( 'videos' ) ? ' aria-current="page"' : ''; ?>>Videos</a></li>
 				<?php endif; ?>
@@ -72,7 +74,9 @@
 			<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
 			<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a></li>
 			<li><a href="<?php echo esc_url( home_url( '/actions/' ) ); ?>">Actions</a></li>
-			<li><a href="<?php echo esc_url( home_url( '/photos/' ) ); ?>">Photos</a></li>
+			<?php if ( tbl_has_photos_page() ) : ?>
+				<li><a href="<?php echo esc_url( home_url( '/photos/' ) ); ?>">Photos</a></li>
+			<?php endif; ?>
 			<?php if ( tbl_get_option( 'youtube_channel_url' ) ) : ?>
 				<li><a href="<?php echo esc_url( home_url( '/videos/' ) ); ?>">Videos</a></li>
 			<?php endif; ?>

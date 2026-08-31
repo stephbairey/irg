@@ -34,7 +34,9 @@ $year = current_time( 'Y' );
 				<ul>
 					<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Us</a></li>
 					<li><a href="<?php echo esc_url( home_url( '/actions/' ) ); ?>">Recent Actions</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/photos/' ) ); ?>">Photo Gallery</a></li>
+					<?php if ( tbl_has_photos_page() ) : ?>
+						<li><a href="<?php echo esc_url( home_url( '/photos/' ) ); ?>">Photo Gallery</a></li>
+					<?php endif; ?>
 					<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Connect with Us</a></li>
 				</ul>
 			</div>
