@@ -36,18 +36,26 @@ if (existsSync(DATA)) {
   }
 }
 
-// Set of slugs that have a live subsite. Used to gate whether each directory
-// row + map popup links out, vs. renders as plain text. The link target stays
-// the planned <slug>.raginggrannies.org pattern; this just suppresses the link
-// for gaggles that don't have a subsite yet.
+// slug -> public subsite URL, from the committed subsites snapshot. Gaggles
+// absent from the snapshot render as plain text (no subsite yet). URLs follow
+// whatever WP reports: mapped subdomains once domain mapping lands, multisite
+// paths otherwise.
 const SUBSITES_PATH = resolve(process.cwd(), "data/subsites.json");
-const liveSlugs = new Set<string>();
+const subsiteUrls = new Map<string, string>();
 if (existsSync(SUBSITES_PATH)) {
   try {
     const raw = JSON.parse(readFileSync(SUBSITES_PATH, "utf8"));
     if (Array.isArray(raw)) {
       for (const s of raw) {
-        if (s && typeof s.slug === "string") liveSlugs.add(s.slug);
+        if (s && typeof s.slug === "string") {
+          // Prefer the snapshot's own URL (it tracks WP domain mapping, e.g.
+          // portland.raginggrannies.org); fall back to the multisite path.
+          const url =
+            typeof s.url === "string" && s.url
+              ? s.url.replace(/^http:/, "https:").replace(/\/?$/, "/")
+              : `https://cms.raginggrannies.international/${s.slug}/`;
+          subsiteUrls.set(s.slug, url);
+        }
       }
     }
   } catch (err) {
@@ -92,7 +100,7 @@ const mapPayload = JSON.stringify(
     country: g.country,
     lat: g.lat,
     lng: g.lng,
-    hasSubsite: liveSlugs.has(g.slug),
+    url: subsiteUrls.get(g.slug) ?? null,
   })),
 ).replace(/</g, "\\u003c");
 
@@ -176,9 +184,9 @@ const gaggleListSchema = {
                     <ul class="dir-list">
                       {byCountry[country][region].map((g) => (
                         <li>
-                          {liveSlugs.has(g.slug) ? (
+                          {subsiteUrls.has(g.slug) ? (
                             <a
-                              href={`https://cms.raginggrannies.international/${g.slug}/`}
+                              href={subsiteUrls.get(g.slug)}
                               class="dir-link"
                               rel="noopener"
                             >{g.aka || g.name}</a>
@@ -296,13 +304,11 @@ const gaggleListSchema = {
         const markerEl = document.createElement("div");
         markerEl.className = "gaggle-marker";
 
-        // Subsites are linked at their multisite path URLs for launch (D068).
-        // The <slug>.raginggrannies.org subdomain pattern returns when the
-        // post-launch domain-mapping workstream lands; most of those
-        // subdomains have no DNS records today.
-        const subsiteUrl = `https://cms.raginggrannies.international/${encodeURIComponent(g.slug)}/`;
-        const contactHtml = g.hasSubsite
-          ? `<div class="gp-contact"><a href="${escHtml(subsiteUrl)}">Visit this gaggle's website →</a></div>`
+        // Subsite URLs come from data/subsites.json via the server-side
+        // payload; they track WP domain mapping (subdomains for mapped
+        // gaggles, multisite paths for the rest).
+        const contactHtml = g.url
+          ? `<div class="gp-contact"><a href="${escHtml(g.url)}">Visit this gaggle's website →</a></div>`
           : `<div class="gp-contact gp-contact-soft">Site coming soon</div>`;
         const popup = new mapboxgl.Popup({
           offset: 14,
