@@ -1,0 +1,15 @@
+/*
+Theme Name: Montreal Local
+Theme URI: https://raginggrannies.international
+Template: the-bulletin-local
+Author: Lingua Ink Media
+Author URI: https://linguainkmedia.com
+Description: Child theme of The Bulletin Local for the Montreal Raging Grannies, reskinning the shared gaggle template to echo their previous site.
+Version: 1.0.0
+Requires at least: 6.4
+Requires PHP: 8.0
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: montreal-local
+*/
+/* Metadata only. Overrides live in assets/css/overrides.css. */

@@ -1,0 +1,17 @@
+/*
+Theme Name: Western Mass Local
+Theme URI: https://raginggrannies.international
+Template: the-bulletin-local
+Author: Lingua Ink Media
+Author URI: https://linguainkmedia.com
+Description: Child theme of The Bulletin Local for the Western Mass Raging Grannies. Reskins the shared gaggle template to echo their longtime GeneratePress site: clean white ground, Arial/Helvetica type, deep blue links, banner-photo header.
+Version: 1.0.0
+Requires at least: 6.4
+Requires PHP: 8.0
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: western-mass-local
+*/
+
+/* Metadata only. Overrides live in assets/css/western-mass.css,
+   enqueued after the parent stylesheet from functions.php. */

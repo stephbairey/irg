@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.19.0
+ * Version: 3.20.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -998,9 +998,15 @@ function irg_handle_theme_upload( WP_REST_Request $req ) {
 		return new WP_Error( 'irg_upload_error', 'Upload error code ' . (int) $file['error'], [ 'status' => 400 ] );
 	}
 
+	// Filename is "<slug>.zip"; slug must be the shared gaggle theme or a
+	// "*-local" child of it (western-mass-local, calgary-local, ...).
 	$name = (string) ( $file['name'] ?? '' );
-	if ( strpos( $name, 'the-bulletin-local' ) !== 0 || substr( $name, -4 ) !== '.zip' ) {
-		return new WP_Error( 'irg_bad_name', 'Expected filename starting with "the-bulletin-local" and ending in ".zip".', [ 'status' => 400 ] );
+	if ( substr( $name, -4 ) !== '.zip' ) {
+		return new WP_Error( 'irg_bad_name', 'Expected a ".zip" filename.', [ 'status' => 400 ] );
+	}
+	$slug = sanitize_key( substr( $name, 0, -4 ) );
+	if ( $slug !== substr( $name, 0, -4 ) || ( 'the-bulletin-local' !== $slug && substr( $slug, -6 ) !== '-local' ) ) {
+		return new WP_Error( 'irg_bad_name', 'Expected "the-bulletin-local.zip" or a "<gaggle>-local.zip" child theme.', [ 'status' => 400 ] );
 	}
 
 	require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -1027,7 +1033,7 @@ function irg_handle_theme_upload( WP_REST_Request $req ) {
 		);
 	}
 
-	$stylesheet = 'the-bulletin-local';
+	$stylesheet = $slug;
 	$theme      = wp_get_theme( $stylesheet );
 	if ( ! $theme->exists() ) {
 		return new WP_Error( 'irg_theme_missing', 'Theme installed but not found at expected slug.', [ 'status' => 500 ] );

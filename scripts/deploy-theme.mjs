@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Build and deploy The Bulletin Local theme to the WP server via REST.
+// Build and deploy a gaggle theme (the-bulletin-local or a "*-local" child) via REST.
 //
 // Prereqs:
 //   - `.env.local` has PUBLIC_WP_URL, WP_USERNAME, WP_APP_PASSWORD.
@@ -8,7 +8,7 @@
 //     need a manual upload via Network Admin → Themes → Add New.
 //
 // Usage:
-//   node scripts/deploy-theme.mjs
+//   node scripts/deploy-theme.mjs [theme-slug]   (default: the-bulletin-local)
 
 import { execSync } from "node:child_process";
 import { readFileSync, statSync } from "node:fs";
@@ -18,7 +18,12 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 const THEME_DIR = resolve(ROOT, "wp-theme");
-const ZIP_PATH = resolve(THEME_DIR, "the-bulletin-local.zip");
+const SLUG = process.argv[2] || "the-bulletin-local";
+if (!/^[a-z0-9-]+$/.test(SLUG)) {
+  console.error(`Bad theme slug: ${SLUG}`);
+  process.exit(1);
+}
+const ZIP_PATH = resolve(THEME_DIR, `${SLUG}.zip`);
 
 function loadEnv() {
   const env = {};
@@ -41,9 +46,9 @@ if (!BASE || !USER || !PASS) {
 
 const AUTH = "Basic " + Buffer.from(`${USER}:${PASS}`).toString("base64");
 
-console.log("Building the-bulletin-local.zip…");
+console.log(`Building ${SLUG}.zip…`);
 execSync(
-  `rm -f ${JSON.stringify(ZIP_PATH)} && cd ${JSON.stringify(THEME_DIR)} && zip -r the-bulletin-local.zip the-bulletin-local -x "*.DS_Store" "*/.*" "*:Zone.Identifier"`,
+  `rm -f ${JSON.stringify(ZIP_PATH)} && cd ${JSON.stringify(THEME_DIR)} && zip -r ${SLUG}.zip ${SLUG} -x "*.DS_Store" "*/.*" "*:Zone.Identifier"`,
   { stdio: "inherit", shell: "/bin/bash" },
 );
 
@@ -54,7 +59,7 @@ console.log(`Uploading to ${BASE}/wp-json/irg/v1/theme-upload…`);
 
 const zipBuffer = readFileSync(ZIP_PATH);
 const form = new FormData();
-form.append("theme", new Blob([zipBuffer], { type: "application/zip" }), "the-bulletin-local.zip");
+form.append("theme", new Blob([zipBuffer], { type: "application/zip" }), `${SLUG}.zip`);
 
 const res = await fetch(`${BASE}/wp-json/irg/v1/theme-upload`, {
   method: "POST",

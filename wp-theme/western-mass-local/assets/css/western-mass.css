@@ -1,0 +1,45 @@
+/*
+ * Western Mass Local — visual overrides on top of bulletin-local.css.
+ * Palette and type lifted from the old GeneratePress site at
+ * westernmass.raginggrannies.org: white ground, near-black text
+ * (#313233), Arial/Helvetica everywhere, blue links (#397eba on white,
+ * #2e6595 for hovers/accents), pale-yellow highlight (#ffffcc).
+ */
+:root {
+	--color-paper:      #ffffff;
+	--color-paper-2:    #f4f4f4;
+	--color-card:       #ffffff;
+	--color-ink:        #313233;
+	--color-ink-soft:   #3f3f3f;
+	--color-ink-lilac:  #666666;
+	--color-red:        #2e6595;
+	--color-red-soft:   #7ea6c6;
+	--color-rose:       #e8eff5;
+	--color-mustard:    #ffffcc;
+	--color-rule:       #cccccc;
+	--color-muted:      #999999;
+	--color-text:       #313233;
+	--color-text-soft:  #555555;
+	--color-on-dark:    #ffffff;
+
+	--font-display: Arial, Helvetica, sans-serif;
+	--font-body:    Arial, Helvetica, sans-serif;
+
+	--shadow-card: 0 1px 2px rgba(0,0,0,.08);
+	--shadow-lift: 0 3px 12px rgba(0,0,0,.12);
+	--shadow-polaroid: 0 10px 28px rgba(0,0,0,.18), 0 3px 8px rgba(0,0,0,.08);
+}
+
+/* GeneratePress-flavoured headings: bold Arial, uppercase like the old
+   site's page titles, tighter than Rum Raisin's display sizing. */
+h1, h2, h3,
+.tbl-brand-network,
+.tbl-brand-locator {
+	font-weight: 700;
+	letter-spacing: 0;
+}
+h1, .entry-title { text-transform: uppercase; }
+
+/* Links: classic blue on white. */
+a { color: #397eba; }
+a:hover, a:focus { color: #2e6595; }

@@ -1,0 +1,33 @@
+/*
+ * Montreal Local — overrides on top of bulletin-local.css.
+ * From the old OceanWP/Elementor site at montreal.raginggrannies.org:
+ * Open Sans throughout, warm mustard (#f4be68) with plum/purple
+ * accents (#804872, #742894), dark grey text.
+ */
+:root {
+	--color-paper:      #fffdf7;
+	--color-paper-2:    #faeed3;
+	--color-card:       #ffffff;
+	--color-ink:        #663a5b;
+	--color-ink-soft:   #804872;
+	--color-ink-lilac:  #a8849d;
+	--color-red:        #742894;
+	--color-red-soft:   #b48cc7;
+	--color-rose:       #f3e6f0;
+	--color-mustard:    #f4be68;
+	--color-rule:       #d8c9a5;
+	--color-muted:      #9a8f77;
+	--color-text:       #333333;
+	--color-text-soft:  #4c4c4c;
+	--color-on-dark:    #fffdf7;
+
+	--font-display: "Open Sans", "Nunito Sans", sans-serif;
+	--font-body:    "Open Sans", "Nunito Sans", sans-serif;
+
+	--shadow-card: 0 1px 2px rgba(102,58,91,.10);
+	--shadow-lift: 0 3px 12px rgba(102,58,91,.14);
+}
+/* Open Sans as display face needs weight to carry headings. */
+h1, h2, h3, .tbl-brand-network, .tbl-brand-locator { font-weight: 800; }
+a { color: #804872; }
+a:hover, a:focus { color: #742894; }
