@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.20.1
+ * Version: 3.21.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -2064,6 +2064,24 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 				update_field( 'field_irg_source_notes', sanitize_text_field( $notes_set ), $post_id );
 			} else {
 				update_post_meta( $post_id, 'source_notes', sanitize_text_field( $notes_set ) );
+			}
+		}
+
+		// 3.21.0 (.net drift import): simple ACF field setters, overwrite
+		// when the caller supplies the key.
+		foreach ( [
+			'youtube_set'      => 'field_irg_youtube_link',
+			'youtube_2_set'    => 'field_irg_youtube_link_2',
+			'key_set'          => 'field_irg_key_or_starting_note',
+			'date_written_set' => 'field_irg_date_written_or_updated',
+		] as $param => $field ) {
+			if ( array_key_exists( $param, $change ) ) {
+				$val = sanitize_text_field( (string) $change[ $param ] );
+				if ( function_exists( 'update_field' ) ) {
+					update_field( $field, $val, $post_id );
+				} else {
+					update_post_meta( $post_id, str_replace( 'field_irg_', '', $field ), $val );
+				}
 			}
 		}
 
