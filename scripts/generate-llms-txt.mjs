@@ -19,6 +19,7 @@ const OUT_DIR = resolve(ROOT, "public");
 const SONGS_PATH = resolve(ROOT, "data/songs-consolidated.json");
 const GAGGLES_PATH = resolve(ROOT, "data/gaggle-locations.json");
 const CENTRAL_HIDDEN_PATH = resolve(ROOT, "data/central-hidden-gaggles.json");
+const CENTRAL_VISIBILITY_PATH = resolve(ROOT, "data/central-song-visibility.json");
 
 // Gaggles that opted out of the central archive (see src/lib/songs.ts). Their
 // songs are excluded from this external-crawler corpus too. Slugs, compared via
@@ -29,6 +30,16 @@ const CENTRAL_HIDDEN = (() => {
     return new Set((cfg.gaggles ?? []).map(slugifyFallback));
   } catch {
     return new Set();
+  }
+})();
+
+// D073: per-song visibility overrides (slug -> bool); true publishes a song
+// from a hidden gaggle.
+const SONG_VISIBILITY = (() => {
+  try {
+    return JSON.parse(readFileSync(CENTRAL_VISIBILITY_PATH, "utf8")).songs ?? {};
+  } catch {
+    return {};
   }
 })();
 
@@ -177,8 +188,11 @@ function loadSongs() {
         !s.duplicate_of &&
         s.title &&
         (s.slug || s.title) &&
-        // D069: homepage-flagged songs are public even from hidden gaggles.
-        (s.feature_on_homepage || !CENTRAL_HIDDEN.has(slugifyFallback(s.gaggle || ""))),
+        // D069/D073: homepage-flagged or librarian-listed songs are public
+        // even from hidden gaggles.
+        (s.feature_on_homepage ||
+          SONG_VISIBILITY[s.slug || slugifyFallback(s.title)] === true ||
+          !CENTRAL_HIDDEN.has(slugifyFallback(s.gaggle || ""))),
     )
     .map((s) => ({
       title: s.title,
