@@ -1,0 +1,65 @@
+/* Shared print-friendly style for the IRG How To documents.
+   Large type, high contrast, generous spacing. Prints cleanly to PDF. */
+:root {
+  --ink: #1c1a15; --soft: #4a463c; --red: #b71f2e; --paper: #ffffff;
+  --rule: #d8d2c4; --tint: #faf5e9;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0 auto; padding: 40px 32px; max-width: 760px;
+  font: 400 19px/1.65 Georgia, "Times New Roman", serif;
+  color: var(--ink); background: var(--paper);
+}
+h1 { font-size: 40px; line-height: 1.15; margin: 0 0 6px; color: var(--red); }
+.subtitle { font-size: 21px; color: var(--soft); margin: 0 0 30px; font-style: italic; }
+h2 {
+  font-size: 28px; margin: 44px 0 6px; padding-top: 18px;
+  border-top: 3px solid var(--red); page-break-after: avoid;
+}
+.you-need {
+  background: var(--tint); border: 1px solid var(--rule); border-radius: 8px;
+  padding: 14px 20px; margin: 14px 0 20px; font-size: 18px;
+}
+.you-need strong { color: var(--red); }
+ol.steps { padding-left: 0; counter-reset: step; list-style: none; margin: 18px 0; }
+ol.steps > li {
+  counter-increment: step; position: relative; padding: 0 0 18px 58px;
+  page-break-inside: avoid; min-height: 44px;
+}
+ol.steps > li::before {
+  content: counter(step); position: absolute; left: 0; top: 0;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--red); color: #fff; font: 700 22px/40px Georgia, serif;
+  text-align: center;
+}
+.then { display: block; color: var(--soft); font-size: 17px; margin-top: 4px; }
+.btn-name { font-weight: 700; white-space: nowrap; }
+.type-this {
+  font: 600 18px/1.4 "Courier New", monospace; background: var(--tint);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 2px 8px;
+}
+.shot { margin: 10px 0 6px; page-break-inside: avoid; }
+.shot img { width: 100%; border: 1px solid var(--rule); border-radius: 6px; }
+.shot figcaption { font-size: 15px; color: var(--soft); margin-top: 4px; }
+.placeholder {
+  border: 2px dashed var(--rule); border-radius: 6px; padding: 26px 20px;
+  text-align: center; color: var(--soft); font-size: 16px; background: var(--tint);
+}
+.ifthen {
+  border-left: 5px solid var(--rule); padding: 4px 0 4px 18px; margin: 20px 0;
+  font-size: 18px;
+}
+.ifthen strong { color: var(--red); }
+.fill-in {
+  display: inline-block; min-width: 220px; border-bottom: 2px solid var(--ink);
+  vertical-align: bottom;
+}
+.footer-help {
+  margin-top: 50px; padding: 18px 22px; background: var(--tint);
+  border-radius: 8px; font-size: 18px; border: 1px solid var(--rule);
+}
+@media print {
+  body { padding: 0; font-size: 15px; }
+  h1 { font-size: 30px; } h2 { font-size: 22px; }
+  a { color: inherit; text-decoration: none; }
+}
