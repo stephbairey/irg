@@ -31,7 +31,7 @@ get_header();
 			<ul class="tbl-action-list">
 				<?php while ( have_posts() ) : the_post(); ?>
 					<li class="tbl-action-row">
-						<?php if ( has_post_thumbnail() ) : ?>
+						<?php if ( tbl_show_action_images() && has_post_thumbnail() ) : ?>
 							<a href="<?php the_permalink(); ?>" class="tbl-action-thumb" tabindex="-1" aria-hidden="true">
 								<?php the_post_thumbnail( 'medium', [ 'loading' => 'lazy', 'alt' => '' ] ); ?>
 							</a>

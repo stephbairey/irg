@@ -359,6 +359,15 @@ function tbl_get_gaggle_notes( int $limit = 6 ): WP_Query {
 }
 
 /**
+ * Whether Action lists (front page, blog, archives) show the featured-image /
+ * placeholder column. Gaggle Settings stores the inverted 'hide' flag so the
+ * default (option absent) keeps images on.
+ */
+function tbl_show_action_images(): bool {
+	return ! (bool) (int) tbl_get_option( 'hide_action_images' );
+}
+
+/**
  * Whether this gaggle has a published Photos page. Gates the Photos links
  * in the nav, footer, and 404 page so gaggles without a gallery don't
  * advertise one (same pattern as tbl_has_member_map_page).

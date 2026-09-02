@@ -57,6 +57,7 @@ function tbl_register_options(): void {
 	add_settings_field( 'youtube_channel_url', 'YouTube Channel URL',          'tbl_field_youtube_url',       TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'tagline',             'Tagline',                      'tbl_field_tagline',           TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'show_local_songs',    'Display songs on this subsite','tbl_field_show_local_songs',  TBL_OPTIONS_PAGE, 'tbl_options_main' );
+	add_settings_field( 'hide_action_images',  'Photos on Action lists',      'tbl_field_hide_action_images',TBL_OPTIONS_PAGE, 'tbl_options_main' );
 }
 add_action( 'admin_init', 'tbl_register_options' );
 
@@ -69,6 +70,7 @@ function tbl_sanitize_options( $input ): array {
 		'youtube_channel_url' => '',
 		'tagline'             => '',
 		'show_local_songs'    => 0,
+		'hide_action_images'  => 0,
 	];
 	if ( ! is_array( $input ) ) {
 		return $out;
@@ -94,6 +96,7 @@ function tbl_sanitize_options( $input ): array {
 		$out['tagline'] = sanitize_text_field( (string) $input['tagline'] );
 	}
 	$out['show_local_songs'] = ! empty( $input['show_local_songs'] ) ? 1 : 0;
+	$out['hide_action_images'] = empty( $input['hide_action_images'] ) ? 0 : 1;
 	return $out;
 }
 
@@ -217,5 +220,27 @@ function tbl_render_options_page(): void {
 			?>
 		</form>
 	</div>
+	<?php
+}
+
+/**
+ * Checkbox: hide featured images / placeholder art on Action lists.
+ * Stored inverted (hide, default 0) so gaggles that saved settings before
+ * this option existed keep showing images.
+ */
+function tbl_field_hide_action_images(): void {
+	$opts    = get_option( TBL_OPTIONS_KEY, [] );
+	$checked = ! empty( $opts['hide_action_images'] );
+	?>
+	<label>
+		<input type="checkbox" name="<?php echo esc_attr( TBL_OPTIONS_KEY ); ?>[hide_action_images]" value="1" <?php checked( $checked ); ?> />
+		Hide photos on Action lists
+	</label>
+	<p class="description">
+		By default, each Action shows its photo on the front page and the Actions
+		list, with placeholder art when a post has no photo. If most of your
+		Actions have no photos, tick this to hide the image column entirely for a
+		cleaner, text-first look. Individual Action pages are unaffected.
+	</p>
 	<?php
 }

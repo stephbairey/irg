@@ -21,6 +21,7 @@ get_header();
 		<ul class="tbl-action-list">
 			<?php $idx = 0; while ( have_posts() ) : the_post(); ?>
 				<li class="tbl-action-row">
+					<?php if ( tbl_show_action_images() ) : ?>
 					<?php if ( has_post_thumbnail() ) : ?>
 						<a href="<?php the_permalink(); ?>" class="tbl-action-thumb" tabindex="-1" aria-hidden="true">
 							<?php the_post_thumbnail( 'medium', [ 'loading' => 'lazy', 'alt' => '' ] ); ?>
@@ -29,6 +30,7 @@ get_header();
 						<a href="<?php the_permalink(); ?>" class="tbl-action-thumb tbl-action-thumb--placeholder" tabindex="-1" aria-hidden="true">
 							<?php echo tbl_placeholder_icon( $idx ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — static SVG markup. ?>
 						</a>
+					<?php endif; ?>
 					<?php endif; ?>
 					<div class="tbl-action-body">
 						<time class="tbl-action-date" datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>

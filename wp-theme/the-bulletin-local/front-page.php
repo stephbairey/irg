@@ -92,6 +92,7 @@ $latest = new WP_Query( $latest_args );
 				$latest->the_post();
 				?>
 				<a class="tbl-action-card" href="<?php the_permalink(); ?>">
+					<?php if ( tbl_show_action_images() ) : ?>
 					<?php if ( has_post_thumbnail() ) : ?>
 						<div class="tbl-action-img">
 							<?php the_post_thumbnail( 'medium_large', [ 'loading' => 'lazy', 'alt' => '' ] ); ?>
@@ -100,6 +101,7 @@ $latest = new WP_Query( $latest_args );
 						<div class="tbl-action-img tbl-action-img--placeholder" aria-hidden="true">
 							<?php echo tbl_placeholder_icon( $idx ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — static SVG markup. ?>
 						</div>
+					<?php endif; ?>
 					<?php endif; ?>
 					<time class="tbl-action-date" datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'F j, Y' ) ); ?></time>
 					<h3 class="tbl-action-title"><?php the_title(); ?></h3>
