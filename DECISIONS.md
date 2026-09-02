@@ -939,3 +939,12 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: `data/central-song-visibility.json` — slug → bool, generated from the librarian's list, consumed by `src/lib/songs.ts` and `scripts/generate-llms-txt.mjs` as a second consent path alongside `feature_on_homepage`. Mirrors the `central-hidden-gaggles.json` pattern; no plugin or WP churn. All 208 titles matched snapshot slugs 1:1. The librarian's workflow is xlsx → Web Granny → repo either way until workstream C exists.
 - **Trade-off**: visibility state lives in the repo, not with the content in WP; a WP-side edit can't change it. Acceptable while builds run from committed snapshots.
 - **Revisit if**: gaggles want self-serve control from WP admin (then promote to a `display_centrally` ACF field and migrate this file into it), or a second gaggle needs per-song lists at a scale where xlsx round-trips hurt.
+
+## D074 — Per-song central visibility moves into WP as `display_centrally` (plugin 3.22.0)
+
+- **Status**: Decided
+- **Date**: 2026-09-02
+- **Context**: The Seattle song librarian wants ongoing, self-serve control over which Seattle songs appear on raginggrannies.org. D073's committed JSON file required an xlsx round-trip through the Web Granny for every change — exactly D073's stated revisit condition.
+- **Choice**: new ACF true_false `display_centrally` ("Show on international site") on the Songs CPT, exposed in GraphQL, settable via the bulk-edit endpoint. The 449 values from `central-song-visibility.json` were migrated into postmeta and the file deleted; `songs.ts` and `generate-llms-txt.mjs` now read the field from the snapshot. The librarian ticks the box on any song's edit screen.
+- **Trade-off**: her changes reach the live site only when the songs snapshot is regenerated and deployed (manual until workstream C lands). Documented in the field's own instructions.
+- **Revisit if**: workstream C lands (then toggling publishes automatically), or other gaggles adopt hidden-gaggle-with-exceptions at scale.

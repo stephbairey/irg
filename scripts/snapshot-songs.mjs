@@ -50,6 +50,7 @@ const SONG_FIELDS = `
     dateWrittenOrUpdated
     sourceNotes
     featureOnHomepage
+    displayCentrally
   }
   issues { nodes { name } }
   songwriters { nodes { name } }
@@ -126,6 +127,7 @@ function toRecord(node) {
     date_published: (node.date ?? "").slice(0, 10),
     source_notes: sd.sourceNotes ?? "",
     feature_on_homepage: sd.featureOnHomepage ?? false,
+    display_centrally: sd.displayCentrally ?? false,
     duplicate_of: null,
     needs_review: false,
     review_notes: "",

@@ -49,6 +49,7 @@ interface ConsolidatedRecord {
   date_published: string;
   source_notes: string;
   feature_on_homepage?: boolean;
+  display_centrally?: boolean;
   duplicate_of: string | null;
 }
 
@@ -73,7 +74,6 @@ const SONG_FIELDS = `
 
 const CONSOLIDATED_PATH = resolve(process.cwd(), "data/songs-consolidated.json");
 const CENTRAL_HIDDEN_PATH = resolve(process.cwd(), "data/central-hidden-gaggles.json");
-const CENTRAL_VISIBILITY_PATH = resolve(process.cwd(), "data/central-song-visibility.json");
 
 // Match WordPress sanitize_title() for the slug fields the live CPT exposes.
 // ASCII-fold via Unicode normalization, lowercase, collapse non-alphanumerics
@@ -97,22 +97,6 @@ function nullIfEmpty(s: string | null | undefined): string | null {
 // and from the llms.txt corpus. Config values are gaggle slugs, matching the
 // subsite path / ?gaggle= convention; we slugify both sides to compare. The
 // theme carries a mirrored list (tbl_hidden_from_central) for its own links.
-// Per-song overrides on the hidden-gaggle rule (D073): slug -> boolean.
-// true publishes a song centrally even when its gaggle is hidden (the
-// librarian's per-song consent list); anything else falls through to the
-// gaggle-level rule.
-let cachedVisibility: Record<string, boolean> | null = null;
-function centralSongVisibility(): Record<string, boolean> {
-  if (cachedVisibility) return cachedVisibility;
-  try {
-    const cfg = JSON.parse(readFileSync(CENTRAL_VISIBILITY_PATH, "utf8"));
-    cachedVisibility = cfg?.songs && typeof cfg.songs === "object" ? cfg.songs : {};
-  } catch {
-    cachedVisibility = {};
-  }
-  return cachedVisibility!;
-}
-
 let cachedHidden: Set<string> | null = null;
 function centralHiddenGaggles(): Set<string> {
   if (cachedHidden) return cachedHidden;
@@ -177,8 +161,10 @@ function loadFromJson(): Song[] | null {
           // per-song visibility list (central-song-visibility.json) as a
           // second consent path. Everything else from a hidden gaggle stays
           // hidden.
+          // D074: the per-song consent now lives on the song itself as the
+          // display_centrally field (librarian-editable in WP admin).
           (r.feature_on_homepage ||
-            centralSongVisibility()[r.slug] === true ||
+            r.display_centrally === true ||
             !isCentralHidden(r.gaggle)),
       )
       .map(consolidatedToSong);

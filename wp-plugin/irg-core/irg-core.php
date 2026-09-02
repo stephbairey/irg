@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.21.0
+ * Version: 3.22.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -296,6 +296,17 @@ function irg_register_acf_fields(): void {
 				'type'              => 'text',
 				'instructions'      => 'Provenance or attribution (e.g., "from the Victoria Grannies Songbook, 1993").',
 				'required'          => 0,
+				'show_in_graphql'   => 1,
+			],
+			[
+				'key'               => 'field_irg_display_centrally',
+				'label'             => 'Show on international site',
+				'name'              => 'display_centrally',
+				'type'              => 'true_false',
+				'instructions'      => 'For songs from a gaggle that hides its songs from the central archive (e.g. Seattle): tick to publish this one song on raginggrannies.org anyway. Has no effect for gaggles that are not hidden. Changes reach the live site at the next site refresh.',
+				'required'          => 0,
+				'ui'                => 1,
+				'default_value'     => 0,
 				'show_in_graphql'   => 1,
 			],
 			[
@@ -1913,6 +1924,8 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 		$lyrics_set   = isset( $change['lyrics_set'] ) ? (string) $change['lyrics_set'] : '';
 		$has_feature  = array_key_exists( 'feature_on_homepage', $change );
 		$feature_val  = ! empty( $change['feature_on_homepage'] );
+		$has_display  = array_key_exists( 'display_centrally', $change );
+		$display_val  = ! empty( $change['display_centrally'] );
 		// 3.19.0 (homepage refresh, D069): replace-style setters and create.
 		$has_tune     = array_key_exists( 'tune_set', $change );
 		$tune_set     = isset( $change['tune_set'] ) ? (string) $change['tune_set'] : '';
@@ -2082,6 +2095,15 @@ function irg_handle_admin_bulk_edit_songs( WP_REST_Request $req ) {
 				} else {
 					update_post_meta( $post_id, str_replace( 'field_irg_', '', $field ), $val );
 				}
+			}
+		}
+
+		// Central visibility flag (D074) — per-song consent for hidden gaggles.
+		if ( $has_display ) {
+			if ( function_exists( 'update_field' ) ) {
+				update_field( 'field_irg_display_centrally', $display_val ? 1 : 0, $post_id );
+			} else {
+				update_post_meta( $post_id, 'display_centrally', $display_val ? 1 : 0 );
 			}
 		}
 
