@@ -47,6 +47,15 @@ function tbl_gaggle_slug(): string {
 		return '';
 	}
 	$slug = trim( (string) $details->path, '/' );
+	if ( $slug === '' ) {
+		// Domain-mapped subsites have path "/". Fall back to the per-site
+		// irg_slug option (set at mapping time; keeps "western-mass" distinct
+		// from the "westernmass" host), then to the host's first label.
+		$slug = (string) get_option( 'irg_slug', '' );
+	}
+	if ( $slug === '' ) {
+		$slug = (string) strtok( (string) $details->domain, '.' );
+	}
 	return $slug;
 }
 

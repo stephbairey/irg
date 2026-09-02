@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBL_VERSION', '1.27.1' );
+define( 'TBL_VERSION', '1.27.2' );
 define( 'TBL_DIR', get_template_directory() );
 define( 'TBL_URI', get_template_directory_uri() );
 
