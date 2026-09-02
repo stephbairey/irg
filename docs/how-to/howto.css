@@ -38,7 +38,7 @@ ol.steps > li::before {
   font: 600 18px/1.4 "Courier New", monospace; background: var(--tint);
   border: 1px solid var(--rule); border-radius: 6px; padding: 2px 8px;
 }
-.shot { margin: 10px 0 6px; page-break-inside: avoid; }
+.shot { margin: 10px auto 6px; width: 75%; page-break-inside: avoid; }
 .shot img { width: 100%; border: 1px solid var(--rule); border-radius: 6px; }
 .shot figcaption { font-size: 15px; color: var(--soft); margin-top: 4px; }
 .placeholder {
