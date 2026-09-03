@@ -23,10 +23,15 @@ This document supersedes any earlier ad-hoc instructions. If a step here disagre
 If the subsite does not already exist, create it via WP-CLI on the server:
 
 ```bash
-php wp-cli.phar site create --slug=<slug> --title="<Gaggle Name> Raging Grannies" --email=<slug>@raginggrannies.org
+php wp-cli.phar site create --slug=<slug> --title="<Gaggle Name>" --email=<slug>@raginggrannies.org
 ```
 
 Replace `<slug>` and `<Gaggle Name>` (e.g. `montreal` and `Montreal`).
+
+> **Title is the locator ONLY** — "Calgary", not "Calgary Raging Grannies".
+> The Bulletin Local theme appends "Raging Grannies" everywhere it renders
+> the name, so a full-name title doubles the suffix (swept network-wide
+> 2026-09-02).
 
 If the subsite was already created via the network admin UI, **skip this step**. Maya created Montreal that way — it works the same as far as Steps 2-3 are concerned.
 

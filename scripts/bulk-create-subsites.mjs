@@ -115,7 +115,8 @@ function loadGaggles() {
     )
     .map((g) => ({
       slug: g.slug,
-      name: `${g.name} Raging Grannies`,
+      // Locator only — the-bulletin-local appends "Raging Grannies" itself.
+      name: g.name,
       email: `${g.slug}@raginggrannies.org`,
       tz: tzlookup(g.lat, g.lng),
     }));
