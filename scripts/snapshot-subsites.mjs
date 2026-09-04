@@ -62,7 +62,11 @@ async function fetchSubsites() {
       id: Number(s.id),
       slug: String(s.slug),
       name: String(s.name || s.slug),
-      url: String(s.url || `${WP_URL}/${s.slug}`).replace(/\/$/, ""),
+      // Unmapped subsites report http:// (their WP siteurl scheme); the
+      // origin serves https everywhere, so normalize.
+      url: String(s.url || `${WP_URL}/${s.slug}`)
+        .replace(/\/$/, "")
+        .replace(/^http:\/\//, "https://"),
     }));
 }
 
@@ -118,14 +122,35 @@ async function fetchActionsForSubsite(site) {
   console.log(`[snapshot] received ${subsites.length} subsites`);
 
   const allActions = [];
+  const failed = [];
   for (const site of subsites) {
-    try {
-      const posts = await fetchActionsForSubsite(site);
-      console.log(`  ${site.slug.padEnd(20)} ${posts.length} posts`);
-      allActions.push(...posts);
-    } catch (err) {
-      console.warn(`  ${site.slug.padEnd(20)} FAILED: ${err.message}`);
+    let posts = null;
+    let lastErr = null;
+    // One retry after a short pause: a single flaky connection shouldn't
+    // cost a subsite its place in the feed.
+    for (let attempt = 1; attempt <= 2 && posts === null; attempt++) {
+      try {
+        posts = await fetchActionsForSubsite(site);
+      } catch (err) {
+        lastErr = err;
+        if (attempt === 1) await new Promise((r) => setTimeout(r, 1500));
+      }
     }
+    if (posts === null) {
+      console.warn(`  ${site.slug.padEnd(20)} FAILED: ${lastErr?.message}`);
+      failed.push(site.slug);
+      continue;
+    }
+    console.log(`  ${site.slug.padEnd(20)} ${posts.length} posts`);
+    allActions.push(...posts);
+  }
+
+  // Never write a partial feed. A gutted actions.json committed by the
+  // scheduled refresh would silently empty the hub's Recent Actions, so
+  // fail loudly instead and leave the previous snapshot in place.
+  if (failed.length > 0) {
+    console.error(`[snapshot] ${failed.length} subsite(s) failed: ${failed.join(", ")} — not writing snapshots`);
+    process.exit(1);
   }
 
   allActions.sort((a, b) => (b.date || "").localeCompare(a.date || ""));

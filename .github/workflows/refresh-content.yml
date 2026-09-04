@@ -63,6 +63,18 @@ jobs:
           # Route the hostname at the tunnel so TLS SNI/cert stay valid.
           echo "127.0.0.1 cms.raginggrannies.international" | sudo tee -a /etc/hosts
 
+      - name: Route mapped gaggle domains through the tunnel
+        # Gaggle subsites on their own domains (portland.raginggrannies.org
+        # etc.) live on the same server, and Apache picks the vhost by SNI,
+        # so one tunnel serves them all. Ask WP which hostnames exist so a
+        # newly mapped gaggle is covered without editing this file.
+        run: |
+          hosts=$(curl -sf https://cms.raginggrannies.international/wp-json/irg/v1/subsites \
+            | node -e 'let b="";process.stdin.on("data",d=>b+=d).on("end",()=>{const h=new Set(JSON.parse(b).map(s=>new URL(s.url).hostname));console.log([...h].join("\n"))})')
+          for h in $hosts; do
+            grep -q " $h\$" /etc/hosts || echo "127.0.0.1 $h" | sudo tee -a /etc/hosts
+          done
+
       - name: Regenerate snapshots
         env:
           PUBLIC_WP_URL: "https://cms.raginggrannies.international"
