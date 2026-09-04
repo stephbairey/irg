@@ -1,0 +1,86 @@
+name: Refresh content snapshots
+
+# Every 12 hours: regenerate the songs / subsites / press-photos snapshots
+# from WPGraphQL and commit any changes. The push triggers Cloudflare Pages
+# to rebuild, which is how WP admin edits (song approvals, the librarian's
+# "Show on international site" checkbox, Gaggle Settings changes) reach the
+# live site without anyone touching a terminal. Lightweight stand-in for
+# workstream C's push-to-deploy.
+#
+# The WP origin (Imunify360) bot-blocks datacenter IPs, including GitHub
+# runners — but the Nixihost server's own outbound IP is trusted. So the
+# runner opens an SSH tunnel through the server and fetches GraphQL via
+# the tunnel. Secrets: IRG_SSH_KEY (private key), IRG_SSH_HOST, IRG_SSH_USER,
+# IRG_SSH_PORT. The tunnel binds LOCAL PORT 443 (not 8443): WP 302s to the
+# site root when the Host header carries a nonstandard port.
+#
+# Cadence note (Maya, 2026-09-02): 12h while launch interest is high;
+# relax to daily later by dropping one cron line.
+
+on:
+  schedule:
+    - cron: "41 5 * * *"   # ~10:41 PM Pacific
+    - cron: "41 17 * * *"  # ~10:41 AM Pacific
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-content
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Open SSH tunnel to WP origin
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.IRG_SSH_KEY }}" > ~/.ssh/irg_refresh
+          chmod 600 ~/.ssh/irg_refresh
+          ssh-keyscan -p "${{ secrets.IRG_SSH_PORT }}" -H "${{ secrets.IRG_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+          # Let the unprivileged runner user bind local :443.
+          sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
+          # Local :443 -> (server) -> cms:443. The server's outbound IP is
+          # not bot-blocked; the runner's would be.
+          ssh -i ~/.ssh/irg_refresh -o BatchMode=yes -f -N \
+            -p "${{ secrets.IRG_SSH_PORT }}" \
+            -L 443:cms.raginggrannies.international:443 \
+            "${{ secrets.IRG_SSH_USER }}@${{ secrets.IRG_SSH_HOST }}"
+          # Route the hostname at the tunnel so TLS SNI/cert stay valid.
+          echo "127.0.0.1 cms.raginggrannies.international" | sudo tee -a /etc/hosts
+
+      - name: Regenerate snapshots
+        env:
+          PUBLIC_WP_URL: "https://cms.raginggrannies.international"
+          PUBLIC_WP_GRAPHQL_ENDPOINT: "https://cms.raginggrannies.international/graphql"
+        run: |
+          node scripts/snapshot-songs.mjs
+          node scripts/snapshot-subsites.mjs
+          node scripts/snapshot-photos.mjs
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "irg-refresh-bot"
+          git config user.email "webgranny@raginggrannies.org"
+          git add data/songs-consolidated.json data/subsites.json data/actions.json data/press-photos.json
+          if git diff --cached --quiet; then
+            echo "No content changes; nothing to publish."
+          else
+            git commit -m "chore(content): scheduled snapshot refresh"
+            git pull --rebase
+            git push
+          fi
