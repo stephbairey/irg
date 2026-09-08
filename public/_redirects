@@ -2,3 +2,15 @@
 # own subdomain when domain mapping landed (2026-08-31). 301 old bookmarks.
 /seattle/* https://seattle.raginggrannies.org/:splat 301
 /seattle https://seattle.raginggrannies.org/ 301
+
+# raginggrannies.net song links posted to the E-Vine before the 2026-08-31
+# cutover. The .net redirect maps /<slug>/ to /songs/<slug>/, but four of the
+# late-August imports landed under title-derived slugs. Keep the old links alive.
+/songs/sos-save-our-species /songs/s-o-s-save-our-species/ 301
+/songs/sos-save-our-species/ /songs/s-o-s-save-our-species/ 301
+/songs/happy-birthday-now-resign /songs/oh-my-donalds-lost-his-mind/ 301
+/songs/happy-birthday-now-resign/ /songs/oh-my-donalds-lost-his-mind/ 301
+/songs/its-in-the-name /songs/wisers-name/ 301
+/songs/its-in-the-name/ /songs/wisers-name/ 301
+/songs/were-not-giving-up-2 /songs/were-not-giving-up-revised-with-2-added-verses/ 301
+/songs/were-not-giving-up-2/ /songs/were-not-giving-up-revised-with-2-added-verses/ 301
