@@ -13,6 +13,8 @@ interface Gaggle {
   lng: number;
   aka: string;   // display name, e.g. "Antigonish Raging Grannies"
   slug: string;  // subsite slug, e.g. "antigonish"
+  website?: string; // optional: gaggle runs its own site outside the multisite;
+                    // overrides the subsite link (e.g. Rochester)
 }
 
 const DATA = resolve(process.cwd(), "data/gaggle-locations.json");
@@ -60,6 +62,14 @@ if (existsSync(SUBSITES_PATH)) {
     }
   } catch (err) {
     console.warn(`[find-a-gaggle] could not parse ${SUBSITES_PATH}: ${(err as Error).message}`);
+  }
+}
+
+// A gaggle that keeps its own site outside the multisite links there instead
+// of to its (unused) subsite.
+for (const g of gaggles) {
+  if (typeof g.website === "string" && /^https:\/\//.test(g.website)) {
+    subsiteUrls.set(g.slug, g.website);
   }
 }
 

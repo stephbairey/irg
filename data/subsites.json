@@ -1,27 +1,99 @@
 [
   {
-    "id": 2,
-    "slug": "portland",
-    "name": "Portland",
-    "url": "https://portland.raginggrannies.org"
+    "id": 62,
+    "slug": "israel",
+    "name": "Israel",
+    "url": "https://israel.raginggrannies.org"
   },
   {
-    "id": 3,
-    "slug": "seattle",
-    "name": "Seattle",
-    "url": "https://seattle.raginggrannies.org"
+    "id": 45,
+    "slug": "port-townsend",
+    "name": "Port Townsend",
+    "url": "https://port-townsend.raginggrannies.org"
   },
   {
-    "id": 4,
-    "slug": "montreal",
-    "name": "Montreal",
-    "url": "https://montreal.raginggrannies.org"
+    "id": 44,
+    "slug": "piedmont",
+    "name": "Piedmont",
+    "url": "https://piedmont.raginggrannies.org"
   },
   {
-    "id": 7,
-    "slug": "calgary",
-    "name": "Calgary",
-    "url": "https://calgary.raginggrannies.org"
+    "id": 43,
+    "slug": "olympia",
+    "name": "Olympia",
+    "url": "https://olympia.raginggrannies.org"
+  },
+  {
+    "id": 42,
+    "slug": "new-mexico",
+    "name": "New Mexico",
+    "url": "https://new-mexico.raginggrannies.org"
+  },
+  {
+    "id": 41,
+    "slug": "new-haven",
+    "name": "New Haven",
+    "url": "https://new-haven.raginggrannies.org"
+  },
+  {
+    "id": 40,
+    "slug": "nyc-metro",
+    "name": "NYC Metro",
+    "url": "https://nyc-metro.raginggrannies.org"
+  },
+  {
+    "id": 39,
+    "slug": "milwaukee",
+    "name": "Milwaukee",
+    "url": "https://milwaukee.raginggrannies.org"
+  },
+  {
+    "id": 38,
+    "slug": "metro-detroit",
+    "name": "Metro Detroit",
+    "url": "https://metro-detroit.raginggrannies.org"
+  },
+  {
+    "id": 37,
+    "slug": "mendocino",
+    "name": "Mendocino",
+    "url": "https://mendocino.raginggrannies.org"
+  },
+  {
+    "id": 36,
+    "slug": "manitowoc",
+    "name": "Manitowoc County",
+    "url": "https://manitowoc.raginggrannies.org"
+  },
+  {
+    "id": 35,
+    "slug": "madison",
+    "name": "Madison",
+    "url": "https://madison.raginggrannies.org"
+  },
+  {
+    "id": 34,
+    "slug": "humboldt",
+    "name": "Humboldt County",
+    "url": "https://humboldt.raginggrannies.org"
+  },
+  {
+    "id": 33,
+    "slug": "grays-harbor",
+    "name": "Gray's Harbor",
+    "url": "https://grays-harbor.raginggrannies.org"
+  },
+  {
+    "id": 46,
+    "slug": "redding",
+    "name": "Redding",
+    "url": "https://redding.raginggrannies.org"
+  },
+  {
+    "id": 48,
+    "slug": "sacramento",
+    "name": "Sacramento",
+    "url": "https://sacramento.raginggrannies.org"
   },
   {
     "id": 61,
@@ -30,339 +102,267 @@
     "url": "https://westernmass.raginggrannies.org"
   },
   {
-    "id": 5,
-    "slug": "antigonish",
-    "name": "Antigonish",
-    "url": "https://cms.raginggrannies.international/antigonish"
+    "id": 60,
+    "slug": "walnut-creek",
+    "name": "Walnut Creek",
+    "url": "https://walnut-creek.raginggrannies.org"
   },
   {
-    "id": 22,
-    "slug": "austin",
-    "name": "Austin",
-    "url": "https://cms.raginggrannies.international/austin"
+    "id": 59,
+    "slug": "tuolumne-calaveras",
+    "name": "Tuolumne & Calaveras Counties",
+    "url": "https://tuolumne-calaveras.raginggrannies.org"
   },
   {
-    "id": 6,
-    "slug": "barrie",
-    "name": "Barrie",
-    "url": "https://cms.raginggrannies.international/barrie"
+    "id": 58,
+    "slug": "tucson",
+    "name": "Tucson",
+    "url": "https://tucson.raginggrannies.org"
   },
   {
-    "id": 23,
-    "slug": "bellingham",
-    "name": "Bellingham",
-    "url": "https://cms.raginggrannies.international/bellingham"
+    "id": 57,
+    "slug": "triangle",
+    "name": "Triangle",
+    "url": "https://triangle.raginggrannies.org"
   },
   {
-    "id": 24,
-    "slug": "bowling-green",
-    "name": "Bowling Green",
-    "url": "https://cms.raginggrannies.international/bowling-green"
+    "id": 56,
+    "slug": "tompkins-county",
+    "name": "Tompkins County",
+    "url": "https://tompkins-county.raginggrannies.org"
   },
   {
-    "id": 25,
-    "slug": "central-florida",
-    "name": "Central Florida",
-    "url": "https://cms.raginggrannies.international/central-florida"
-  },
-  {
-    "id": 26,
-    "slug": "charlotte",
-    "name": "Charlotte",
-    "url": "https://cms.raginggrannies.international/charlotte"
-  },
-  {
-    "id": 8,
-    "slug": "chatham-kent",
-    "name": "Chatham-Kent",
-    "url": "https://cms.raginggrannies.international/chatham-kent"
-  },
-  {
-    "id": 27,
-    "slug": "davis",
-    "name": "Davis",
-    "url": "https://cms.raginggrannies.international/davis"
-  },
-  {
-    "id": 28,
-    "slug": "eau-claire",
-    "name": "Eau Claire",
-    "url": "https://cms.raginggrannies.international/eau-claire"
-  },
-  {
-    "id": 9,
-    "slug": "edmonton",
-    "name": "Edmonton",
-    "url": "https://cms.raginggrannies.international/edmonton"
-  },
-  {
-    "id": 29,
-    "slug": "el-dorado-county",
-    "name": "El Dorado County",
-    "url": "https://cms.raginggrannies.international/el-dorado-county"
-  },
-  {
-    "id": 30,
-    "slug": "eugene",
-    "name": "Eugene",
-    "url": "https://cms.raginggrannies.international/eugene"
-  },
-  {
-    "id": 31,
-    "slug": "fresno",
-    "name": "Fresno",
-    "url": "https://cms.raginggrannies.international/fresno"
-  },
-  {
-    "id": 10,
-    "slug": "fundy-bay",
-    "name": "Fundy Bay",
-    "url": "https://cms.raginggrannies.international/fundy-bay"
-  },
-  {
-    "id": 11,
-    "slug": "gabriola-island",
-    "name": "Gabriola Island",
-    "url": "https://cms.raginggrannies.international/gabriola-island"
-  },
-  {
-    "id": 32,
-    "slug": "grant-county",
-    "name": "Grant County",
-    "url": "https://cms.raginggrannies.international/grant-county"
-  },
-  {
-    "id": 33,
-    "slug": "grays-harbor",
-    "name": "Gray's Harbor",
-    "url": "https://cms.raginggrannies.international/grays-harbor"
-  },
-  {
-    "id": 12,
-    "slug": "guelph",
-    "name": "Guelph",
-    "url": "https://cms.raginggrannies.international/guelph"
-  },
-  {
-    "id": 13,
-    "slug": "halifax",
-    "name": "Halifax",
-    "url": "https://cms.raginggrannies.international/halifax"
-  },
-  {
-    "id": 34,
-    "slug": "humboldt",
-    "name": "Humboldt County",
-    "url": "https://cms.raginggrannies.international/humboldt"
-  },
-  {
-    "id": 62,
-    "slug": "israel",
-    "name": "Israel",
-    "url": "https://cms.raginggrannies.international/israel"
-  },
-  {
-    "id": 14,
-    "slug": "kelowna",
-    "name": "Kelowna",
-    "url": "https://cms.raginggrannies.international/kelowna"
+    "id": 55,
+    "slug": "spokane",
+    "name": "Spokane",
+    "url": "https://spokane.raginggrannies.org"
   },
   {
     "id": 54,
     "slug": "kentuckiana",
     "name": "Southern Indiana and Louisville",
-    "url": "https://cms.raginggrannies.international/kentuckiana"
+    "url": "https://kentuckiana.raginggrannies.org"
+  },
+  {
+    "id": 53,
+    "slug": "south-florida",
+    "name": "South Florida",
+    "url": "https://south-florida.raginggrannies.org"
+  },
+  {
+    "id": 52,
+    "slug": "sonoma",
+    "name": "Sonoma County",
+    "url": "https://sonoma.raginggrannies.org"
+  },
+  {
+    "id": 51,
+    "slug": "santa-cruz",
+    "name": "Santa Cruz",
+    "url": "https://santa-cruz.raginggrannies.org"
+  },
+  {
+    "id": 50,
+    "slug": "san-jose-santa-clara",
+    "name": "San Jose & Santa Clara County",
+    "url": "https://san-jose-santa-clara.raginggrannies.org"
+  },
+  {
+    "id": 49,
+    "slug": "sf-bay-area",
+    "name": "San Francisco Bay Area",
+    "url": "https://sf-bay-area.raginggrannies.org"
+  },
+  {
+    "id": 32,
+    "slug": "grant-county",
+    "name": "Grant County",
+    "url": "https://grant-county.raginggrannies.org"
+  },
+  {
+    "id": 31,
+    "slug": "fresno",
+    "name": "Fresno",
+    "url": "https://fresno.raginggrannies.org"
   },
   {
     "id": 15,
     "slug": "kitchener-waterloo",
     "name": "Kitchener-Waterloo",
-    "url": "https://cms.raginggrannies.international/kitchener-waterloo"
+    "url": "https://kitchener-waterloo.raginggrannies.org"
+  },
+  {
+    "id": 14,
+    "slug": "kelowna",
+    "name": "Kelowna",
+    "url": "https://kelowna.raginggrannies.org"
+  },
+  {
+    "id": 13,
+    "slug": "halifax",
+    "name": "Halifax",
+    "url": "https://halifax.raginggrannies.org"
+  },
+  {
+    "id": 12,
+    "slug": "guelph",
+    "name": "Guelph",
+    "url": "https://guelph.raginggrannies.org"
+  },
+  {
+    "id": 11,
+    "slug": "gabriola-island",
+    "name": "Gabriola Island",
+    "url": "https://gabriola-island.raginggrannies.org"
+  },
+  {
+    "id": 10,
+    "slug": "fundy-bay",
+    "name": "Fundy Bay",
+    "url": "https://fundy-bay.raginggrannies.org"
+  },
+  {
+    "id": 9,
+    "slug": "edmonton",
+    "name": "Edmonton",
+    "url": "https://edmonton.raginggrannies.org"
+  },
+  {
+    "id": 8,
+    "slug": "chatham-kent",
+    "name": "Chatham-Kent",
+    "url": "https://chatham-kent.raginggrannies.org"
+  },
+  {
+    "id": 7,
+    "slug": "calgary",
+    "name": "Calgary",
+    "url": "https://calgary.raginggrannies.org"
+  },
+  {
+    "id": 6,
+    "slug": "barrie",
+    "name": "Barrie",
+    "url": "https://barrie.raginggrannies.org"
+  },
+  {
+    "id": 5,
+    "slug": "antigonish",
+    "name": "Antigonish",
+    "url": "https://antigonish.raginggrannies.org"
+  },
+  {
+    "id": 4,
+    "slug": "montreal",
+    "name": "Montreal",
+    "url": "https://montreal.raginggrannies.org"
+  },
+  {
+    "id": 3,
+    "slug": "seattle",
+    "name": "Seattle",
+    "url": "https://seattle.raginggrannies.org"
   },
   {
     "id": 16,
     "slug": "lethbridge",
     "name": "Lethbridge",
-    "url": "https://cms.raginggrannies.international/lethbridge"
+    "url": "https://lethbridge.raginggrannies.org"
   },
   {
-    "id": 35,
-    "slug": "madison",
-    "name": "Madison",
-    "url": "https://cms.raginggrannies.international/madison"
-  },
-  {
-    "id": 36,
-    "slug": "manitowoc",
-    "name": "Manitowoc County",
-    "url": "https://cms.raginggrannies.international/manitowoc"
+    "id": 2,
+    "slug": "portland",
+    "name": "Portland",
+    "url": "https://portland.raginggrannies.org"
   },
   {
     "id": 17,
     "slug": "maple-ridge",
     "name": "Maple Ridge",
-    "url": "https://cms.raginggrannies.international/maple-ridge"
+    "url": "https://maple-ridge.raginggrannies.org"
   },
   {
-    "id": 37,
-    "slug": "mendocino",
-    "name": "Mendocino",
-    "url": "https://cms.raginggrannies.international/mendocino"
+    "id": 30,
+    "slug": "eugene",
+    "name": "Eugene",
+    "url": "https://eugene.raginggrannies.org"
   },
   {
-    "id": 38,
-    "slug": "metro-detroit",
-    "name": "Metro Detroit",
-    "url": "https://cms.raginggrannies.international/metro-detroit"
+    "id": 29,
+    "slug": "el-dorado-county",
+    "name": "El Dorado County",
+    "url": "https://el-dorado-county.raginggrannies.org"
   },
   {
-    "id": 39,
-    "slug": "milwaukee",
-    "name": "Milwaukee",
-    "url": "https://cms.raginggrannies.international/milwaukee"
+    "id": 28,
+    "slug": "eau-claire",
+    "name": "Eau Claire",
+    "url": "https://eau-claire.raginggrannies.org"
   },
   {
-    "id": 41,
-    "slug": "new-haven",
-    "name": "New Haven",
-    "url": "https://cms.raginggrannies.international/new-haven"
+    "id": 27,
+    "slug": "davis",
+    "name": "Davis",
+    "url": "https://davis.raginggrannies.org"
   },
   {
-    "id": 42,
-    "slug": "new-mexico",
-    "name": "New Mexico",
-    "url": "https://cms.raginggrannies.international/new-mexico"
+    "id": 26,
+    "slug": "charlotte",
+    "name": "Charlotte",
+    "url": "https://charlotte.raginggrannies.org"
   },
   {
-    "id": 40,
-    "slug": "nyc-metro",
-    "name": "NYC Metro",
-    "url": "https://cms.raginggrannies.international/nyc-metro"
+    "id": 25,
+    "slug": "central-florida",
+    "name": "Central Florida",
+    "url": "https://central-florida.raginggrannies.org"
   },
   {
-    "id": 43,
-    "slug": "olympia",
-    "name": "Olympia",
-    "url": "https://cms.raginggrannies.international/olympia"
+    "id": 24,
+    "slug": "bowling-green",
+    "name": "Bowling Green",
+    "url": "https://bowling-green.raginggrannies.org"
   },
   {
-    "id": 44,
-    "slug": "piedmont",
-    "name": "Piedmont",
-    "url": "https://cms.raginggrannies.international/piedmont"
+    "id": 23,
+    "slug": "bellingham",
+    "name": "Bellingham",
+    "url": "https://bellingham.raginggrannies.org"
   },
   {
-    "id": 45,
-    "slug": "port-townsend",
-    "name": "Port Townsend",
-    "url": "https://cms.raginggrannies.international/port-townsend"
+    "id": 22,
+    "slug": "austin",
+    "name": "Austin",
+    "url": "https://austin.raginggrannies.org"
   },
   {
-    "id": 46,
-    "slug": "redding",
-    "name": "Redding",
-    "url": "https://cms.raginggrannies.international/redding"
+    "id": 21,
+    "slug": "wolfville",
+    "name": "Wolfville",
+    "url": "https://wolfville.raginggrannies.org"
+  },
+  {
+    "id": 20,
+    "slug": "winnipeg",
+    "name": "Winnipeg",
+    "url": "https://winnipeg.raginggrannies.org"
+  },
+  {
+    "id": 19,
+    "slug": "vancouver",
+    "name": "Vancouver",
+    "url": "https://vancouver.raginggrannies.org"
+  },
+  {
+    "id": 18,
+    "slug": "toronto",
+    "name": "Toronto",
+    "url": "https://toronto.raginggrannies.org"
   },
   {
     "id": 47,
     "slug": "rochester",
     "name": "Rochester",
     "url": "https://cms.raginggrannies.international/rochester"
-  },
-  {
-    "id": 48,
-    "slug": "sacramento",
-    "name": "Sacramento",
-    "url": "https://cms.raginggrannies.international/sacramento"
-  },
-  {
-    "id": 50,
-    "slug": "san-jose-santa-clara",
-    "name": "San Jose & Santa Clara County",
-    "url": "https://cms.raginggrannies.international/san-jose-santa-clara"
-  },
-  {
-    "id": 51,
-    "slug": "santa-cruz",
-    "name": "Santa Cruz",
-    "url": "https://cms.raginggrannies.international/santa-cruz"
-  },
-  {
-    "id": 49,
-    "slug": "sf-bay-area",
-    "name": "San Francisco Bay Area",
-    "url": "https://cms.raginggrannies.international/sf-bay-area"
-  },
-  {
-    "id": 52,
-    "slug": "sonoma",
-    "name": "Sonoma County",
-    "url": "https://cms.raginggrannies.international/sonoma"
-  },
-  {
-    "id": 53,
-    "slug": "south-florida",
-    "name": "South Florida",
-    "url": "https://cms.raginggrannies.international/south-florida"
-  },
-  {
-    "id": 55,
-    "slug": "spokane",
-    "name": "Spokane",
-    "url": "https://cms.raginggrannies.international/spokane"
-  },
-  {
-    "id": 56,
-    "slug": "tompkins-county",
-    "name": "Tompkins County",
-    "url": "https://cms.raginggrannies.international/tompkins-county"
-  },
-  {
-    "id": 18,
-    "slug": "toronto",
-    "name": "Toronto",
-    "url": "https://cms.raginggrannies.international/toronto"
-  },
-  {
-    "id": 57,
-    "slug": "triangle",
-    "name": "Triangle",
-    "url": "https://cms.raginggrannies.international/triangle"
-  },
-  {
-    "id": 58,
-    "slug": "tucson",
-    "name": "Tucson",
-    "url": "https://cms.raginggrannies.international/tucson"
-  },
-  {
-    "id": 59,
-    "slug": "tuolumne-calaveras",
-    "name": "Tuolumne & Calaveras Counties",
-    "url": "https://cms.raginggrannies.international/tuolumne-calaveras"
-  },
-  {
-    "id": 19,
-    "slug": "vancouver",
-    "name": "Vancouver",
-    "url": "https://cms.raginggrannies.international/vancouver"
-  },
-  {
-    "id": 60,
-    "slug": "walnut-creek",
-    "name": "Walnut Creek",
-    "url": "https://cms.raginggrannies.international/walnut-creek"
-  },
-  {
-    "id": 20,
-    "slug": "winnipeg",
-    "name": "Winnipeg",
-    "url": "https://cms.raginggrannies.international/winnipeg"
-  },
-  {
-    "id": 21,
-    "slug": "wolfville",
-    "name": "Wolfville",
-    "url": "https://cms.raginggrannies.international/wolfville"
   }
 ]
