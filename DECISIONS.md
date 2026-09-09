@@ -976,3 +976,12 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Trade-off**: publish-to-live is roughly 10 to 15 minutes, not seconds; a burst of edits keeps pushing the timer out. Both are the point: one workflow run per editing session, not one per keystroke. Subsite posts and Gaggle Settings changes are not triggers yet; those pages are served by WP directly, and only the hub aggregation lags.
 - **Revisit if**: grannies want subsite posts on the hub news feed faster than 12 hours (add the same hook on subsites), or GitHub Actions minutes become a cost (each run is about two minutes).
 
+## D078 — Song pages stack until 1024px, and lyrics HTML is balanced at source and at render
+
+- **Status**: Decided
+- **Date**: 2026-09-10
+- **Context**: Vicki Ryder reported (2026-09-05) lyrics "compressed into a very narrow column, one or two words per line," everything underlined, and the credit footer reading across columns. Reproduced on the built site: 121 songs (mostly the 2016-2018 Rochester and Tucson imports) had inline formatting tags with no closing tag, typically `<u>word<u>` to mark a stressed syllable. The browser closes the tag at the end of the lyrics card and re-opens it as a stray sibling, which takes the wide grid column and pushes the card into the 240px sidebar. E6's open question (should tablet stack?) was a symptom of this.
+- **Choice**: three layers. (1) Content: a one-time wp-cli pass balanced the tags in place (pairing rule for the even-count zero-close paste pattern, DOMDocument for the rest; originals backed up to `~/lyrics-backup-20260909-223748.json` on the host). (2) Render guard: `closeDanglingTags()` in `src/lib/songs.ts` appends missing closers so a future paste cannot escape the card. (3) Layout: the song page's two-column grids and the credit footer switch from `md:` (768px) to `lg:` (1024px), as promised to Vicki, so tablets read one column.
+- **Trade-off**: the render guard leaves formatting running to the end of the card rather than guessing where the writer meant to stop; that is visible but harmless, and the source fix is the real cure. Rochester and Tucson songs that used `<u>` for stress now show one underlined word instead of a wall of underline, which is what the writers meant.
+- **Revisit if**: the librarian wants a "check my markup" warning in `/edit-song/`, or a granny reports a song where the pairing rule guessed wrong (restore from the backup file).
+

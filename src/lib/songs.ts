@@ -87,6 +87,25 @@ function slugify(s: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+/**
+ * Close any inline formatting tag left open in lyrics HTML. Lyrics are
+ * rendered with set:html inside a grid cell; an unclosed <u> or <strong>
+ * makes the browser re-open the tag *after* the lyrics card as a stray
+ * sibling, which takes the wide grid column and squeezes the card into
+ * the sidebar (launch feedback, D078). The WP content was cleaned in
+ * bulk; this guard keeps a future paste from doing it again.
+ */
+const INLINE_TAGS = ["u", "strong", "em", "b", "i", "s", "span", "a"];
+export function closeDanglingTags(html: string): string {
+  let out = html;
+  for (const t of INLINE_TAGS) {
+    const opens = (out.match(new RegExp(`<${t}\\b[^>]*>`, "gi")) || []).length;
+    const closes = (out.match(new RegExp(`</${t}>`, "gi")) || []).length;
+    if (opens > closes) out += `</${t}>`.repeat(opens - closes);
+  }
+  return out;
+}
+
 function nullIfEmpty(s: string | null | undefined): string | null {
   return s ? s : null;
 }
@@ -125,7 +144,7 @@ function consolidatedToSong(r: ConsolidatedRecord): Song {
     slug: r.slug || slugify(r.title),
     date: r.date_published || r.date_written_or_updated || "",
     songDetails: {
-      lyrics: nullIfEmpty(r.lyrics),
+      lyrics: r.lyrics ? closeDanglingTags(r.lyrics) : null,
       keyOrStartingNote: nullIfEmpty(r.key_or_starting_note),
       youtubeLink: nullIfEmpty(r.youtube_link),
       youtubeLink2: nullIfEmpty(r.youtube_link_2),

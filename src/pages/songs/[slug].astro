@@ -98,8 +98,8 @@ if (youtubeEmbed) {
     </a>
 
     <!-- Header -->
-    <section class="pt-8 pb-10 md:pb-14 border-b border-rule">
-      <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-8 md:gap-14 items-start">
+    <section class="pt-8 pb-10 lg:pb-14 border-b border-rule">
+      <div class="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-8 lg:gap-14 items-start">
         <!-- Left: metadata -->
         <div class="min-w-0">
           {issues.length > 0 && (
@@ -218,11 +218,14 @@ if (youtubeEmbed) {
 
     <!-- Lyrics -->
     {lyrics && (
-      <section id="lyrics" class="py-12 md:py-[72px]">
-        <div class="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8 md:gap-12 items-start">
-          <!-- Legend sidebar — moves below the lyrics card on mobile so the
+      <section id="lyrics" class="py-12 lg:py-[72px]">
+        <div class="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-8 lg:gap-12 items-start">
+          <!-- Two columns only from lg (1024px). At md the lyrics card sat in
+             a ~430px column and the credit footer wrapped word by word
+             (launch feedback, D078). -->
+        <!-- Legend sidebar — moves below the lyrics card on mobile so the
                first thing readers see on the page is the song. -->
-          <div class="order-last md:order-first md:sticky md:top-[120px] text-sm text-text-soft">
+          <div class="order-last lg:order-first lg:sticky lg:top-[120px] text-sm text-text-soft">
             <div class="kicker text-ink mb-3">How to read the marks</div>
             <div class="flex gap-3.5 items-baseline py-2 border-b border-dotted border-rule">
               <strong class="text-ink text-[17px]">Bold word</strong>
@@ -254,7 +257,7 @@ if (youtubeEmbed) {
           </div>
 
           <!-- Lyrics card -->
-          <div class="lyrics-card min-w-0 bg-card border border-rule rounded-2xl p-6 md:p-[48px_56px_40px] relative order-first md:order-last" style="box-shadow:var(--shadow-card)">
+          <div class="lyrics-card min-w-0 bg-card border border-rule rounded-2xl p-6 lg:p-[48px_56px_40px] relative order-first lg:order-last" style="box-shadow:var(--shadow-card)">
             <!-- Top stripe -->
             <div class="absolute top-0 left-10 right-10 h-1 rounded-b-sm" style="background:repeating-linear-gradient(90deg,var(--color-red) 0 20px,var(--color-ink) 20px 40px,var(--color-mustard) 40px 60px)"></div>
 
@@ -270,7 +273,7 @@ if (youtubeEmbed) {
             <div class="font-display text-red text-[28px] mt-8" style="letter-spacing:12px">♦ ♦ ♦</div>
 
             <!-- Footer -->
-            <div class="mt-12 pt-6 border-t border-dashed border-rule grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 items-center">
+            <div class="mt-12 pt-6 border-t border-dashed border-rule grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 items-center">
               {songwriter && (
                 <div>
                   <div class="kicker mb-1">Written by</div>
