@@ -306,6 +306,26 @@ const songsJson = JSON.stringify(
       clearBtn.classList.toggle("hidden", !filters.q);
 
       syncDropdowns();
+      syncUrl();
+    }
+
+    // Mirror the current filters, sort, and page into the query string so a
+    // reader who opens a song and hits Back lands on the same list, and so
+    // the address bar is always a shareable link. replaceState, not
+    // pushState: Back should leave the library, not replay every filter click.
+    function syncUrl() {
+      const p = new URLSearchParams();
+      if (filters.q) p.set("q", filters.q);
+      for (const key of ["issue", "gaggle", "tune", "songwriter"]) {
+        if (filters[key]) p.set(key, filters[key]);
+      }
+      if (sort !== "random") p.set("sort", sort);
+      if (page > 1) p.set("page", String(page));
+      const qs = p.toString();
+      const url = window.location.pathname + (qs ? `?${qs}` : "") + window.location.hash;
+      if (url !== window.location.pathname + window.location.search + window.location.hash) {
+        history.replaceState(null, "", url);
+      }
     }
 
     function chipRm(type, val) {
@@ -395,7 +415,8 @@ const songsJson = JSON.stringify(
     });
 
     // Init from URL params (supports linking from /songs/by-issue/, /songs/by-tune/,
-    // and from gaggle subsites whose Songs pill passes ?gaggle=<slug>).
+    // from gaggle subsites whose Songs pill passes ?gaggle=<slug>, and from
+    // our own syncUrl() output when the reader comes Back from a song).
     // The lookup is case-insensitive against the actual term names so a
     // slug-form param like ?gaggle=portland resolves to the canonical
     // "Portland" — otherwise the strict equality filter returns 0 results.
@@ -425,6 +446,15 @@ const songsJson = JSON.stringify(
       searchInput.value = params.get("q");
       filters.q = searchInput.value;
     }
+    // ?sort= and ?page= are what syncUrl() writes; restoring them is what
+    // makes the browser Back button return to the same view.
+    const sortParam = params.get("sort");
+    if (sortParam && [...sortSelect.options].some((o) => o.value === sortParam)) {
+      sort = sortParam;
+      sortSelect.value = sortParam;
+    }
+    const pageParam = parseInt(params.get("page") || "", 10);
+    if (Number.isInteger(pageParam) && pageParam > 1) page = pageParam;
     render();
   </script>
 </BaseLayout>
