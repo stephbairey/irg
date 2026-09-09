@@ -56,14 +56,18 @@ const songsJson = JSON.stringify(
   <section class="sticky top-[73px] z-40 bg-paper border-b border-rule py-4 md:py-5">
     <div class="max-w-[1200px] mx-auto px-5 md:px-8">
       <div class="flex items-center gap-3.5 px-5 py-3.5 bg-card border-2 border-muted rounded-full" style="box-shadow:var(--shadow-card)">
-        <svg viewBox="0 0 24 24" class="w-[18px] h-[18px] text-ink flex-none" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
         <input
-          type="text"
+          type="search"
           id="lib-search"
+          enterkeyhint="search"
+          aria-label="Search the song library"
           placeholder="Search by title, tune, or a line in the lyrics..."
           class="flex-1 border-0 bg-transparent text-lg text-ink outline-none placeholder:text-muted"
         />
         <button id="lib-search-clear" class="hidden font-[800] text-red text-[13px] px-2.5 py-1 bg-transparent border-0 cursor-pointer">Clear</button>
+        <button id="lib-search-go" type="button" aria-label="Search" title="Search" class="flex-none inline-flex items-center justify-center w-10 h-10 -mr-2 rounded-full bg-red text-white border-0 cursor-pointer hover:bg-ink-soft transition-colors">
+          <svg viewBox="0 0 24 24" class="w-[20px] h-[20px]" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+        </button>
       </div>
       <!-- Active filters + result count -->
       <div id="lib-activebar" class="flex justify-between items-center mt-4 gap-4 flex-wrap">
@@ -320,6 +324,27 @@ const songsJson = JSON.stringify(
       }, 200);
     });
 
+    // The magnifying-glass button (and Enter) apply the search at once.
+    // Typing already filters live; the button exists because readers look
+    // for one, and the sticky bar lists filters below the fold on phones.
+    const goBtn = $("#lib-search-go");
+    function applySearchNow() {
+      clearTimeout(debounceTimer);
+      filters.q = searchInput.value;
+      page = 1;
+      render();
+    }
+    goBtn.addEventListener("click", () => {
+      applySearchNow();
+      searchInput.focus();
+    });
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        applySearchNow();
+      }
+    });
+
     clearBtn.addEventListener("click", () => {
       searchInput.value = "";
       filters.q = "";
@@ -394,6 +419,11 @@ const songsJson = JSON.stringify(
     if (params.get("songwriter")) {
       const songwriterNames = [...new Set(ALL.flatMap((s) => s.w))];
       filters.songwriter = canonicalize(songwriterNames, params.get("songwriter"));
+    }
+    // ?q= pre-fills the search box (gaggle subsite song pages hand off here).
+    if (params.get("q")) {
+      searchInput.value = params.get("q");
+      filters.q = searchInput.value;
     }
     render();
   </script>

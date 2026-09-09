@@ -1226,6 +1226,32 @@ img.polaroid {
    ========================================================================== */
 .tbl-songs-intro { margin-bottom: 32px; }
 
+/* Search box above the list: one row, input plus a magnifying-glass button */
+.tbl-songs-search { margin: 0 0 28px; }
+.tbl-songs-search-row {
+	display: flex;
+	align-items: stretch;
+	gap: 10px;
+}
+.tbl-songs-search-row input[type="search"] { flex: 1 1 auto; min-width: 0; }
+.tbl-songs-search-btn {
+	flex: 0 0 auto;
+	margin-top: 0;
+	padding: 0 18px;
+}
+.tbl-songs-search-status {
+	font-family: var(--font-body);
+	font-size: 15px;
+	color: var(--color-text-soft);
+	margin: 10px 0 0;
+}
+.tbl-songs-search-status a {
+	color: var(--color-red);
+	font-weight: 700;
+	text-decoration: none;
+}
+.tbl-songs-search-status a:hover { text-decoration: underline; }
+
 .tbl-songs-cta {
 	font-family: var(--font-body);
 	font-style: italic;

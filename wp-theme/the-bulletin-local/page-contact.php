@@ -67,6 +67,9 @@ $turnstile_key    = function_exists( 'irg_turnstile_sitekey' ) ? irg_turnstile_s
 
 	<p class="tbl-contact-direct">
 		Or write directly to <a href="mailto:<?php echo esc_attr( $gaggle_email ); ?>" class="tbl-inline-link"><?php echo esc_html( $gaggle_email ); ?></a>.
+		<?php if ( tbl_get_option( 'facebook_url' ) ) : ?>
+			You'll also find us <a href="<?php echo esc_url( tbl_get_option( 'facebook_url' ) ); ?>" class="tbl-inline-link" rel="noopener" target="_blank">on Facebook</a>.
+		<?php endif; ?>
 	</p>
 </article>
 

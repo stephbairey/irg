@@ -40,6 +40,7 @@ function tbl_register_options(): void {
 			'default'           => [
 				'hero_image_id'       => 0,
 				'youtube_channel_url' => '',
+				'facebook_url'        => '',
 				'tagline'             => '',
 				'show_local_songs'    => 0,
 			],
@@ -55,6 +56,7 @@ function tbl_register_options(): void {
 
 	add_settings_field( 'hero_image_id',       'Hero Image',                   'tbl_field_hero_image',        TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'youtube_channel_url', 'YouTube Channel URL',          'tbl_field_youtube_url',       TBL_OPTIONS_PAGE, 'tbl_options_main' );
+	add_settings_field( 'facebook_url',        'Facebook Page URL',            'tbl_field_facebook_url',      TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'tagline',             'Tagline',                      'tbl_field_tagline',           TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'show_local_songs',    'Display songs on this subsite','tbl_field_show_local_songs',  TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'hide_action_images',  'Photos on Action lists',      'tbl_field_hide_action_images',TBL_OPTIONS_PAGE, 'tbl_options_main' );
@@ -68,6 +70,7 @@ function tbl_sanitize_options( $input ): array {
 	$out = [
 		'hero_image_id'       => 0,
 		'youtube_channel_url' => '',
+		'facebook_url'        => '',
 		'tagline'             => '',
 		'show_local_songs'    => 0,
 		'hide_action_images'  => 0,
@@ -88,6 +91,20 @@ function tbl_sanitize_options( $input ): array {
 				TBL_OPTIONS_KEY,
 				'tbl_youtube_invalid',
 				'YouTube Channel URL must be a youtube.com or youtu.be URL.',
+				'error'
+			);
+		}
+	}
+	if ( isset( $input['facebook_url'] ) ) {
+		$fb = esc_url_raw( trim( (string) $input['facebook_url'] ) );
+		// Light validation: must be a Facebook URL if provided.
+		if ( $fb === '' || preg_match( '#^https?://([a-z0-9-]+\.)?(facebook\.com|fb\.com|fb\.me)/#i', $fb ) ) {
+			$out['facebook_url'] = $fb;
+		} else {
+			add_settings_error(
+				TBL_OPTIONS_KEY,
+				'tbl_facebook_invalid',
+				'Facebook Page URL must be a facebook.com address.',
 				'error'
 			);
 		}
@@ -163,6 +180,15 @@ function tbl_field_youtube_url(): void {
 	?>
 	<input type="url" class="regular-text" name="<?php echo esc_attr( TBL_OPTIONS_KEY ); ?>[youtube_channel_url]" value="<?php echo esc_attr( $val ); ?>" placeholder="https://youtube.com/@yourgaggle" />
 	<p class="description">If set, a Videos page link appears in the site nav. Leave blank to hide it.</p>
+	<?php
+}
+
+function tbl_field_facebook_url(): void {
+	$opts = get_option( TBL_OPTIONS_KEY, [] );
+	$val  = isset( $opts['facebook_url'] ) ? (string) $opts['facebook_url'] : '';
+	?>
+	<input type="url" class="regular-text" name="<?php echo esc_attr( TBL_OPTIONS_KEY ); ?>[facebook_url]" value="<?php echo esc_attr( $val ); ?>" placeholder="https://www.facebook.com/yourgaggle" />
+	<p class="description">If set, a "Find us on Facebook" link appears in the footer and on the Contact page. Paste the address from your browser's address bar while viewing your page.</p>
 	<?php
 }
 

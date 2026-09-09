@@ -42,6 +42,24 @@ $central = tbl_central_songs_url();
 
 		<?php
 		$songs = tbl_subsite_songs();
+
+		// Search box: filters this gaggle's list by title, songwriter, tune,
+		// or the lyrics excerpt before pagination. Plain GET so it works
+		// without JavaScript and the URL can be shared.
+		$q = isset( $_GET['q'] ) ? trim( sanitize_text_field( wp_unslash( (string) $_GET['q'] ) ) ) : '';
+		if ( $q !== '' ) {
+			$needle = function_exists( 'mb_strtolower' ) ? mb_strtolower( $q ) : strtolower( $q );
+			$songs  = array_values( array_filter( $songs, static function ( $song ) use ( $needle ) {
+				$hay = implode( ' ', [
+					(string) ( $song['title'] ?? '' ),
+					implode( ' ', (array) ( $song['songwriters'] ?? [] ) ),
+					implode( ' ', (array) ( $song['tunes'] ?? [] ) ),
+					(string) ( $song['lyrics_excerpt'] ?? '' ),
+				] );
+				$hay = function_exists( 'mb_strtolower' ) ? mb_strtolower( $hay ) : strtolower( $hay );
+				return strpos( $hay, $needle ) !== false;
+			} ) );
+		}
 		$total = count( $songs );
 
 		$per_page = 20;
@@ -57,7 +75,33 @@ $central = tbl_central_songs_url();
 		$slice = array_slice( $songs, $start, $per_page );
 		?>
 
-		<?php if ( $total === 0 ) : ?>
+		<form class="tbl-songs-search" method="get" action="<?php echo esc_url( get_permalink() ); ?>" role="search">
+			<label class="tbl-field" for="tbl-songs-q">
+				<span class="tbl-field-label">Search our songs</span>
+				<span class="tbl-songs-search-row">
+					<input type="search" id="tbl-songs-q" name="q" value="<?php echo esc_attr( $q ); ?>" placeholder="Title, songwriter, tune, or a line you remember" enterkeyhint="search" />
+					<button type="submit" class="tbl-button tbl-songs-search-btn" aria-label="Search">
+						<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+					</button>
+				</span>
+			</label>
+			<?php if ( $q !== '' ) : ?>
+				<p class="tbl-songs-search-status">
+					<?php echo esc_html( sprintf( _n( '%d song matches', '%d songs match', $total, 'the-bulletin-local' ), $total ) ); ?>
+					&ldquo;<?php echo esc_html( $q ); ?>&rdquo;.
+					<a href="<?php echo esc_url( get_permalink() ); ?>">Show all</a>
+				</p>
+			<?php endif; ?>
+		</form>
+
+		<?php if ( $total === 0 && $q !== '' ) : ?>
+
+			<p class="tbl-muted">
+				Nothing here matches that. Try fewer words, or search the
+				<a href="<?php echo esc_url( add_query_arg( 'q', $q, $central ) ); ?>" rel="noopener">central library</a>.
+			</p>
+
+		<?php elseif ( $total === 0 ) : ?>
 
 			<p class="tbl-muted">
 				No songs tagged with this gaggle yet. Visit the
@@ -111,6 +155,9 @@ $central = tbl_central_songs_url();
 			<?php if ( $pages > 1 ) : ?>
 				<?php
 				$base = get_permalink();
+				if ( $q !== '' ) {
+					$base = add_query_arg( 'q', $q, $base );
+				}
 				$prev_url = $paged > 1 ? add_query_arg( 'paged', $paged - 1, $base ) : '';
 				$next_url = $paged < $pages ? add_query_arg( 'paged', $paged + 1, $base ) : '';
 				?>

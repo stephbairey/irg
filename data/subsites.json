@@ -1,9 +1,21 @@
 [
   {
-    "id": 62,
-    "slug": "israel",
-    "name": "Israel",
-    "url": "https://israel.raginggrannies.org"
+    "id": 65,
+    "slug": "south-minneapolis",
+    "name": "South Minneapolis",
+    "url": "https://south-minneapolis.raginggrannies.org"
+  },
+  {
+    "id": 48,
+    "slug": "sacramento",
+    "name": "Sacramento",
+    "url": "https://sacramento.raginggrannies.org"
+  },
+  {
+    "id": 46,
+    "slug": "redding",
+    "name": "Redding",
+    "url": "https://redding.raginggrannies.org"
   },
   {
     "id": 45,
@@ -72,28 +84,40 @@
     "url": "https://madison.raginggrannies.org"
   },
   {
-    "id": 34,
-    "slug": "humboldt",
-    "name": "Humboldt County",
-    "url": "https://humboldt.raginggrannies.org"
+    "id": 49,
+    "slug": "sf-bay-area",
+    "name": "San Francisco Bay Area",
+    "url": "https://sf-bay-area.raginggrannies.org"
   },
   {
-    "id": 33,
-    "slug": "grays-harbor",
-    "name": "Gray's Harbor",
-    "url": "https://grays-harbor.raginggrannies.org"
+    "id": 50,
+    "slug": "san-jose-santa-clara",
+    "name": "San Jose & Santa Clara County",
+    "url": "https://san-jose-santa-clara.raginggrannies.org"
   },
   {
-    "id": 46,
-    "slug": "redding",
-    "name": "Redding",
-    "url": "https://redding.raginggrannies.org"
+    "id": 51,
+    "slug": "santa-cruz",
+    "name": "Santa Cruz",
+    "url": "https://santa-cruz.raginggrannies.org"
   },
   {
-    "id": 48,
-    "slug": "sacramento",
-    "name": "Sacramento",
-    "url": "https://sacramento.raginggrannies.org"
+    "id": 64,
+    "slug": "rolla",
+    "name": "Rolla",
+    "url": "https://rolla.raginggrannies.org"
+  },
+  {
+    "id": 63,
+    "slug": "rocktown",
+    "name": "Rocktown",
+    "url": "https://rocktown.raginggrannies.org"
+  },
+  {
+    "id": 62,
+    "slug": "israel",
+    "name": "Israel",
+    "url": "https://israel.raginggrannies.org"
   },
   {
     "id": 61,
@@ -156,22 +180,16 @@
     "url": "https://sonoma.raginggrannies.org"
   },
   {
-    "id": 51,
-    "slug": "santa-cruz",
-    "name": "Santa Cruz",
-    "url": "https://santa-cruz.raginggrannies.org"
+    "id": 34,
+    "slug": "humboldt",
+    "name": "Humboldt County",
+    "url": "https://humboldt.raginggrannies.org"
   },
   {
-    "id": 50,
-    "slug": "san-jose-santa-clara",
-    "name": "San Jose & Santa Clara County",
-    "url": "https://san-jose-santa-clara.raginggrannies.org"
-  },
-  {
-    "id": 49,
-    "slug": "sf-bay-area",
-    "name": "San Francisco Bay Area",
-    "url": "https://sf-bay-area.raginggrannies.org"
+    "id": 33,
+    "slug": "grays-harbor",
+    "name": "Gray's Harbor",
+    "url": "https://grays-harbor.raginggrannies.org"
   },
   {
     "id": 32,
@@ -180,10 +198,10 @@
     "url": "https://grant-county.raginggrannies.org"
   },
   {
-    "id": 31,
-    "slug": "fresno",
-    "name": "Fresno",
-    "url": "https://fresno.raginggrannies.org"
+    "id": 16,
+    "slug": "lethbridge",
+    "name": "Lethbridge",
+    "url": "https://lethbridge.raginggrannies.org"
   },
   {
     "id": 15,
@@ -264,22 +282,22 @@
     "url": "https://seattle.raginggrannies.org"
   },
   {
-    "id": 16,
-    "slug": "lethbridge",
-    "name": "Lethbridge",
-    "url": "https://lethbridge.raginggrannies.org"
-  },
-  {
-    "id": 2,
-    "slug": "portland",
-    "name": "Portland",
-    "url": "https://portland.raginggrannies.org"
-  },
-  {
     "id": 17,
     "slug": "maple-ridge",
     "name": "Maple Ridge",
     "url": "https://maple-ridge.raginggrannies.org"
+  },
+  {
+    "id": 18,
+    "slug": "toronto",
+    "name": "Toronto",
+    "url": "https://toronto.raginggrannies.org"
+  },
+  {
+    "id": 31,
+    "slug": "fresno",
+    "name": "Fresno",
+    "url": "https://fresno.raginggrannies.org"
   },
   {
     "id": 30,
@@ -290,7 +308,7 @@
   {
     "id": 29,
     "slug": "el-dorado-county",
-    "name": "El Dorado County",
+    "name": "El Dorado County West Slope",
     "url": "https://el-dorado-county.raginggrannies.org"
   },
   {
@@ -354,10 +372,10 @@
     "url": "https://vancouver.raginggrannies.org"
   },
   {
-    "id": 18,
-    "slug": "toronto",
-    "name": "Toronto",
-    "url": "https://toronto.raginggrannies.org"
+    "id": 2,
+    "slug": "portland",
+    "name": "Portland",
+    "url": "https://portland.raginggrannies.org"
   },
   {
     "id": 47,

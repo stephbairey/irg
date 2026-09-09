@@ -38,6 +38,9 @@ $year = current_time( 'Y' );
 						<li><a href="<?php echo esc_url( home_url( '/photos/' ) ); ?>">Photo Gallery</a></li>
 					<?php endif; ?>
 					<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Connect with Us</a></li>
+					<?php if ( tbl_get_option( 'facebook_url' ) ) : ?>
+						<li><a href="<?php echo esc_url( tbl_get_option( 'facebook_url' ) ); ?>" rel="noopener" target="_blank">Find us on Facebook</a></li>
+					<?php endif; ?>
 				</ul>
 			</div>
 		</div>

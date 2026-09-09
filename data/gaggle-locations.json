@@ -126,6 +126,33 @@
     "slug": "montreal"
   },
   {
+    "name": "Rocktown",
+    "region": "Virginia",
+    "country": "United States",
+    "lat": 38.4496,
+    "lng": -78.8689,
+    "aka": "Rocktown Raging Grannies (Harrisonburg)",
+    "slug": "rocktown"
+  },
+  {
+    "name": "Rolla",
+    "region": "Missouri",
+    "country": "United States",
+    "lat": 37.9514,
+    "lng": -91.7713,
+    "aka": "Raging Grannies of Rolla",
+    "slug": "rolla"
+  },
+  {
+    "name": "South Minneapolis",
+    "region": "Minnesota",
+    "country": "United States",
+    "lat": 44.926,
+    "lng": -93.262,
+    "aka": "South Minneapolis Raging Grannies",
+    "slug": "south-minneapolis"
+  },
+  {
     "name": "Toronto",
     "region": "Ontario",
     "country": "Canada",
@@ -225,12 +252,12 @@
     "slug": "eau-claire"
   },
   {
-    "name": "El Dorado County",
+    "name": "El Dorado County West Slope",
     "region": "California",
     "country": "United States",
     "lat": 38.7296,
     "lng": -120.7985,
-    "aka": "El Dorado County Raging Grannies",
+    "aka": "El Dorado County West Slope Raging Grannies",
     "slug": "el-dorado-county"
   },
   {

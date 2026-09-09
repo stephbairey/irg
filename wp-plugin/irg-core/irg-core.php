@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.22.0
+ * Version: 3.23.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -1505,6 +1505,48 @@ function irg_handle_contact( WP_REST_Request $req ) {
 
 const IRG_SUBMIT_TO = 'songlibrarian@raginggrannies.org';
 
+// Songwriters whose submissions publish immediately instead of waiting in the
+// drafts queue. Stored on the main site as option `irg_autopublish_songwriters`
+// (a JSON array of names). Manage with WP-CLI, e.g.
+//   wp option update irg_autopublish_songwriters '["Lee Stanfield"]' --format=json
+// Matching is case- and whitespace-insensitive against every name in the
+// submitted (comma-separated) songwriter field; any match is enough.
+const IRG_AUTOPUBLISH_OPTION = 'irg_autopublish_songwriters';
+
+function irg_normalize_person_name( string $name ): string {
+	$name = function_exists( 'mb_strtolower' ) ? mb_strtolower( $name ) : strtolower( $name );
+	return trim( (string) preg_replace( '/\s+/', ' ', $name ) );
+}
+
+function irg_autopublish_songwriters(): array {
+	$raw = get_option( IRG_AUTOPUBLISH_OPTION, [] );
+	if ( is_string( $raw ) ) {
+		$decoded = json_decode( $raw, true );
+		$raw     = is_array( $decoded ) ? $decoded : [ $raw ];
+	}
+	$names = [];
+	foreach ( (array) $raw as $n ) {
+		$n = irg_normalize_person_name( (string) $n );
+		if ( $n !== '' ) {
+			$names[] = $n;
+		}
+	}
+	return array_values( array_unique( $names ) );
+}
+
+function irg_songwriter_autopublishes( string $songwriter_csv ): bool {
+	$allow = irg_autopublish_songwriters();
+	if ( ! $allow ) {
+		return false;
+	}
+	foreach ( explode( ',', $songwriter_csv ) as $name ) {
+		if ( in_array( irg_normalize_person_name( $name ), $allow, true ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function irg_register_submit_song_endpoint(): void {
 	register_rest_route( 'irg/v1', '/submit-song', [
 		'methods'             => 'POST',
@@ -1597,9 +1639,12 @@ function irg_handle_submit_song( WP_REST_Request $req ) {
 	];
 	$lyrics = wp_kses( $lyrics_raw, $allowed_html );
 
+	// Allow-listed songwriters skip the review queue (see IRG_AUTOPUBLISH_OPTION).
+	$autopublish = irg_songwriter_autopublishes( $songwriter );
+
 	$post_id = wp_insert_post( [
 		'post_type'   => 'song',
-		'post_status' => 'draft',
+		'post_status' => $autopublish ? 'publish' : 'draft',
 		'post_title'  => $title,
 	], true );
 	if ( is_wp_error( $post_id ) ) {
@@ -1665,12 +1710,17 @@ function irg_handle_submit_song( WP_REST_Request $req ) {
 		'youtube_link'      => $youtube_link,
 		'date_written'      => $date_written,
 		'unknown_issues'    => $unknown_issues,
+		'autopublished'     => $autopublish,
 	] );
 
 	// Report dropped issue terms back to the submitter too. The checkboxes are
 	// generated from the live term list, so this should never fire — which is
 	// exactly why it must not stay buried in error_log if it ever does.
-	return [ 'ok' => true, 'post_id' => $post_id, 'unknown_issues' => $unknown_issues ];
+	$result = [ 'ok' => true, 'post_id' => $post_id, 'unknown_issues' => $unknown_issues, 'published' => $autopublish ];
+	if ( $autopublish ) {
+		$result['url'] = get_permalink( $post_id );
+	}
+	return $result;
 }
 
 // ---------------------------------------------------------------------------
@@ -2164,8 +2214,11 @@ function irg_is_youtube_url( string $url ): bool {
 
 function irg_submit_send_notification( int $post_id, array $fields ): void {
 	$edit_url = admin_url( 'post.php?post=' . $post_id . '&action=edit' );
-	$subject  = 'New song submission: ' . $fields['title'];
-	$body     = "A new song has been submitted for review.\n\n";
+	$auto     = ! empty( $fields['autopublished'] );
+	$subject  = ( $auto ? 'New song published: ' : 'New song submission: ' ) . $fields['title'];
+	$body     = $auto
+		? "A new song was submitted by an allow-listed songwriter and published automatically.\n\n"
+		: "A new song has been submitted for review.\n\n";
 	$body    .= "Title:      {$fields['title']}\n";
 	$body    .= "Tune:       {$fields['tune']}\n";
 	$body    .= "Songwriter: {$fields['songwriter']}\n";
@@ -2185,7 +2238,7 @@ function irg_submit_send_notification( int $post_id, array $fields ): void {
 		$body .= "!! were NOT attached to the song: " . implode( ', ', $fields['unknown_issues'] ) . "\n";
 		$body .= "!! Add them by hand on the edit screen if they belong.\n";
 	}
-	$body    .= "\nReview and publish: {$edit_url}\n";
+	$body    .= ( $auto ? "\nReview or edit: {$edit_url}\n" : "\nReview and publish: {$edit_url}\n" );
 	$headers  = [ 'Content-Type: text/plain; charset=UTF-8' ];
 
 	$sent = wp_mail( IRG_SUBMIT_TO, $subject, $body, $headers );
