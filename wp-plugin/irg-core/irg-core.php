@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.23.0
+ * Version: 3.24.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -2519,3 +2519,140 @@ function irg_subsite_songs_bust_on_status( string $new_status, string $old_statu
 	}
 	irg_subsite_songs_bust_for_slugs( irg_song_gaggle_slugs( (int) $post->ID ) );
 }
+
+// ---------------------------------------------------------------------------
+// Push-to-deploy (workstream C, D077).
+//
+// The public site reads songs from a committed JSON snapshot, refreshed by
+// the GitHub Actions workflow .github/workflows/refresh-content.yml on a
+// 12-hour schedule. That workflow also accepts workflow_dispatch, so WP can
+// ask for a refresh the moment a published song changes instead of waiting
+// for the clock. Direction is WP -> GitHub (outbound), which Imunify360
+// allows; GitHub -> WP is bot-blocked, which is why the workflow tunnels.
+//
+// Debounce: every qualifying save clears and re-arms one WP-Cron event
+// IRG_DEPLOY_DELAY seconds out, so a burst of edits (a songwriter fixing a
+// typo right after publishing, or a bulk edit of 200 songs) collapses into
+// one workflow run. A system cron on the host runs due WP-Cron events every
+// five minutes so the delay is bounded even when nobody visits the CMS.
+//
+// Required server-side config: define( 'IRG_GITHUB_TOKEN', '...' ) in
+// wp-config.php — a fine-grained PAT scoped to this repo with Actions:
+// write. Without it, the feature is inert and the scheduled refresh alone
+// carries the load.
+// ---------------------------------------------------------------------------
+
+const IRG_DEPLOY_HOOK     = 'irg_deploy_dispatch';
+const IRG_DEPLOY_DELAY    = 10 * MINUTE_IN_SECONDS;
+const IRG_DEPLOY_REPO     = 'stephbairey/irg';
+const IRG_DEPLOY_WORKFLOW = 'refresh-content.yml';
+const IRG_DEPLOY_BRANCH   = 'main';
+
+function irg_deploy_enabled(): bool {
+	return defined( 'IRG_GITHUB_TOKEN' ) && (string) IRG_GITHUB_TOKEN !== '';
+}
+
+/**
+ * Arm (or re-arm) the single deploy event. Idempotent and cheap, so
+ * callers do not need to worry about how many times a save fires it.
+ */
+function irg_schedule_deploy(): void {
+	if ( ! irg_deploy_enabled() ) {
+		return;
+	}
+	wp_clear_scheduled_hook( IRG_DEPLOY_HOOK );
+	wp_schedule_single_event( time() + IRG_DEPLOY_DELAY, IRG_DEPLOY_HOOK );
+}
+
+/**
+ * Whether a save of this song affects the public site: it is published
+ * now (a new publish or an edit to a published song).
+ */
+function irg_song_is_public( $post ): bool {
+	$post = get_post( $post );
+	return $post instanceof WP_Post && $post->post_type === 'song' && $post->post_status === 'publish';
+}
+
+// Any save of a published song: admin edit screen, /edit-song/, the
+// bulk-edit endpoint (which ends in wp_update_post), and allow-listed
+// /submit/ publishes. Pending and draft songs never reach the public site,
+// so they are ignored until they are published.
+add_action( 'save_post_song', static function ( int $post_id, WP_Post $post ): void {
+	if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+		return;
+	}
+	if ( irg_song_is_public( $post ) ) {
+		irg_schedule_deploy();
+	}
+}, 10, 2 );
+
+// Leaving publish (trash, back to draft, private) removes a song from the
+// public site, so that needs a refresh too. Arriving at publish is already
+// covered above.
+add_action( 'transition_post_status', static function ( string $new, string $old, WP_Post $post ): void {
+	if ( $post->post_type === 'song' && $old === 'publish' && $new !== 'publish' ) {
+		irg_schedule_deploy();
+	}
+}, 10, 3 );
+
+// Permanent deletion bypasses transition_post_status.
+add_action( 'deleted_post', static function ( int $post_id, $post ): void {
+	if ( $post instanceof WP_Post && $post->post_type === 'song' ) {
+		irg_schedule_deploy();
+	}
+}, 10, 2 );
+
+// ACF saves meta after save_post; the librarian's "Show on international
+// site" checkbox (display_centrally, D074) is such a save and changes what
+// the public site shows without touching the post row.
+add_action( 'acf/save_post', static function ( $post_id ): void {
+	if ( is_numeric( $post_id ) && irg_song_is_public( (int) $post_id ) ) {
+		irg_schedule_deploy();
+	}
+}, 20 );
+
+/**
+ * The debounced event: ask GitHub to run the refresh workflow. A failure
+ * here must never surface to the granny who saved; it is logged and
+ * emailed, and the 12-hour schedule remains as the backstop.
+ */
+function irg_run_deploy_dispatch(): void {
+	if ( ! irg_deploy_enabled() ) {
+		return;
+	}
+	$url = sprintf(
+		'https://api.github.com/repos/%s/actions/workflows/%s/dispatches',
+		IRG_DEPLOY_REPO,
+		IRG_DEPLOY_WORKFLOW
+	);
+	$res = wp_remote_post( $url, [
+		'timeout' => 15,
+		'headers' => [
+			'Accept'               => 'application/vnd.github+json',
+			'Authorization'        => 'Bearer ' . IRG_GITHUB_TOKEN,
+			'X-GitHub-Api-Version' => '2022-11-28',
+			'Content-Type'         => 'application/json',
+		],
+		'body'    => wp_json_encode( [ 'ref' => IRG_DEPLOY_BRANCH ] ),
+	] );
+
+	$code = is_wp_error( $res ) ? 0 : (int) wp_remote_retrieve_response_code( $res );
+	if ( $code === 204 ) {
+		update_option( 'irg_deploy_last_dispatch', time(), false );
+		return;
+	}
+
+	$detail = is_wp_error( $res )
+		? $res->get_error_message()
+		: 'HTTP ' . $code . ' ' . substr( (string) wp_remote_retrieve_body( $res ), 0, 300 );
+	error_log( '[irg-deploy] workflow dispatch failed: ' . $detail );
+	wp_mail(
+		IRG_CONTACT_TO,
+		'[IRG] Song publish did not reach the site',
+		"WordPress tried to trigger the content refresh after a song change and GitHub did not accept it.\n\n"
+		. $detail . "\n\n"
+		. "The song is saved in WordPress and the twice-daily refresh will still pick it up. "
+		. "To push now, run the 'Refresh content snapshots' workflow by hand on GitHub.\n"
+	);
+}
+add_action( IRG_DEPLOY_HOOK, 'irg_run_deploy_dispatch' );
