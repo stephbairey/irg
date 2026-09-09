@@ -271,8 +271,15 @@ const gaggleListSchema = {
         center: [-98.5, 39.5], // [lng, lat] — ~ Kansas, centers on continental North America
         zoom: 3,
         attributionControl: true,
+        // Off until the reader clicks the map. Otherwise a mouse wheel over
+        // the map spins the globe instead of scrolling the page (launch
+        // feedback). Re-locked when the pointer leaves so the page scrolls
+        // again on the way back up.
+        scrollZoom: false,
       });
       map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "top-right");
+      map.on("click", () => map.scrollZoom.enable());
+      el.addEventListener("mouseleave", () => map.scrollZoom.disable());
 
       // Hide road / transit layers at runtime. Works on classic Studio styles
       // (where individual layers are exposed); Mapbox Standard styles seal
@@ -354,6 +361,14 @@ const gaggleListSchema = {
       width: 100%;
       background: var(--color-paper-2);
     }
+    /* The A+ / A++ text-size control zooms the whole page, and the map
+       (which fills the 1400px article) grew with it until it ran nearly
+       edge to edge on a 1920px screen. Hold it at roughly its default
+       on-screen size instead: 1400/1.1875 and 1400/1.375, height to match. */
+    html[data-text-zoom="bigger"] .map-wrap { max-width: 1180px; }
+    html[data-text-zoom="bigger"] #gaggle-map { height: 470px; }
+    html[data-text-zoom="quite-big"] .map-wrap { max-width: 1020px; }
+    html[data-text-zoom="quite-big"] #gaggle-map { height: 410px; }
     @media (max-width: 720px) {
       #gaggle-map { height: 340px; }
     }

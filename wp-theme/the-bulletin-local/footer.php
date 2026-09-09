@@ -22,10 +22,10 @@ $year = current_time( 'Y' );
 			<div class="tbl-footer-col">
 				<h2>From the Network</h2>
 				<ul>
-					<li><a href="https://raginggrannies.international/songs/" rel="noopener">Song Library</a></li>
-					<li><a href="https://raginggrannies.international/find-a-gaggle/" rel="noopener">Find a Gaggle</a></li>
-					<li><a href="https://raginggrannies.international/faq/" rel="noopener">FAQ</a></li>
-					<li><a href="https://raginggrannies.international/in-the-news/" rel="noopener">News</a></li>
+					<li><a href="<?php echo esc_url( tbl_irg_public_host() ); ?>/songs/" rel="noopener">Song Library</a></li>
+					<li><a href="<?php echo esc_url( tbl_irg_public_host() ); ?>/find-a-gaggle/" rel="noopener">Find a Gaggle</a></li>
+					<li><a href="<?php echo esc_url( tbl_irg_public_host() ); ?>/faq/" rel="noopener">FAQ</a></li>
+					<li><a href="<?php echo esc_url( tbl_irg_public_host() ); ?>/in-the-news/" rel="noopener">News</a></li>
 				</ul>
 			</div>
 
@@ -48,7 +48,7 @@ $year = current_time( 'Y' );
 		<div class="tbl-footer-bottom">
 			<span>&copy; <?php echo esc_html( (string) $year ); ?> <?php echo esc_html( tbl_gaggle_aka() ); ?></span>
 			<span class="tbl-footer-meta">
-				<a href="https://raginggrannies.international/privacy/" rel="noopener">Privacy</a>
+				<a href="<?php echo esc_url( tbl_irg_public_host() ); ?>/privacy/" rel="noopener">Privacy</a>
 				<span aria-hidden="true">·</span>
 				<span>Made with spirit, by volunteers.</span>
 			</span>

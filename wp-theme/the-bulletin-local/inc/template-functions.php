@@ -134,9 +134,9 @@ function tbl_is_central_hidden(): bool {
 function tbl_central_songs_url(): string {
 	$slug = tbl_gaggle_slug();
 	if ( $slug === '' || tbl_is_central_hidden() ) {
-		return 'https://raginggrannies.international/songs/';
+		return tbl_irg_public_host() . '/songs/';
 	}
-	return 'https://raginggrannies.international/songs/?gaggle=' . rawurlencode( $slug );
+	return tbl_irg_public_host() . '/songs/?gaggle=' . rawurlencode( $slug );
 }
 
 /**
