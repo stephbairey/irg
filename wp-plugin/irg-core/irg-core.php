@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.24.0
+ * Version: 3.25.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -2656,3 +2656,66 @@ function irg_run_deploy_dispatch(): void {
 	);
 }
 add_action( IRG_DEPLOY_HOOK, 'irg_run_deploy_dispatch' );
+
+// ---------------------------------------------------------------------------
+// Password-reset email a granny can follow.
+//
+// WordPress's stock "Password Reset" mail is a bare link with no hint of
+// which site, which username, or where to sign in afterwards. On this
+// network a gaggle keeper signs in at her own subdomain, so the email
+// spells out: click, choose a password, then sign in HERE with THIS name.
+//
+// NB for the Web Granny: `wp user reset-password` does NOT send this. It
+// sets a random password and mails only a "Password Changed" notice with
+// nothing in it. To send a real link, run
+//   wp eval 'retrieve_password("<login>");' --url=https://cms.raginggrannies.international
+// ---------------------------------------------------------------------------
+
+function irg_user_home_site_url( WP_User $user ): string {
+	if ( is_multisite() ) {
+		$blog = get_active_blog_for_user( $user->ID );
+		if ( $blog && ! empty( $blog->siteurl ) ) {
+			return rtrim( (string) $blog->siteurl, '/' );
+		}
+	}
+	return rtrim( network_site_url(), '/' );
+}
+
+add_filter( 'retrieve_password_notification_email', static function ( array $email, string $key, string $user_login, $user_data ): array {
+	if ( ! $user_data instanceof WP_User ) {
+		return $email;
+	}
+	$site      = irg_user_home_site_url( $user_data );
+	$site_name = is_multisite() ? (string) get_blog_option( get_active_blog_for_user( $user_data->ID )->blog_id ?? get_current_blog_id(), 'blogname' ) : (string) get_option( 'blogname' );
+	$reset_url = network_site_url( 'wp-login.php?action=rp&key=' . rawurlencode( $key ) . '&login=' . rawurlencode( $user_login ), 'login' );
+	$lost_url  = network_site_url( 'wp-login.php?action=lostpassword', 'login' );
+	$first     = $user_data->first_name !== '' ? $user_data->first_name : $user_login;
+
+	$lines = [
+		"Hi {$first},",
+		'',
+		"Here is your link to set a password for the {$site_name} Raging Grannies website.",
+		'',
+		'1. Click this link (it works for 24 hours):',
+		$reset_url,
+		'',
+		'2. Type a password you will remember, twice, and click "Save Password".',
+		'',
+		'3. From then on, sign in here:',
+		"{$site}/wp-admin/",
+		"   Username: {$user_login}",
+		'   Password: the one you just chose',
+		'',
+		"If the link has expired, go to {$lost_url} , type your username, and a fresh link will come to this address.",
+		'',
+		'Questions? Reply to this email and it reaches Steph, the Web Granny.',
+		'',
+		'Rage on,',
+		'International Raging Grannies',
+	];
+
+	$email['subject'] = "Set your password for the {$site_name} Raging Grannies website";
+	$email['message'] = implode( "\n", $lines );
+	$email['headers'] = "Reply-To: Web Granny <" . IRG_CONTACT_TO . ">\r\n";
+	return $email;
+}, 10, 4 );
