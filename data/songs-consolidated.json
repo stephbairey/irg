@@ -1399,7 +1399,7 @@
     "title": "It’s Despicable!",
     "slug": "its-despicable",
     "lyrics": "<p>It&#8217;s despicable&#8230;.. in every way,<br />\ninexplicable&#8230;.. that WISeR stays<br />\nin effect for even one more day<br />\nwhen both doctors and their patients say</p>\n<p>WISeR&#8217;s causing indefensible delays.<br />\nUnaccountable&#8230;.. in every way.<br />\nAll those in charge should have to pay<br />\nfor the damage WISeR&#8217;s doing to</p>\n<p>seniors who now are going through<br />\nneedless suffering each and every day.</p>\n<p><strong>END WISeR! Pass Medicare For All (HR 3069)!</strong></p>\n",
-    "tune": "The second verse of \"Unforgettable\"",
+    "tune": "Unforgettable",
     "songwriter": "Lee Stanfield",
     "songwriters": [
       "Lee Stanfield"
@@ -1721,9 +1721,9 @@
     "id": "wp-6526",
     "source": "wp",
     "original_wp_id": 6526,
-    "title": "LOOP the LIE!",
+    "title": "Loop the Lie!",
     "slug": "loop-the-lie",
-    "lyrics": "<p><u>Here</u> we go <u>loop</u> the <u>loop</u>!</p>\n<p><u>Here</u> we go <u>loop</u> the <u>lie</u>!</p>\n<p><u>Da</u>ta <u>cen</u>ters <u>claim</u></p>\n<p>their <u>closed</u> systems <u>won&#8217;t</u> leave us <u>dry</u>!</p>\n<p> </p>\n<p>If <u>you</u> be-l<u>ieve</u> what they <u>say</u></p>\n<p><strong><u>I</u></strong> have a <u>bridge</u> to sell <u>you</u>!</p>\n<p>&#8217;cause <u>up</u> un-<u>til</u> to<u>day</u></p>\n<p>their <u>claims</u> are more <u>fa</u>-alse than <u>true</u>!</p>\n<p> </p>\n<p>Closed <u>loops</u> still <u>need</u> to be <u>cleaned</u>,</p>\n<p><u>and</u> they can <u>eas</u>-i-ly <u>leak</u>.</p>\n<p>The <u>P</u>-FAS that <u>they</u> con<u>tain</u>&#8230;</p>\n<p>a <u>price</u> that is <u>wa</u>-ay too <u>steep</u>!</p>\n<p> </p>\n<p>We&#8217;re <u>clean</u>ing our <u>a</u>-qui<u>fer</u></p>\n<p>of <u>P</u>-FAS still <u>in</u> it <u>now</u>!</p>\n<p>We <u>must</u> protect <u>our</u> wa<u>ter</u></p>\n<p>Don&#8217;t <u>let</u> it be <u>A</u> I&#8217;s cash <u>cow</u>!</p>\n<p> </p>\n<p><u>Tell</u> them to <u>gath</u>er their <u>loops</u></p>\n<p>a-<u>long</u> with their <u>closed</u> system <u>lies</u></p>\n<p>and <u>put</u> them <u>some</u>where <u>else</u>&#8230;</p>\n<p><strong>some <u>place</u> where the <u>sun</u> doesn&#8217;t <u>rise</u>!</strong></p>\n",
+    "lyrics": "<p><u>Here</u> we go <u>loop</u> the <u>loop</u>!<br />\n<u>Here</u> we go <u>loop</u> the <u>lie</u>!<br />\n<u>Da</u>ta <u>cen</u>ters <u>claim</u><br />\ntheir <u>closed</u> systems <u>won&#8217;t</u> leave us <u>dry</u>!</p>\n<p>If <u>you</u> be-l<u>ieve</u> what they <u>say</u><br />\n<strong><u>I</u></strong> have a <u>bridge</u> to sell <u>you</u>!<br />\n&#8217;cause <u>up</u> un-<u>til</u> to<u>day</u><br />\ntheir <u>claims</u> are more <u>fa</u>-alse than <u>true</u>!</p>\n<p>Closed <u>loops</u> still <u>need</u> to be <u>cleaned</u>,<br />\n<u>and</u> they can <u>eas</u>-i-ly <u>leak</u>.<br />\nThe <u>P</u>-FAS that <u>they</u> con<u>tain</u>&#8230;<br />\na <u>price</u> that is <u>wa</u>-ay too <u>steep</u>!</p>\n<p>We&#8217;re <u>clean</u>ing our <u>a</u>-qui<u>fer</u><br />\nof <u>P</u>-FAS still <u>in</u> it <u>now</u>!<br />\nWe <u>must</u> protect <u>our</u> wa<u>ter</u><br />\nDon&#8217;t <u>let</u> it be <u>A</u> I&#8217;s cash <u>cow</u>!<br />\n<u></u></p>\n<p><u>Tell</u> them to <u>gath</u>er their <u>loops</u><br />\na-<u>long</u> with their <u>closed</u> system <u>lies</u><br />\nand <u>put</u> them <u>some</u>where <u>else</u>&#8230;<br />\n<strong>some <u>place</u> where the <u>sun</u> doesn&#8217;t <u>rise</u>!</strong></p>\n",
     "tune": "Here We Go Loop the Loop",
     "songwriter": "Lee Stanfield",
     "songwriters": [
@@ -1734,17 +1734,12 @@
       "Tucson"
     ],
     "issues": [
-      "Business & Economy",
-      "Environment & Energy",
-      "Gender Issues",
-      "Healthcare",
-      "Human & Civil Rights",
-      "Labor & Worker Rights"
+      "Environment & Energy"
     ],
     "key_or_starting_note": "Middle C",
     "youtube_link": "",
     "youtube_link_2": "",
-    "date_written_or_updated": "1970-01-01T00:00:00+00:00",
+    "date_written_or_updated": "2026-09-14T00:00:00+00:00",
     "date_published": "2026-09-01",
     "source_notes": "",
     "feature_on_homepage": false,
@@ -3306,40 +3301,6 @@
     "review_notes": ""
   },
   {
-    "id": "wp-6430",
-    "source": "wp",
-    "original_wp_id": 6430,
-    "title": "Less and Less Fun",
-    "slug": "less-and-less-fun-2",
-    "lyrics": "<p><u>Ev</u>&#8216;ry mornin&#8217;&#8230;. <u>ev</u>&#8216;ry evenin&#8217;&#8230;. <u>life</u> is less <u>fun</u></p>\n<p><u>if</u> your bills are&#8230;. a lot <u>big</u>ger&#8230;. <u>than</u> your in<u>come</u>.</p>\n<p> </p>\n<p>            <u>There&#8217;s</u> nothin&#8217; <u>sur</u>er&#8230;.As the <u>rich</u> get <u>rich</u>er&#8230; the <u>poor</u> get                    <u>poor</u>er!</p>\n<p>            <u>What&#8217;s</u> the source of&#8230; <u>this</u> division&#8230;.</p>\n<p>            <strong><u>CAP</u>&#8216;TALIS<u>M</u> !</strong></p>\n<p> </p>\n<p><u>Ev</u>&#8216;ry time a&#8230;.. <u>Bill</u>iona-aire&#8230;. <u>launches</u> a space <u>shot</u></p>\n<p>or <u>builds</u> ten&#8230;. <u>da</u>ta centers&#8230;. <u>on</u> a desert plot&#8230;.</p>\n<p> </p>\n<p>            <u>it</u> means that <u>you</u> and&#8230;. <u>I</u> and ev&#8217;ry<u>bod</u>y else will</p>\n<p>            <u>have</u> even <u>less</u>&#8230;. <u>of</u> whatever&#8217;s <u>left.</u>&#8230;</p>\n<p>            <strong><u>CAP</u>&#8216;TALIS<u>M</u>! </strong></p>\n<p>           </p>\n<p><u>Work</u>ers labor&#8230;. <u>ev</u>er-harder&#8230;. <u>mak</u>in&#8217; things we <u>need</u>.</p>\n<p>But <u>they</u> don&#8217;t count when&#8230;. it <u>comes</u> to profits&#8230;. <u>its</u> about <u>greed</u>!</p>\n<p> </p>\n<p>            <u>Corp</u>&#8216;rate in<u>ves</u>tors&#8230;. <u>poc</u>ket ever-<u>great</u>er <u>in</u>come&#8230;</p>\n<p>            <u>with</u>out <u>ev</u>en&#8230;. <u>break</u>in&#8217; a <u>sweat</u>!</p>\n<p>            <strong><u>CAP</u>&#8216;TALIS<u>M!</u></strong></p>\n<p><strong><u> </u></strong></p>\n<p><u>To</u> have <u>more</u> fun&#8230; <u>in</u> your<u> life</u>, then&#8230;. <u>here&#8217;s</u> ad<u>vice</u> we <u>give</u></p>\n<p><u>Start</u> or <u>join</u> a <u>lo</u>cal <u>work</u>er <u>owned</u> co<u>op</u>&#8216;ra-<u>tive</u>.</p>\n<p> </p>\n<p>            &#8220;De<u>moc</u>racy At <u>Work</u>&#8221; on the <u>in</u>ter<u>net</u> tells <u>how</u>, so <u>you</u> can</p>\n<p>            <u>get</u> a fair share <u>of</u> the profits <u>and</u>&#8230;..</p>\n<p>            <u>Bring</u> back some <u>FUN</u>!</p>\n<p><strong> </strong></p>\n<p><strong>LOCAL WORKER-OWNED COOPERATIVES FOR DEMOCRACY WHERE YOU WORK!</strong></p>\n",
-    "tune": "Ain't We Got Fun",
-    "songwriter": "Lee Stanfield",
-    "songwriters": [
-      "Lee Stanfield"
-    ],
-    "gaggle": "Tucson",
-    "gaggles": [
-      "Tucson"
-    ],
-    "issues": [
-      "Business & Economy",
-      "Elections & Democracy",
-      "Human & Civil Rights",
-      "Labor & Worker Rights"
-    ],
-    "key_or_starting_note": "Middle C",
-    "youtube_link": "",
-    "youtube_link_2": "",
-    "date_written_or_updated": "2026-06-01T00:00:00+00:00",
-    "date_published": "2026-09-01",
-    "source_notes": "",
-    "feature_on_homepage": false,
-    "display_centrally": false,
-    "duplicate_of": null,
-    "needs_review": false,
-    "review_notes": ""
-  },
-  {
     "id": "wp-6429",
     "source": "wp",
     "original_wp_id": 6429,
@@ -3510,7 +3471,7 @@
     "title": "These Grannies",
     "slug": "these-grannies",
     "lyrics": "<p>Trump keeps saying he&#8217;s got something for us<br />\nBut something’s wrong with everything he says<br />\nHe&#8217;s been messing where he shouldn&#8217;t be messing<br />\nThe Epstein files are getting in his way!</p>\n<p>CHORUS<br />\nThese Grannies were made for raging<br />\nAnd that&#8217;s just what we&#8217;ll do<br />\nOne of these days these Grannies<br />\nAre gonna help get rid of You.</p>\n<p>He keeps lying when he ought to be truthing<br />\nHe keeps losing, when he ought to not bet<br />\nHe keeps same-ing when he ought to be changing<br />\nWhat&#8217;s right is right but he ain&#8217;t been right yet.</p>\n<p>CHORUS<br />\nThese Grannies were made for raging<br />\nAnd that&#8217;s just what we&#8217;ll do<br />\nOne of these days these Grannies<br />\nAre gonna help get rid of you</p>\n<p>He keeps paying who he shouldn&#8217;t be paying<br />\nHe keeps thinking he will never be out<br />\nHe keeps screwing who he shouldn&#8217;t be screwing<br />\nHe&#8217;s a criminal of that we have no doubt</p>\n<p>CHORUS<br />\nThese Grannies were made for raging<br />\nAnd that&#8217;s just what we&#8217;ll do<br />\nOne of these days these Grannies<br />\nAre gonna help get rid of You</p>\n<p>Are you ready, Grannies?<br />\nKEEP RAGIN’ !</p>\n",
-    "tune": "These Boots Were Made for Walking",
+    "tune": "These Boots Were Made For Walkin'",
     "songwriter": "Lori Underwood",
     "songwriters": [
       "Lori Underwood"
@@ -3524,7 +3485,7 @@
     ],
     "key_or_starting_note": "",
     "youtube_link": "https://www.youtube.com/watch?v=26eQMK7qD9Q",
-    "youtube_link_2": "https://www.youtube.com/watch?v=t5u0iEKJGFU&list=PLnmBGyL5vpYc-KOut-EggIm8CwtjLl_fK&index=1",
+    "youtube_link_2": "https://www.youtube.com/watch?v=t5u0iEKJGFU&amp;list=PLnmBGyL5vpYc-KOut-EggIm8CwtjLl_fK&amp;index=1",
     "date_written_or_updated": "2025-08-09T00:00:00+00:00",
     "date_published": "2026-04-16",
     "source_notes": "",
@@ -4256,38 +4217,6 @@
     "youtube_link_2": "",
     "date_written_or_updated": "2026-03-02T00:00:00+00:00",
     "date_published": "2026-03-02",
-    "source_notes": "",
-    "feature_on_homepage": false,
-    "display_centrally": false,
-    "duplicate_of": null,
-    "needs_review": false,
-    "review_notes": ""
-  },
-  {
-    "id": "wp-1045",
-    "source": "wp",
-    "original_wp_id": 1045,
-    "title": "Lookin’ for Logic",
-    "slug": "lookin-for-logic",
-    "lyrics": "<p><u>Look</u>in&#8217; for <u>log</u>ic <strong><u>in</u></strong> Trump&#8217;s <u>ac</u>tions<br />\n<u>is</u> al-<u>ways</u> un<u>wi</u>-ise,<br />\n<u>be</u>cause <u>they</u> are <u>all </u>di-<u>ver</u>-sions<br />\n<u>just</u> like <u>all</u> his <u>lies</u>!</p>\n<p><u>He</u> knows <u>if</u> the <u>Ep</u>stein <u>files</u><br />\nare <u>ev</u>-er <strong><u>UN</u></strong>-re<u>dac</u>ted<br />\n<u>his</u> plans <u>to</u> rule <u>plan</u>et <u>Earth</u><br />\nwill <u>be</u> greatly im<u>pact</u>ed!</p>\n<p><u>Trump</u> wants <u>to</u> rule <u>the</u> whole <u>world</u>,<br />\nbut <u>he&#8217;s</u> al<u>so</u> a <u>per</u>vert!<br />\n<u>He</u> keeps <u>throw</u>in&#8217; <u>shit</u> at the <u>fan</u><br />\nto <strong><u>stop</u></strong> us <strong><u>dig</u></strong>gin up <strong><u>dirt</u></strong>!</p>\n<p><u>Trump&#8217;s</u> a <u>grif</u>ter and <u>so</u>cio<u>path</u><br />\nand <u>we</u> are <u>the</u> grift<u>ee</u>-ees.<br />\n<u>Way</u> past <u>time</u> to <u>lock</u> him <u>up</u><br />\n<strong>and <u>throw</u> a<u>way</u> the <u>keys</u>!</strong></p>\n",
-    "tune": "Yankee Doodle",
-    "songwriter": "Lee Stanfield",
-    "songwriters": [
-      "Lee Stanfield"
-    ],
-    "gaggle": "Tucson",
-    "gaggles": [
-      "Tucson"
-    ],
-    "issues": [
-      "Government & Power",
-      "Soldiers & Veterans"
-    ],
-    "key_or_starting_note": "D above Middle C",
-    "youtube_link": "",
-    "youtube_link_2": "",
-    "date_written_or_updated": "2026-03-01T00:00:00+00:00",
-    "date_published": "2026-03-01",
     "source_notes": "",
     "feature_on_homepage": false,
     "display_centrally": false,
@@ -10594,7 +10523,7 @@
     "title": "Save the VA!",
     "slug": "save-the-va",
     "lyrics": "<p><strong><u>Save</u></strong><strong> the <u>V</u>A!</strong></p>\n<p><strong><u>Save</u></strong><strong> the <u>V</u>A!</strong></p>\n<p><strong>Don&#8217;t <u>sell</u> out </strong></p>\n<p><strong>our <u>vet</u>&#8216;rans</strong></p>\n<p><strong>to <u>gree</u>dy profi<u>teers</u>!</strong></p>\n",
-    "tune": "The first part of the \"Hallelujah Chorus\"",
+    "tune": "Hallelujah Chorus",
     "songwriter": "Lee Stanfield",
     "songwriters": [
       "Lee Stanfield"
@@ -13089,8 +13018,8 @@
     ],
     "issues": [
       "Environment & Energy",
-      "Government & Power",
       "Human & Civil Rights",
+      "Immigration",
       "War & Peace"
     ],
     "key_or_starting_note": "",
@@ -14496,46 +14425,13 @@
     "review_notes": ""
   },
   {
-    "id": "wp-789",
-    "source": "wp",
-    "original_wp_id": 789,
-    "title": "La La La La Greed Goes On!",
-    "slug": "la-la-la-la-greed-goes-on",
-    "lyrics": "<p><b>Cap</b>-i-tal-is-<b>m</b> has reduced <strong>ev&#8217;-</strong>ry-<strong>thing</strong></p>\n<p><b>to</b> no more than <b>sim</b>ple corp&#8217;rate <b>bling</b>.</p>\n<p>The <b>world</b> is now en<b>tire</b>ly run by <b>dem-</b>a-<b>gogues</b></p>\n<p>and all of <b>them</b> are int&#8217;rest<b>ed</b> in just one <b>thing</b>.</p>\n<p><b>Mon</b>-ey <b>here</b>, <b>mon</b>-ey <b>there</b>&#8230;</p>\n<p><b>Greed</b> goes <b>o</b>-o-<b>on!</b></p>\n<p><b>La</b> la la la <b>Greed</b> goes <b>on!</b></p>\n<p><b>Foss</b>il fuels are <b>cre-</b>a-ting a <b>Hell</b> on <b>Earth!</b></p>\n<p>But <b>corp</b>&#8216;rate int&#8217;rests <b>real</b>ly do not <b>care!</b></p>\n<p>So <b>long</b> as corp&#8217;rate <b>shares</b> increase in <b>dai-</b>ly <b>worth</b></p>\n<p><b>they</b>&#8216;ll keep <b>drill</b>in&#8217; and scra<b>pin</b>&#8216; the planet <b>bare!</b></p>\n<p><b>Pro</b>-fit <b>here</b>,<b> pro</b>-fit <b>there</b>&#8230;</p>\n<p><b>Greed</b> goes <b>o</b>-o-<b>on!</b></p>\n<p><b>La</b> la la la <b>Greed</b> goes <b>on!</b></p>\n<p><b>Plants</b> and ani<b>mals</b> are dying <b>ev</b>&#8216;ry<b>where!</b></p>\n<p>The <b>gree</b>dy rich don&#8217;t <b>get</b> it that we&#8217;re<b> linked</b>.</p>\n<p>If <b>they</b> don&#8217;t wise up <b>there</b> will be one <b>thing</b> we&#8217;ll <b>share</b>&#8230;</p>\n<p>Just like <b>us</b> soon they will <b>all</b> become ex<b>tinct!</b></p>\n<p>Den-<b>i</b>-al <b>here</b>, den<b>-i-</b>al <b>there</b>&#8230;</p>\n<p><b>in</b> the <b>e</b>-e-<b>end</b></p>\n<p><i>(very slow)-&gt;</i><b> La</b> la <b>la</b> we&#8217;ll <b>all</b>&#8230; <b>be</b>&#8230; <b>gone!</b></p>\n",
-    "tune": "Ob-la-di, Ob-la-da, Life Goes On",
-    "songwriter": "Lee Stanfield",
-    "songwriters": [
-      "Lee Stanfield"
-    ],
-    "gaggle": "Tucson",
-    "gaggles": [
-      "Tucson"
-    ],
-    "issues": [
-      "Business & Economy",
-      "Environment & Energy",
-      "Government & Power"
-    ],
-    "key_or_starting_note": "D above Middle C",
-    "youtube_link": "",
-    "youtube_link_2": "",
-    "date_written_or_updated": "1970-01-01T00:00:00+00:00",
-    "date_published": "2025-08-01",
-    "source_notes": "",
-    "feature_on_homepage": false,
-    "display_centrally": false,
-    "duplicate_of": null,
-    "needs_review": false,
-    "review_notes": ""
-  },
-  {
     "id": "wp-788",
     "source": "wp",
     "original_wp_id": 788,
     "title": "Democracy’s Gonna Soar",
     "slug": "democracys-gonna-soar",
-    "lyrics": "<p>ICE agents and <strong>Ma</strong>rines storming<br />\n<strong>LA</strong> was <strong>ground</strong> zero<br />\nThis<strong> summer</strong> the push back’s <strong>com</strong>ing<br />\nDe<strong>moc</strong>racy’s <strong>gon</strong>na soar</p>\n<p>BRIDGE:  Gonna <strong>fight</strong> for it<br />\n                   Pro<strong>tests</strong> are <strong>win</strong>ning the day<br />\n<strong>                  Not</strong> gonna <strong>stop</strong> ’til we win&#8230;</p>\n<p>                   Millions to<strong>geth</strong>er<br />\n                   Marching for <strong>ev</strong>eryone’s rights<br />\n                   We won’t <strong>lose</strong> it all to him…</p>\n<p>VERSE MELODY WITH “La la la” <em>[encourage audience to join in]</em></p>\n<p>                  Gonna <strong>fight</strong> for it<br />\n                  Pro<strong>tests</strong> are <strong>win</strong>ning the day<br />\n                  Not gonna <strong>stop</strong> ’til we win…</p>\n<p>                   Millions to<strong>geth</strong>er<br />\n                   Marching for <strong>ev</strong>eryone’s rights<br />\n                   We won’t <strong>lose</strong> it all to him…</p>\n<p>ICE <strong>a</strong>gents and <strong>Ma</strong>rines storming<br />\nIn <strong>cit</strong>ies <strong>near</strong> and far<br />\nThis <strong>sum</strong>mer the <strong>push</strong> back’s coming<br />\nDe<strong>moc</strong>racy’s <strong>gon</strong>na soar<br />\nDe<strong>moc</strong>racy’s <strong>gon</strong>na soar<br />\nDe<strong>moc</strong>racy’s <strong>gon</strong>na <strong>SOAR</strong> …</p>\n",
-    "tune": "Tune: Ohio, by Neil Young; recorded by Crosby, Stills, Nash, & Young",
+    "lyrics": "<p>ICE agents and <strong>Ma</strong>rines storming<br />\n<strong>LA</strong> was <strong>ground</strong> zero<br />\nThis<strong> summer</strong> the push back’s <strong>com</strong>ing<br />\nDe<strong>moc</strong>racy’s <strong>gon</strong>na soar</p>\n<p>BRIDGE: Gonna <strong>fight</strong> for it<br />\nPro<strong>tests</strong> are <strong>win</strong>ning the day<br />\n<strong> Not</strong> gonna <strong>stop</strong> ’til we win&#8230;</p>\n<p>Millions to<strong>geth</strong>er<br />\nMarching for <strong>ev</strong>eryone’s rights<br />\nWe won’t <strong>lose</strong> it all to him…</p>\n<p>VERSE MELODY WITH “La la la” <em>[encourage audience to join in]</em></p>\n<p>Gonna <strong>fight</strong> for it<br />\nPro<strong>tests</strong> are <strong>win</strong>ning the day<br />\nNot gonna <strong>stop</strong> ’til we win…</p>\n<p>Millions to<strong>geth</strong>er<br />\nMarching for <strong>ev</strong>eryone’s rights<br />\nWe won’t <strong>lose</strong> it all to him…</p>\n<p>ICE <strong>a</strong>gents and <strong>Ma</strong>rines storming<br />\nIn <strong>cit</strong>ies <strong>near</strong> and far<br />\nThis <strong>sum</strong>mer the <strong>push</strong> back’s coming<br />\nDe<strong>moc</strong>racy’s <strong>gon</strong>na soar<br />\nDe<strong>moc</strong>racy’s <strong>gon</strong>na soar<br />\nDe<strong>moc</strong>racy’s <strong>gon</strong>na <strong>SOAR</strong> …</p>\n",
+    "tune": "Ohio by Neil Young",
     "songwriter": "Tracey Fine",
     "songwriters": [
       "Tracey Fine"
@@ -15221,7 +15117,7 @@
     "original_wp_id": 766,
     "title": "Donald the Delusional",
     "slug": "donald-the-delusional",
-    "lyrics": "<p>This <b>song</b> is about <b>Don</b>ald, who <b>thinks</b> he is a <b>king</b>,</p>\n<p>but <b>he</b> just has de<b>lu</b>sions, <b>a-</b>mong other <b>things</b>.</p>\n<p>The <b>rea</b>son he is <b>now</b> the <b>pres</b>ident we&#8217;ve <b>got</b></p>\n<p>is <b>due</b> to capi<b>tal</b>-is-m and <b>its</b> in<b>her</b>ent <b>rot!</b></p>\n<p><b>Cap</b>&#8216;talism <b>re</b>-wards <b>ruth</b>less socio<b>paths!</b></p>\n<p><b>That&#8217;s</b> the reason <b>Don</b>ald <b>now</b> has what he <b>hath!</b></p>\n<p><b>Peo</b>ple need to <b>quit</b> thinkin&#8217; <b>Don</b>ald and his <b>crew</b></p>\n<p>have <b>an-</b>ything in <b>com</b>mon with <b>folks</b> like me and <b>you</b>.</p>\n<p><b>Most</b> folks have a <b>con</b>science,<b> known</b> as empa<b>thy</b>.</p>\n<p>But <b>so</b>-ciopaths are l<b>ack</b>ing <b>that</b> abili<b>ty</b>.</p>\n<p><b>Ec</b>-onomic <b>sys</b>tems that <b>re</b>-ward ruthless<b>ness</b></p>\n<p><b>in</b> the end will <b>al</b>ways <b>cre</b>ate <b>just</b> this kind of <b>mess!</b></p>\n<p>There&#8217;s <b>just</b> one thing where <b>all</b> billion<b>aires</b> don&#8217;t have their <b>share</b>.</p>\n<p>That <b>thing </b>is empa<b>thy</b>, and <b>that&#8217;s </b>why they don&#8217;t <b>care</b></p>\n<p>how <b>man</b>y other <b>peo</b>ple must <b>live</b> in pover<b>ty</b></p>\n<p>so <b>bill</b>ionaires can <b>still</b> live in the <b>lap</b> of luxu<b>ry!</b></p>\n<p>Now, <b>Don</b>ald&#8217;s entire <b>crew</b> and <b>ev&#8217;</b>ry rich do<b>nor</b></p>\n<p><b>have</b> to be e-<b>vic</b>-ted. We <b>must</b> show them the <b>door!</b></p>\n<p><b>That</b> is why the <b>road</b> a-a-<b>head</b> will be <b>tough</b>.</p>\n<p>But <b>put</b>ting it quite <b>si-im</b>ply&#8230; <b>ENOUGH IS ENOUGH!!!</b></p>\n",
+    "lyrics": "<p>This <b>song</b> is about <b>Don</b>ald, who <b>thinks</b> he is a <b>king</b>,<br />\nbut <b>he</b> just has de<b>lu</b>sions, <b>a-</b>mong other <b>things</b>.<br />\nThe <b>rea</b>son he is <b>now</b> the <b>pres</b>ident we&#8217;ve <b>got</b><br />\nis <b>due</b> to capi<b>tal</b>-is-m and <b>its</b> in<b>her</b>ent <b>rot!</b></p>\n<p><b>Cap</b>&#8216;talism <b>re</b>-wards <b>ruth</b>less socio<b>paths!</b><br />\n<b>That&#8217;s</b> the reason <b>Don</b>ald <b>now</b> has what he <b>hath!</b><br />\n<b>Peo</b>ple need to <b>quit</b> thinkin&#8217; <b>Don</b>ald and his <b>crew</b><br />\nhave <b>an-</b>ything in <b>com</b>mon with <b>folks</b> like me and <b>you</b>.</p>\n<p><b>Most</b> folks have a <b>con</b>science,<b> known</b> as empa<b>thy</b>.<br />\nBut <b>so</b>-ciopaths are l<b>ack</b>ing <b>that</b> abili<b>ty</b>.<br />\n<b>Ec</b>-onomic <b>sys</b>tems that <b>re</b>-ward ruthless<b>ness</b><br />\n<b>in</b> the end will <b>al</b>ways <b>cre</b>ate <b>just</b> this kind of <b>mess!</b></p>\n<p>There&#8217;s <b>just</b> one thing where <b>all</b> billion<b>aires</b> don&#8217;t have their <b>share</b>.<br />\nThat <b>thing </b>is empa<b>thy</b>, and <b>that&#8217;s </b>why they don&#8217;t <b>care</b><br />\nhow <b>man</b>y other <b>peo</b>ple must <b>live</b> in pover<b>ty</b><br />\nso <b>bill</b>ionaires can <b>still</b> live in the <b>lap</b> of luxu<b>ry!</b></p>\n<p>Now, <b>Don</b>ald&#8217;s entire <b>crew</b> and <b>ev&#8217;</b>ry rich do<b>nor</b><br />\n<b>have</b> to be e-<b>vic</b>-ted. We <b>must</b> show them the <b>door!</b><br />\n<b>That</b> is why the <b>road</b> a-a-<b>head</b> will be <b>tough</b>.<br />\nBut <b>put</b>ting it quite <b>si-im</b>ply&#8230; <b>ENOUGH IS ENOUGH!!!</b></p>\n",
     "tune": "Sing a Song of Sixpence",
     "songwriter": "Lee Stanfield",
     "songwriters": [
@@ -20408,8 +20304,8 @@
     "original_wp_id": 603,
     "title": "Climate Change Is Beyond Serious",
     "slug": "climate-change-is-beyond-serious",
-    "lyrics": "<p><strong><u>Cli</u></strong><strong>&#8211;</strong>&#8211;<strong>&#8211;</strong>mate <strong><u>change</u></strong> is beyond <strong><u>ser</u></strong>-i<strong>&#8211;<u>ous</u></strong>.</p>\n<p><strong><u>That</u></strong> is <strong><u>why</u></strong> we&#8217;re raisin&#8217; <strong><u>such</u></strong> a <strong><u>fuss</u></strong>.</p>\n<p><strong><u>If</u></strong> we <strong><u>want</u></strong> our planet <strong><u>to</u></strong> sur-<strong><u>vive</u></strong></p>\n<p><strong><u>vote</u></strong> the <strong><u>Green</u></strong> New <strong><u>Deal</u></strong> to <strong><u>stay</u></strong> a-<strong><u>live!</u></strong></p>\n<p><strong>                </strong></p>\n<p><strong><u>So</u></strong><strong>&#8211;</strong>o-me <strong><u>say</u></strong> that sci-ence <strong><u>is</u></strong> not <strong><u>true</u></strong>.</p>\n<p><strong><u>You</u></strong> can <strong><u>arg</u>&#8211;</strong>ue with them <strong><u>till</u></strong> you&#8217;re <strong><u>blue</u></strong>.</p>\n<p><strong><u>Ra</u></strong><strong>&#8211;</strong>ther <strong><u>than</u></strong> just getting <strong><u>sad</u></strong> &amp; <strong><u>bleak</u>,</strong></p>\n<p><strong><u>raise</u></strong> your <strong><u>voice</u></strong> and <strong><u>join</u> </strong>us <strong><u>in</u></strong> the <strong><u>street</u></strong>!</p>\n<p>        <strong><u>Car</u>&#8211;</strong>bon is <strong><u>ris-</u></strong>ing<strong>&#8230; Sky high!</strong></p>\n<p>        <strong><u>Spe-</u></strong>cies are <strong><u>dy-</u></strong>ing&#8230; <strong>NO LIE!</strong></p>\n<p><strong>        <u>End</u></strong> fossil <strong><u>fu-</u></strong>els&#8230; <strong>WE MUST!</strong></p>\n<p><strong>        <u>Ex</u></strong>-tinction&#8217;s <strong><u>com</u></strong>-ing<strong>&#8230; for US!</strong></p>\n<p><strong> </strong><strong>        <u>Gla</u></strong>-ciers are <strong><u>melt</u></strong>-ing&#8230;<strong> Seas rise!    </strong></p>\n<p>        <strong><u>For</u></strong>-ests burn <strong><u>up</u></strong> as&#8230; <strong>Earth fries!</strong></p>\n<p>        <strong><u>Oil&#8217;s</u></strong> not the <strong><u>an</u></strong>-swer&#8230; <strong>Wise UP!</strong></p>\n<p>        <strong><u>If</u></strong> we don&#8217;t <strong><u>stop</u></strong>, we&#8217;re&#8230; <strong>Outa luck!</strong></p>\n<p><strong><u>Trump</u></strong> and <strong><u>Pence</u></strong> must go, and <strong><u>their</u></strong> cro<strong><u>nies</u></strong></p>\n<p><strong><u>and</u></strong> all <strong><u>corp</u></strong>&#8216;rate neo<strong><u>lib</u></strong> pho<strong><u>nies</u></strong>.</p>\n<p><strong><u>We</u></strong> can&#8217;t <strong><u>com</u></strong>-promise a-<strong><u>noth-</u></strong>er <strong><u>inch</u>!</strong></p>\n<p>To <strong><u>save</u></strong> the <strong><u>Earth</u></strong> we <strong><u>must</u></strong> get <strong><u>off</u></strong> the <strong><u>bench!</u></strong></p>\n<p><strong><u>Now</u></strong> we&#8217;ve <strong><u>on</u></strong>ly got a <strong><u>doz</u></strong>en <strong><u>years</u></strong></p>\n<p><strong><u>to</u></strong> take <strong><u>ac</u></strong>tion, before <strong><u>our</u></strong> worst <strong><u>fears</u></strong></p>\n<p><strong><u>come</u></strong> to <strong><u>pass</u>&#8230;&#8230;.. </strong><em>(very slow)-&gt;</em> <strong><u>Thanks</u></strong> to all <strong><u>those</u></strong> who <strong><u>lie</u>&#8230;..</strong></p>\n<p><strong>if we don&#8217;t act now we can kiss our butts good bye!!</strong></p>\n",
-    "tune": "Tune of \"Green Acres\" theme song",
+    "lyrics": "<p><strong><u>Cli</u></strong><strong>&#8211;</strong>&#8211;<strong>&#8211;</strong>mate <strong><u>change</u></strong> is beyond <strong><u>ser</u></strong>-i<strong>&#8211;<u>ous</u></strong>.</p>\n<p><strong><u>That</u></strong> is <strong><u>why</u></strong> we&#8217;re raisin&#8217; <strong><u>such</u></strong> a <strong><u>fuss</u></strong>.</p>\n<p><strong><u>If</u></strong> we <strong><u>want</u></strong> our planet <strong><u>to</u></strong> sur-<strong><u>vive</u></strong></p>\n<p><strong><u>vote</u></strong> the <strong><u>Green</u></strong> New <strong><u>Deal</u></strong> to <strong><u>stay</u></strong> a-<strong><u>live!</u></strong></p>\n<p>&nbsp;</p>\n<p><strong><u>So</u></strong><strong>&#8211;</strong>o-me <strong><u>say</u></strong> that sci-ence <strong><u>is</u></strong> not <strong><u>true</u></strong>.</p>\n<p><strong><u>You</u></strong> can <strong><u>arg</u>&#8211;</strong>ue with them <strong><u>till</u></strong> you&#8217;re <strong><u>blue</u></strong>.</p>\n<p><strong><u>Ra</u></strong><strong>&#8211;</strong>ther <strong><u>than</u></strong> just getting <strong><u>sad</u></strong> &amp; <strong><u>bleak</u>,</strong></p>\n<p><strong><u>raise</u></strong> your <strong><u>voice</u></strong> and <strong><u>join</u> </strong>us <strong><u>in</u></strong> the <strong><u>street</u></strong>!</p>\n<p><strong><u>Car</u>&#8211;</strong>bon is <strong><u>ris-</u></strong>ing<strong>&#8230; Sky high!</strong></p>\n<p><strong><u>Spe-</u></strong>cies are <strong><u>dy-</u></strong>ing&#8230; <strong>NO LIE!</strong></p>\n<p><strong> <u>End</u></strong> fossil <strong><u>fu-</u></strong>els&#8230; <strong>WE MUST!</strong></p>\n<p><strong> <u>Ex</u></strong>-tinction&#8217;s <strong><u>com</u></strong>-ing<strong>&#8230; for US!</strong></p>\n<p><strong> <u>Gla</u></strong>-ciers are <strong><u>melt</u></strong>-ing&#8230;<strong> Seas rise! </strong></p>\n<p><strong><u>For</u></strong>-ests burn <strong><u>up</u></strong> as&#8230; <strong>Earth fries!</strong></p>\n<p><strong><u>Oil&#8217;s</u></strong> not the <strong><u>an</u></strong>-swer&#8230; <strong>Wise UP!</strong></p>\n<p><strong><u>If</u></strong> we don&#8217;t <strong><u>stop</u></strong>, we&#8217;re&#8230; <strong>Outa luck!</strong></p>\n<p><strong><u>Trump</u></strong> and <strong><u>Pence</u></strong> must go, and <strong><u>their</u></strong> cro<strong><u>nies</u></strong></p>\n<p><strong><u>and</u></strong> all <strong><u>corp</u></strong>&#8216;rate neo<strong><u>lib</u></strong> pho<strong><u>nies</u></strong>.</p>\n<p><strong><u>We</u></strong> can&#8217;t <strong><u>com</u></strong>-promise a-<strong><u>noth-</u></strong>er <strong><u>inch</u>!</strong></p>\n<p>To <strong><u>save</u></strong> the <strong><u>Earth</u></strong> we <strong><u>must</u></strong> get <strong><u>off</u></strong> the <strong><u>bench!</u></strong></p>\n<p><strong><u>Now</u></strong> we&#8217;ve <strong><u>on</u></strong>ly got a <strong><u>doz</u></strong>en <strong><u>years</u></strong></p>\n<p><strong><u>to</u></strong> take <strong><u>ac</u></strong>tion, before <strong><u>our</u></strong> worst <strong><u>fears</u></strong></p>\n<p><strong><u>come</u></strong> to <strong><u>pass</u>&#8230;&#8230;.. </strong><em>(very slow)-&gt;</em> <strong><u>Thanks</u></strong> to all <strong><u>those</u></strong> who <strong><u>lie</u>&#8230;..</strong></p>\n<p><strong>if we don&#8217;t act now we can kiss our butts good bye!!</strong></p>\n",
+    "tune": "Green Acres theme song",
     "songwriter": "Hank Tusinski",
     "songwriters": [
       "Hank Tusinski"
@@ -20688,10 +20584,10 @@
     "id": "wp-594",
     "source": "wp",
     "original_wp_id": 594,
-    "title": "La La La La Greed Goes Oo!",
+    "title": "La La La La Greed Goes On!",
     "slug": "la-la-la-la-greed-goes-oo",
-    "lyrics": "<p>Capitalism  has reduced everything</p>\n<p>to no more than simple corporate bling.</p>\n<p>The world is now entirely run by demagogues</p>\n<p>and they are all interested in only one thing.</p>\n<p>                        Money here, money there&#8230;</p>\n<p>                        Greed goes o-o-on!</p>\n<p>                        La la la la Greed goes on!</p>\n<p>Fossil fuels are creating a Hell on Earth!</p>\n<p>But corporate interests really do not care!</p>\n<p>So long as corporate shares increase in daily worth</p>\n<p>they will keep drillin&#8217;, and scrapin&#8217; the planet bare!</p>\n<p>                        Profit here, profit there&#8230;</p>\n<p>                        Greed goes on!</p>\n<p>                        La la la la Greed goes on!</p>\n<p>Plants and animals are dying everywhere!</p>\n<p>The greedy rich don&#8217;t get it that we&#8217;re linked.</p>\n<p>If they don&#8217;t wise up there will be one thing they&#8217;ll share&#8230;</p>\n<p>Just like us they all will soon become extinct!</p>\n<p>                        Denial here, denial there&#8230;</p>\n<p>                        in the end</p>\n<p>(very slow)-&gt;   La la la we&#8217;ll all be gone!</p>\n",
-    "tune": "Tune of \"Ob-la-di, O-la-da, Life Goes On\"",
+    "lyrics": "<p>Capitalism has reduced everything<br />\nto no more than simple corporate bling.<br />\nThe world is now entirely run by demagogues<br />\nand they are all interested in only one thing.<br />\nMoney here, money there&#8230;<br />\nGreed goes o-o-on!<br />\nLa la la la Greed goes on!</p>\n<p>Fossil fuels are creating a Hell on Earth!<br />\nBut corporate interests really do not care!<br />\nSo long as corporate shares increase in daily worth<br />\nthey will keep drillin&#8217;, and scrapin&#8217; the planet bare!<br />\nProfit here, profit there&#8230;<br />\nGreed goes on!<br />\nLa la la la Greed goes on!</p>\n<p>Plants and animals are dying everywhere!<br />\nThe greedy rich don&#8217;t get it that we&#8217;re linked.<br />\nIf they don&#8217;t wise up there will be one thing they&#8217;ll share&#8230;<br />\nJust like us they all will soon become extinct!<br />\nDenial here, denial there&#8230;<br />\nin the end<br />\n(very slow)-&gt; La la la we&#8217;ll all be gone!</p>\n",
+    "tune": "O-bla-di O-bla-da",
     "songwriter": "Lee Stanfield",
     "songwriters": [
       "Lee Stanfield"
@@ -22399,7 +22295,7 @@
     "original_wp_id": 543,
     "title": "Legislative Mice",
     "slug": "legislative-mice",
-    "lyrics": "<p>Legislative mice</p>\n<p>                        Legislative mice</p>\n<p>                        See how they run!</p>\n<p>                        See how they run!</p>\n<p>                        They all run after the governor.</p>\n<p>                        Like him they are rotten down to the core.</p>\n<p>                        The Kochs have bought them off long before.</p>\n<p>                        Legislative mice</p>\n<p>                        for sale at the right price!</p>\n<p>                        See how they run!</p>\n<p>                        See how they run!</p>\n<p>                        They&#8217;re only in town for the Koch brothers.</p>\n<p>                        When teachers and parents and all others</p>\n<p>                        show up demanding they do what is right</p>\n<p>                        they hide from sight!</p>\n<p>                        They hide from sight!</p>\n<p>                        They have no shame!</p>\n<p>                        They have no shame!</p>\n<p>                        They scurry around behind closed doors.</p>\n<p>                        They pass laws only the Koch&#8217;s adore</p>\n<p>                        giving the rich what they steal from the poor!</p>\n<p>                        Now hear us roar!</p>\n<p>                        <strong>WE&#8217;LL TAKE NO MORE!</strong></p>\n<p><strong>                        UNKOCH ARIZONA!</strong></p>\n",
+    "lyrics": "<p>Legislative mice<br />\nLegislative mice<br />\nSee how they run!<br />\nSee how they run!<br />\nThey all run after the governor.<br />\nLike him they are rotten down to the core.<br />\nThe Kochs have bought them off long before.</p>\n<p>Legislative mice<br />\nfor sale at the right price!<br />\nSee how they run!<br />\nSee how they run!<br />\nThey&#8217;re only in town for the Koch brothers.<br />\nWhen teachers and parents and all others<br />\nshow up demanding they do what is right<br />\nthey hide from sight!<br />\nThey hide from sight!</p>\n<p>They have no shame!<br />\nThey have no shame!<br />\nThey scurry around behind closed doors.<br />\nThey pass laws only the Koch&#8217;s adore<br />\ngiving the rich what they steal from the poor!<br />\nNow hear us roar!</p>\n<p><strong>WE&#8217;LL TAKE NO MORE!</strong></p>\n<p><strong> UNKOCH ARIZONA!</strong></p>\n",
     "tune": "Three Blind Mice",
     "songwriter": "Lee Stanfield",
     "songwriters": [
@@ -33901,8 +33797,8 @@
     "original_wp_id": 1153,
     "title": "Initiative 297",
     "slug": "initiative-297",
-    "lyrics": "<p>I was travelin&#8217; down the highway<br />\nAs happy as a clam,<br />\n&#8216;Til I got caught in a<br />\nHorrendous traffic jam.<br />\nThen I noticed right beside me,<br />\nThere on the road,<br />\nA truck with nuclear waste<br />\nAs its load.</p>\n<p>It was bound for eastern Washington,<br />\nWith Hanford as its goal,<br />\nAnd I shuddered as I thought of<br />\nThe radioactive toll<br />\nIt could take on people parked there<br />\nJust like sitting ducks<br />\nExposed to radiation<br />\nFrom that idling truck.</p>\n<p>Little did I know thousands more<br />\nWould come down the road,<br />\nSent by DOE<br />\nWith their cancer causing load.<br />\nWhat kind of government leaders<br />\nWould expose us to such harm<br />\nAs when they sent troops to Iraq<br />\nBased on a false alarm.</p>\n<p>Well, we&#8217;re going to stop those bureaucrats<br />\nIn Washington D.C.<br />\nFrom sending any more waste here<br />\nTo damage you and me.<br />\nGet out and tell folks everywhere<br />\nThe danger that we face,<br />\nWork for 297,<br />\nSave us from more waste.</p>\n",
-    "tune": "Theme of Beverly Hillbillies",
+    "lyrics": "<p>I was travelin’ down the highway<br />\nAs happy as a clam,<br />\n‘Til I got caught in a<br />\nHorrendous traffic jam.<br />\nThen I noticed right beside me,<br />\nThere on the road,<br />\nA truck with nuclear waste<br />\nAs its load.</p>\n<p>It was bound for eastern Washington,<br />\nWith Hanford as its goal,<br />\nAnd I shuddered as I thought of<br />\nThe radioactive toll<br />\nIt could take on people parked there<br />\nJust like sitting ducks<br />\nExposed to radiation<br />\nFrom that idling truck.</p>\n<p>Little did I know thousands more<br />\nWould come down the road,<br />\nSent by DOE<br />\nWith their cancer causing load.<br />\nWhat kind of government leaders<br />\nWould expose us to such harm<br />\nAs when they sent troops to Iraq<br />\nBased on a false alarm.</p>\n<p>Well, we’re going to stop those bureaucrats<br />\nIn Washington D.C.<br />\nFrom sending any more waste here<br />\nTo damage you and me.<br />\nGet out and tell folks everywhere<br />\nThe danger that we face,<br />\nWork for 297,<br />\nSave us from more waste.</p>\n",
+    "tune": "Beverly Hillbillies Theme",
     "songwriter": "Kay Thode",
     "songwriters": [
       "Kay Thode"
@@ -35730,7 +35626,7 @@
     "original_wp_id": 1097,
     "title": "Cycle of Abuse",
     "slug": "cycle-of-abuse",
-    "lyrics": "<p><em>from</em><i>The Raging Grannies Songbook, 1993 </i><br />\n<i></i></p>\n<p><i> </i>There’s a cycle, there’s a cycle, there’s a cycle of abuse,<br />\nGuns and beatings, harsh mistreatings,<br />\nThere’s a cycle of abuse.<br />\nHow to break it, that’s the question<br />\nFor all women far and near,<br />\nSo all sisters on the planet<br />\nCan walk safely without fear.</p>\n<p>We as Grannies, take the challenge, and with thought we do reflect,<br />\nOn a world full of awareness,<br />\nAnd of mutual respect.<br />\nNow all people have a role to play,<br />\nIn this universal scheme.<br />\nTo enlist all of our children<br />\nTo embrace the global dream.</p>\n",
+    "lyrics": "<p><i> </i>There’s a cycle, there’s a cycle, there’s a cycle of abuse,<br />\nGuns and beatings, harsh mistreatings,<br />\nThere’s a cycle of abuse.<br />\nHow to break it, that’s the question<br />\nFor all women far and near,<br />\nSo all sisters on the planet<br />\nCan walk safely without fear.</p>\n<p>We as Grannies, take the challenge, and with thought we do reflect,<br />\nOn a world full of awareness,<br />\nAnd of mutual respect.<br />\nNow all people have a role to play,<br />\nIn this universal scheme.<br />\nTo enlist all of our children<br />\nTo embrace the global dream.</p>\n",
     "tune": "Clementine",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -35742,14 +35638,15 @@
     ],
     "issues": [
       "Gender Issues",
-      "Human & Civil Rights"
+      "Human & Civil Rights",
+      "Women"
     ],
     "key_or_starting_note": "",
     "youtube_link": "",
     "youtube_link_2": "",
     "date_written_or_updated": "",
     "date_published": "2012-12-30",
-    "source_notes": "",
+    "source_notes": "From The Raging Grannies Songbook, 1993",
     "feature_on_homepage": false,
     "display_centrally": false,
     "duplicate_of": null,
@@ -35762,15 +35659,15 @@
     "original_wp_id": 1096,
     "title": "Cuba Cha Cha Cha",
     "slug": "cuba-cha-cha-cha",
-    "lyrics": "<p><em>from the Vancouver Raging Grannies </em><br />\n<em></em></p>\n<p>Let’s move the cargo<br />\nStop the embargo<br />\nLet the Cubans have their way<br />\nThey’ve earned their freedom<br />\nNo need to bleed ’em –<br />\nU.S.A. should go away<br />\nCHA CHA CHA</p>\n<p>It’s such a cheap shot<br />\nTo force a boycott<br />\nOn countries far too small to play!<br />\nIt’s time to call a halt –<br />\nStop this unjust assault!<br />\nU.S.A should go away<br />\nCHA CHA CHA</p>\n<p>Let’s move the cargo<br />\nStop the embargo<br />\nLet the Cubans have their way<br />\nThey’ve earned their freedom<br />\nNo need to bleed ‘em –<br />\nU.S.A. should go away<br />\nCHA CHA CHA</p>\n",
+    "lyrics": "<p>Let’s move the cargo<br />\nStop the embargo<br />\nLet the Cubans have their way<br />\nThey’ve earned their freedom<br />\nNo need to bleed ’em –<br />\nU.S.A. should go away<br />\nCHA CHA CHA</p>\n<p>It’s such a cheap shot<br />\nTo force a boycott<br />\nOn countries far too small to play!<br />\nIt’s time to call a halt –<br />\nStop this unjust assault!<br />\nU.S.A should go away<br />\nCHA CHA CHA</p>\n<p>Let’s move the cargo<br />\nStop the embargo<br />\nLet the Cubans have their way<br />\nThey’ve earned their freedom<br />\nNo need to bleed ‘em –<br />\nU.S.A. should go away<br />\nCHA CHA CHA</p>\n",
     "tune": "La Cucuracha",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
       "Unlisted Songwriter"
     ],
-    "gaggle": "Seattle",
+    "gaggle": "Vancouver BC",
     "gaggles": [
-      "Seattle"
+      "Vancouver BC"
     ],
     "issues": [
       "Government & Power"
@@ -35793,7 +35690,7 @@
     "original_wp_id": 1095,
     "title": "Corporate Free Schools",
     "slug": "corporate-free-schools",
-    "lyrics": "<p><em>by: Kay Thode</em><br />\n<em></em></p>\n<p>Junk food in the halls,<br />\nAnd Pepsi machines too.<br />\nDoes the school board think<br />\nThese are good for you?<br />\nRotting our kids’ teeth,<br />\nMaking kids obese!<br />\nIt isn’t nice to push caffeine<br />\n‘Cause of a corporate lease!</p>\n<p><em>Chorus:</em><br />\nOh, no logos, no more ads!<br />\nGet them out of schools.<br />\nThat isn’t education<br />\nAnd we’re not corporate tools!<br />\n(Repeat)</p>\n<p>Have a tax revolt<br />\nFor a progressive tax,<br />\nRaise the bucks for schools,<br />\nGive corporate lease the axe!<br />\nNo more corporate ads,<br />\nOr junk food in our schools.<br />\nWhat fun to have organic foods—<br />\nThat will be really cool!</p>\n<p><em>Chorus</em></p>\n",
+    "lyrics": "<p>Junk food in the halls,<br />\nAnd Pepsi machines too.<br />\nDoes the school board think<br />\nThese are good for you?<br />\nRotting our kids’ teeth,<br />\nMaking kids obese!<br />\nIt isn’t nice to push caffeine<br />\n‘Cause of a corporate lease!</p>\n<p><em>Chorus:</em><br />\nOh, no logos, no more ads!<br />\nGet them out of schools.<br />\nThat isn’t education<br />\nAnd we’re not corporate tools!<br />\n(Repeat)</p>\n<p>Have a tax revolt<br />\nFor a progressive tax,<br />\nRaise the bucks for schools,<br />\nGive corporate lease the axe!<br />\nNo more corporate ads,<br />\nOr junk food in our schools.<br />\nWhat fun to have organic foods—<br />\nThat will be really cool!</p>\n<p><em>Chorus</em></p>\n",
     "tune": "Jingle Bells",
     "songwriter": "Kay Thode",
     "songwriters": [
@@ -35804,6 +35701,7 @@
       "Seattle"
     ],
     "issues": [
+      "Business & Economy",
       "Education",
       "Holiday & Celebrations"
     ],
@@ -35836,10 +35734,10 @@
       "Seattle"
     ],
     "issues": [
-      "Gender Issues",
-      "Government & Power",
       "Healthcare",
-      "Reproductive Rights"
+      "Reproductive Rights",
+      "War & Peace",
+      "Women"
     ],
     "key_or_starting_note": "",
     "youtube_link": "",
@@ -35859,7 +35757,7 @@
     "original_wp_id": 1093,
     "title": "Coffee- Java Jive",
     "slug": "coffee-java-jive",
-    "lyrics": "<p><em>by: Jeanne Lorimer</em></p>\n<p>We love coffee, yes siree.<br />\nCoffee is the drink<br />\nFor you and me.<br />\n“Tea Party” NO.<br />\nWe won’t go.<br />\nA cuppa cuppa cuppa cuppa coffee.</p>\n<p>We don’t rant and we don’t rave.<br />\nJust make our point.<br />\nWe’ll never cave.<br />\nCiv-il-i-ty, the way for you and me.<br />\nA cuppa cuppa cuppa cuppa coffee.</p>\n<p>OH YEAH!</p>\n",
+    "lyrics": "<p>We love coffee, yes siree.<br />\nCoffee is the drink<br />\nFor you and me.<br />\n“Tea Party” NO.<br />\nWe won’t go.<br />\nA cuppa cuppa cuppa cuppa coffee.</p>\n<p>We don’t rant and we don’t rave.<br />\nJust make our point.<br />\nWe’ll never cave.<br />\nCiv-il-i-ty, the way for you and me.<br />\nA cuppa cuppa cuppa cuppa coffee.</p>\n<p>OH YEAH!</p>\n",
     "tune": "",
     "songwriter": "Jeanne Lorimer",
     "songwriters": [
@@ -35984,7 +35882,7 @@
     "original_wp_id": 1089,
     "title": "Chemical Restaurant",
     "slug": "chemical-restaurant",
-    "lyrics": "<p><i></i></p>\n<p>They won’t say what they’re cooking today</p>\n<p>At the Chemical Restaurant</p>\n<p>Maybe it’s beans with monkey genes</p>\n<p>At the Chemical Restaurant</p>\n<p>You got one sore breast, or maybe both?</p>\n<p>Maybe the milk is full of Bovine Growth</p>\n<p>They won’t say what they’re cooking today</p>\n<p>At the Chemical Restaurant</p>\n<p>They won’t say what they’re zapping today</p>\n<p>At the Chemical Restaurant</p>\n<p>They can’t wait to irradiate</p>\n<p>At the Chemical Restaurant</p>\n<p>Thanks, Monsanto, it looks so good</p>\n<p>We mustn’t bitch if it tastes like wood</p>\n<p>They won’t say what they’re zapping today</p>\n<p>At the Chemical Restaurant</p>\n<p>They won’t say what they’re cooking today<br />\n At the Chemical Restaurant<br />\n Those almighty sods are playing God<br />\n At the Chemical Restaurant<br />\n They’re patenting seeds—you know what’s next?<br />\n If we don’t stop ‘em they’ll be patenting // sex!<br />\n They won’t say what they’re zapping today<br />\n At the Chemical Restaurant</p>\n",
+    "lyrics": "<p>They won’t say what they’re cooking today<br />\nAt the Chemical Restaurant<br />\nMaybe it’s beans with monkey genes<br />\nAt the Chemical Restaurant<br />\nYou got one sore breast, or maybe both?<br />\nMaybe the milk is full of Bovine Growth<br />\nThey won’t say what they’re cooking today<br />\nAt the Chemical Restaurant</p>\n<p>They won’t say what they’re zapping today<br />\nAt the Chemical Restaurant<br />\nThey can’t wait to irradiate<br />\nAt the Chemical Restaurant<br />\nThanks, Monsanto, it looks so good<br />\nWe mustn’t bitch if it tastes like wood<br />\nThey won’t say what they’re zapping today<br />\nAt the Chemical Restaurant</p>\n<p>They won’t say what they’re cooking today<br />\nAt the Chemical Restaurant<br />\nThose almighty sods are playing God<br />\nAt the Chemical Restaurant<br />\nThey’re patenting seeds—you know what’s next?<br />\nIf we don’t stop ‘em they’ll be patenting // sex!<br />\nThey won’t say what they’re zapping today<br />\nAt the Chemical Restaurant</p>\n",
     "tune": "Alice’s Restaurant",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -36015,7 +35913,7 @@
     "original_wp_id": 1088,
     "title": "Celebrate",
     "slug": "celebrate",
-    "lyrics": "<p><i>by: Kay Thode </i><br />\n<i></i></p>\n<p><i> </i><br />\nWe’re gonna dance a little, prance a little,<br />\nSay goodbye to that reactor.<br />\nHeart of America,<br />\nYou made it happen,<br />\nTHANKS!</p>\n<p>We’re gonna sing a little, chant a little,<br />\nRaise our glasses up a little.<br />\nWe’re here to celebrate,<br />\nThe end of Fast Flux,<br />\nFor all time!<br />\n<i> </i></p>\n",
+    "lyrics": "<p>We’re gonna dance a little, prance a little,<br />\nSay goodbye to that reactor.<br />\nHeart of America,<br />\nYou made it happen,<br />\nTHANKS!</p>\n<p>We’re gonna sing a little, chant a little,<br />\nRaise our glasses up a little.<br />\nWe’re here to celebrate,<br />\nThe end of Fast Flux,<br />\nFor all time!<br />\n<i> </i></p>\n",
     "tune": "That’s the Glory of Love",
     "songwriter": "Kay Thode",
     "songwriters": [
@@ -36035,7 +35933,7 @@
     "date_published": "2012-12-30",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -36046,7 +35944,7 @@
     "original_wp_id": 1087,
     "title": "Capitol Ship",
     "slug": "capitol-ship",
-    "lyrics": "<p><em>by: Monica Zucker </em><br />\n<em></em></p>\n<p>A capitol team for America’s dream<br />\nIs the powerful George Bush crew.<br />\nNo disbelief dismays our Chief<br />\nOr troubles the chosen few.<br />\nThe man at the wheel has nerves of steel–<br />\nHe laughed as he dodged the dra- a- aft.<br />\nBut when gale winds blow he’s gone below—<br />\nHe’s in Crawford—his cow has calfed.</p>\n<p><em>Chorus:</em><br />\nSo blow ye winds, heigh ho!<br />\nA-bombing we will go!<br />\nIgnore those groups<br />\nWho’d bring home troops.<br />\nCover up with a media show-o-o.<br />\nLet’s feed the rich once more,<br />\nAnd starve out all the poor.<br />\nEntitlements lost—<br />\nCan’t pay their cost—<br />\nMore bombs and pork for sure.</p>\n<p>They bombed Iraq without a fact,<br />\nAnd Congress fell on its knees.<br />\nThe Patriot Act means decks are stacked<br />\nSo George can do as he please.<br />\nKatrina meant that the President<br />\nDidn’t care if we lived or di-i-ied.<br />\nSeCURity isn’t social, you see.<br />\nOur safety is denied</p>\n<p><em>Chorus</em></p>\n",
+    "lyrics": "<p>A capitol team for America’s dream<br />\nIs the powerful <em>George Bush</em> crew.<br />\nNo disbelief dismays our Chief<br />\nOr troubles the chosen few.<br />\nThe man at the wheel has nerves of steel–<br />\nHe laughed as he dodged the dra- a- aft.<br />\nBut when gale winds blow he’s gone below—<br />\nHe’s in <em>Crawford</em>—his cow has calfed.</p>\n<p><em>Chorus:</em><br />\nSo blow ye winds, heigh ho!<br />\nA-bombing we will go!<br />\nIgnore those groups<br />\nWho’d bring home troops.<br />\nCover up with a media show-o-o.<br />\nLet’s feed the rich once more,<br />\nAnd starve out all the poor.<br />\nEntitlements lost—<br />\nCan’t pay their cost—<br />\nMore bombs and pork for sure.</p>\n<p>They bombed <em>Iraq</em> without a fact,<br />\nAnd Congress fell on its knees.<br />\nThe Patriot Act means decks are stacked<br />\nSo <em>Georg</em>e can do as he please.<br />\nKatrina meant that the President<br />\nDidn’t care if we lived or di-i-ied.<br />\nSeCURity isn’t social, you see.<br />\nOur safety is denied</p>\n<p><em>Chorus</em></p>\n",
     "tune": "A Capital Ship",
     "songwriter": "Monica Zucker",
     "songwriters": [
@@ -36079,7 +35977,7 @@
     "original_wp_id": 1086,
     "title": "Campaign Time",
     "slug": "campaign-time",
-    "lyrics": "<p><i></i></p>\n<p>Campaign time<br />\nAnd the country’s in trouble.<br />\nPoor getting poorer<br />\nRich doing just fine.</p>\n<p>Bankster’s greed<br />\nBrought the system to its knees<br />\nChildren go hungry.<br />\nAnd the homeless die!</p>\n<p>Bailed out those banks<br />\nToo big to fail.<br />\nThey’re even bigger now<br />\nNo banksters in jail.</p>\n<p>Talk is cheap<br />\nAnd job promises fly by.<br />\nChange stays the same<br />\nHope’s on the fly.</p>\n",
+    "lyrics": "<p>Campaign time<br />\nAnd the country’s in trouble.<br />\nPoor getting poorer<br />\nRich doing just fine.<br />\nBankster’s greed<br />\nBrought the system to its knees<br />\nChildren go hungry.<br />\nAnd the homeless die!</p>\n<p>Bailed out those banks<br />\nToo big to fail.<br />\nThey’re even bigger now<br />\nNo banksters in jail.<br />\nTalk is cheap<br />\nAnd job promises fly by.<br />\nChange stays the same<br />\nHope’s on the fly.</p>\n",
     "tune": "Summertime",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -36111,7 +36009,7 @@
     "original_wp_id": 1085,
     "title": "Campaign Finance Reform",
     "slug": "campaign-finance-reform",
-    "lyrics": "<p><em><br />By Hinda Kipnis</em></p>\n<p>CorpoRAtions have FREE speech like PEOple.<br />\nThey have RIGHTS just like YOU and like ME.<br />\nGenuFLECT to the COR porate POWer.<br />\nThe SupREME court has RULED, don’t you SEE.</p>\n<p>CorpoRAtions have BOUGHT off our CONgress,<br />\nThe STATES and the WHOLE country, too.<br />\nCorp’rate TRILLions now equal union MILLions.<br />\nCorp’rate RULE is the LAW for ME and you.</p>\n<p>Now FOLKS we can FEEL reassured<br />\nWho CARES if deMOCracy is gone?<br />\nWe’ll be RULED by the NEO-cons from WALmart,<br />\nGoldman SACHS, AIG, and Exxon.</p>\n<p>Shout: DON’T FORGET BANK OF AMERICA!<br />\nAND THE MILITARY INDUSTRIAL COMPLEX!</p>\n<p>Sooooooooooooooooooooo&#8212;&#8212;&#8212;&#8212;&#8211;</p>\n<p>GenuFLECT to CORporate POWer.<br />\nThe SupREME court has RULED, don’t you see?<br />\nCorpoRAtions are VERY special PEEEEEE puuuuul…</p>\n<p>Spoken: CAMPAIGN FINANCE REFORM IS HISTORY!!</p>\n",
+    "lyrics": "<p>CorpoRAtions have FREE speech like PEOple.<br />\nThey have RIGHTS just like YOU and like ME.<br />\nGenuFLECT to the COR porate POWer.<br />\nThe SupREME court has RULED, don’t you SEE.</p>\n<p>CorpoRAtions have BOUGHT off our CONgress,<br />\nThe STATES and the WHOLE country, too.<br />\nCorp’rate TRILLions now equal union MILLions.<br />\nCorp’rate RULE is the LAW for ME and you.</p>\n<p>Now FOLKS we can FEEL reassured<br />\nWho CARES if deMOCracy is gone?<br />\nWe’ll be RULED by the NEO-cons from WALmart,<br />\nGoldman SACHS, AIG, and Exxon.</p>\n<p>Shout: DON’T FORGET BANK OF AMERICA!<br />\nAND THE MILITARY INDUSTRIAL COMPLEX!</p>\n<p>Sooooooooooooooooooooo————–</p>\n<p>GenuFLECT to CORporate POWer.<br />\nThe SupREME court has RULED, don’t you see?<br />\nCorpoRAtions are VERY special PEEEEEE puuuuul…</p>\n<p>Spoken: CAMPAIGN FINANCE REFORM IS HISTORY!!</p>\n",
     "tune": "Red River Valley",
     "songwriter": "Hinda Kipnis",
     "songwriters": [
@@ -36144,11 +36042,11 @@
     "original_wp_id": 1084,
     "title": "Buy, Buy Our Brand!",
     "slug": "buy-buy-our-brand",
-    "lyrics": "<p><em>by: Monica Zucker </em><br />\n<em></em></p>\n<p>Buy our little purple pill—<br />\nIt will cure your every ill.<br />\nBuy, buy our brand!</p>\n<p>If you feel the least bit sick,<br />\nTrust in us—our ads are slick.<br />\nBuy, buy our brand!</p>\n<p>Millions die in other lands<br />\nCause they can’t afford our brands.<br />\nBuy, buy our brand!</p>\n<p>So pay the price—and buy some more.<br />\nOur goods are flying from the store.<br />\nBuy, buy our brand!</p>\n<p>Get your doc to specify our brand name.<br />\nReject generics even though they’re just the same.</p>\n<p>We’ve got purple pills galore,<br />\nAnd patent rights forevermore!<br />\nOur brand! Buy, buy!</p>\n",
+    "lyrics": "<p>Buy our little purple pill—<br />\nIt will cure your every ill.<br />\nBuy, buy our brand!<br />\nIf you feel the least bit sick,<br />\nTrust in us—our ads are slick.<br />\nBuy, buy our brand!<br />\nMillions die in other lands<br />\nCause they can’t afford our brands.<br />\nBuy, buy our brand!</p>\n<p>So pay the price—and buy some more.<br />\nOur goods are flying from the store.<br />\nBuy, buy our brand!<br />\nGet your doc to specify our brand name.<br />\nReject generics even though they’re just the same.<br />\nWe’ve got purple pills galore,<br />\nAnd patent rights forevermore!<br />\nOur brand! Buy, buy!</p>\n",
     "tune": "Bye Bye Blackbird",
-    "songwriter": "Unlisted Songwriter",
+    "songwriter": "Monica Zucker",
     "songwriters": [
-      "Unlisted Songwriter"
+      "Monica Zucker"
     ],
     "gaggle": "Seattle",
     "gaggles": [
@@ -36175,7 +36073,7 @@
     "original_wp_id": 1083,
     "title": "Bush Barrel Polka 2007",
     "slug": "bush-barrel-polka-2007",
-    "lyrics": "<p>Throw out the baby—<br />\nAnd then the bathwater too!<br />\nWho needs Bin Laden<br />\nWhen our own fascists will do?<br />\nOur Constitution<br />\nNeed some revision because<br />\nNow’s the time to give up freedom<br />\nAnd seek safety’s flaws!</p>\n<p>When you hear that rumble at the door<br />\nIt’s the NSA or FBI.<br />\nDon’t call your lawyer or implore<br />\nTo know the charge or reason why.</p>\n<p>Down with due process!<br />\nWhy would you ever need that?<br />\nYou’re safe and comfy—<br />\nLiberty’s only old hat.<br />\nJust give up freedom.<br />\nCard us and search us, too.<br />\nNow’s the time to call the Army—<br />\nSecret justice for you!</p>\n<p>In Iraq we must begin a surge<br />\nTo prove there’s still a chance to win.<br />\nAnd now it seems we need a purge<br />\nCause they let some Democrats in.</p>\n<p>Should we impeach them<br />\nFor lying and spying and war?<br />\nTorture, rendition—<br />\nIs that what we’re fighting for?<br />\nShame on our nation!<br />\nMust this be done in our name?<br />\nTell the world that we reject it—<br />\nWe know who’s to blame.</p>\n",
+    "lyrics": "<p>Throw out the baby—<br />\nAnd then the bathwater too!<br />\nWho needs <em>Bin Laden</em><br />\nWhen our own fascists will do?<br />\nOur Constitution<br />\nNeed some revision because<br />\nNow’s the time to give up freedom<br />\nAnd seek safety’s flaws!</p>\n<p>When you hear that rumble at the door<br />\nIt’s the NSA or FBI.<br />\nDon’t call your lawyer or implore<br />\nTo know the charge or reason why.</p>\n<p>Down with due process!<br />\nWhy would you ever need that?<br />\nYou’re safe and comfy—<br />\nLiberty’s only old hat.<br />\nJust give up freedom.<br />\nCard us and search us, too.<br />\nNow’s the time to call the Army—<br />\nSecret justice for you!</p>\n<p>In <em>Iraq</em> we must begin a surge<br />\nTo prove there’s still a chance to win.<br />\nAnd now it seems we need a purge<br />\nCause they let some Democrats in.</p>\n<p>Should we impeach them<br />\nFor lying and spying and war?<br />\nTorture, rendition—<br />\nIs that what we’re fighting for?<br />\nShame on our nation!<br />\nMust this be done in our name?<br />\nTell the world that we reject it—<br />\nWe know who’s to blame.</p>\n",
     "tune": "Beer Barrel Polka",
     "songwriter": "Monica Zucker",
     "songwriters": [
@@ -36196,7 +36094,7 @@
     "date_published": "2012-12-30",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -40060,7 +39958,7 @@
     "title": "Spill, Baby, Spill (Oil Disaster)",
     "slug": "spill-baby-spill-oil-disaster",
     "lyrics": "<p>From the lovely Gulf of Mexico<br />\nTo the wild Alaskan seas,<br />\nWe will trash the earth to drill the oil,<br />\nJust to fuel our SUV&#8217;s<br />\nGasoline is our addiction<br />\nWe will never get our fill<br />\nWe’ll pollute the world environment,<br />\nAs we chant Drill, baby, drill!</p>\n<p>Let our clear blue oceans turn to black<br />\nLet the shore birds all get killed<br />\nFor whenever there are accidents<br />\nWe’ll just chant Spill, baby, spill!<br />\nWe will kill the whales and porpoises<br />\nand the fishes in the seas<br />\nBut who cares as long as we have gas<br />\nJust to drive our SUV’s</p>\n",
-    "tune": "The Marines' Hymn",
+    "tune": "The Marine Hymn",
     "songwriter": "Marcy Matasick",
     "songwriters": [
       "Marcy Matasick"
@@ -43674,7 +43572,7 @@
     "title": "The Human Race In One",
     "slug": "the-human-race-in-one",
     "lyrics": "<p>Koran, Torah, Upanishads and OM<br />\nThe holy work by any name<br />\nSays all of us are ONE<br />\nWe may look very different<br />\nAnd speak in different tongues<br />\nBut let us not forget the truth<br />\nThe human race is one.</p>\n<p>Some beliefs are written down<br />\nAnd some passed on by word<br />\nTo say, &#8216;I&#8217;m right and you are wrong!&#8217;<br />\nIs silly and absurd<br />\nTruth has as many faces<br />\nAs an onion has its skins<br />\nTruth&#8217;s been found by every race<br />\nThere is no one race that wins!</p>\n",
-    "tune": "Puff / the Magic Dragon",
+    "tune": "Puff, the Magic Dragon",
     "songwriter": "Alma Norman",
     "songwriters": [
       "Alma Norman"
@@ -47404,7 +47302,7 @@
     "title": "Dandelions Are GOOD For You",
     "slug": "dandelions-are-good-for-you",
     "lyrics": "<p>Dandelion flowers are a little sign of hope<br />\nWhoever poisons them on lawns would have to be a dope.<br />\nOr else someone who doesn’t know what dandelions do<br />\nFor our insides and our outsides and for our whole world too.</p>\n<p>When dandelions are all grown, their puffy heads turn grey<br />\nAnd with my breath I blow their fluff and watch it float away.<br />\nAnd in the spring it comes again for us to pick and eat<br />\nA yellow dandelion lawn is Mother Nature’s treat</p>\n<p>If every lawn grew dandelions, our air would be so sweet<br />\nOur tummies would be happy, they would tickle all our feet.<br />\nEvery flower stands on guard to help us day by day<br />\nI’ll have a dandelion lawn where you can come and play!</p>\n<p><em>THEN WE ADD;<br />\ntune: Jeremiah was a Bullfrog</em></p>\n<p>Dandelion lawns now<br />\nFor the boys &amp; girls now<br />\nNo more poisons in the deep blue sea<br />\nLawns for you and me!</p>\n<p><em>Repeat 3 times, clap and form conga line</em></p>\n<p><em>then chant</em>: We love dandelions!</p>\n",
-    "tune": "Jeremiah Was a Bullfrog / Puff / the Magic Dragon",
+    "tune": "Jeremiah Was a Bullfrog / Puff / Puff, the Magic Dragon",
     "songwriter": "Rose DeShaw",
     "songwriters": [
       "Rose DeShaw"
@@ -49863,7 +49761,7 @@
     "title": "Bailout!",
     "slug": "bailout",
     "lyrics": "<p>From the fall of Lehman Brothers to the fall of AIG,<br />\nWe will bail out all investment firms and insurance companies.<br />\nFor we bankrolled lots of S&amp;Ls, but screwed Enron employees,<br />\nSo if your house has been foreclosed, don&#8217;t ask for our help, please.</p>\n<p>If Katrina blew your house away when you lived in New Orleans,<br />\nAnd we gave you toxic mobile homes and we washed away your dreams,<br />\nDon&#8217;t come whining to the White House now, or to the Capitol Dome.<br />\nWe&#8217;ll deregulate the USA &#8217;til the rich own all the homes.</p>\n<p>If you get sick, don’t come to us, &#8217;cause we don’t give a damn.<br />\nAnd your pensions tanked? That really stank, but don’t look to Uncle Sam.<br />\nWe are giving all your taxes now to the fat cats, they’re our friends.<br />\nAnd there’s nothing you can do at all; corporate welfare never ends.</p>\n<p>Oh, we’re laughing all along the way to the bank that we now own!<br />\n‘Cause there’s no more regulation on those mortgages and loans.<br />\nOh, we have no funds to fix our schools, or our roads or libraries.<br />\nSeven hundred billion down the drain while we bring you to your knees.</p>\n<p>Well, McCain has six or seven homes ’though he isn’t really sure;<br />\nAnd Sarah’s wardrobe cost more than my house plus yours and yours.<br />\nOh, deregulation’s quite a scheme, and there’s nothing you can do&#8230;.<br />\nUnless we get out there and use our votes to turn all those red states blue!</p>\n",
-    "tune": "The Marines' Hymn",
+    "tune": "The Marine Hymn",
     "songwriter": "Sunny Armer and Vicki Ryder",
     "songwriters": [
       "Sunny Armer",
