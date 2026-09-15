@@ -11,7 +11,7 @@ get_header();
 	<div class="tbl-hero-grid">
 		<div class="tbl-hero-left">
 			<div class="tbl-hero-eyebrow">Local Women <span class="tbl-hero-dot" aria-hidden="true"></span> Local Gaggle</div>
-			<h1 class="tbl-hero-title"><?php echo esc_html( tbl_gaggle_name() ); ?> <em>Raging Grannies</em></h1>
+			<h1 class="tbl-hero-title"><?php echo tbl_gaggle_hero_title_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — escaped inside the helper ?></h1>
 			<p class="tbl-hero-tagline"><?php echo esc_html( tbl_tagline() ); ?></p>
 		</div>
 		<div class="tbl-hero-right">

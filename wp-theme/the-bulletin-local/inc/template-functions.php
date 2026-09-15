@@ -27,11 +27,29 @@ function tbl_gaggle_name(): string {
 }
 
 /**
- * The gaggle's full AKA: "<locator> Raging Grannies".
- * Used in the hero title and footer wordmark.
+ * The gaggle's full AKA: "<locator> Raging Grannies", unless the gaggle set a
+ * Full name in Gaggle Settings (e.g. "Raging Grannies of Rolla").
+ * Used in the hero title, footer wordmark, and structured data.
  */
 function tbl_gaggle_aka(): string {
+	$custom = tbl_get_option( 'display_name' );
+	if ( $custom !== '' ) {
+		return $custom;
+	}
 	return tbl_gaggle_name() . ' Raging Grannies';
+}
+
+/**
+ * Hero title as escaped HTML, with "Raging Grannies" set in <em> when the
+ * name contains it. Default names always do; custom ones usually do.
+ */
+function tbl_gaggle_hero_title_html(): string {
+	$aka = tbl_gaggle_aka();
+	$pos = stripos( $aka, 'Raging Grannies' );
+	if ( $pos === false ) {
+		return esc_html( $aka );
+	}
+	return esc_html( substr( $aka, 0, $pos ) ) . '<em>' . esc_html( substr( $aka, $pos, 15 ) ) . '</em>' . esc_html( substr( $aka, $pos + 15 ) );
 }
 
 /**

@@ -39,6 +39,7 @@ function tbl_register_options(): void {
 			'sanitize_callback' => 'tbl_sanitize_options',
 			'default'           => [
 				'hero_image_id'       => 0,
+				'display_name'        => '',
 				'youtube_channel_url' => '',
 				'facebook_url'        => '',
 				'tagline'             => '',
@@ -55,6 +56,7 @@ function tbl_register_options(): void {
 	);
 
 	add_settings_field( 'hero_image_id',       'Hero Image',                   'tbl_field_hero_image',        TBL_OPTIONS_PAGE, 'tbl_options_main' );
+	add_settings_field( 'display_name',        'Full name',                    'tbl_field_display_name',      TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'youtube_channel_url', 'YouTube Channel URL',          'tbl_field_youtube_url',       TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'facebook_url',        'Facebook Page URL',            'tbl_field_facebook_url',      TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'tagline',             'Tagline',                      'tbl_field_tagline',           TBL_OPTIONS_PAGE, 'tbl_options_main' );
@@ -69,6 +71,7 @@ add_action( 'admin_init', 'tbl_register_options' );
 function tbl_sanitize_options( $input ): array {
 	$out = [
 		'hero_image_id'       => 0,
+		'display_name'        => '',
 		'youtube_channel_url' => '',
 		'facebook_url'        => '',
 		'tagline'             => '',
@@ -111,6 +114,9 @@ function tbl_sanitize_options( $input ): array {
 	}
 	if ( isset( $input['tagline'] ) ) {
 		$out['tagline'] = sanitize_text_field( (string) $input['tagline'] );
+	}
+	if ( isset( $input['display_name'] ) ) {
+		$out['display_name'] = sanitize_text_field( (string) $input['display_name'] );
 	}
 	$out['show_local_songs'] = ! empty( $input['show_local_songs'] ) ? 1 : 0;
 	$out['hide_action_images'] = empty( $input['hide_action_images'] ) ? 0 : 1;
@@ -189,6 +195,20 @@ function tbl_field_facebook_url(): void {
 	?>
 	<input type="url" class="regular-text" name="<?php echo esc_attr( TBL_OPTIONS_KEY ); ?>[facebook_url]" value="<?php echo esc_attr( $val ); ?>" placeholder="https://www.facebook.com/yourgaggle" />
 	<p class="description">If set, a "Find us on Facebook" link appears in the footer and on the Contact page. Paste the address from your browser's address bar while viewing your page.</p>
+	<?php
+}
+
+/**
+ * Text: the gaggle's full name, for gaggles not called "<place> Raging Grannies".
+ * Blank means the default, "<site title> Raging Grannies".
+ */
+function tbl_field_display_name(): void {
+	$opts    = get_option( TBL_OPTIONS_KEY, [] );
+	$val     = isset( $opts['display_name'] ) ? (string) $opts['display_name'] : '';
+	$default = function_exists( 'tbl_gaggle_name' ) ? tbl_gaggle_name() . ' Raging Grannies' : '';
+	?>
+	<input type="text" class="regular-text" maxlength="120" name="<?php echo esc_attr( TBL_OPTIONS_KEY ); ?>[display_name]" value="<?php echo esc_attr( $val ); ?>" placeholder="<?php echo esc_attr( $default ); ?>" />
+	<p class="description">Leave blank and your site is called <strong><?php echo esc_html( $default ); ?></strong>, built from the Site Title. Fill this in only if your gaggle goes by something else, such as <em>Raging Grannies of Rolla</em> or <em>Raging Grannies Action League</em>. It shows on the front page, in the footer, and to search engines.</p>
 	<?php
 }
 

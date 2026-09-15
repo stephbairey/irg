@@ -985,3 +985,12 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Trade-off**: the render guard leaves formatting running to the end of the card rather than guessing where the writer meant to stop; that is visible but harmless, and the source fix is the real cure. Rochester and Tucson songs that used `<u>` for stress now show one underlined word instead of a wall of underline, which is what the writers meant.
 - **Revisit if**: the librarian wants a "check my markup" warning in `/edit-song/`, or a granny reports a song where the pairing rule guessed wrong (restore from the backup file).
 
+
+## D079 — Gaggle Settings gets a "Full name" for gaggles not called "<place> Raging Grannies" (theme 1.29.0)
+
+- **Status**: Decided
+- **Date**: 2026-09-15
+- **Context**: The Bulletin Local theme builds every gaggle's name as "<site title> Raging Grannies" (hero, footer wordmark, structured data). Rolla asked for "Raging Grannies of Rolla" (2026-09-11), and the Bay Area gaggle is legally the Raging Grannies Action League. Setting the site title to the full name renders "Raging Grannies of Rolla Raging Grannies". The Find a Gaggle map already carries proper names via the directory's `aka` field, so only the subsite was wrong.
+- **Choice**: a `display_name` text field in Gaggle Settings. Blank keeps the default. When set, `tbl_gaggle_aka()` returns it verbatim, and the hero italicizes "Raging Grannies" wherever it falls in the name. The site title stays the short locator (header brand block, contact-form subject prefix, admin bar), so nothing else changes.
+- **Trade-off**: two places to name a gaggle. Kept deliberately: the locator is what the network uses for slugs, subjects, and the map pin; the full name is presentation.
+- **Revisit if**: gaggles want the header brand block to show the full name too, or the directory `aka` and the subsite full name drift and should sync one way.
