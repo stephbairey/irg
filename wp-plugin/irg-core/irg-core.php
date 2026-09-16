@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.25.0
+ * Version: 3.25.1
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -2719,3 +2719,21 @@ add_filter( 'retrieve_password_notification_email', static function ( array $ema
 	$email['headers'] = "Reply-To: Web Granny <" . IRG_CONTACT_TO . ">\r\n";
 	return $email;
 }, 10, 4 );
+
+// ---------------------------------------------------------------------------
+// Old "/wp/" addresses bounce to the subsite front page.
+//
+// Several gaggle sites used to live at <domain>/wp/ (Calgary's old bookmark
+// was calgary.raginggrannies.org/wp/, 2026-09-16). On the multisite that path
+// is nothing, so it 404s with "Looks like that page wandered off." Send it
+// home instead, on every site, with a permanent redirect.
+// ---------------------------------------------------------------------------
+
+function irg_redirect_legacy_wp_path(): void {
+	$path = (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH );
+	if ( $path === '/wp' || $path === '/wp/' || str_starts_with( $path, '/wp/' ) ) {
+		wp_redirect( home_url( '/' ), 301 );
+		exit;
+	}
+}
+add_action( 'init', 'irg_redirect_legacy_wp_path', 1 );
