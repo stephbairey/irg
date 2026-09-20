@@ -575,5 +575,24 @@
     "lng": 35.2137,
     "aka": "Israel Raging Grannies",
     "slug": "israel"
+  },
+  {
+    "name": "Pittsburgh",
+    "region": "Pennsylvania",
+    "country": "United States",
+    "lat": 40.4406,
+    "lng": -79.9959,
+    "aka": "Pittsburgh Raging Grannies",
+    "slug": "pittsburgh",
+    "website": "https://www.raginggrannies412.com"
+  },
+  {
+    "name": "Coastal Carolina",
+    "region": "North Carolina",
+    "country": "United States",
+    "lat": 34.2257,
+    "lng": -77.9447,
+    "aka": "Raging Grannies of Coastal Carolina",
+    "slug": "coastal-carolina"
   }
 ]
