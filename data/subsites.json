@@ -1,9 +1,21 @@
 [
   {
-    "id": 65,
-    "slug": "south-minneapolis",
-    "name": "South Minneapolis",
-    "url": "https://south-minneapolis.raginggrannies.org"
+    "id": 67,
+    "slug": "coastal-carolina",
+    "name": "Coastal Carolina",
+    "url": "https://coastal-carolina.raginggrannies.org"
+  },
+  {
+    "id": 50,
+    "slug": "san-jose-santa-clara",
+    "name": "San Jose & Santa Clara County",
+    "url": "https://san-jose-santa-clara.raginggrannies.org"
+  },
+  {
+    "id": 49,
+    "slug": "sf-bay-area",
+    "name": "San Francisco Bay Area",
+    "url": "https://sf-bay-area.raginggrannies.org"
   },
   {
     "id": 48,
@@ -78,28 +90,28 @@
     "url": "https://manitowoc.raginggrannies.org"
   },
   {
-    "id": 35,
-    "slug": "madison",
-    "name": "Madison",
-    "url": "https://madison.raginggrannies.org"
-  },
-  {
-    "id": 49,
-    "slug": "sf-bay-area",
-    "name": "San Francisco Bay Area",
-    "url": "https://sf-bay-area.raginggrannies.org"
-  },
-  {
-    "id": 50,
-    "slug": "san-jose-santa-clara",
-    "name": "San Jose & Santa Clara County",
-    "url": "https://san-jose-santa-clara.raginggrannies.org"
-  },
-  {
     "id": 51,
     "slug": "santa-cruz",
     "name": "Santa Cruz",
     "url": "https://santa-cruz.raginggrannies.org"
+  },
+  {
+    "id": 52,
+    "slug": "sonoma",
+    "name": "Sonoma County",
+    "url": "https://sonoma.raginggrannies.org"
+  },
+  {
+    "id": 66,
+    "slug": "pittsburgh",
+    "name": "Pittsburgh",
+    "url": "https://pittsburgh.raginggrannies.org"
+  },
+  {
+    "id": 65,
+    "slug": "south-minneapolis",
+    "name": "South Minneapolis",
+    "url": "https://south-minneapolis.raginggrannies.org"
   },
   {
     "id": 64,
@@ -174,10 +186,10 @@
     "url": "https://south-florida.raginggrannies.org"
   },
   {
-    "id": 52,
-    "slug": "sonoma",
-    "name": "Sonoma County",
-    "url": "https://sonoma.raginggrannies.org"
+    "id": 35,
+    "slug": "madison",
+    "name": "Madison",
+    "url": "https://madison.raginggrannies.org"
   },
   {
     "id": 34,
@@ -190,12 +202,6 @@
     "slug": "grays-harbor",
     "name": "Gray's Harbor",
     "url": "https://grays-harbor.raginggrannies.org"
-  },
-  {
-    "id": 32,
-    "slug": "grant-county",
-    "name": "Grant County",
-    "url": "https://grant-county.raginggrannies.org"
   },
   {
     "id": 16,
@@ -294,6 +300,18 @@
     "url": "https://toronto.raginggrannies.org"
   },
   {
+    "id": 19,
+    "slug": "vancouver",
+    "name": "Vancouver",
+    "url": "https://vancouver.raginggrannies.org"
+  },
+  {
+    "id": 32,
+    "slug": "grant-county",
+    "name": "Grant County",
+    "url": "https://grant-county.raginggrannies.org"
+  },
+  {
     "id": 31,
     "slug": "fresno",
     "name": "Fresno",
@@ -364,12 +382,6 @@
     "slug": "winnipeg",
     "name": "Winnipeg",
     "url": "https://winnipeg.raginggrannies.org"
-  },
-  {
-    "id": 19,
-    "slug": "vancouver",
-    "name": "Vancouver",
-    "url": "https://vancouver.raginggrannies.org"
   },
   {
     "id": 2,
