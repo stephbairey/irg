@@ -1,9 +1,9 @@
 [
   {
-    "id": 67,
-    "slug": "coastal-carolina",
-    "name": "Coastal Carolina",
-    "url": "https://coastal-carolina.raginggrannies.org"
+    "id": 68,
+    "slug": "fox-valley",
+    "name": "Fox Valley",
+    "url": "https://fox-valley.raginggrannies.org"
   },
   {
     "id": 50,
@@ -102,6 +102,18 @@
     "url": "https://sonoma.raginggrannies.org"
   },
   {
+    "id": 53,
+    "slug": "south-florida",
+    "name": "South Florida",
+    "url": "https://south-florida.raginggrannies.org"
+  },
+  {
+    "id": 67,
+    "slug": "coastal-carolina",
+    "name": "Coastal Carolina",
+    "url": "https://coastal-carolina.raginggrannies.org"
+  },
+  {
     "id": 66,
     "slug": "pittsburgh",
     "name": "Pittsburgh",
@@ -180,12 +192,6 @@
     "url": "https://kentuckiana.raginggrannies.org"
   },
   {
-    "id": 53,
-    "slug": "south-florida",
-    "name": "South Florida",
-    "url": "https://south-florida.raginggrannies.org"
-  },
-  {
     "id": 35,
     "slug": "madison",
     "name": "Madison",
@@ -198,10 +204,10 @@
     "url": "https://humboldt.raginggrannies.org"
   },
   {
-    "id": 33,
-    "slug": "grays-harbor",
-    "name": "Gray's Harbor",
-    "url": "https://grays-harbor.raginggrannies.org"
+    "id": 17,
+    "slug": "maple-ridge",
+    "name": "Maple Ridge",
+    "url": "https://maple-ridge.raginggrannies.org"
   },
   {
     "id": 16,
@@ -288,12 +294,6 @@
     "url": "https://seattle.raginggrannies.org"
   },
   {
-    "id": 17,
-    "slug": "maple-ridge",
-    "name": "Maple Ridge",
-    "url": "https://maple-ridge.raginggrannies.org"
-  },
-  {
     "id": 18,
     "slug": "toronto",
     "name": "Toronto",
@@ -304,6 +304,12 @@
     "slug": "vancouver",
     "name": "Vancouver",
     "url": "https://vancouver.raginggrannies.org"
+  },
+  {
+    "id": 33,
+    "slug": "grays-harbor",
+    "name": "Gray's Harbor",
+    "url": "https://grays-harbor.raginggrannies.org"
   },
   {
     "id": 32,
