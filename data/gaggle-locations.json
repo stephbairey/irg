@@ -594,5 +594,14 @@
     "lng": -77.9447,
     "aka": "Raging Grannies of Coastal Carolina",
     "slug": "coastal-carolina"
+  },
+  {
+    "name": "Fox Valley",
+    "region": "Wisconsin",
+    "country": "United States",
+    "lat": 44.2619,
+    "lng": -88.4154,
+    "aka": "Fox Valley Raging Grannies",
+    "slug": "fox-valley"
   }
 ]
