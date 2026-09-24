@@ -6,6 +6,12 @@
     "url": "https://fox-valley.raginggrannies.org"
   },
   {
+    "id": 51,
+    "slug": "santa-cruz",
+    "name": "Santa Cruz",
+    "url": "https://santa-cruz.raginggrannies.org"
+  },
+  {
     "id": 50,
     "slug": "san-jose-santa-clara",
     "name": "San Jose & Santa Clara County",
@@ -48,12 +54,6 @@
     "url": "https://olympia.raginggrannies.org"
   },
   {
-    "id": 42,
-    "slug": "new-mexico",
-    "name": "Santa Fe Raging Grannies",
-    "url": "https://new-mexico.raginggrannies.org"
-  },
-  {
     "id": 41,
     "slug": "new-haven",
     "name": "New Haven",
@@ -88,12 +88,6 @@
     "slug": "manitowoc",
     "name": "Manitowoc County",
     "url": "https://manitowoc.raginggrannies.org"
-  },
-  {
-    "id": 51,
-    "slug": "santa-cruz",
-    "name": "Santa Cruz",
-    "url": "https://santa-cruz.raginggrannies.org"
   },
   {
     "id": 52,
@@ -204,10 +198,10 @@
     "url": "https://humboldt.raginggrannies.org"
   },
   {
-    "id": 17,
-    "slug": "maple-ridge",
-    "name": "Maple Ridge",
-    "url": "https://maple-ridge.raginggrannies.org"
+    "id": 33,
+    "slug": "grays-harbor",
+    "name": "Gray's Harbor",
+    "url": "https://grays-harbor.raginggrannies.org"
   },
   {
     "id": 16,
@@ -294,6 +288,12 @@
     "url": "https://seattle.raginggrannies.org"
   },
   {
+    "id": 17,
+    "slug": "maple-ridge",
+    "name": "Maple Ridge",
+    "url": "https://maple-ridge.raginggrannies.org"
+  },
+  {
     "id": 18,
     "slug": "toronto",
     "name": "Toronto",
@@ -304,12 +304,6 @@
     "slug": "vancouver",
     "name": "Vancouver",
     "url": "https://vancouver.raginggrannies.org"
-  },
-  {
-    "id": 33,
-    "slug": "grays-harbor",
-    "name": "Gray's Harbor",
-    "url": "https://grays-harbor.raginggrannies.org"
   },
   {
     "id": 32,
