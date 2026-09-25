@@ -1,5 +1,36 @@
 [
   {
+    "id": "wp-6970",
+    "source": "wp",
+    "original_wp_id": 6970,
+    "title": "Be Like Dolly",
+    "slug": "be-like-dolly",
+    "lyrics": "<p><strong>Be</strong> like Dolly<br />\nLet’s <strong>be</strong> like Dolly<br />\nDoing good while we sing our Granny songs</p>\n<p>You did so well, Dolly<br />\nWe can tell, Dolly<br />\nThe world’s a little brighter ‘<br />\ncause you…righted some wrongs</p>\n<p>Books for <strong>chil</strong>dren, Dolly<br />\nCovid <strong>re</strong>search, Dolly<br />\nPro<strong>tect</strong>ing eagles on a mountain top</p>\n<p><strong>You</strong> gave and gave, Dolly<br />\nSo <strong>man</strong>y saved, Dolly<br />\nThe <strong>good</strong> you did will never <strong>go</strong> away</p>\n<p>So <strong>be</strong> like Dolly<br />\nShow you <strong>care</strong> like Dolly<br />\nAn <strong>Ang</strong>el in a coat her <strong>ma</strong>ma made</p>\n<p><strong>We</strong> will always <strong>love</strong> you, Dolly<br />\n<strong>Ev</strong>ery clear blue <strong>morn</strong>ing, Dolly<br />\n<strong>Though</strong> we have the homesick blues,<br />\nWe <strong>cele</strong>brate the <strong>life</strong> that was you<br />\nThere&#8217;s <strong>always</strong> something <strong>we</strong> can do<br />\n<strong>We</strong> can all be <strong>true like you</strong>, Doll-eeee!</p>\n",
+    "tune": "Hello, Dolly",
+    "songwriter": "Lori Underwood",
+    "songwriters": [
+      "Lori Underwood"
+    ],
+    "gaggle": "Tuolumne & Calaveras Counties",
+    "gaggles": [
+      "Tuolumne & Calaveras Counties"
+    ],
+    "issues": [
+      "Women"
+    ],
+    "key_or_starting_note": "",
+    "youtube_link": "https://youtu.be/2JEuOJL-ku8?si=5N68D11ZxMr5cifw",
+    "youtube_link_2": "",
+    "date_written_or_updated": "2026-09-23T00:00:00+00:00",
+    "date_published": "2026-09-25",
+    "source_notes": "",
+    "feature_on_homepage": false,
+    "display_centrally": false,
+    "duplicate_of": null,
+    "needs_review": false,
+    "review_notes": ""
+  },
+  {
     "id": "wp-6822",
     "source": "wp",
     "original_wp_id": 6822,
@@ -10578,7 +10609,7 @@
     "title": "Serial Killers Now Rule the World",
     "slug": "serial-killers-now-rule-the-world",
     "lyrics": "<p><b>Ser</b>ial <b>kill</b>ers are</p>\n<p><b>rul</b>ing the <b>world!</b></p>\n<p><b>Trump</b> and Netan<b>ya</b>hu along <b>with</b> Putin</p>\n<p>have <b>now</b> all <b>un</b>furled</p>\n<p><b>kid</b>nappings, in<b>vas</b>ions, and <b>ev</b>en geno<b>cide!</b></p>\n<p><b>There&#8217;s</b> no <b>long</b>er <b>a</b>-ny <b>place</b></p>\n<p>on <b>Earth</b> that <b>one</b> can <b>find</b> to <b>hi</b>-ide!</p>\n<p>Al<b>low</b>ing wealth dis<b>par</b>ity</p>\n<p><b>fav</b>ors <b>so</b>cio<b>paths</b></p>\n<p>be<b>cause</b> they&#8217;ll <b>stop</b> at <b>noth</b>ing <b>to</b> be</p>\n<p><b>at </b>the <b>top</b>. That&#8217;s <b>why </b>we <b>now</b> see</p>\n<p><b>nar</b>cis<b>sists</b> and <b>mur</b>der<b>ers</b></p>\n<p><b>in </b>con<b>trol</b> world<b>wide</b>.</p>\n<p><b>Through</b> our <b>wor</b>ship<b> of</b> great <b>wea</b>-ealth</p>\n<p><b>we&#8217;re </b>committing <b>our </b>own sui<b>cide!</b></p>\n",
-    "tune": "Anchors Aweigh (verses only, not the chorus)",
+    "tune": "Anchors Aweigh (verses only)",
     "songwriter": "Lee Stanfield",
     "songwriters": [
       "Lee Stanfield"
@@ -10589,14 +10620,7 @@
     ],
     "issues": [
       "Business & Economy",
-      "Education",
-      "Environment & Energy",
-      "Gender Issues",
       "Government & Power",
-      "Healthcare",
-      "Human & Civil Rights",
-      "Labor & Worker Rights",
-      "Soldiers & Veterans",
       "War & Peace"
     ],
     "key_or_starting_note": "G below Middle C",
@@ -10662,15 +10686,8 @@
     ],
     "issues": [
       "Business & Economy",
-      "Education",
-      "Environment & Energy",
-      "Gender Issues",
       "Government & Power",
-      "Healthcare",
-      "Holiday & Celebrations",
-      "Human & Civil Rights",
-      "Labor & Worker Rights",
-      "Soldiers & Veterans"
+      "Labor & Worker Rights"
     ],
     "key_or_starting_note": "",
     "youtube_link": "",
@@ -11911,9 +11928,9 @@
     "id": "wp-867",
     "source": "wp",
     "original_wp_id": 867,
-    "title": "START NOW!",
+    "title": "Start Now!",
     "slug": "start-now",
-    "lyrics": "<p><strong>You</strong> can <strong>check</strong> the <strong>news</strong> on <strong>Mon-day</strong> or <strong>Tues-day</strong> or <strong>Wed</strong>nes<strong>day</strong></p>\n<p>or <strong>a</strong>ny <strong>day</strong> you <strong>choose!</strong></p>\n<p>No <strong>mat</strong>ter what day <strong>you</strong> choose, <strong>you</strong>&#8216;ll find<strong> Trump</strong> and E-<strong>lon</strong> Musk</p>\n<p>have <strong>start</strong>ed a new <strong>ruse!</strong></p>\n<p>So<strong> far</strong>, we <strong>have</strong> had <strong>no</strong> suc<strong>cess</strong>&#8230; <strong>in</strong> our <strong>quest&#8230;</strong> to find <strong>some</strong>one</p>\n<p>to <strong>act </strong>on <strong>our</strong> be<strong>hest&#8230;.</strong></p>\n<p><strong>Now</strong> it&#8217;s <strong>clear</strong> the <strong>rich</strong> leaders of the <strong>G</strong>OP and <strong>D</strong>NC&#8230;</p>\n<p>share <strong>cor</strong>p&#8217;rate <strong>in</strong>-ter-<strong>ests!  </strong></p>\n<p>         So <strong>what</strong> you <strong>wo</strong>-o-<strong>on&#8217;t</strong> see or <strong>hear</strong> is <strong>tha</strong>-at</p>\n<p>         standing <strong>up</strong> to <strong>them</strong> are <strong>all</strong> the <strong>Dem-</strong>o-<strong>crats!</strong></p>\n<p>         The <strong>ve-</strong>ry<strong> fe-ew </strong>who will <strong>make</strong> a <strong>fu-uss</strong></p>\n<p>         are the <strong>ones</strong> whose <strong>funds </strong>only <strong>come</strong> from <strong>us!</strong></p>\n<p>We<strong> need</strong> to <strong>stop</strong> de<strong>pend</strong>ing o-on <strong>an</strong>-y and <strong>all</strong> poli-<strong><u>ti</u></strong>-shuns&#8230;</p>\n<p><strong>who </strong>take <strong>corp</strong>&#8216;rate <strong>funds</strong>.</p>\n<p><strong>We </strong>need <strong>some</strong>one <strong>who</strong> is <strong>not </strong>cor<strong>rup</strong>t who <strong>will</strong> charge<strong> Trump </strong>and <strong>E</strong>-lon&#8230;</p>\n<p><strong>for</strong> their <strong>tre-e</strong>ason<strong>!</strong></p>\n<p><strong> </strong></p>\n<p>We <strong>must</strong> de<strong>mand</strong> the<strong> pro-</strong>hi<strong>bi</strong>-tion&#8230;<strong>of</strong> all pri<strong>&#8211;</strong>vate <strong>funds</strong>&#8230;</p>\n<p><strong>in</strong> our <strong>e</strong>lec<strong>tions!</strong></p>\n<p><strong>To</strong> achieve this <strong>goal</strong> we <strong>will </strong>have <strong>to</strong> make amend<strong>ments&#8230;</strong> to our<br />\n<strong>Cons-</strong>ti-<strong>tu</strong>&#8211;<strong>tion</strong>.</p>\n<p><strong>         The</strong> only <strong>thi-ing</strong> that will <strong>stop</strong> this <strong>coup</strong></p>\n<p>         is di-<strong>rect</strong> ac-<strong>tion</strong> by-y me and <strong>you!</strong></p>\n<p>         A <strong>Gen</strong>&#8216;ral <strong>Stri-ike</strong> across<strong> this</strong> na-<strong>shun</strong></p>\n<p>         to shut <strong>down</strong> ev<strong><u>&#8216;ry</u></strong> mega-<strong>corp</strong>&#8216;-ra-<strong>tion!</strong></p>\n<p><strong>SHUT THEM DOWN &#8216;TIL THEY MEET OUR DEMANDS ! </strong></p>\n",
+    "lyrics": "<p><strong>You</strong> can <strong>check</strong> the <strong>news</strong> on <strong>Mon-day</strong> or <strong>Tues-day</strong> or <strong>Wed</strong>nes<strong>day</strong></p>\n<p>or <strong>a</strong>ny <strong>day</strong> you <strong>choose!</strong></p>\n<p>No <strong>mat</strong>ter what day <strong>you</strong> choose, <strong>you</strong>&#8216;ll find<strong> Trump</strong> and E-<strong>lon</strong> Musk</p>\n<p>have <strong>start</strong>ed a new <strong>ruse!</strong></p>\n<p>So<strong> far</strong>, we <strong>have</strong> had <strong>no</strong> suc<strong>cess</strong>&#8230; <strong>in</strong> our <strong>quest&#8230;</strong> to find <strong>some</strong>one</p>\n<p>to <strong>act </strong>on <strong>our</strong> be<strong>hest&#8230;.</strong></p>\n<p><strong>Now</strong> it&#8217;s <strong>clear</strong> the <strong>rich</strong> leaders of the <strong>G</strong>OP and <strong>D</strong>NC&#8230;</p>\n<p>share <strong>cor</strong>p&#8217;rate <strong>in</strong>-ter-<strong>ests! </strong></p>\n<p>So <strong>what</strong> you <strong>wo</strong>-o-<strong>on&#8217;t</strong> see or <strong>hear</strong> is <strong>tha</strong>-at</p>\n<p>standing <strong>up</strong> to <strong>them</strong> are <strong>all</strong> the <strong>Dem-</strong>o-<strong>crats!</strong></p>\n<p>The <strong>ve-</strong>ry<strong> fe-ew </strong>who will <strong>make</strong> a <strong>fu-uss</strong></p>\n<p>are the <strong>ones</strong> whose <strong>funds </strong>only <strong>come</strong> from <strong>us!</strong></p>\n<p>We<strong> need</strong> to <strong>stop</strong> de<strong>pend</strong>ing o-on <strong>an</strong>-y and <strong>all</strong> poli-<strong><u>ti</u></strong>-shuns&#8230;</p>\n<p><strong>who </strong>take <strong>corp</strong>&#8216;rate <strong>funds</strong>.</p>\n<p><strong>We </strong>need <strong>some</strong>one <strong>who</strong> is <strong>not </strong>cor<strong>rup</strong>t who <strong>will</strong> charge<strong> Trump </strong>and <strong>E</strong>-lon&#8230;</p>\n<p><strong>for</strong> their <strong>tre-e</strong>ason<strong>!</strong></p>\n<p>&nbsp;</p>\n<p>We <strong>must</strong> de<strong>mand</strong> the<strong> pro-</strong>hi<strong>bi</strong>-tion&#8230;<strong>of</strong> all pri<strong>&#8211;</strong>vate <strong>funds</strong>&#8230;</p>\n<p><strong>in</strong> our <strong>e</strong>lec<strong>tions!</strong></p>\n<p><strong>To</strong> achieve this <strong>goal</strong> we <strong>will </strong>have <strong>to</strong> make amend<strong>ments&#8230;</strong> to our<br />\n<strong>Cons-</strong>ti-<strong>tu</strong>&#8211;<strong>tion</strong>.</p>\n<p><strong> The</strong> only <strong>thi-ing</strong> that will <strong>stop</strong> this <strong>coup</strong></p>\n<p>is di-<strong>rect</strong> ac-<strong>tion</strong> by-y me and <strong>you!</strong></p>\n<p>A <strong>Gen</strong>&#8216;ral <strong>Stri-ike</strong> across<strong> this</strong> na-<strong>shun</strong></p>\n<p>to shut <strong>down</strong> ev<strong><u>&#8216;ry</u></strong> mega-<strong>corp</strong>&#8216;-ra-<strong>tion!</strong></p>\n<p><strong>SHUT THEM DOWN &#8216;TIL THEY MEET OUR DEMANDS ! </strong></p>\n",
     "tune": "Never On a Sunday",
     "songwriter": "Lee Stanfield",
     "songwriters": [
@@ -11925,15 +11942,8 @@
     ],
     "issues": [
       "Business & Economy",
-      "Education",
-      "Environment & Energy",
-      "Gender Issues",
-      "Government & Power",
-      "Healthcare",
-      "Human & Civil Rights",
-      "Labor & Worker Rights",
-      "Soldiers & Veterans",
-      "War & Peace"
+      "Elections & Democracy",
+      "Government & Power"
     ],
     "key_or_starting_note": "B below Middle C",
     "youtube_link": "",
@@ -14877,7 +14887,7 @@
     "id": "wp-772",
     "source": "wp",
     "original_wp_id": 772,
-    "title": "SOME OF TRUMP’S FAVORITE THINGS",
+    "title": "Some of Trump’s Favorite Things",
     "slug": "some-of-trumps-favorite-things",
     "lyrics": "<p><b>Food</b> used as <b>bait</b> to shoot <b>starv</b>ing Pales<b>tin</b>ians,</p>\n<p><b>Tak</b>ing food a<b>way</b> from our <b>own</b> needy <b>chil</b>dren,</p>\n<p>Re<b>mov</b>ing health<b>care</b> from <b>tens</b> of mil<b>lions</b>.</p>\n<p><b>These</b> are some <b>things</b> Donald<b> thinks</b> of as <b>fun</b>.</p>\n<p><i>chorus:</i></p>\n<p><b>Trump</b> gets a <b>kick</b> from</p>\n<p><b>say</b>ing &#8220;Let&#8217;s <b>de</b>fund&#8221;</p>\n<p><b>ev&#8217;</b>ry<b>thing</b> in <b>sight</b>&#8230;</p>\n<p><b>to</b> pay for <b>those </b>things that <b>will </b>in the <b>end</b> bring him</p>\n<p><b>e-</b>ven more <b>we-a-lth</b> and <b>might!</b></p>\n<p><i>verse:</i></p>\n<p><b>Sci</b>entific <b>re</b>search and <b>pub</b>lic edu<b>ca</b>tion</p>\n<p><b>more</b> things he&#8217;s <b>de</b>funding <b>a</b>cross our <b>na</b>tion</p>\n<p><b>Na</b>tional <b>Parks</b>, the post <b>of</b>fice and <b>more</b></p>\n<p><b>Hur</b>ricane pre<b>dic</b>ition&#8217;s been <b>kicked</b> out the <b>door!</b></p>\n<p><i>chorus:</i></p>\n<p>Al<b>ter</b>native <b>en</b>ergy</p>\n<p><b>hou</b>sing as<b>sis</b>tance&#8230;</p>\n<p>Our <b>coun</b>try will <b>never</b> be&#8230; the <b>same</b></p>\n<p><b>un</b>fettered <b>A</b>I<b> </b>will <b>in</b>vade our <b>pri</b>vacy</p>\n<p><b>mak</b>ing us <b>a-a</b>ll fa-i-r <b>game!</b></p>\n<p><i>verse:</i></p>\n<p><b>We </b>can&#8217;t let <b>this </b>socio<b>path</b> and his <b>cro</b>nies</p>\n<p><b>de</b>stroy our <b>na</b>tion and <b>just</b> whisper &#8220;<b>pretty</b> please&#8221;!</p>\n<p><b>We</b> must stand<b> tall!</b>&#8230; not <b>back</b> down at <b>all&#8230;</b></p>\n<p><b>We</b> must be <b>will</b>ing to <b>an</b>swer the<b> call!</b></p>\n<p><i>chorus:</i></p>\n<p><b>Do</b> not <b>for</b>get</p>\n<p><b>we&#8217;re</b> the <b>sole</b> source</p>\n<p><b>of</b> all <b>their</b> pro<b>fit!</b></p>\n<p><b>We</b> need to<b> stop</b> working <b>and</b> buying <b>from</b> them!</p>\n<p><b>That</b> is how <b>we-e-e</b> will <b>wi-i-in!</b></p>\n<p><b>A GENERAL STRIKE AND BOYCOTT OF ALL MEGA-CORPORATIONS! TRUMP WILL HATE IT!</b></p>\n",
     "tune": "My Favorite Things",
@@ -14891,13 +14901,8 @@
     ],
     "issues": [
       "Business & Economy",
-      "Education",
-      "Environment & Energy",
       "Government & Power",
-      "Healthcare",
-      "Human & Civil Rights",
-      "Labor & Worker Rights",
-      "War & Peace"
+      "Human & Civil Rights"
     ],
     "key_or_starting_note": "Middle C",
     "youtube_link": "",
@@ -15700,7 +15705,7 @@
     "id": "wp-746",
     "source": "wp",
     "original_wp_id": 746,
-    "title": "TACO HELL",
+    "title": "Taco Hell",
     "slug": "taco-hell",
     "lyrics": "<p>Ev&#8217;ryone&#8217;s heard of &#8220;Taco Bell&#8221;.<br />\nNow there&#8217;s somethin&#8217; new.<br />\nIt&#8217;s the new meme &#8220;TACO HELL&#8221;<br />\nfor what Trump&#8217;s puttin&#8217; us through!</p>\n<p>With a flippin&#8217; tariff here and a floppin&#8217; tariff there!<br />\nStart a tariff&#8230; End a tariff&#8230; Change the tariffs ev&#8217;rywhere!<br />\n&#8220;T&#8221; &#8220;A&#8221; &#8220;C&#8221; &#8220;O&#8221; when spelled out&#8230; means Trump Al-ways Chickens Out!</p>\n<p>With all this talk a-bout new memes<br />\nwe have been in-spired:<br />\n&#8220;T&#8221; &#8220;A&#8221; &#8220;R&#8221; &#8220;I&#8221; &#8220;F&#8221; &#8220;F&#8221; means<br />\nTrump&#8217;s Ass Really Is Fine&#8217;lly Fired!</p>\n<p>So, let&#8217;s work our own asses off&#8230;<br />\na big strike here&#8230; a boycott there&#8230;</p>\n<p>a pro-longed nash-on-al gen-ral strike ev&#8217;-ry-where!<br />\n&#8216;Cause that is what it&#8217;s gonna&#8217; take to get Trump&#8217;s fat ass<br />\nout!</p>\n",
     "tune": "Old MacDonald Had a Farm",
