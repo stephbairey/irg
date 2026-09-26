@@ -2045,7 +2045,7 @@
     "date_published": "2026-09-01",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -11961,7 +11961,7 @@
     "id": "wp-866",
     "source": "wp",
     "original_wp_id": 866,
-    "title": "THINK IT O-OVER",
+    "title": "Think It O-Over",
     "slug": "think-it-o-over",
     "lyrics": "<p><strong><u> Stop</u></strong>&#8230;.. the a-<strong><u>tro</u></strong>-o-ci-<strong><u>ty</u></strong></p>\n<p>that <strong><u>they</u></strong> call &#8220;<strong><u>cop</u></strong> ci-<strong><u>ty</u></strong>&#8220;&#8230;.</p>\n<p>Think it <strong><u>o</u>&#8211;</strong>o-<strong><u>ver</u>!</strong></p>\n<p>Now <strong><u>down</u></strong> in <strong><u>Geor</u></strong>-gia</p>\n<p>this <strong><u>thing</u></strong> called &#8220;cop ci-<strong><u>ty</u></strong>&#8221;</p>\n<p>is <strong><u>real-</u></strong>ly nothin&#8217; <strong><u>but</u></strong></p>\n<p>a <strong><u>true</u></strong> mon-<strong><u>stros-</u></strong>i-<strong><u>ty</u>!</strong></p>\n<p><strong><u>Train</u></strong>-ing po-<strong><u>lice</u></strong> to <strong><u>be</u></strong>-e</p>\n<p><strong><u>noth</u></strong>in&#8217; <strong><u>less</u></strong> than <strong><u>mil</u></strong>-i-ta-<strong><u>re</u></strong>-e.</p>\n<p>Think it <strong><u>o-</u></strong>o-<strong><u>ver</u>!</strong></p>\n<p>We <strong><u>can</u></strong>-not <strong><u>wai</u></strong>-ait</p>\n<p>&#8220;till i<strong><u>t&#8217;s</u></strong> too <strong><u>la</u></strong>-ate!</p>\n<p>Don&#8217;t <strong><u>let</u></strong>-um cre-<strong><u>ate</u></strong></p>\n<p>a <strong><u>true</u></strong> po-<strong><u>li</u></strong>-ice <strong><u>state</u></strong>.</p>\n<p>We <strong><u>know</u></strong> hist&#8217;ry <strong><u>does</u></strong> fore<strong><u>te-</u></strong>ell</p>\n<p><strong><u>life</u></strong> in a <strong><u>po</u></strong>-lice state is&#8217; <strong><u>he-</u></strong>ell&#8230;</p>\n<p>So <strong><u>think</u></strong> it <strong><u>o</u>&#8211;</strong>o-<strong><u>ver</u>!</strong></p>\n<p><strong><u>Stop</u></strong>&#8230;.. this a-<strong><u>tro</u></strong>-o-ci-<strong><u>ty</u></strong></p>\n<p>that <strong><u>they</u></strong> call &#8220;<strong><u>cop</u></strong> ci-<strong><u>ty&#8221;</u></strong>&#8230;&#8230;.</p>\n<p><strong>Think&#8230; it&#8230; <u>O</u>&#8230;<u>O</u>&#8230;<u>ver</u>!</strong></p>\n",
     "tune": "Stop in the Name of Love",
@@ -11974,11 +11974,8 @@
       "Tucson"
     ],
     "issues": [
-      "Environment & Energy",
       "Government & Power",
-      "Human & Civil Rights",
-      "Soldiers & Veterans",
-      "War & Peace"
+      "Human & Civil Rights"
     ],
     "key_or_starting_note": "E above Middle C",
     "youtube_link": "",
@@ -11998,7 +11995,7 @@
     "original_wp_id": 865,
     "title": "Third World Status, Here We Come",
     "slug": "third-world-status-here-we-come",
-    "lyrics": "<p>The proof&#8217;s here in the USA that cap&#8217;talism&#8217;s not the way</p>\n<p>to fairness&#8230; prosperity&#8230; justice for all.</p>\n<p>The fact is&#8230; what&#8217;s happened has been great for only one small&#8230;</p>\n<p>            segment of the wealthiest.</p>\n<p>            They&#8217;re also the stealthiest</p>\n<p>            buying off ev&#8217;ry <strong>pol</strong>-iti-<strong>shun!</strong></p>\n<p>            Third world status, here we <strong>come!</strong></p>\n<p>We&#8217;re re-livin&#8217; the gilded ages when robber barons paid lousy wages.</p>\n<p>Way back then&#8230; rich white men&#8230; were doin&#8217; quite well.</p>\n<p>But for them&#8230; to do so, <strong><u>it </u></strong>put<strong><u> ev</u></strong>&#8216;-ry-<strong><u>one</u></strong> else through hell!</p>\n<p>            Cap&#8217;talism selects for</p>\n<p>            those who&#8217;re greedy to the core.</p>\n<p>            They get to the top because</p>\n<p>            they&#8217;re the ones who write the laws!</p>\n<p>Most big CEOs don&#8217;t care if workers don&#8217;t get their fair share.</p>\n<p>Studies show that&#8230; sociopaths&#8230; tend to be found</p>\n<p>in positions&#8230; of power more than anywhere else around.</p>\n<p>            This is not the first time that</p>\n<p>            the rich and powerful fat cats</p>\n<p>            ex-<strong><u>ploit-</u></strong>ed <strong><u>their</u></strong> work-<strong><u>ers</u></strong> just<strong><u> so</u></strong></p>\n<p>            they could<strong><u> keep</u></strong> ev-<strong><u>en</u></strong> more <strong><u>dough</u></strong>!</p>\n<p>The only way to stop them is strike and boycott all BIG BIZ&#8230;</p>\n<p>across our entire nation!</p>\n<p><strong>That&#8217;ll get their attention!!! </strong></p>\n",
+    "lyrics": "<p>The proof&#8217;s here in the USA that cap&#8217;talism&#8217;s not the way</p>\n<p>to fairness&#8230; prosperity&#8230; justice for all.</p>\n<p>The fact is&#8230; what&#8217;s happened has been great for only one small&#8230;</p>\n<p>segment of the wealthiest.</p>\n<p>They&#8217;re also the stealthiest</p>\n<p>buying off ev&#8217;ry <strong>pol</strong>-iti-<strong>shun!</strong></p>\n<p>Third world status, here we <strong>come!</strong></p>\n<p>We&#8217;re re-livin&#8217; the gilded ages when robber barons paid lousy wages.</p>\n<p>Way back then&#8230; rich white men&#8230; were doin&#8217; quite well.</p>\n<p>But for them&#8230; to do so, <strong><u>it </u></strong>put<strong><u> ev</u></strong>&#8216;-ry-<strong><u>one</u></strong> else through hell!</p>\n<p>Cap&#8217;talism selects for</p>\n<p>those who&#8217;re greedy to the core.</p>\n<p>They get to the top because</p>\n<p>they&#8217;re the ones who write the laws!</p>\n<p>Most big CEOs don&#8217;t care if workers don&#8217;t get their fair share.</p>\n<p>Studies show that&#8230; sociopaths&#8230; tend to be found</p>\n<p>in positions&#8230; of power more than anywhere else around.</p>\n<p>This is not the first time that</p>\n<p>the rich and powerful fat cats</p>\n<p>ex-<strong><u>ploit-</u></strong>ed <strong><u>their</u></strong> work-<strong><u>ers</u></strong> just<strong><u> so</u></strong></p>\n<p>they could<strong><u> keep</u></strong> ev-<strong><u>en</u></strong> more <strong><u>dough</u></strong>!</p>\n<p>The only way to stop them is strike and boycott all BIG BIZ&#8230;</p>\n<p>across our entire nation!</p>\n<p><strong>That&#8217;ll get their attention!!! </strong></p>\n",
     "tune": "California Here I Come",
     "songwriter": "Lee Stanfield",
     "songwriters": [
@@ -12010,15 +12007,8 @@
     ],
     "issues": [
       "Business & Economy",
-      "Education",
-      "Environment & Energy",
-      "Gender Issues",
-      "Government & Power",
-      "Healthcare",
-      "Human & Civil Rights",
-      "Labor & Worker Rights",
-      "Soldiers & Veterans",
-      "War & Peace"
+      "Elections & Democracy",
+      "Government & Power"
     ],
     "key_or_starting_note": "",
     "youtube_link": "",
@@ -12537,7 +12527,7 @@
     "original_wp_id": 847,
     "title": "To Musk",
     "slug": "to-musk",
-    "lyrics": "<p><strong>First</strong> we were a<strong>fraid</strong>&#8230; but <strong>now</strong> we r<strong><u>e</u></strong>ali-ize</p>\n<p>that <strong>we </strong>can bring you <strong>down</strong> de<strong>spite</strong> your ego&#8217;s <strong>size!</strong></p>\n<p>We&#8217;ve <strong>had </strong>enough of <strong>you&#8230;</strong> to <strong>see</strong> past all your <strong>lies!</strong></p>\n<p><strong>We</strong> are <strong>strong!&#8230;</strong> And <strong>you</strong> are so <strong>wrong!</strong></p>\n<p>So you&#8217;re <strong>back</strong>&#8230; from <strong>out</strong>er <strong>spa</strong>-ace!</p>\n<p><strong>We</strong> will not sit <strong>by</strong>. We&#8217;ll wipe that <strong>smirk</strong> right off your <strong>face!</strong></p>\n<p>We&#8217;ll <strong>find</strong> a court and <strong>laws&#8230;</strong>  to <strong>put</strong> you <strong>in </strong>your place!</p>\n<p>We&#8217;ll <strong>save </strong>our <strong>treas-</strong>u-<strong>ry </strong>and our <strong>so</strong>cial se-<strong>cur-</strong>i-<strong>ty</strong>!</p>\n<p>Go<strong> on!</strong>&#8230; Fly <strong>off</strong> to <strong>Ma</strong>-ars!</p>\n<p><strong>That </strong>is where&#8230; <strong>you</strong> belong and <strong>all</strong> your ugly <strong>cars</strong>!</p>\n<p>You <strong>think</strong> you&#8217;re God, but <strong>real</strong>ly you&#8217;re <strong>just</strong> a psycho<strong>path</strong></p>\n<p>If <strong>there&#8217;s</strong> a <strong>go</strong>-o-<strong>od</strong>, you &#8216;d <strong>bet</strong>ter <strong>look</strong> out<strong> for</strong> his <strong>wrath!</strong></p>\n<p><strong>You</strong> and <strong>Trump</strong>&#8230;. are <strong>two </strong>black <strong>ho</strong>-oles</p>\n<p>No <strong>mat</strong>ter how much <strong>wealth</strong> you steal, it <strong>will </strong>not buy you <strong>souls</strong>.</p>\n<p>The <strong>rest </strong>of us will <strong>live</strong> and <strong>love</strong> and <strong>share</strong> our common <strong>goal</strong>&#8230;</p>\n<p>to <strong>kick </strong>you <strong>out</strong>&#8230;. with<strong>out</strong> a <strong>doubt!</strong></p>\n<p><strong>WE&#8217;LL KICK YOU OUT!!!</strong></p>\n<p><strong> </strong></p>\n<p><strong>WE&#8217;LL KICK YOU OUT!!!</strong></p>\n",
+    "lyrics": "<p><strong>First</strong> we were a<strong>fraid</strong>&#8230; but <strong>now</strong> we r<strong><u>e</u></strong>ali-ize</p>\n<p>that <strong>we </strong>can bring you <strong>down</strong> de<strong>spite</strong> your ego&#8217;s <strong>size!</strong></p>\n<p>We&#8217;ve <strong>had </strong>enough of <strong>you&#8230;</strong> to <strong>see</strong> past all your <strong>lies!</strong></p>\n<p><strong>We</strong> are <strong>strong!&#8230;</strong> And <strong>you</strong> are so <strong>wrong!</strong></p>\n<p>So you&#8217;re <strong>back</strong>&#8230; from <strong>out</strong>er <strong>spa</strong>-ace!</p>\n<p><strong>We</strong> will not sit <strong>by</strong>. We&#8217;ll wipe that <strong>smirk</strong> right off your <strong>face!</strong></p>\n<p>We&#8217;ll <strong>find</strong> a court and <strong>laws&#8230;</strong> to <strong>put</strong> you <strong>in </strong>your place!</p>\n<p>We&#8217;ll <strong>save </strong>our <strong>treas-</strong>u-<strong>ry </strong>and our <strong>so</strong>cial se-<strong>cur-</strong>i-<strong>ty</strong>!</p>\n<p>Go<strong> on!</strong>&#8230; Fly <strong>off</strong> to <strong>Ma</strong>-ars!</p>\n<p><strong>That </strong>is where&#8230; <strong>you</strong> belong and <strong>all</strong> your ugly <strong>cars</strong>!</p>\n<p>You <strong>think</strong> you&#8217;re God, but <strong>real</strong>ly you&#8217;re <strong>just</strong> a psycho<strong>path</strong></p>\n<p>If <strong>there&#8217;s</strong> a <strong>go</strong>-o-<strong>od</strong>, you &#8216;d <strong>bet</strong>ter <strong>look</strong> out<strong> for</strong> his <strong>wrath!</strong></p>\n<p><strong>You</strong> and <strong>Trump</strong>&#8230;. are <strong>two </strong>black <strong>ho</strong>-oles</p>\n<p>No <strong>mat</strong>ter how much <strong>wealth</strong> you steal, it <strong>will </strong>not buy you <strong>souls</strong>.</p>\n<p>The <strong>rest </strong>of us will <strong>live</strong> and <strong>love</strong> and <strong>share</strong> our common <strong>goal</strong>&#8230;</p>\n<p>to <strong>kick </strong>you <strong>out</strong>&#8230;. with<strong>out</strong> a <strong>doubt!</strong></p>\n<p><strong>WE&#8217;LL KICK YOU OUT!!!</strong></p>\n<p>&nbsp;</p>\n<p><strong>WE&#8217;LL KICK YOU OUT!!!</strong></p>\n",
     "tune": "I Will Survive",
     "songwriter": "Lee Stanfield",
     "songwriters": [
@@ -12548,16 +12538,7 @@
       "Tucson"
     ],
     "issues": [
-      "Business & Economy",
-      "Education",
-      "Environment & Energy",
-      "Gender Issues",
-      "Government & Power",
-      "Healthcare",
-      "Human & Civil Rights",
-      "Labor & Worker Rights",
-      "Soldiers & Veterans",
-      "War & Peace"
+      "Elections & Democracy"
     ],
     "key_or_starting_note": "D above Middle C",
     "youtube_link": "",
@@ -12588,9 +12569,8 @@
       "Tucson"
     ],
     "issues": [
-      "Government & Power",
-      "Holiday & Celebrations",
-      "War & Peace"
+      "Elections & Democracy",
+      "Government & Power"
     ],
     "key_or_starting_note": "",
     "youtube_link": "",
@@ -12950,9 +12930,9 @@
     "id": "wp-835",
     "source": "wp",
     "original_wp_id": 835,
-    "title": "THE BILLIONAIRE CLASS’s PLAN",
+    "title": "The Billionaire Class’s Plan",
     "slug": "the-billionaire-classs-plan",
-    "lyrics": "<p>In <strong>case</strong> you&#8217;re <strong>won</strong>der<strong>ing</strong> why <strong>the</strong> billion<strong>aire</strong> <strong>class</strong></p>\n<p><strong>is</strong> doge-<strong>ing</strong> our <strong>gov</strong>ern<strong>ment</strong>&#8230;</p>\n<p><strong>It&#8217;s</strong> &#8217;cause <strong>they</strong> won&#8217;t<strong> need</strong> peo<strong>ple</strong> any<strong>more!</strong></p>\n<p>Their <strong>plan</strong> is <strong>not</strong> at <strong>all</strong> a myth&#8230; <strong>they&#8217;ll</strong> re<strong>place</strong> us with <strong>high</strong> tech A<strong><u>I</u></strong>.</p>\n<p><strong>That&#8217;s</strong> why <strong>bill</strong>ionaires <strong>want</strong> the <strong>rest</strong> of us <strong>to </strong>simp<strong>ly</strong> lie <strong>down</strong> and <strong>die!</strong></p>\n<p><strong>In</strong> their <strong>minds</strong> they <strong>are</strong> just &#8220;<strong>thin</strong>ning the<strong> he</strong>-erd.&#8221;</p>\n<p><strong>They</strong> think they&#8217;re su<strong>per</strong>ior&#8230;</p>\n<p><strong>They&#8217;ll </strong>con<strong>tin</strong>ue <strong>liv</strong>ing <strong>in</strong> luxu<strong>re-ee!</strong></p>\n<p><strong> </strong></p>\n<p>We<strong> sim</strong>ply <strong>can</strong>not <strong>wait</strong> until <strong>it&#8217;s</strong> too <strong>late</strong> to stop<strong> them</strong>&#8230; <strong>and</strong> here&#8217;s<strong> how!</strong></p>\n<p><strong><u>Na</u></strong>tion<strong><u>wide</u></strong> non-<strong><u>vi</u></strong>o<strong><u>lent</u></strong> strikes and <strong><u>boy</u>&#8211;cotts&#8230;</strong> <strong><u>here</u>&#8230; and</strong>&#8230; <strong><u>now</u>!</strong></p>\n<p><strong> </strong></p>\n<p><strong>                  SHUT DOWN THEIR EFFING CORPORATIONS! </strong></p>\n",
+    "lyrics": "<p>In <strong>case</strong> you&#8217;re <strong>won</strong>der<strong>ing</strong> why <strong>the</strong> billion<strong>aire</strong> <strong>class</strong></p>\n<p><strong>is</strong> doge-<strong>ing</strong> our <strong>gov</strong>ern<strong>ment</strong>&#8230;</p>\n<p><strong>It&#8217;s</strong> &#8217;cause <strong>they</strong> won&#8217;t<strong> need</strong> peo<strong>ple</strong> any<strong>more!</strong></p>\n<p>Their <strong>plan</strong> is <strong>not</strong> at <strong>all</strong> a myth&#8230; <strong>they&#8217;ll</strong> re<strong>place</strong> us with <strong>high</strong> tech A<strong><u>I</u></strong>.</p>\n<p><strong>That&#8217;s</strong> why <strong>bill</strong>ionaires <strong>want</strong> the <strong>rest</strong> of us <strong>to </strong>simp<strong>ly</strong> lie <strong>down</strong> and <strong>die!</strong></p>\n<p><strong>In</strong> their <strong>minds</strong> they <strong>are</strong> just &#8220;<strong>thin</strong>ning the<strong> he</strong>-erd.&#8221;</p>\n<p><strong>They</strong> think they&#8217;re su<strong>per</strong>ior&#8230;</p>\n<p><strong>They&#8217;ll </strong>con<strong>tin</strong>ue <strong>liv</strong>ing <strong>in</strong> luxu<strong>re-ee!</strong></p>\n<p>&nbsp;</p>\n<p>We<strong> sim</strong>ply <strong>can</strong>not <strong>wait</strong> until <strong>it&#8217;s</strong> too <strong>late</strong> to stop<strong> them</strong>&#8230; <strong>and</strong> here&#8217;s<strong> how!</strong></p>\n<p><strong><u>Na</u></strong>tion<strong><u>wide</u></strong> non-<strong><u>vi</u></strong>o<strong><u>lent</u></strong> strikes and <strong><u>boy</u>&#8211;cotts&#8230;</strong> <strong><u>here</u>&#8230; and</strong>&#8230; <strong><u>now</u>!</strong></p>\n<p>&nbsp;</p>\n<p><strong> SHUT DOWN THEIR EFFING CORPORATIONS! </strong></p>\n",
     "tune": "Thoroughly Modern Millie",
     "songwriter": "Lee Stanfield",
     "songwriters": [
@@ -12964,10 +12944,7 @@
     ],
     "issues": [
       "Business & Economy",
-      "Government & Power",
-      "Human & Civil Rights",
-      "Labor & Worker Rights",
-      "War & Peace"
+      "Government & Power"
     ],
     "key_or_starting_note": "Middle C",
     "youtube_link": "",
@@ -14534,7 +14511,7 @@
     "original_wp_id": 784,
     "title": "The Fourth of July 2025",
     "slug": "the-fourth-of-july-2025",
-    "lyrics": "<p>Ooh <strong>say </strong>can you <strong>see                                                            </strong></p>\n<p>what this <strong>day</strong> used to <strong>be</strong>?</p>\n<p>It was<strong> i-i-n</strong> prai-aise <strong>of</strong></p>\n<p>something <strong>called</strong> de<strong>moc</strong>ra<strong>cy</strong>.</p>\n<p>We thought <strong>we</strong> were headed <strong>there</strong></p>\n<p>but free-<strong>mar</strong>ket Billion<strong>aires</strong></p>\n<p>have <strong>ver</strong>y different <strong>goals</strong></p>\n<p>and we&#8217;ve <strong>sold </strong>them <strong>all</strong> our <strong>souls</strong>.</p>\n<p>Now the <strong>roc</strong>kets red <strong>glare</strong></p>\n<p>reveal <strong>a </strong>country <strong>where</strong></p>\n<p>the <strong>Bill</strong>ionaires<strong> rule</strong></p>\n<p>through a <strong>pres</strong>ident that&#8217;s <strong>cruel!</strong></p>\n<p>The <strong>val</strong>ues we once <strong>held </strong>so dear</p>\n<p><strong>have </strong>all been re<strong>placed</strong> by <strong>fea</strong>-ear.</p>\n<p><strong>Gree-eed</strong> now reigns su<strong>pre-eme</strong>&#8230;&#8230;</p>\n<p>Can you <strong>hear</strong> your <strong>con</strong>science <strong>scream???!!!</strong></p>\n",
+    "lyrics": "<p>Ooh <strong>say </strong>can you <strong>see </strong></p>\n<p>what this <strong>day</strong> used to <strong>be</strong>?</p>\n<p>It was<strong> i-i-n</strong> prai-aise <strong>of</strong></p>\n<p>something <strong>called</strong> de<strong>moc</strong>ra<strong>cy</strong>.</p>\n<p>We thought <strong>we</strong> were headed <strong>there</strong></p>\n<p>but free-<strong>mar</strong>ket Billion<strong>aires</strong></p>\n<p>have <strong>ver</strong>y different <strong>goals</strong></p>\n<p>and we&#8217;ve <strong>sold </strong>them <strong>all</strong> our <strong>souls</strong>.</p>\n<p>Now the <strong>roc</strong>kets red <strong>glare</strong></p>\n<p>reveal <strong>a </strong>country <strong>where</strong></p>\n<p>the <strong>Bill</strong>ionaires<strong> rule</strong></p>\n<p>through a <strong>pres</strong>ident that&#8217;s <strong>cruel!</strong></p>\n<p>The <strong>val</strong>ues we once <strong>held </strong>so dear</p>\n<p><strong>have </strong>all been re<strong>placed</strong> by <strong>fea</strong>-ear.</p>\n<p><strong>Gree-eed</strong> now reigns su<strong>pre-eme</strong>&#8230;&#8230;</p>\n<p>Can you <strong>hear</strong> your <strong>con</strong>science <strong>scream???!!!</strong></p>\n",
     "tune": "The Star Spangled Banner",
     "songwriter": "Lee Stanfield",
     "songwriters": [
@@ -14546,15 +14523,8 @@
     ],
     "issues": [
       "Business & Economy",
-      "Education",
-      "Environment & Energy",
-      "Gender Issues",
-      "Government & Power",
-      "Healthcare",
-      "Holiday & Celebrations",
-      "Human & Civil Rights",
-      "Labor & Worker Rights",
-      "Soldiers & Veterans"
+      "Elections & Democracy",
+      "Government & Power"
     ],
     "key_or_starting_note": "D above Middle C",
     "youtube_link": "",
@@ -14756,15 +14726,8 @@
     ],
     "issues": [
       "Business & Economy",
-      "Education",
-      "Environment & Energy",
-      "Gender Issues",
-      "Government & Power",
-      "Healthcare",
-      "Holiday & Celebrations",
-      "Human & Civil Rights",
-      "Labor & Worker Rights",
-      "Soldiers & Veterans"
+      "Elections & Democracy",
+      "Government & Power"
     ],
     "key_or_starting_note": "Middle C",
     "youtube_link": "",
@@ -17375,7 +17338,7 @@
     "original_wp_id": 691,
     "title": "‘CAUSE YOU’RE UNINSURED",
     "slug": "cause-youre-uninsured",
-    "lyrics": "<p>Skip the check-ups that you need<br />\nPrices are absurd<br />\nTake good care of yourself<br />\n&#8217;cause you&#8217;re uninsured</p>\n<p>Bigger tax cuts for the rich<br />\nare certainly preferred<br />\nover care of our health,<br />\nso we&#8217;re uninsured</p>\n<p>The right-wing plan is this:  &#8211; oo &#8211; oo<br />\nDon’t get sick!  &#8211; oo &#8211; oo<br />\nIf you do, DIE QUICK!!  &#8211; oo &#8211; oo<br />\nYou can&#8217;t have health unless you have wealth, so . . .</p>\n<p>Don&#8217;t inhale near other folks<br />\nThey have germs, I&#8217;ve heard<br />\nTake good care of yourself<br />\n&#8217;cause you&#8217;re uninsured</p>\n",
+    "lyrics": "<p>Skip the check-ups that you need<br />\nPrices are absurd<br />\nTake good care of yourself<br />\n&#8217;cause you&#8217;re uninsured</p>\n<p>Bigger tax cuts for the rich<br />\nare certainly preferred<br />\nover care of our health,<br />\nso we&#8217;re uninsured</p>\n<p>The right-wing plan is this: &#8211; oo &#8211; oo<br />\nDon’t get sick! &#8211; oo &#8211; oo<br />\nIf you do, DIE QUICK!! &#8211; oo &#8211; oo<br />\nYou can&#8217;t have health unless you have wealth, so . . .</p>\n<p>Don&#8217;t inhale near other folks<br />\nThey have germs, I&#8217;ve heard<br />\nTake good care of yourself<br />\n&#8217;cause you&#8217;re uninsured</p>\n",
     "tune": "Button Up Your Overcoat",
     "songwriter": "Doug Long",
     "songwriters": [
@@ -17391,7 +17354,7 @@
     "key_or_starting_note": "C",
     "youtube_link": "https://youtu.be/NitG0N2_AVE",
     "youtube_link_2": "",
-    "date_written_or_updated": "1970-01-01T00:00:00+00:00",
+    "date_written_or_updated": "2026-09-26T00:00:00+00:00",
     "date_published": "2023-01-30",
     "source_notes": "",
     "feature_on_homepage": false,
@@ -31998,7 +31961,7 @@
     "original_wp_id": 1208,
     "title": "Someone to Watch Over Me",
     "slug": "someone-to-watch-over-me",
-    "lyrics": "<p>Eric Holder, do you think I&#8217;m a spy?<br />\nI know that I<br />\nCannot see why<br />\nSomeone should watch over me.</p>\n<p>Must there always be surveillance and taps?</p>\n<p>Is it perhaps</p>\n<p>You think we&#8217;re saps</p>\n<p>To let you watch over us?</p>\n<p>Although you pose as such a hero,</p>\n<p>In my book you&#8217;re zero&#8211;</p>\n<p>Police state, not securi-t-y.</p>\n<p>Take your Patriot Act and bury it now,</p>\n<p>Better learn how</p>\n<p>Not to allow</p>\n<p>Your spies to watch over me.</p>\n",
+    "lyrics": "<p><em>Eric Holder</em>, do you think I&#8217;m a spy?<br />\nI know that I<br />\nCannot see why<br />\nSomeone should watch over me.</p>\n<p>Must there always be surveillance and taps?<br />\nIs it perhaps<br />\nYou think we&#8217;re saps<br />\nTo let you watch over us?</p>\n<p>Although you pose as such a hero,<br />\nIn my book you&#8217;re zero&#8211;<br />\nPolice state, not securi-t-y.</p>\n<p>Take your Patriot Act and bury it now,<br />\nBetter learn how<br />\nNot to allow<br />\nYour spies to watch over me.</p>\n",
     "tune": "Someone to Watch Over Me",
     "songwriter": "Monica Zucker",
     "songwriters": [
@@ -32062,7 +32025,7 @@
     "original_wp_id": 1206,
     "title": "Sing Out",
     "slug": "sing-out",
-    "lyrics": "<p>We sing the many causes and we protest many wrongs<br />\n We try to make a diff’rence with our hats and with our songs<br />\n We fight against indifference and outright prejudice<br />\n And we work with other folk for peace<br />\n (point out to the crowd)</p>\n<p><em>Chorus</em></p>\n<p>Sing out, sing out with the Grannies (3X)</p>\n<p>For together we are strong</p>\n<p>(hold up arms, showing muscles)</p>\n<p>We celebrate the courage of all ordinary folk</p>\n<p>Communities that strengthen us and friends to share a joke</p>\n<p>Survivors of adversity and mental health distress</p>\n<p>Who, living fully, show us how to give and bless</p>\n<p><em>Chorus</em></p>\n<p>Our governments must listen to their citizens&#8217; loud pleas</p>\n<p>Recognize the problems and re-spon-si-bi-li-ties</p>\n<p>Alleviate the poverty, provide health care for all</p>\n<p>Homes for the homeless, justice, peace, rights for all</p>\n<p>Chorus</p>\n",
+    "lyrics": "<p>We sing the many causes and we protest many wrongs<br />\nWe try to make a diff’rence with our hats and with our songs<br />\nWe fight against indifference and outright prejudice<br />\nAnd we work with other folk for peace<br />\n(point out to the crowd)</p>\n<p><em>Chorus:</em><br />\nSing out, sing out with the Grannies<br />\nSing out, sing out with the Grannies<br />\nSing out, sing out with the Grannies<br />\nFor together we are strong</p>\n<p>(hold up arms, showing muscles)</p>\n<p>We celebrate the courage of all ordinary folk<br />\nCommunities that strengthen us and friends to share a joke<br />\nSurvivors of adversity and mental health distress<br />\nWho, living fully, show us how to give and bless</p>\n<p><em>Chorus</em></p>\n<p>Our governments must listen to their citizens’ loud pleas<br />\nRecognize the problems and re-spon-si-bi-li-ties<br />\nAlleviate the poverty, provide health care for all<br />\nHomes for the homeless, justice, peace, rights for all</p>\n<p><em>Chorus</em></p>\n",
     "tune": "John Brown's Body",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -32094,7 +32057,7 @@
     "title": "Securities, Securitas!",
     "slug": "securities-securitas",
     "lyrics": "<p>Some think the world was made for corporations,<br />\nJust like World Com,<br />\nAnd like Enron,<br />\nFor frauds and scams and shady exploitation,<br />\nWhen with aplomb<br />\nThey drop the bomb.</p>\n<p>And we, we lose our jobs and stocks and pensions.<br />\nEach three-piece suit<br />\nTakes out the loot.<br />\nFor us, the evil hits in great dimensions.<br />\nExecs aren’t miffed-<br />\nThey take the Fifth.</p>\n<p>Harken! Harken! It’s foreclosure time!<br />\nHarken! Harken! Home’s not worth a dime!<br />\nSecurities, securitas, securities, securitas!<br />\nSave the bankers first! Securities, securitas!</p>\n",
-    "tune": "Finiculi, Finicula",
+    "tune": "Finiculi Finiculi",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
       "Unlisted Songwriter"
@@ -32124,7 +32087,7 @@
     "original_wp_id": 1204,
     "title": "Scientists’ Lament",
     "slug": "scientists-lament",
-    "lyrics": "<p>We can&#8217;t say “global warming.”<br />\nWe can&#8217;t say &#8220;Studies show&#8230;&#8221;<br />\nWe can&#8217;t say &#8220;greenhouse gasses,&#8221;<br />\nWe can&#8217;t say &#8220;Now we know&#8230;&#8221;<br />\nWe&#8217;ve got to hide our science&#8211;<br />\nNever mention Kyoto,<br />\nCause his head is in the sand.</p>\n<p><em>Chorus:</em><br />\nBut the facts are so alarming<br />\nThat the planet earth is warming<br />\nOur emissions surely harming<br />\nBut his head is in the sand.</p>\n<p>We love carbon dioxide!<br />\nWe love the SUVs!<br />\nWe love all the emissions&#8211;<br />\nEven lung disease!<br />\nWe love deregulation<br />\nAnd the censorship decrees,<br />\nCause his head is in the sand!</p>\n<p><em>Chorus</em></p>\n",
+    "lyrics": "<p>We can’t say “global warming.”<br />\nWe can’t say “Studies show…”<br />\nWe can’t say “greenhouse gasses,”<br />\nWe can’t say “Now we know…”<br />\nWe’ve got to hide our science–<br />\nNever mention Kyoto,<br />\nCause his head is in the sand.</p>\n<p><em>Chorus:</em><br />\nBut the facts are so alarming<br />\nThat the planet earth is warming<br />\nOur emissions surely harming<br />\nBut his head is in the sand.</p>\n<p>We love carbon dioxide!<br />\nWe love the SUVs!<br />\nWe love all the emissions–<br />\nEven lung disease!<br />\nWe love deregulation<br />\nAnd the censorship decrees,<br />\nCause his head is in the sand!</p>\n<p><em>Chorus</em></p>\n",
     "tune": "Battle Hymn of the Republic",
     "songwriter": "Monica Zucker",
     "songwriters": [
@@ -32155,7 +32118,7 @@
     "original_wp_id": 1203,
     "title": "School of the Assassins",
     "slug": "school-of-the-assassins",
-    "lyrics": "<p>(lower voices)<br />\nBring rebels to their knees.<br />\nWe need some expertise:<br />\nCall SOA!<br />\nSend our best men to learn<br />\nTo torture, shock, and burn<br />\nThose who-o fo-or freedom yearn&#8211;<br />\nThe-ey must obey!</p>\n<p>(higher voices)<br />\nLet not this shame resound<br />\nTo all the world around&#8211;<br />\nEnd SOA!<br />\nToo many now have died.<br />\nRegain our pilgrims&#8217; pride.<br />\nFrom e&#8217;e-vry-y mountain side<br />\nLe-et freedom ring!</p>\n",
+    "lyrics": "<p>(lower voices)<br />\nBring rebels to their knees.<br />\nWe need some expertise:<br />\nCall SOA!<br />\nSend our best men to learn<br />\nTo torture, shock, and burn<br />\nThose who-o fo-or freedom yearn–<br />\nThe-ey must obey!</p>\n<p>(higher voices)<br />\nLet not this shame resound<br />\nTo all the world around–<br />\nEnd SOA!<br />\nToo many now have died.<br />\nRegain our pilgrims’ pride.<br />\nFrom e’e-vry-y mountain side<br />\nLe-et freedom ring!</p>\n",
     "tune": "My Country 'Tis of Thee",
     "songwriter": "Monica Zucker",
     "songwriters": [
@@ -32198,7 +32161,8 @@
       "Seattle"
     ],
     "issues": [
-      "Healthcare"
+      "Healthcare",
+      "Human & Civil Rights"
     ],
     "key_or_starting_note": "",
     "youtube_link": "",
@@ -32218,7 +32182,7 @@
     "original_wp_id": 1201,
     "title": "Saints for Peace",
     "slug": "saints-for-peace",
-    "lyrics": "<p>When we make peace instead of war.<br />\nWhen we abolish nuclear arms.<br />\nWhen we stop funding others’ wars.<br />\nWhen diplomacy is our defense.<br />\nWhen understanding is our goal.<br />\nWhen all our troops are called back home.</p>\n",
+    "lyrics": "<p>When we make peace instead of war,<br />\nWhen we make peace instead of war,<br />\nHow I want to be in that number,<br />\nWhen we make peace instead of war.</p>\n<p>When we abolish nuclear arms&#8230;</p>\n<p>When we stop funding others’ wars&#8230;</p>\n<p>When diplomacy is our defense&#8230;</p>\n<p>When understanding is our goal&#8230;</p>\n<p>When all our troops are called back home&#8230;</p>\n",
     "tune": "When the Saints Come Marching In",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -32238,7 +32202,7 @@
     "date_published": "2013-01-21",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -32249,7 +32213,7 @@
     "original_wp_id": 1200,
     "title": "Saints- Welfare",
     "slug": "saints-welfare",
-    "lyrics": "<p><i><br />\n<i> </i><br />\nWhen welfare grants meet basic needs,<br />\nWhen welfare grants meet basic needs,<br />\nHow I want to be in that number,<br />\nWhen welfare grants meet basic needs.</i></p>\n<p><em>Variations:</em></p>\n<p>When no one is without a home…</p>\n<p>When mothers’ work gets some respect…</p>\n<p>When workers get a living wage…</p>\n<p>When poverty has been erased…</p>\n",
+    "lyrics": "<p>When welfare grants meet basic needs,<br />\nWhen welfare grants meet basic needs,<br />\nHow I want to be in that number,<br />\nWhen welfare grants meet basic needs.</p>\n<p><em>Variations:</em></p>\n<p>When no one is without a home…</p>\n<p>When mothers’ work gets some respect…</p>\n<p>When workers get a living wage…</p>\n<p>When poverty has been erased…</p>\n",
     "tune": "When the Saints Come Marching In",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -32269,7 +32233,7 @@
     "date_published": "2013-01-21",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -32300,7 +32264,7 @@
     "date_published": "2013-01-21",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -32332,7 +32296,7 @@
     "date_published": "2013-01-21",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -32363,7 +32327,7 @@
     "date_published": "2013-01-21",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -32394,7 +32358,7 @@
     "date_published": "2013-01-21",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -32436,7 +32400,7 @@
     "original_wp_id": 1194,
     "title": "Rock-a-bye Baby",
     "slug": "rock-a-bye-baby",
-    "lyrics": "<p><em>from the E-Vine</em></p>\n<p>Rock a bye baby, don&#8217;t you get sick.<br />\nOr your Mom and your Da-ad will go broke real quick.<br />\nGrandpa and Grandma wish it weren&#8217;t true&#8211;<br />\nBig rich insurers don&#8217;t care about you.</p>\n<p>Rock a bye tax cuts helping the rich<br />\nYou&#8217;re out of luck&#8211;if YOUR kid gets sick<br />\nHealth care insurers rake in the cash<br />\nIf you are POOR, they&#8217;ll treat you like trash</p>\n<p>Rock a bye profits that&#8217;s what they love.<br />\nKids and grand-PA-rents merit a shove.<br />\nEveryone IS in danger it&#8217;s true,<br />\nCuz big rich insurers don&#8217;t care about you.</p>\n",
+    "lyrics": "<p>Rock a bye baby, don&#8217;t you get sick.<br />\nOr your Mom and your Da-ad will go broke real quick.<br />\nGrandpa and Grandma wish it weren&#8217;t true&#8211;<br />\nBig rich insurers don&#8217;t care about you.</p>\n<p>Rock a bye tax cuts helping the rich<br />\nYou&#8217;re out of luck&#8211;if YOUR kid gets sick<br />\nHealth care insurers rake in the cash<br />\nIf you are POOR, they&#8217;ll treat you like trash</p>\n<p>Rock a bye profits that&#8217;s what they love.<br />\nKids and grand-PA-rents merit a shove.<br />\nEveryone IS in danger it&#8217;s true,<br />\nCuz big rich insurers don&#8217;t care about you.</p>\n",
     "tune": "",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -32456,7 +32420,7 @@
     "date_published": "2013-01-20",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -32562,7 +32526,7 @@
     "original_wp_id": 1190,
     "title": "Raging Grannies Are Conspiring",
     "slug": "raging-grannies-are-conspiring",
-    "lyrics": "<p>Raging Grannies are conspiring</p>\n<p>To make their audience laugh.</p>\n<p>Satire is so very frightening</p>\n<p>It’s clearly a (speak) TERRORIST path.</p>\n<p>Listen to their conversation.</p>\n<p>They speak of peace not war.</p>\n<p>Anti-Bush recriminations-</p>\n<p>They always go too far.</p>\n<p>Metal in their hips,</p>\n<p>Metal in their knees,</p>\n<p>They&#8217;re hiding weapons</p>\n<p>No one can see.</p>\n<p>We have found them out,</p>\n<p>Know what they&#8217;re all about,</p>\n<p>A peace and social justice</p>\n<p>Con-spir-acy.</p>\n<p>Someone&#8217;s singing for justice,</p>\n<p>Someone&#8217;s singing for an end to war,</p>\n<p>Someone&#8217;s singing for fairness,</p>\n<p>Scaring us to the core&#8230;</p>\n<p><em>We’re scared of:</em></p>\n<p>Gaggles of grannies singing their song</p>\n<p>Gaggles of grannies make us quake,</p>\n<p>Gaggles of grannies must be watched</p>\n<p>Our country is at stake.</p>\n<p>Grannies with their hats</p>\n<p>A bunch of old bats</p>\n<p>Scaring us with</p>\n<p>What they sing.</p>\n<p>If they ever stay in tune</p>\n<p>That will surely spell our doom</p>\n<p>Spreading freedom and democracy.</p>\n<p>We’re Raging<br />\nGrannies singing for justice,<br />\nGrannies singing for an end to war,<br />\nGrannies singing for fairness<br />\nWorld Peace Forevermore!</p>\n",
+    "lyrics": "<p>Raging Grannies are conspiring<br />\nTo make their audience laugh.<br />\nSatire is so very frightening<br />\nIt’s clearly a (speak) TERRORIST path.<br />\nListen to their conversation.<br />\nThey speak of peace not war.<br />\nAnti-Bush recriminations-<br />\nThey always go too far.</p>\n<p>Metal in their hips,<br />\nMetal in their knees,<br />\nThey’re hiding weapons<br />\nNo one can see.<br />\nWe have found them out,<br />\nKnow what they’re all about,<br />\nA peace and social justice<br />\nCon-spir-acy.</p>\n<p>Someone’s singing for justice,<br />\nSomeone’s singing for an end to war,<br />\nSomeone’s singing for fairness,<br />\nScaring us to the core…</p>\n<p><em>We’re scared of:</em><br />\nGaggles of grannies singing their song<br />\nGaggles of grannies make us quake,<br />\nGaggles of grannies must be watched<br />\nOur country is at stake.<br />\nGrannies with their hats<br />\nA bunch of old bats<br />\nScaring us with<br />\nWhat they sing.<br />\nIf they ever stay in tune<br />\nThat will surely spell our doom<br />\nSpreading freedom and democracy.</p>\n<p>We’re Raging<br />\nGrannies singing for justice,<br />\nGrannies singing for an end to war,<br />\nGrannies singing for fairness<br />\nWorld Peace Forevermore!</p>\n",
     "tune": "I've Been Workin' on the Railroad",
     "songwriter": "Laurie Rostholder",
     "songwriters": [
@@ -32593,7 +32557,7 @@
     "original_wp_id": 1189,
     "title": "Radical New Economists",
     "slug": "radical-new-economists",
-    "lyrics": "<p>Oh, we&#8217;re radical new economists,</p>\n<p>We&#8217;re radical new economists,</p>\n<p>We like health care and fair wages,→</p>\n<p>And sweatshops give us rages, //</p>\n<p>We&#8217;re radical new economists.</p>\n<p>We like rules made out in public, yes we do,</p>\n<p>And ones that serve all people, wouldn&#8217;t you?</p>\n<p>We’re tired of all the corporate greed→ That hurts the people on Main Street, //</p>\n<p>We&#8217;re radical new economists.</p>\n<p>We like trade that&#8217;s local and that&#8217;s fair,</p>\n<p>And doesn&#8217;t transport coal or pollute air,</p>\n<p>We like farms owned by the farmers→ Not those agribusiness charmers, //</p>\n<p>We&#8217;re radical new economists.</p>\n<p>So, join these radical new economists<br />\n Who say it&#8217;s time to tax our billionaires.<br />\nAnd set up a fair new system,→ One we can exist in, //<br />\n As radical new economists.</p>\n",
+    "lyrics": "<p>Oh, we’re radical new economists,<br />\nWe’re radical new economists,<br />\nWe like health care and fair wages,→<br />\nAnd sweatshops give us rages, //<br />\nWe’re radical new economists.</p>\n<p>We like rules made out in public, yes we do,<br />\nAnd ones that serve all people, wouldn’t you?<br />\nWe’re tired of all the corporate greed→ That hurts the people on Main Street, //<br />\nWe’re radical new economists.</p>\n<p>We like trade that’s local and that’s fair,<br />\nAnd doesn’t transport coal or pollute air,<br />\nWe like farms owned by the farmers→ Not those agribusiness charmers, //<br />\nWe’re radical new economists.</p>\n<p>So, join these radical new economists<br />\nWho say it’s time to tax our billionaires.<br />\nAnd set up a fair new system,→ One we can exist in, //<br />\nAs radical new economists.</p>\n",
     "tune": "She'll Be Comin' 'Round the Mountain",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -32625,7 +32589,7 @@
     "title": "Qatar WTO",
     "slug": "qatar-wto",
     "lyrics": "<p>WTO has met again, this time Qatar.<br />\nThe Persian Gulf’s an unlikely place—it’s quite bizarre.<br />\nThey don’t want protesters to have their say.<br />\nThey chose a site that is far, far away,<br />\nBut they got our message: We demand fair trade!</p>\n<p>Third World countries are put on the spot—what else is new?<br />\nThey want more markets and balance of power, wouldn’t you?<br />\nAgriculture and textiles were pulled from the talks;<br />\nThose critical matters would be deadlocked.<br />\nSo much for free trade: Do it our way or not!</p>\n<p>The message from Brussels and Washington is liberalize,<br />\nWhile we in the West protect our own and subsidize.<br />\nDirty water, poverty, pricey drugs<br />\nShould no longer be sanctioned and swept under rugs.<br />\nGive us fair trade, union made! Share in the common lot.</p>\n",
-    "tune": "",
+    "tune": "When Johnny Comes Marching Home",
     "songwriter": "Kay Thode",
     "songwriters": [
       "Kay Thode"
