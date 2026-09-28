@@ -1,5 +1,36 @@
 [
   {
+    "id": "wp-7018",
+    "source": "wp",
+    "original_wp_id": 7018,
+    "title": "Help!",
+    "slug": "help",
+    "lyrics": "<p>(Help!) We need each other<br />\n(Help!) Or we won’t recover<br />\n(Help!) You know we need each other<br />\n(Help!)</p>\n<p>&nbsp;</p>\n<p>When I was younger I thought right could win the day<br />\nBut now we have a president who’s wrong in ev’ry way.<br />\nThere’s nothing good too big or small for him to cast away<br />\nHe’s such a petty tyrant, can’t we make him go away?</p>\n<p>&nbsp;</p>\n<p><em>Chorus:</em></p>\n<p>Help us if you can, we’re underground<br />\nWe need to turn this craziness around<br />\nWe’ve got to get our feet back on the ground<br />\nCan’t we please, please, break free?</p>\n<p>&nbsp;</p>\n<p>He’s just a tool of oligarchs who rule the world today<br />\nThey chose him to wreak havoc, he does every day<br />\nHe has no heart, no conscience, he’s their perfect tool<br />\nDistracts us with his craziness, acting like a fool.</p>\n<p>&nbsp;</p>\n<p>Ev’ry day’s a challenge when we see the latest news<br />\nThere’s no one he’s not after, thinks he can never lose<br />\nTrans kids, science, immigrants, the list goes on and on<br />\nThe misery he sows will haunt us long after he’s gone</p>\n<p>&nbsp;</p>\n<p><em>Chorus</em></p>\n<p>Help us! Help us, ooh</p>\n",
+    "tune": "Help! (Beatles)",
+    "songwriter": "Jo-Hanna Read",
+    "songwriters": [
+      "Jo-Hanna Read"
+    ],
+    "gaggle": "Seattle",
+    "gaggles": [
+      "Seattle"
+    ],
+    "issues": [
+      "Government & Power"
+    ],
+    "key_or_starting_note": "",
+    "youtube_link": "",
+    "youtube_link_2": "",
+    "date_written_or_updated": "2026-09-28T00:00:00+00:00",
+    "date_published": "2026-09-28",
+    "source_notes": "",
+    "feature_on_homepage": false,
+    "display_centrally": true,
+    "duplicate_of": null,
+    "needs_review": false,
+    "review_notes": ""
+  },
+  {
     "id": "wp-7016",
     "source": "wp",
     "original_wp_id": 7016,
@@ -30300,7 +30331,7 @@
     "original_wp_id": 1261,
     "title": "Santa Bush",
     "slug": "santa-bush",
-    "lyrics": "<p>There’ll be a tax cut, we’ve got a surplus,<br />\nBut who’s gonna get it—surely not us!<br />\nSanta Bush is coming to town.</p>\n<p>He says the big cash will trickle on down—<br />\nThat voodoo bunk of Reagan renown.<br />\nSanta Bush is coming to town.</p>\n<p>Won’t spend on education,<br />\nWon’t spend it for our health.<br />\nHe’ll spend it on a missile shield<br />\nAnd subsidize big wealth.</p>\n<p>You better not cry, you better not pout.<br />\n“Compassion” is in, society’s out.<br />\nSanta Bush is coming<br />\nSanta Bush is coming<br />\nSanta Bush is coming to town!</p>\n",
+    "lyrics": "<p>There’ll be a tax cut, we’ve got a surplus,<br />\nBut who’s gonna get it—surely not us!<br />\nSanta <em>Bush</em> is coming to town.</p>\n<p>He says the big cash will trickle on down—<br />\nThat voodoo bunk of Reagan renown.<br />\nSanta <em>Bush is coming to town.</em></p>\n<p>Won’t spend on education,<br />\nWon’t spend it for our health.<br />\nHe’ll spend it on a missile shield<br />\nAnd subsidize big wealth.</p>\n<p>You better not cry, you better not pout.<br />\n“Compassion” is in, society’s out.<br />\nSanta <em>Bush</em> is coming<br />\nSanta <em>Bush</em> is coming<br />\nSanta <em>Bush</em> is coming to town!</p>\n",
     "tune": "Santa Claus is Coming to Town",
     "songwriter": "Monica Zucker",
     "songwriters": [
@@ -30322,7 +30353,7 @@
     "date_published": "2013-01-28",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -30836,8 +30867,8 @@
     "original_wp_id": 1244,
     "title": "War Is Peace",
     "slug": "war-is-peace",
-    "lyrics": "<p><em>from the Pennsylvania Grannies </em><br />\n<em></em></p>\n<p>War is peace, peace is war.<br />\nThe truth is what we’re longing for.<br />\nDoes anybody know–the truth?</p>\n<p>Nine-Eleven’s the excuse<br />\nFor all kinds of civil abuse.<br />\nDoes anybody know–the truth?</p>\n<p>The Patriot Act was put in place<br />\nTo keep us FREE?<br />\nBombed Iraqis and Afghans<br />\nStrictly for democracy!</p>\n<p>Now it’s time for you and me:<br />\nChoose leaders with integrity,<br />\nAnd then we all will know—the truth!</p>\n",
-    "tune": "Five Foot Two, Eyes of Blue",
+    "lyrics": "<p>War is peace, peace is war.<br />\nThe truth is what we’re longing for.<br />\nDoes anybody know–the truth?</p>\n<p>Nine-Eleven’s the excuse<br />\nFor all kinds of civil abuse.<br />\nDoes anybody know–the truth?</p>\n<p>The Patriot Act was put in place<br />\nTo keep us FREE?<br />\nBombed Iraqis and Afghans<br />\nStrictly for democracy!</p>\n<p>Now it’s time for you and me:<br />\nChoose leaders with integrity,<br />\nAnd then we all will know—the truth!</p>\n",
+    "tune": "Five Foot Blue Eyes of Blue",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
       "Unlisted Songwriter"
@@ -30855,9 +30886,9 @@
     "youtube_link_2": "",
     "date_written_or_updated": "",
     "date_published": "2013-01-27",
-    "source_notes": "",
+    "source_notes": "from the Pennsylvania Grannies",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -30868,7 +30899,7 @@
     "original_wp_id": 1243,
     "title": "Wake Up America 2",
     "slug": "wake-up-america-2",
-    "lyrics": "<p>Wake up, America!<br />\n Work for peace, not war.<br />\n Justice, freedom and rights for all<br />\n Are what we&#8217;re standing for.</p>\n<p>Take down the wall in Palestine<br />\nExport arms no more.<br />\nScrap the plans to bomb Iran.<br />\nDon’t start another war!</p>\n<p>Wake up America!</p>\n<p>It&#8217;s time to work for peace.</p>\n<p>No more bombs, missiles, or guns,</p>\n<p>Making war must cease.</p>\n",
+    "lyrics": "<p>Wake up, America!<br />\nWork for peace, not war.<br />\nJustice, freedom and rights for all<br />\nAre what we’re standing for.</p>\n<p>Take down the wall in Palestine<br />\nExport arms no more.<br />\nScrap the plans to bomb Iran.<br />\nDon’t start another war!</p>\n<p>Wake up America!</p>\n<p>It’s time to work for peace.</p>\n<p>No more bombs, missiles, or guns,</p>\n<p>Making war must cease.</p>\n",
     "tune": "Row, Row, Row Your Boat",
     "songwriter": "Kay Thode",
     "songwriters": [
@@ -30931,8 +30962,8 @@
     "original_wp_id": 1241,
     "title": "Volunteer Song",
     "slug": "volunteer-song",
-    "lyrics": "<p><em>from the Canadian Grannies </em><br />\n<em></em></p>\n<p>A volunteer sings a new song<br />\nTo help the weary go on.<br />\nA volunteer is that extra spark<br />\nTo move the world along.<br />\nA volunteer is the sound of hope<br />\nWhen things could start to go wrong.<br />\nWe look round this place and we name the names<br />\nOf those who have gone forth and done.<br />\nToday as we meet here and through the years<br />\nYou’ve given, you’ve been there, well done.</p>\n",
-    "tune": "Hi Lili, Hi Lili, Hi Lo",
+    "lyrics": "<p>A volunteer sings a new song<br />\nTo help the weary go on.<br />\nA volunteer is that extra spark<br />\nTo move the world along.<br />\nA volunteer is the sound of hope<br />\nWhen things could start to go wrong.<br />\nWe look round this place and we name the names<br />\nOf those who have gone forth and done.<br />\nToday as we meet here and through the years<br />\nYou’ve given, you’ve been there, well done.</p>\n",
+    "tune": "Hi Lili / Hi Lo",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
       "Unlisted Songwriter"
@@ -30949,9 +30980,9 @@
     "youtube_link_2": "",
     "date_written_or_updated": "",
     "date_published": "2013-01-27",
-    "source_notes": "",
+    "source_notes": "from the Canadian Grannies",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -30993,7 +31024,7 @@
     "original_wp_id": 1239,
     "title": "Unequal Treatment",
     "slug": "unequal-treatment",
-    "lyrics": "<p>If you’re poor and use cocaine,<br />\nYou’ll go to jail.<br />\nIf you’re black and use cocaine,<br />\nYou’ll go to jail.<br />\nThey will slap you in the cooler<br />\nAnd tell you you’re a loser,<br />\nThey will slap you in the cooler<br />\nWhen they come.</p>\n<p>If you’re rich and use cocaine,<br />\nThey’ll slap your wrist,<br />\nIf you’re rich and use cocaine,<br />\nThey’ll slap your wrist,<br />\nThey will tell you to get treatment,<br />\nAnd let you out tout de suitement,<br />\nThey will let you out quite quickly,<br />\nWhen they come.</p>\n<p>So it’s time for equal treatment&#8211;yes it is!<br />\nOh, it’s time for equal treatment&#8211;yes it is!<br />\nLet’s decriminalize drug use<br />\nAnd treat all users equal,<br />\nOh, it’s time for equal treatment&#8211;yes it is!</p>\n",
+    "lyrics": "<p>If you’re poor and use cocaine,<br />\nYou’ll go to jail.<br />\nIf you’re black and use cocaine,<br />\nYou’ll go to jail.<br />\nThey will slap you in the cooler<br />\nAnd tell you you’re a loser,<br />\nThey will slap you in the cooler<br />\nWhen they come.</p>\n<p>If you’re rich and use cocaine,<br />\nThey’ll slap your wrist,<br />\nIf you’re rich and use cocaine,<br />\nThey’ll slap your wrist,<br />\nThey will tell you to get treatment,<br />\nAnd let you out tout de suitement,<br />\nThey will let you out quite quickly,<br />\nWhen they come.</p>\n<p>So it’s time for equal treatment–yes it is!<br />\nOh, it’s time for equal treatment–yes it is!<br />\nLet’s decriminalize drug use<br />\nAnd treat all users equal,<br />\nOh, it’s time for equal treatment–yes it is!</p>\n",
     "tune": "Coming Round the Mountain",
     "songwriter": "Kay Thode",
     "songwriters": [
@@ -31004,7 +31035,9 @@
       "Seattle"
     ],
     "issues": [
-      "Government & Power"
+      "Government & Power",
+      "Healthcare",
+      "Human & Civil Rights"
     ],
     "key_or_starting_note": "",
     "youtube_link": "",
@@ -31035,7 +31068,8 @@
       "Seattle"
     ],
     "issues": [
-      "Government & Power"
+      "Government & Power",
+      "Human & Civil Rights"
     ],
     "key_or_starting_note": "",
     "youtube_link": "",
@@ -31055,7 +31089,7 @@
     "original_wp_id": 1237,
     "title": "Torture Song",
     "slug": "torture-song",
-    "lyrics": "<p>Torture was the “in thing” then,</p>\n<p>No habeas corpus,</p>\n<p>Waterboarding, shocks and sha-ame</p>\n<p>Rendition, too.</p>\n<p>Where has our democracy gone?</p>\n<p>Smashed by our last president.</p>\n<p>Why don’t we end all this?</p>\n<p>We must indict them all!</p>\n<p>Torture is still in the news,</p>\n<p>Cheney says it worked for us.</p>\n<p>Waterboarding, shocks, and sha-ame,</p>\n<p>Rendition too.</p>\n<p>Where has our democracy gone?</p>\n<p>Smashed by our last president!</p>\n<p>Why don’t we end all this?</p>\n<p>We must indict them all</p>\n",
+    "lyrics": "<p>Torture was the “in thing” then,<br />\nNo habeas corpus,<br />\nWaterboarding, shocks and sha-ame<br />\nRendition, too.<br />\nWhere has our democracy gone?<br />\nSmashed by our last president.<br />\nWhy don’t we end all this?<br />\nWe must indict them all!</p>\n<p>Torture is still in the news,<br />\nCheney says it worked for us.<br />\nWaterboarding, shocks, and sha-ame,<br />\nRendition too.<br />\nWhere has our democracy gone?<br />\nSmashed by our last president!<br />\nWhy don’t we end all this?<br />\nWe must indict them all!</p>\n",
     "tune": "Where Have All the Flowers Gone?",
     "songwriter": "Kay Thode",
     "songwriters": [
@@ -31099,7 +31133,9 @@
       "Seattle"
     ],
     "issues": [
-      "Government & Power"
+      "Government & Power",
+      "Human & Civil Rights",
+      "Racism & Social Justice"
     ],
     "key_or_starting_note": "",
     "youtube_link": "",
@@ -31108,7 +31144,7 @@
     "date_published": "2013-01-27",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -31119,7 +31155,7 @@
     "original_wp_id": 1235,
     "title": "Three Raging Grannies",
     "slug": "three-raging-grannies",
-    "lyrics": "<p><em>To be sung by three sopranos very delicately.</em></p>\n<p>Three Raging Grannies singing gently<br />\nTry not to act too temperament’ly<br />\nBut we know a hundred percently<br />\nNothing is going well.</p>\n<p>War is the base of much bereaving,<br />\nRights are gone, our jobs are leaving,<br />\nHomes are lost—we’re disbelieving<br />\nThey’ll ever end this spell.</p>\n<p>First two wars so devastating<br />\nInvasion labeled liberating<br />\nThen Katrina inundating&#8211;<br />\nMany more tales to tell</p>\n<p>Let’s hope the new administration<br />\nFinds ways to use negotiation,<br />\nEnds our despair and deep frustration<br />\nLet peace and freedom swell!</p>\n<p>Three Raging Grans sing very sweetly.<br />\nWe’ll sock it to ’em oh so neatly.<br />\nWe should impeach them all completely!<br />\nEverything’s gone to (cover mouth, deep bow).</p>\n",
+    "lyrics": "<p><em>To be sung by three sopranos very delicately.</em></p>\n<p>Three Raging Grannies singing gently<br />\nTry not to act too temperament’ly<br />\nBut we know a hundred percently<br />\nNothing is going well.</p>\n<p>War is the base of much bereaving,<br />\nRights are gone, our jobs are leaving,<br />\nHomes are lost—we’re disbelieving<br />\nThey’ll ever end this spell.</p>\n<p>First two wars so devastating<br />\nInvasion labeled liberating<br />\nThen Katrina inundating–<br />\nMany more tales to tell</p>\n<p>Let’s hope the new administration<br />\nFinds ways to use negotiation,<br />\nEnds our despair and deep frustration<br />\nLet peace and freedom swell!</p>\n<p>Three Raging Grans sing very sweetly.<br />\nWe’ll sock it to ’em oh so neatly.<br />\nWe should impeach them all completely!<br />\nEverything’s gone to (cover mouth, deep bow).</p>\n",
     "tune": "Three Little Maids from School",
     "songwriter": "Monica Zucker",
     "songwriters": [
@@ -31131,6 +31167,7 @@
     ],
     "issues": [
       "Government & Power",
+      "Grannies",
       "War & Peace"
     ],
     "key_or_starting_note": "",
@@ -31140,7 +31177,7 @@
     "date_published": "2013-01-27",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -31213,7 +31250,7 @@
     "original_wp_id": 1232,
     "title": "There’s No Business Like War Business",
     "slug": "theres-no-business-like-war-business",
-    "lyrics": "<p>There&#8217;s no business like war business,</p>\n<p>The best business we know.</p>\n<p>Never mind the homeless and the hungry,</p>\n<p>Never mind the people without jobs.</p>\n<p>Nowhere can you get that special feeling</p>\n<p>Like when you&#8217;re piling up the bombs.</p>\n<p>There&#8217;s no business like war business,</p>\n<p>The best business we know.</p>\n<p>Sixty seconds spending is a lot of bucks,</p>\n<p>It seems a lot, but golly shucks,</p>\n<p>The same amount buys food and clothes for all the world,</p>\n<p>For all of the world.</p>\n<p><em>(Kazoo and dance)</em></p>\n<p>Now you stole yourself a new supply of oil&#8211;<br />\n Goodie, goodie!<br />\n And IT&#8217;S loCAted ON Iraqi soil&#8211;<br />\n Goodie, goodie!<br />\n Did you think that this would fix<br />\n The problems we must lick,<br />\n Like millions without food and homes,<br />\n And water not fit to drink?</p>\n<p>Ta ra ra BOOM de ay!</p>\n<p>We don&#8217;t like war today.</p>\n<p>The bombs are now passe.</p>\n<p>They must be put away.</p>\n<p>Ta ra ra BOOM de ay!</p>\n<p>War doesn&#8217;t work no more.</p>\n<p>It could go nuclear.</p>\n<p>Ta ra ra BOOM!</p>\n",
+    "lyrics": "<p>There’s no business like war business,<br />\nThe best business we know.<br />\nNever mind the homeless and the hungry,<br />\nNever mind the people without jobs.<br />\nNowhere can you get that special feeling<br />\nLike when you’re piling up the bombs.</p>\n<p>There’s no business like war business,<br />\nThe best business we know.<br />\nSixty seconds spending is a lot of bucks,<br />\nIt seems a lot, but golly shucks,<br />\nThe same amount buys food and clothes for all the world,<br />\nFor all of the world.</p>\n<p><em>(Kazoo and dance)</em></p>\n<p>Now you stole yourself a new supply of oil–<br />\nGoodie, goodie!<br />\nAnd IT’S loCAted ON Iran&#8217;s soil–<br />\nGoodie, goodie!<br />\nDid you think that this would fix<br />\nThe problems we must lick,<br />\nLike millions without food and homes,<br />\nAnd water not fit to drink?</p>\n<p>Ta ra ra BOOM de ay!<br />\nWe don’t like war today.<br />\nThe bombs are now passe.<br />\nThey must be put away.</p>\n<p>Ta ra ra BOOM de ay!<br />\nWar doesn’t work no more.<br />\nIt could go nuclear.<br />\nTa ra ra BOOM!</p>\n",
     "tune": "There's No Business Like Show Business",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -31602,6 +31639,7 @@
       "Seattle"
     ],
     "issues": [
+      "Gender Issues",
       "Human & Civil Rights"
     ],
     "key_or_starting_note": "",
