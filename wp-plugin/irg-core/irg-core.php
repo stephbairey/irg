@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.25.1
+ * Version: 3.25.2
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -2737,3 +2737,20 @@ function irg_redirect_legacy_wp_path(): void {
 	}
 }
 add_action( 'init', 'irg_redirect_legacy_wp_path', 1 );
+
+// ---------------------------------------------------------------------------
+// No "Preview" on song edit screens.
+//
+// Songs render on the Astro site, not in WordPress, so the preview button
+// (classic editor's publish box and the block editor's toolbar) opens a page
+// with nothing but a title. Jo-Hanna asked for it to go (2026-09-23).
+// ---------------------------------------------------------------------------
+
+function irg_hide_song_preview_button(): void {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || $screen->post_type !== 'song' ) {
+		return;
+	}
+	echo '<style>#preview-action, #post-preview, .editor-post-preview, .editor-preview-dropdown { display: none !important; }</style>';
+}
+add_action( 'admin_head', 'irg_hide_song_preview_button' );
