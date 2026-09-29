@@ -19,7 +19,14 @@ const { song } = Astro.props;
 
 const gaggle = song.gaggles.nodes[0]?.name;
 const tune = song.tunes.nodes[0]?.name;
-const songwriter = song.songwriters.nodes[0]?.name;
+const songwriterNames = song.songwriters.nodes.map((w) => w.name).filter(Boolean);
+// "A", "A and B", "A, B, and C": every co-writer, not just the first.
+const songwriter =
+  songwriterNames.length <= 1
+    ? songwriterNames[0]
+    : songwriterNames.length === 2
+      ? `${songwriterNames[0]} and ${songwriterNames[1]}`
+      : `${songwriterNames.slice(0, -1).join(", ")}, and ${songwriterNames[songwriterNames.length - 1]}`;
 const issues = song.issues.nodes.map((i) => i.name);
 const lyrics = song.songDetails.lyrics;
 const key = song.songDetails.keyOrStartingNote;
@@ -61,8 +68,10 @@ const musicComposition: Record<string, unknown> = {
   inLanguage: "en",
 };
 
-if (songwriter) {
-  musicComposition.composer = { "@type": "Person", name: songwriter };
+if (songwriterNames.length === 1) {
+  musicComposition.composer = { "@type": "Person", name: songwriterNames[0] };
+} else if (songwriterNames.length > 1) {
+  musicComposition.composer = songwriterNames.map((name) => ({ "@type": "Person", name }));
 }
 if (lyrics) {
   musicComposition.lyrics = { "@type": "CreativeWork", text: stripHtml(lyrics) };
