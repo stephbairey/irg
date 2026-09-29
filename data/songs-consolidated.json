@@ -30296,7 +30296,7 @@
     "original_wp_id": 455,
     "title": "We’re Rising Up! (One Billion Rising!)",
     "slug": "were-rising-up-one-billion-rising",
-    "lyrics": "<p>We’re the Raging Grannies and we’re here to take a stand,To keep choice free for women all across our mighty land.<br />\nWe won’t go back to hangers if our right to choose is banned!<br />\nWe’re Rising Up today!</p>\n<p><b>Chorus:</b>   No more rape and no more beatings.<br />\nWomen rise! We&#8217;re tired of pleading.<br />\nWe’re rising up to tell you that our bodies are our own;<br />\nWe’re Rising Up today!</p>\n<p>We stand here in [name your city] and wonder at the sad disgrace<br />\nThat women’s rights might simply disappear without a trace.<br />\nWe dance and sing and shout out loud to save the human race!<br />\nWe’re Rising Up today!<br />\n<b>Repeat Chorus</b></p>\n<p>What makes you think that you can take your liberties with us?<br />\nWe&#8217;re mothers, sisters, aunts and daughters, kickin&#8217; up a fuss.<br />\nYour violations end today, there&#8217;s no more to discuss!<br />\nWe’re Rising Up today!<br />\n<strong>Repeat Chorus</strong></p>\n<p>We dance today for justice, and it’s not just for the sport.<br />\nWe own our bodies; we’ll protect the rights for which we fought&#8230;<br />\nThe right to step out unafraid; the freedom to abort.<br />\nWe’re Rising Up today!<br />\n<b>Repeat Chorus</b></p>\n",
+    "lyrics": "<p>We’re the Raging Grannies and we’re here to take a stand,<br />\nTo keep choice free for women all across our mighty land.<br />\nWe won’t go back to hangers if our right to choose is banned!<br />\nWe’re Rising Up today!</p>\n<p><b>Chorus:</b>   No more rape and no more beatings.<br />\nWomen rise! We&#8217;re tired of pleading.<br />\nWe’re rising up to tell you that our bodies are our own;<br />\nWe’re Rising Up today!</p>\n<p>We stand here in [name your city] and wonder at the sad disgrace<br />\nThat women’s rights might simply disappear without a trace.<br />\nWe dance and sing and shout out loud to save the human race!<br />\nWe’re Rising Up today!<br />\n<b>Repeat Chorus</b></p>\n<p>What makes you think that you can take your liberties with us?<br />\nWe&#8217;re mothers, sisters, aunts and daughters, kickin&#8217; up a fuss.<br />\nYour violations end today, there&#8217;s no more to discuss!<br />\nWe’re Rising Up today!<br />\n<strong>Repeat Chorus</strong></p>\n<p>We dance today for justice, and it’s not just for the sport.<br />\nWe own our bodies; we’ll protect the rights for which we fought&#8230;<br />\nThe right to step out unafraid; the freedom to abort.<br />\nWe’re Rising Up today!<br />\n<b>Repeat Chorus</b></p>\n",
     "tune": "Solidarity Forever",
     "songwriter": "Vicki Ryder",
     "songwriters": [
@@ -30309,7 +30309,8 @@
     "issues": [
       "Gender Issues",
       "Healthcare",
-      "Human & Civil Rights"
+      "Human & Civil Rights",
+      "Women"
     ],
     "key_or_starting_note": "",
     "youtube_link": "http://www.youtube.com/watch?v=Ly5ZKjjxMNM",
@@ -30318,7 +30319,7 @@
     "date_published": "2013-02-06",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
