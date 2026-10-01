@@ -27542,7 +27542,7 @@
     "original_wp_id": 1327,
     "title": "Give Me a Home Where the Rivers Don’t Foam",
     "slug": "give-me-a-home-where-the-rivers-dont-foam",
-    "lyrics": "<p><em>The Raging Grannies Songbook, 1993</em></p>\n<p>Oh, give me a home where the rivers don’t foam,<br />\n And the squirrels and chipmunks can play,<br />\n Where the lakes all have fish you can put on your dish,<br />\n And the skies are not smoggy and grey.</p>\n<p>Chorus:</p>\n<p>Home, home on the earth,</p>\n<p>Your beauty’s beginning to fade.</p>\n<p>We’ve got to act fast,</p>\n<p>Our luck it won’t last.</p>\n<p>Our home we just can’t throw away.</p>\n<p>Those nuclear wastes are inclined to escape</p>\n<p>When into the ground they are dumped.</p>\n<p>We don’t want PCBs in the birds and the bees</p>\n<p>And dioxin on our babies’ rumps.</p>\n<p>Chorus</p>\n<p>Oh, give me a home safe inside the ozone.</p>\n<p>There’s danger in those cosmic rays.</p>\n<p>Oceans up to our neck from greenhouse effect—</p>\n<p>Please don’t wash all this beauty away.</p>\n<p>Chorus</p>\n",
+    "lyrics": "<p>Oh, give me a home where the rivers don’t foam,<br />\nAnd the squirrels and chipmunks can play,<br />\nWhere the lakes all have fish you can put on your dish,<br />\nAnd the skies are not smoggy and grey.</p>\n<p>Chorus:<br />\nHome, home on the earth,<br />\nYour beauty’s beginning to fade.<br />\nWe’ve got to act fast,<br />\nOur luck it won’t last.<br />\nOur home we just can’t throw away.</p>\n<p>Those nuclear wastes are inclined to escape<br />\nWhen into the ground they are dumped.<br />\nWe don’t want PCBs in the birds and the bees<br />\nAnd dioxin on our babies’ rumps.</p>\n<p>Chorus</p>\n<p>Oh, give me a home safe inside the ozone.<br />\nThere’s danger in those cosmic rays.<br />\nOceans up to our neck from greenhouse effect—<br />\nPlease don’t wash all this beauty away.</p>\n<p>Chorus</p>\n",
     "tune": "Home on the Range",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -27560,9 +27560,9 @@
     "youtube_link_2": "",
     "date_written_or_updated": "",
     "date_published": "2014-03-29",
-    "source_notes": "",
+    "source_notes": "The Raging Grannies Songbook, 1993",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -27573,7 +27573,7 @@
     "original_wp_id": 1326,
     "title": "What Are We Afraid Of?",
     "slug": "what-are-we-afraid-of",
-    "lyrics": "<p><em>by: Canadian Grannies</em><br />\n<em> </em></p>\n<p>CHORUS<br />\nWhat are we afraid of, afraid of, afraid of?<br />\nWhat are we afraid of?<br />\nIt’s NOT the terrorists!</p>\n<p>When hospitals are closing down<br />\nThough ER’s all are full<br />\nAnd home care nursing’s down the drain<br />\nThey’re no more plugs to pull, SO~</p>\n<p>CHORUS</p>\n<p>When governments cut services<br />\nAnd then use all our cries<br />\nTo give them an excuse to day<br />\nThey “have to privatize.” SO~</p>\n<p>CHORUS</p>\n<p>When money is the raison d’etre<br />\nHow can we hope for care<br />\nThat does not all the corners cut<br />\nTo leave us hanging there? SO ~</p>\n<p>CHORUS</p>\n<p>When greed and profit rule the land<br />\nWhat chance is there that we<br />\nWill keep our social safety net<br />\nOur health and dignity, SO~</p>\n<p>CHORUS</p>\n<p>Just getting sick is bad enough<br />\nWithout more worry too<br />\n‘Bout “how to pay” and “who can help”<br />\n“What am I going to do?” SO~</p>\n<p>LAST CHORUS:<br />\nWhat are YOU afraid of, afraid of, afraid of<br />\nWhat are YOU afraid of?<br />\nIS it the terrorists?</p>\n",
+    "lyrics": "<p>CHORUS<br />\nWhat are we afraid of, afraid of, afraid of?<br />\nWhat are we afraid of?<br />\nIt’s NOT the terrorists!</p>\n<p>When hospitals are closing down<br />\nThough ER’s all are full<br />\nAnd home care nursing’s down the drain<br />\nThey’re no more plugs to pull, SO~</p>\n<p>CHORUS</p>\n<p>When governments cut services<br />\nAnd then use all our cries<br />\nTo give them an excuse to day<br />\nThey “have to privatize.” SO~</p>\n<p>CHORUS</p>\n<p>When money is the raison d’etre<br />\nHow can we hope for care<br />\nThat does not all the corners cut<br />\nTo leave us hanging there? SO ~</p>\n<p>CHORUS</p>\n<p>When greed and profit rule the land<br />\nWhat chance is there that we<br />\nWill keep our social safety net<br />\nOur health and dignity, SO~</p>\n<p>CHORUS</p>\n<p>Just getting sick is bad enough<br />\nWithout more worry too<br />\n‘Bout “how to pay” and “who can help”<br />\n“What am I going to do?” SO~</p>\n<p>LAST CHORUS:<br />\nWhat are YOU afraid of, afraid of, afraid of<br />\nWhat are YOU afraid of?<br />\nIS it the terrorists?</p>\n",
     "tune": "Charlie Is My Darlin’",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -27585,6 +27585,7 @@
     ],
     "issues": [
       "Government & Power",
+      "Healthcare",
       "War & Peace"
     ],
     "key_or_starting_note": "",
@@ -27592,9 +27593,9 @@
     "youtube_link_2": "",
     "date_written_or_updated": "",
     "date_published": "2014-03-29",
-    "source_notes": "",
+    "source_notes": "From: Canadian Grannies",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -27605,7 +27606,7 @@
     "original_wp_id": 1325,
     "title": "Healthcare Song",
     "slug": "healthcare-song-2",
-    "lyrics": "<p>by: Canadian Grannies\n</p>\n<p>Governments are pussy-footing ‘round and ‘round the Block<br />\nHinting here and hinting there at Privatizing talk,<br />\nAt universal Medicare they’re starting now to balk,<br />\nAnd it’s now full speed ahead.</p>\n<p>Get sick, You’ll make somebody richer. (3X)<br />\nIt’s for-profit healthcare now.</p>\n<p>Two-level medicine Is great if you’re on top.<br />\nToo bad that all the rest will have to wait until they drop.<br />\nMedicine’s a business that will never have to flop<br />\nAnd it’s now full speed ahead.</p>\n<p>The sicker we get, the richer we will make them (3X).<br />\nIt’s for-profit healthcare now.</p>\n<p>It’s cheaper to run healthcare as a public institution;<br />\nBut there’s no profit to be made, So banish that solution.<br />\nPoliticians, we suspect, Have made a resolution,<br />\nAnd it’s now full speed ahead.</p>\n<p>Get sick, You’ll make somebody richer. (3X)<br />\nIt’s for-profit healthcare now.</p>\n",
+    "lyrics": "<p>Governments are pussy-footing ‘round and ‘round the Block<br />\nHinting here and hinting there at Privatizing talk,<br />\nAt universal Medicare they’re starting now to balk,<br />\nAnd it’s now full speed ahead.</p>\n<p>Get sick, You’ll make somebody richer. (3X)<br />\nIt’s for-profit healthcare now.</p>\n<p>Two-level medicine Is great if you’re on top.<br />\nToo bad that all the rest will have to wait until they drop.<br />\nMedicine’s a business that will never have to flop<br />\nAnd it’s now full speed ahead.</p>\n<p>The sicker we get, the richer we will make them (3X).<br />\nIt’s for-profit healthcare now.</p>\n<p>It’s cheaper to run healthcare as a public institution;<br />\nBut there’s no profit to be made, So banish that solution.<br />\nPoliticians, we suspect, Have made a resolution,<br />\nAnd it’s now full speed ahead.</p>\n<p>Get sick, You’ll make somebody richer. (3X)<br />\nIt’s for-profit healthcare now.</p>\n",
     "tune": "Battle Hymn of the Republic",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -27623,7 +27624,7 @@
     "youtube_link_2": "",
     "date_written_or_updated": "",
     "date_published": "2014-03-29",
-    "source_notes": "",
+    "source_notes": "by: Canadian Grannies",
     "feature_on_homepage": false,
     "display_centrally": false,
     "duplicate_of": null,
@@ -27656,7 +27657,7 @@
     "date_published": "2014-03-29",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -27667,7 +27668,7 @@
     "original_wp_id": 479,
     "title": "Fracking CEO’s Song",
     "slug": "fracking-ceos-song",
-    "lyrics": "<p>I’m in the mood to frackSimply because I’m greedy<br />\nHoney, ‘cause when we’re greedy<br />\nWho cares what others lack.</p>\n<p>Who cares if earth should quake<br />\nWater forever dark brown? Though<br />\nvalues go down in YOUR town<br />\nI’m in the mood to frack.</p>\n<p>Why stop to think of whether<br />\nEarth may dry up and bake<br />\nThat problem is another’s<br />\nI’ll be gone then<br />\nMeantime I’ll take.</p>\n<p>Who cares what problems track,<br />\nIf water is poisoned forever<br />\nThat’s not my care &#8211; no, never<br />\n‘Cause I’m in the mood to frack.</p>\n<p>(Note: Sing slowly and lovingly.<br />\nThe note for Though is the same as for brown.)</p>\n",
+    "lyrics": "<p>I’m in the mood to frack<br />\nSimply because I’m greedy<br />\nHoney, ‘cause when we’re greedy<br />\nWho cares what others lack.</p>\n<p>Who cares if earth should quake<br />\nWater forever dark brown? Though<br />\nvalues go down in YOUR town<br />\nI’m in the mood to frack.</p>\n<p>Why stop to think of whether<br />\nEarth may dry up and bake<br />\nThat problem is another’s<br />\nI’ll be gone then<br />\nMeantime I’ll take.</p>\n<p>Who cares what problems track,<br />\nIf water is poisoned forever<br />\nThat’s not my care &#8211; no, never<br />\n‘Cause I’m in the mood to frack.</p>\n<p>(Note: Sing slowly and lovingly.<br />\nThe note for Though is the same as for brown.)</p>\n",
     "tune": "I'm in the Mood for Love",
     "songwriter": "Nancy Goedert",
     "songwriters": [
@@ -27698,8 +27699,8 @@
     "original_wp_id": 478,
     "title": "Corporate Religion",
     "slug": "corporate-religion",
-    "lyrics": "<p>I’m a corporationAnd I believe in god<br />\nThat doesn’t mean I have to do<br />\nAnything that’s hard</p>\n<p>Like having safe workplaces<br />\nFor my employees<br />\nOr making sure my waste products<br />\nDon’t kill all the trees</p>\n<p>Though I’m a legal fiction<br />\nMy immortal soul<br />\nWill surely go to hell if I<br />\nCover birth control</p>\n<p>Whether they are Hindu<br />\nA Jew or atheist<br />\nAll my female workers<br />\nMust submit to this</p>\n<p>Corporate Christians can both<br />\nHave and eat our cake<br />\nControl employees’ private lives<br />\nWhile they work without a break</p>\n<p>Post-birth human beings<br />\nHave no right to life<br />\nBut the new corporate life form<br />\nWill never ever die!</p>\n",
-    "tune": "Puff, the Magic Dragon",
+    "lyrics": "<p>I’m a corporation<br />\nAnd I believe in god<br />\nThat doesn’t mean I have to do<br />\nAnything that’s hard<br />\nLike having safe workplaces<br />\nFor my employees<br />\nOr making sure my waste products<br />\nDon’t kill all the trees</p>\n<p>Though I’m a legal fiction<br />\nMy immortal soul<br />\nWill surely go to hell if I<br />\nCover birth control<br />\nWhether they are Hindu<br />\nA Jew or atheist<br />\nAll my female workers<br />\nMust submit to this</p>\n<p>Corporate Christians can both<br />\nHave and eat our cake<br />\nControl employees’ private lives<br />\nWhile they work without a break<br />\nPost-birth human beings<br />\nHave no right to life<br />\nBut the new corporate life form<br />\nWill never ever die!</p>\n",
+    "tune": "Puff / the Magic Dragon",
     "songwriter": "Nora Freeman",
     "songwriters": [
       "Nora Freeman"
@@ -27710,9 +27711,9 @@
     ],
     "issues": [
       "Business & Economy",
-      "Gender Issues",
       "Healthcare",
-      "Human & Civil Rights"
+      "Human & Civil Rights",
+      "Women"
     ],
     "key_or_starting_note": "",
     "youtube_link": "http://www.youtube.com/watch?v=hU8CXGoLnwU",
@@ -27764,7 +27765,7 @@
     "original_wp_id": 1322,
     "title": "Divest, Divest",
     "slug": "divest-divest",
-    "lyrics": "<p>Divest, Divest<br />\nFrom fossil fuels, lest<br />\nWe spew out too much CO2<br />\nEarth needs a rest.<br />\nPo-lu-tion!</p>\n<p>Divest, Divest,<br />\nIt’s time to do what’s best<br />\nAnd give those fossil fuels a rest<br />\nDivest, Divest!</p>\n<p>Or we’ll protest<br />\nA REALLY BIG PROTEST<br />\nTo keep all oil and coal and gas<br />\nDeep down inside the Earth<br />\nThen we’ll</p>\n<p>Invest, yes,</p>\n<p>Then we’ll re-invest</p>\n<p>In energy that’s</p>\n<p>Clean and Green</p>\n<p>But now DIVEST!!!!!!</p>\n",
+    "lyrics": "<p>Divest, Divest<br />\nFrom fossil fuels, lest<br />\nWe spew out too much CO2<br />\nEarth needs a rest.<br />\nPo-lu-tion!</p>\n<p>Divest, Divest,<br />\nIt’s time to do what’s best<br />\nAnd give those fossil fuels a rest<br />\nDivest, Divest!</p>\n<p>Or we’ll protest<br />\nA REALLY BIG PROTEST<br />\nTo keep all oil and coal and gas<br />\nDeep down inside the Earth</p>\n<p>Then we’ll<br />\nInvest, yes,<br />\nThen we’ll re-invest<br />\nIn energy that’s<br />\nClean and Green<br />\nBut now DIVEST!!!!!!</p>\n",
     "tune": "Hi ho",
     "songwriter": "Shirley Morrison",
     "songwriters": [
@@ -27795,11 +27796,11 @@
     "original_wp_id": 1321,
     "title": "Coal Cars",
     "slug": "coal-cars",
-    "lyrics": "<p><em>by Ruth Arent<br />\nTune: I’ve Been Working on the Railroad<br />\nNote: tune of second verse is: first 2 lines and last 2 lines of first verse </em></p>\n<p>We’ve been hearing ‘bout the coal cars<br />\nEvery single day<br />\nWe are shocked and we are raging<br />\nThey must not have their way.<br />\nFilthy poisons, dirty profits<br />\nAn environmental mess<br />\nChina’s coughing up the money<br />\nAnd coal sharks could care less.</p>\n<p>CHORUS:  So-Everyone should go,<br />\nLet the coal sharks know<br />\nStinking up the air is a NO! NO! NO!<br />\nEveryone should go.<br />\nLet the coal sharks know<br />\nWe mean it when we shout NO! No!</p>\n<p>We are faced with green house gasses<br />\nDioxides by the pound<br />\nWe are talking ‘bout survival!<br />\nListen up! It is PROFOUND!!!!</p>\n<p>CHORUS</p>\n",
-    "tune": "",
-    "songwriter": "Unlisted Songwriter",
+    "lyrics": "<p>Note: tune of second verse is: first 2 lines and last 2 lines of first verse </em></p>\n<p>We’ve been hearing ‘bout the coal cars<br />\nEvery single day<br />\nWe are shocked and we are raging<br />\nThey must not have their way.<br />\nFilthy poisons, dirty profits<br />\nAn environmental mess<br />\nChina’s coughing up the money<br />\nAnd coal sharks could care less.</p>\n<p>CHORUS:  So-Everyone should go,<br />\nLet the coal sharks know<br />\nStinking up the air is a NO! NO! NO!<br />\nEveryone should go.<br />\nLet the coal sharks know<br />\nWe mean it when we shout NO! No!</p>\n<p>We are faced with green house gasses<br />\nDioxides by the pound<br />\nWe are talking ‘bout survival!<br />\nListen up! It is PROFOUND!!!!</p>\n<p>CHORUS</p>\n",
+    "tune": "I've Been Working on the Railroad",
+    "songwriter": "Ruth Arent",
     "songwriters": [
-      "Unlisted Songwriter"
+      "Ruth Arent"
     ],
     "gaggle": "Seattle",
     "gaggles": [
@@ -27815,7 +27816,7 @@
     "date_published": "2014-01-25",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -27826,7 +27827,7 @@
     "original_wp_id": 1320,
     "title": "Imprisoned in Guantanamo",
     "slug": "imprisoned-in-guantanamo",
-    "lyrics": "<p><em></em></p>\n<p>I was picked up by the US a decade ago,<br />\nI’ll never get out, that’s the one thing I know,<br />\nImprisoned and tortured for all these years,<br />\nStarving to death the least of my fears.</p>\n<p>No charges have ever been brought against me,<br />\nStuck in this hell hole cause I’m Yemeni,<br />\nSeparated from comrades, can’t read the Koran,<br />\nHaven’t seen my attorney, no trial in the plan.</p>\n<p>I’ll know I’ll never see my family,<br />\nNo longer even dream about being free,<br />\nHunger strike is my only choice,<br />\nThe moment I got here, I lost my voice.</p>\n<p>Being force fed, it’s incredible pain,<br />\nTreatment like this, it isn’t sane,<br />\nDoes anyone care what’s happening to me,<br />\nWho is going to take responsibility,</p>\n<p>I was picked up by the US a decade ago,<br />\nI’ll never get out, that’s the one thing I know,<br />\nImprisoned and tortured for all these years,<br />\nStarving to death the least of my fears.</p>\n",
+    "lyrics": "<p>&nbsp;</p>\n<p>I was picked up by the US a decade ago,<br />\nI’ll never get out, that’s the one thing I know,<br />\nImprisoned and tortured for all these years,<br />\nStarving to death the least of my fears.</p>\n<p>No charges have ever been brought against me,<br />\nStuck in this hell hole cause I’m Yemeni,<br />\nSeparated from comrades, can’t read the Koran,<br />\nHaven’t seen my attorney, no trial in the plan.</p>\n<p>I’ll know I’ll never see my family,<br />\nNo longer even dream about being free,<br />\nHunger strike is my only choice,<br />\nThe moment I got here, I lost my voice.</p>\n<p>Being force fed, it’s incredible pain,<br />\nTreatment like this, it isn’t sane,<br />\nDoes anyone care what’s happening to me,<br />\nWho is going to take responsibility,</p>\n<p>I was picked up by the US a decade ago,<br />\nI’ll never get out, that’s the one thing I know,<br />\nImprisoned and tortured for all these years,<br />\nStarving to death the least of my fears.</p>\n",
     "tune": "Sixteen Tons",
     "songwriter": "Laurie Rostholder",
     "songwriters": [
@@ -27859,7 +27860,7 @@
     "original_wp_id": 477,
     "title": "Genetically Modified Organisms",
     "slug": "genetically-modified-organisms",
-    "lyrics": "<p>Normal<br />\n0</p>\n<p>false<br />\nfalse<br />\nfalse</p>\n<p>MicrosoftInternetExplorer4</p>\n<p>st1:*{behavior:url(#ieooui) }</p>\n<p> * Style Definitions *<br />\n table.MsoNormalTable<br />\n\t{mso-style-name:Table Normal;<br />\n\tmso-tstyle-rowband-size:0;<br />\n\tmso-tstyle-colband-size:0;<br />\n\tmso-style-noshow:yes;<br />\n\tmso-style-parent:;<br />\n\tmso-padding-alt:0in 5.4pt 0in 5.4pt;<br />\n\tmso-para-margin:0in;<br />\n\tmso-para-margin-bottom:.0001pt;<br />\n\tmso-pagination:widow-orphan;<br />\n\tfont-size:10.0pt;<br />\n\tfont-family:Times New Roman;<br />\n\tmso-ansi-language:#0400;<br />\n\tmso-fareast-language:#0400;<br />\n\tmso-bidi-language:#0400;}</p>\n<p>When I sit down for breakfast</p>\n<p>I look into my bowl</p>\n<p>Expecting to see corn flakes</p>\n<p>But instead I see a&#8230; [spoken] genetically modified organism.</p>\n<p>And when I take my lunch break</p>\n<p>I eat a BLT</p>\n<p>But instead of eating lettuce</p>\n<p>I’m surprised to find a&#8230; [spoken] genetically modified organism</p>\n<p>At supper time I’m ready</p>\n<p>For grandma’s hearty stew</p>\n<p>So you can just imagine</p>\n<p>My reaction to these&#8230; [spoken] genetically modified organisms.</p>\n<p>We don’t want to be eating</p>\n<p>Monsanto’s GMOs.</p>\n<p>We want the right to choose what’s good,</p>\n<p>‘Cause heaven only knows</p>\n<p>What GMOs will do to us,</p>\n<p>And to our Grandkids, too.</p>\n<p>So we say label all our food!</p>\n<p>We’re tired of getting screwed!</p>\n<p><i>[Alternate last lines for the meek: “Give GMOs the boot!” or “It’s up to me and you.”]</i></p>\n<p><i> </i></p>\n<p><i> </i></p>\n<p><i> </i></p>\n",
+    "lyrics": "<p>When I sit down for breakfast<br />\nI look into my bowl<br />\nExpecting to see corn flakes<br />\nBut instead I see a&#8230; [spoken] genetically modified organism.</p>\n<p>And when I take my lunch break<br />\nI eat a BLT<br />\nBut instead of eating lettuce<br />\nI’m surprised to find a&#8230; [spoken] genetically modified organism</p>\n<p>At supper time I’m ready<br />\nFor grandma’s hearty stew<br />\nSo you can just imagine<br />\nMy reaction to these&#8230; [spoken] genetically modified organisms.</p>\n<p>We don’t want to be eating<br />\nMonsanto’s GMOs.<br />\nWe want the right to choose what’s good,<br />\n‘Cause heaven only knows<br />\nWhat GMOs will do to us,<br />\nAnd to our Grandkids, too.<br />\nSo we say label all our food!<br />\nWe’re tired of getting screwed!</p>\n<p><i>[Alternate last lines for the meek: “Give GMOs the boot!” or “It’s up to me and you.”]</i></p>\n<p><i> </i></p>\n<p><i> </i></p>\n<p><i> </i></p>\n",
     "tune": "Yellow Rose of Texas",
     "songwriter": "Vicki Ryder",
     "songwriters": [
@@ -27891,7 +27892,7 @@
     "original_wp_id": 476,
     "title": "Struggling",
     "slug": "struggling",
-    "lyrics": "<p>I’m a single mom of threeTheir dad died “accidentally”<br />\nOn the job in construc….tion<br />\nNow all three need counseling<br />\nTheir school said try a private shrink<br />\nThere’s been a budget reduc…tion<br />\nOne’s cutting school, and another gets drunk<br />\nAnd the youngest just stays home and weeps<br />\nI have to work to pay the rent<br />\nSo I’m home mostly when they’re sleep….ing  <i>[anticipate]</i></p>\n<p>There’s not enough food<br />\nEven with my three jobs<br />\nI try not to be rude <i>[anticipate]</i><br />\nBut it’s food stamps or we starve</p>\n<p>Wendy’s, Walmart and Burger King<br />\nAre my employers<br />\nThe wages that they’re paying<br />\nMake them my exploiters</p>\n<p>Neighbors whisper that I’m<br />\nNot much of a mother<br />\nSome say it is time <i>[anticipate]</i><br />\nTo place my kids with another</p>\n<p>All my life I tried and tried<br />\nTo do what you’re supposed to<br />\nNow I’m stuck in this plight<br />\nThis is what I’m reduced to</p>\n<p>Being poor<br />\nIsn’t a crime<br />\nTurning your backs<br />\nThat’s the REAL crime!</p>\n",
+    "lyrics": "<p>I’m a single mom of three<br />\nTheir dad died “accidentally”<br />\nOn the job in construc….tion<br />\nNow all three need counseling<br />\nTheir school said try a private shrink<br />\nThere’s been a budget reduc…tion<br />\nOne’s cutting school, and another gets drunk<br />\nAnd the youngest just stays home and weeps<br />\nI have to work to pay the rent<br />\nSo I’m home mostly when they’re sleep….ing  <i>[anticipate]</i></p>\n<p>There’s not enough food<br />\nEven with my three jobs<br />\nI try not to be rude <i>[anticipate]</i><br />\nBut it’s food stamps or we starve</p>\n<p>Wendy’s, Walmart and Burger King<br />\nAre my employers<br />\nThe wages that they’re paying<br />\nMake them my exploiters</p>\n<p>Neighbors whisper that I’m<br />\nNot much of a mother<br />\nSome say it is time <i>[anticipate]</i><br />\nTo place my kids with another</p>\n<p>All my life I tried and tried<br />\nTo do what you’re supposed to<br />\nNow I’m stuck in this plight<br />\nThis is what I’m reduced to</p>\n<p>Being poor<br />\nIsn’t a crime<br />\nTurning your backs<br />\nThat’s the REAL crime!</p>\n",
     "tune": "Food Glorious Food",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -27903,8 +27904,8 @@
     ],
     "issues": [
       "Business & Economy",
-      "Gender Issues",
-      "Human & Civil Rights"
+      "Human & Civil Rights",
+      "Women"
     ],
     "key_or_starting_note": "",
     "youtube_link": "http://youtu.be/J0qSDxxtCGM",
@@ -27924,7 +27925,7 @@
     "original_wp_id": 475,
     "title": "Government Shutdown",
     "slug": "government-shutdown",
-    "lyrics": "<p>Normal<br />\n0</p>\n<p>false<br />\nfalse<br />\nfalse</p>\n<p>MicrosoftInternetExplorer4</p>\n<p>st1:*{behavior:url(#ieooui) }</p>\n<p> * Style Definitions *<br />\n table.MsoNormalTable<br />\n\t{mso-style-name:Table Normal;<br />\n\tmso-tstyle-rowband-size:0;<br />\n\tmso-tstyle-colband-size:0;<br />\n\tmso-style-noshow:yes;<br />\n\tmso-style-parent:;<br />\n\tmso-padding-alt:0in 5.4pt 0in 5.4pt;<br />\n\tmso-para-margin:0in;<br />\n\tmso-para-margin-bottom:.0001pt;<br />\n\tmso-pagination:widow-orphan;<br />\n\tfont-size:10.0pt;<br />\n\tfont-family:Times New Roman;<br />\n\tmso-ansi-language:#0400;<br />\n\tmso-fareast-language:#0400;<br />\n\tmso-bidi-language:#0400;}</p>\n<p>Did you hear what happened in Washington town?<br />\nThose neo-con bastards shut our government down.</p>\n<p>This was no idle tantrum; it was part of their scheme<br />\nTo silence the people, and put an end to the dream.</p>\n<p>They’re really quite clever, those neo-con jerks;<br />\nThey had to stop Obamacare ’cause we’d see that it works.</p>\n<p>Then people would rise up and say that we must<br />\nHave more government programs that help all of us.</p>\n<p>They’ll call us all socialists, but whatever they say,<br />\nWe know folks will die without health care today.</p>\n<p>They’re holding us hostage to their evil plans.<br />\nThey shut down the government and now they demand<br />\nThat we must negotiate, but we Grannies say NO!<br />\nAnd come next election, they’ve all got to go!</p>\n<p>This is still a democracy, if they like it or not.<br />\nAnd we won’t be held hostage to their neo-con plot.</p>\n<p>So let’s pull together and give a loud shout,<br />\nAnd vote our own interests, and throw the bums out.</p>\n",
+    "lyrics": "<p>Did you hear what happened in Washington town?<br />\nThose neo-con bastards shut our government down.<br />\nThis was no idle tantrum; it was part of their scheme<br />\nTo silence the people, and put an end to the dream.</p>\n<p>They’re really quite clever, those neo-con jerks;<br />\nThey had to stop Obamacare ’cause we’d see that it works.<br />\nThen people would rise up and say that we must<br />\nHave more government programs that help all of us.</p>\n<p>They’ll call us all socialists, but whatever they say,<br />\nWe know folks will die without health care today.</p>\n<p>They’re holding us hostage to their evil plans.<br />\nThey shut down the government and now they demand<br />\nThat we must negotiate, but we Grannies say NO!<br />\nAnd come next election, they’ve all got to go!</p>\n<p>This is still a democracy, if they like it or not.<br />\nAnd we won’t be held hostage to their neo-con plot.<br />\nSo let’s pull together and give a loud shout,<br />\nAnd vote our own interests, and throw the bums out.</p>\n",
     "tune": "On Top of Old Smokey",
     "songwriter": "Vicki Ryder",
     "songwriters": [
@@ -27990,7 +27991,7 @@
     "original_wp_id": 473,
     "title": "16 Tons of Greed",
     "slug": "16-tons-of-greed",
-    "lyrics": "<p>Some say we need insurance companiesTo run our healthcare any way they please<br />\nSo whaddaya think, are they doing the job<br />\nOr does it make you wanna sob</p>\n<p>Make 600 calls, and whaddaya know<br />\nYour claim is denied and you’re on your own<br />\nTo save your life, would depress their bottom line<br />\nNothing personal, of course, they hope you’ll be fine</p>\n<p>Well, we say the market’s OK for some things<br />\nLike deodorant, dishes, raincoats and rings<br />\nBut the importance of good medical care<br />\nMeans we really gotta make it fair</p>\n<p>Making it fair for everyone<br />\nMeans care for all, not only some<br />\nWhat the doc says you need, is what you should get<br />\nAnd not have to take on crippling debt</p>\n<p>We’d rather pay for healthcare than guns and bombs<br />\nWhy’s there always enough for the Pentagon<br />\nNational health is the way to go<br />\nWe’d get better care, for the same dough</p>\n<p>If Canada, Europe, and Japan<br />\nAlso Cuba and Thailand<br />\nCould figure this out, what’swrong with us?<br />\nHealthcare for alL</p>\n<p>IT’S UP TO US [spoken]</p>\n",
+    "lyrics": "<p>Some say we need insurance companies<br />\nTo run our healthcare any way they please<br />\nSo whaddaya think, are they doing the job<br />\nOr does it make you wanna sob</p>\n<p>Make 600 calls, and whaddaya know<br />\nYour claim is denied and you’re on your own<br />\nTo save your life, would depress their bottom line<br />\nNothing personal, of course, they hope you’ll be fine</p>\n<p>Well, we say the market’s OK for some things<br />\nLike deodorant, dishes, raincoats and rings<br />\nBut the importance of good medical care<br />\nMeans we really gotta make it fair</p>\n<p>Making it fair for everyone<br />\nMeans care for all, not only some<br />\nWhat the doc says you need, is what you should get<br />\nAnd not have to take on crippling debt</p>\n<p>We’d rather pay for healthcare than guns and bombs<br />\nWhy’s there always enough for the Pentagon<br />\nNational health is the way to go<br />\nWe’d get better care, for the same dough</p>\n<p>If Canada, Europe, and Japan<br />\nAlso Cuba and Thailand<br />\nCould figure this out, what’swrong with us?<br />\nHealthcare for alL</p>\n<p>IT’S UP TO US [spoken]</p>\n",
     "tune": "Sixteen Tons",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28022,7 +28023,7 @@
     "original_wp_id": 472,
     "title": "Song for Trayvon Martin",
     "slug": "song-for-trayvon-martin",
-    "lyrics": "<p>Trayvon went to the corner store<br />\nTo buy some skittles and tea</p>\n<p>He wore the black skin that he was born with</p>\n<p>Big mistake, as we would soon see</p>\n<p>Now everyone knows who we should fear</p>\n<p>And who we should trust when outside</p>\n<p>Walking while black will put you in danger</p>\n<p>As with Trayvon, one dark rainy night</p>\n<p>Stand Your Ground is a Florida law</p>\n<p>It says there’s no need to retreat</p>\n<p>When away from home, if we fear a stranger</p>\n<p>That we meet while out in the street</p>\n<p>Did Trayvon try to stand his ground</p>\n<p>Against the man with the gun?</p>\n<p>It seems the law’s not made for black folks</p>\n<p>Trayvon’s shot dead, when all’s said and done</p>\n<p>People, people, what does it mean?</p>\n<p>Open season on those with dark skin?</p>\n<p>Black kids have the right to grow to adulthood</p>\n<p>Let’s stop shooting, let’s nurture them</p>\n",
+    "lyrics": "<p>Trayvon went to the corner store<br />\nTo buy some skittles and tea<br />\nHe wore the black skin that he was born with<br />\nBig mistake, as we would soon see</p>\n<p>Now everyone knows who we should fear<br />\nAnd who we should trust when outside<br />\nWalking while black will put you in danger<br />\nAs with Trayvon, one dark rainy night</p>\n<p>Stand Your Ground is a Florida law<br />\nIt says there’s no need to retreat<br />\nWhen away from home, if we fear a stranger<br />\nThat we meet while out in the street</p>\n<p>Did Trayvon try to stand his ground<br />\nAgainst the man with the gun?<br />\nIt seems the law’s not made for black folks<br />\nTrayvon’s shot dead, when all’s said and done</p>\n<p>People, people, what does it mean?<br />\nOpen season on those with dark skin?<br />\nBlack kids have the right to grow to adulthood<br />\nLet’s stop shooting, let’s nurture them</p>\n",
     "tune": "Scarborough Fair",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28054,7 +28055,7 @@
     "original_wp_id": 471,
     "title": "Vets at Walter Reed",
     "slug": "vets-at-walter-reed",
-    "lyrics": "<p><em>The original was revised [post-Bush] by Sunny Armer.</em><br />\nWhere is the healthcare</p>\n<p>For vets at Walter Reed</p>\n<p>Congress, support the troops!</p>\n<p>Don’t make them jump through hoops</p>\n<p>To get the benefits</p>\n<p>That they so sorely need</p>\n<p>Don’t put them on the street</p>\n<p>And shut the door.</p>\n<p>Some War on Terror vets</p>\n<p>May have PTSD</p>\n<p>Severe brain injuries</p>\n<p>And some are amputees</p>\n<p>Don’t send them to Iraq</p>\n<p>Or to Afghanistan</p>\n<p>Keep them all safe at home</p>\n<p>Away from war</p>\n<p>They’re facing homelessness</p>\n<p>Divorce and suicide</p>\n<p>Mis’ry is all around</p>\n<p>That’s what our vets have found</p>\n<p>Let’s tell Obama</p>\n<p>To stop this deadly game</p>\n<p>It’s time we all stand up</p>\n<p>To shout NO MORE</p>\n",
+    "lyrics": "<p>Where is the healthcare<br />\nFor vets at Walter Reed<br />\nCongress, support the troops!<br />\nDon’t make them jump through hoops<br />\nTo get the benefits<br />\nThat they so sorely need<br />\nDon’t put them on the street<br />\nAnd shut the door.</p>\n<p>Some War on Terror vets<br />\nMay have PTSD<br />\nSevere brain injuries<br />\nAnd some are amputees<br />\nDon’t send them to Iraq<br />\nOr to Afghanistan<br />\nKeep them all safe at home<br />\nAway from war</p>\n<p>They’re facing homelessness<br />\nDivorce and suicide<br />\nMis’ry is all around<br />\nThat’s what our vets have found<br />\nLet’s tell Obama<br />\nTo stop this deadly game<br />\nIt’s time we all stand up<br />\nTo shout NO MORE</p>\n",
     "tune": "Playmate",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28065,17 +28066,15 @@
       "New York City Metro"
     ],
     "issues": [
-      "Healthcare",
       "Human & Civil Rights",
-      "Soldiers & Veterans",
-      "War & Peace"
+      "Soldiers & Veterans"
     ],
     "key_or_starting_note": "",
     "youtube_link": "http://youtu.be/5ffk_uEwSng",
     "youtube_link_2": "",
     "date_written_or_updated": "",
     "date_published": "2013-09-28",
-    "source_notes": "",
+    "source_notes": "The original was revised [post-Bush] by Sunny Armer.",
     "feature_on_homepage": false,
     "display_centrally": false,
     "duplicate_of": null,
@@ -28088,7 +28087,7 @@
     "original_wp_id": 470,
     "title": "Solitary Confinement",
     "slug": "solitary-confinement",
-    "lyrics": "<p>Solitary confinement<br />\nThey put me in the hole, again</p>\n<p>Every day it’s</p>\n<p>23 hours</p>\n<p>With no human contact I’m going insane</p>\n<p>This SHU really doesn’t fit my mind</p>\n<p>With blisters my-y brain is lined</p>\n<p>I’m plunging down an abyss</p>\n<p>As death gives me its kiss</p>\n<p>What could be worse than this?</p>\n<p>Won’t anyone rescue me?</p>\n",
+    "lyrics": "<p>Solitary confinement<br />\nThey put me in the hole, again<br />\nEvery day it’s<br />\n23 hours<br />\nWith no human contact<br />\nI’m going insane</p>\n<p>This SHU really doesn’t fit my mind<br />\nWith blisters my-y brain is lined<br />\nI’m plunging down an abyss<br />\nAs death gives me its kiss<br />\nWhat could be worse than this?<br />\nWon’t anyone rescue me?</p>\n",
     "tune": "Moon River",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28119,7 +28118,7 @@
     "original_wp_id": 469,
     "title": "Song for the Egyptian Revolution",
     "slug": "song-for-the-egyptian-revolution",
-    "lyrics": "<p>When Mubarak ruled in Egypt land<br />\nHosni we’re glad you’re gone</p>\n<p>His rule was with an iron hand</p>\n<p>Egypt must move on</p>\n<p>CHORUS</p>\n<p>Fear and terror</p>\n<p>Lived in Egyptian hearts</p>\n<p>As the modern pharaoh</p>\n<p>Maintained stability</p>\n<p>Hosni was the perfect host</p>\n<p>The CIA said so</p>\n<p>For detainee renditions he did the most</p>\n<p>And never once said no</p>\n<p>CHORUS</p>\n<p>Fear and terror</p>\n<p>Lived in Egyptian hearts</p>\n<p>As the modern pharaoh</p>\n<p>Maintained stability</p>\n<p>You and I, we paid the bills</p>\n<p>A billion every year</p>\n<p>Responsible for those he killed</p>\n<p>And those who lived in fear</p>\n<p>NEW CHORUS</p>\n<p>Now Egyptians</p>\n<p>Must control their destiny</p>\n<p>And maybe, they’ll have</p>\n<p>Accountability!</p>\n",
+    "lyrics": "<p>When Mubarak ruled in Egypt land<br />\nHosni we’re glad you’re gone<br />\nHis rule was with an iron hand<br />\nEgypt must move on</p>\n<p>CHORUS<br />\nFear and terror<br />\nLived in Egyptian hearts<br />\nAs the modern pharaoh<br />\nMaintained stability</p>\n<p>Hosni was the perfect host<br />\nThe CIA said so<br />\nFor detainee renditions he did the most<br />\nAnd never once said no</p>\n<p>CHORUS<br />\nFear and terror<br />\nLived in Egyptian hearts<br />\nAs the modern pharaoh<br />\nMaintained stability</p>\n<p>You and I, we paid the bills<br />\nA billion every year<br />\nResponsible for those he killed<br />\nAnd those who lived in fear</p>\n<p>NEW CHORUS<br />\nNow Egyptians<br />\nMust control their destiny<br />\nAnd maybe, they’ll have<br />\nAccountability!</p>\n",
     "tune": "Let My People Go",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28151,11 +28150,12 @@
     "original_wp_id": 468,
     "title": "Pilot Program",
     "slug": "pilot-program",
-    "lyrics": "<p>This song was written with the assistance of Sunny Armer.</p>\n<p>I’ve been arrested, don’t know what for</p>\n<p>Arab or Muslim, that’s enough for</p>\n<p>A one-way ticket to the black sites of hell</p>\n<p>No contact with my family</p>\n<p>No attorney can I see</p>\n<p>I’m tormented, rotting in a cell</p>\n<p>They put me on a jet plane</p>\n<p>Don’t know if I’ll get home again</p>\n<p>It don’t look like they’ll ever set me free</p>\n<p>Put me on a jet plane</p>\n<p>Don’t even know-o where I am</p>\n<p>Kidnapped by the USA</p>\n<p>Arabs ‘n’  Muslims are the pilot program</p>\n<p>But don’t be fooled, your turn will come</p>\n<p>Divide and conquer works:  it’s tried and true</p>\n<p>Beware incitement of your fears</p>\n<p>For safety of your kids so dear</p>\n<p>The powers that be are not concerned for you</p>\n<p>Save them from that jet plane</p>\n<p>We must  break all the chains</p>\n<p>Defend the human rights of all</p>\n<p>To keep them off that jet plane</p>\n<p>Stand up right now and proclaim</p>\n<p>The Bill of Rights is meant for all</p>\n",
+    "lyrics": "<p>I’ve been arrested, don’t know what for<br />\nArab or Muslim, that’s enough for<br />\nA one-way ticket to the black sites of hell<br />\nNo contact with my family<br />\nNo attorney can I see<br />\nI’m tormented, rotting in a cell</p>\n<p>They put me on a jet plane<br />\nDon’t know if I’ll get home again<br />\nIt don’t look like they’ll ever set me free<br />\nPut me on a jet plane<br />\nDon’t even know-o where I am<br />\nKidnapped by the USA</p>\n<p>Arabs ‘n’ Muslims are the pilot program<br />\nBut don’t be fooled, your turn will come<br />\nDivide and conquer works, it’s tried and true<br />\nBeware incitement of your fears<br />\nFor safety of your kids so dear<br />\nThe powers that be are not concerned for you</p>\n<p>Save them from that jet plane<br />\nWe must break all the chains<br />\nDefend the human rights of all<br />\nTo keep them off that jet plane<br />\nStand up right now and proclaim<br />\nThe Bill of Rights is meant for all</p>\n",
     "tune": "Leaving on a Jet Plane",
-    "songwriter": "Nora Freeman",
+    "songwriter": "Nora Freeman and Sunny Armer",
     "songwriters": [
-      "Nora Freeman"
+      "Nora Freeman",
+      "Sunny Armer"
     ],
     "gaggle": "New York City Metro",
     "gaggles": [
@@ -28183,7 +28183,7 @@
     "original_wp_id": 467,
     "title": "Imagine Some More",
     "slug": "imagine-some-more",
-    "lyrics": "<p>Imagine no more prisons,It isn’t hard to do<br />\nNo more human outcasts<br />\nIt’s up to me and you</p>\n<p>Imagine education<br />\nAnd jobs for everyone<br />\n[interlude]</p>\n<p>You may say I’m crazy<br />\nBut I’m not the only one<br />\nNobody’s born bad or lazy<br />\nEarth is where we all come from</p>\n<p>Imagine true equality<br />\nI wonder if you can<br />\nAll one human family<br />\nEvery woman, child, and man</p>\n<p>Imagine peace and justice<br />\nAll over the world<br />\n[interlude]</p>\n<p>You may say I’m crazy<br />\nBut I’m not the only one<br />\nNobody’s born bad or lazy<br />\nEarth is where we all come from</p>\n<p>Every ethnic group and country<br />\nSkin of every hue<br />\nAll religions, no religion<br />\nAnd every gender too</p>\n<p>Many differences among us<br />\nBut much more is the same<br />\n[interlude]</p>\n<p>You may say I’m crazy<br />\nBut I’m not the only one<br />\nNobody’s born bad or lazy</p>\n<p>Earth is where we all come from</p>\n",
+    "lyrics": "<p>Imagine no more prisons,It isn’t hard to do<br />\nNo more human outcasts<br />\nIt’s up to me and you</p>\n<p>Imagine education<br />\nAnd jobs for everyone<br />\n[interlude]</p>\n<p>You may say I’m crazy<br />\nBut I’m not the only one<br />\nNobody’s born bad or lazy<br />\nEarth is where we all come from</p>\n<p>Imagine true equality<br />\nI wonder if you can<br />\nAll one human family<br />\nEvery woman, child, and man</p>\n<p>Imagine peace and justice<br />\nAll over the world<br />\n[interlude]</p>\n<p>You may say I’m crazy<br />\nBut I’m not the only one<br />\nNobody’s born bad or lazy<br />\nEarth is where we all come from</p>\n<p>Every ethnic group and country<br />\nSkin of every hue<br />\nAll religions, no religion<br />\nAnd every gender too</p>\n<p>Many differences among us<br />\nBut much more is the same<br />\n[interlude]</p>\n<p>You may say I’m crazy<br />\nBut I’m not the only one<br />\nNobody’s born bad or lazy<br />\nEarth is where we all come from</p>\n",
     "tune": "Imagine",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28214,7 +28214,7 @@
     "original_wp_id": 466,
     "title": "Ethnic Cleansing American Style",
     "slug": "ethnic-cleansing-american-style",
-    "lyrics": "<p>There was a place in New Orleans<br />\nCalled the Lower Ninth Ward</p>\n<p>Black folks in public housing there</p>\n<p>Were strong and proud, but poor</p>\n<p>When Hurricane Katrina hit</p>\n<p>Cars did not abound</p>\n<p>But FEMA said it was their own fault</p>\n<p>They didn’t get out of town</p>\n<p>Katrina breached the levees,</p>\n<p>And the floodwaters, in they came</p>\n<p>The fate of the Lower Ninth Ward</p>\n<p>Will be our eternal shame</p>\n<p>Waiting on the rooftops</p>\n<p>For help that never arrived</p>\n<p>Abandoned by America</p>\n<p>So many of them died</p>\n<p>Those who got out safely</p>\n<p>Want to return and rebuild their lives</p>\n<p>But the powers that be have other ideas</p>\n<p>With no room for the Lower Ninth</p>\n<p>Destroy the public housing</p>\n<p>Is what they’re going to do</p>\n<p>Replace 4000 units with 800</p>\n<p>Sounds crazy but it’s true</p>\n<p>They had a public hearing</p>\n<p>To make it all look OK</p>\n<p>And welcomed their black neighbors with</p>\n<p>Tasers and pepper spray</p>\n<p>Ethnic cleansing of New Orleans</p>\n<p>Is terribly crystal clear</p>\n<p>Just like Darfur and Bosnia</p>\n<p>Yes, it is happening here</p>\n",
+    "lyrics": "<p>There was a place in New Orleans<br />\nCalled the Lower Ninth Ward<br />\nBlack folks in public housing there<br />\nWere strong and proud, but poor</p>\n<p>When Hurricane Katrina hit<br />\nCars did not abound<br />\nBut FEMA said it was their own fault<br />\nThey didn’t get out of town</p>\n<p>Katrina breached the levees,<br />\nAnd the floodwaters, in they came<br />\nThe fate of the Lower Ninth Ward<br />\nWill be our eternal shame</p>\n<p>Waiting on the rooftops<br />\nFor help that never arrived<br />\nAbandoned by America<br />\nSo many of them died</p>\n<p>Those who got out safely<br />\nWant to return and rebuild their lives<br />\nBut the powers that be have other ideas<br />\nWith no room for the Lower Ninth</p>\n<p>Destroy the public housing<br />\nIs what they’re going to do<br />\nReplace 4000 units with 800<br />\nSounds crazy but it’s true</p>\n<p>They had a public hearing<br />\nTo make it all look OK<br />\nAnd welcomed their black neighbors with<br />\nTasers and pepper spray</p>\n<p>Ethnic cleansing of New Orleans<br />\nIs terribly crystal clear<br />\nJust like Darfur and Bosnia<br />\nYes, it is happening here</p>\n",
     "tune": "House of the Rising Sun",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28246,7 +28246,7 @@
     "original_wp_id": 465,
     "title": "Earth Has a Fever",
     "slug": "earth-has-a-fever",
-    "lyrics": "<p>Polar bears are drowning daily,<br />\nGlaciers melting everywhere.</p>\n<p>Hell on earth is what awaits us</p>\n<p>And Congress doesn’t seem to care.</p>\n<p>Earth has a fever</p>\n<p>Fever like Sandy, fever like a massive drought</p>\n<p>New York City, underwater,</p>\n<p>May be what it’s all about.</p>\n<p>The Koch brothers pay their flunkies</p>\n<p>To call it all a lot of bunk</p>\n<p>But independent scientists</p>\n<p>Insist that they are full of junk.</p>\n<p>Earth has a fever</p>\n<p>Fever like Katrina, fever like a massive drought</p>\n<p>Entire countries, underwater,</p>\n<p>May be how it will turn out.</p>\n<p>Climatologists from the U.N</p>\n<p>Wrote the truth for all to know</p>\n<p>But the fossil-foolish lobbies</p>\n<p>Don’t like it so it has to go</p>\n<p>They’ve got a fever</p>\n<p>Fever in the wallet, fever in the bank account</p>\n<p>Too much money, in their pockets</p>\n<p>That is what it’s all about</p>\n",
+    "lyrics": "<p>Polar bears are drowning daily,<br />\nGlaciers melting everywhere.<br />\nHell on earth is what awaits us<br />\nAnd Congress doesn’t seem to care.<br />\nEarth has a fever<br />\nFever like Sandy, fever like a massive drought<br />\nNew York City, underwater,<br />\nMay be what it’s all about.</p>\n<p>The Koch brothers pay their flunkies<br />\nTo call it all a lot of bunk<br />\nBut independent scientists<br />\nInsist that they are full of junk.<br />\nEarth has a fever<br />\nFever like Katrina, fever like a massive drought<br />\nEntire countries, underwater,<br />\nMay be how it will turn out.</p>\n<p>Climatologists from the U.N<br />\nWrote the truth for all to know<br />\nBut the fossil-foolish lobbies<br />\nDon’t like it so it has to go<br />\nThey’ve got a fever<br />\nFever in the wallet, fever in the bank account<br />\nToo much money, in their pockets<br />\nThat is what it’s all about</p>\n",
     "tune": "Fever",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28278,7 +28278,7 @@
     "original_wp_id": 464,
     "title": "Behead Every Mountain",
     "slug": "behead-every-mountain",
-    "lyrics": "<p><em>Intro: And now, a word from the 1% on what’s new and exciting in coal mining!</em></p>\n<p>Behead every mountain</p>\n<p>There’s coal in there</p>\n<p>Dump it in the valley</p>\n<p>We don’t really care</p>\n<p>You can scream climate change</p>\n<p>Let us know how that goes</p>\n<p>Energy from the sun</p>\n<p>Really steps on our toes</p>\n<p>Lots of air pollution</p>\n<p>The water’s full of crap</p>\n<p>We privatize the profits</p>\n<p>And socialize a trap<br />\nWe must forever stay rich</p>\n<p>So if you all use the wind</p>\n<p>For your energy needs</p>\n<p>Then we won’t be your friend</p>\n<p>The Appalachian Mountains</p>\n<p>Must resemble the moon</p>\n<p>For us to get our cash out</p>\n<p>And it can’t be too soon! [<i>slow</i>]</p>\n",
+    "lyrics": "<p>Behead every mountain<br />\nThere’s coal in there<br />\nDump it in the valley<br />\nWe don’t really care</p>\n<p>You can scream climate change<br />\nLet us know how that goes<br />\nEnergy from the sun<br />\nReally steps on our toes</p>\n<p>Lots of air pollution<br />\nThe water’s full of crap<br />\nWe privatize the profits<br />\nAnd socialize a trap</p>\n<p>We must forever stay rich<br />\nSo if you all use the wind<br />\nFor your energy needs<br />\nThen we won’t be your friend</p>\n<p>The Appalachian Mountains<br />\nMust resemble the moon<br />\nFor us to get our cash out<br />\nAnd it can’t be too soon! [<i>slow</i>]</p>\n",
     "tune": "Climb Every Mountain",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28297,7 +28297,7 @@
     "youtube_link_2": "",
     "date_written_or_updated": "",
     "date_published": "2013-09-28",
-    "source_notes": "",
+    "source_notes": "<em>Intro: And now, a word from the 1% on what’s new and exciting in coal mining!</em>",
     "feature_on_homepage": false,
     "display_centrally": false,
     "duplicate_of": null,
@@ -28310,7 +28310,7 @@
     "original_wp_id": 463,
     "title": "Hello Christian Right",
     "slug": "hello-christian-right",
-    "lyrics": "<p>Hello Christian rightWe prefer the Bill of Rights<br />\nBut now we must sing Praise The Lord<br />\nThings don’t look so bright</p>\n<p>Kids pray in public schools<br />\nCause James Dobson writes the rules<br />\nThe 1st Amendment’s such a bore<br />\nAnd Bible-thumping’s cool</p>\n<p>Fundamentalists<br />\nTelevangelists<br />\nAnd Dominionists<br />\nOur silence is their bliss</p>\n<p>Research on stem cells<br />\nThey say will send us straight to hell<br />\nWe can’t use a frozen embryo<br />\nTo make sick people well</p>\n<p>Intelligent design<br />\nWe must say it’s mighty fine<br />\nScience is not our friend-ee-o<br />\nIt strays from the Bible’s line</p>\n<p>Fundamentalists<br />\nTelevangelists<br />\nAnd Dominionists<br />\nOur silence is their bliss</p>\n<p>Watch out for the rapture right<br />\nThey don’t like the Bill of Rights<br />\nAtheists and humanists<br />\nIt’s time to stand and fight<br />\nTime to stand and fight<br />\nTime to stand and fight<br />\n&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-<br />\n[some alternate verses, mix and match as you please]<br />\nHello Christian right<br />\nWe prefer the Bill of Rights<br />\nBut now we must sing Praise The Lord<br />\nThings don’t look so bright</p>\n<p>Kids must learn abstinence<br />\nTheir tender minds must be cleansed<br />\nOf thoughts of sex forevermore<br />\nThen they’ll forget what it meant</p>\n<p>Abortion is a dirty word<br />\nThe dirtiest they’ve ever heard<br />\nBut don’t expect too much from them<br />\nThe right to life ends at birth</p>\n<p>Delights of a honeymoon<br />\nAre strictly for a bride and groom<br />\nBut groom and groom or bride and bride<br />\nWill surely bring our doom</p>\n",
+    "lyrics": "<p>Hello Christian right<br />\nWe prefer the Bill of Rights<br />\nBut now we must sing Praise The Lord<br />\nThings don’t look so bright</p>\n<p>Kids pray in public schools<br />\nCause James Dobson writes the rules<br />\nThe 1st Amendment’s such a bore<br />\nAnd Bible-thumping’s cool</p>\n<p>Fundamentalists<br />\nTelevangelists<br />\nAnd Dominionists<br />\nOur silence is their bliss</p>\n<p>Research on stem cells<br />\nThey say will send us straight to hell<br />\nWe can’t use a frozen embryo<br />\nTo make sick people well</p>\n<p>Intelligent design<br />\nWe must say it’s mighty fine<br />\nScience is not our friend-ee-o<br />\nIt strays from the Bible’s line</p>\n<p>Fundamentalists<br />\nTelevangelists<br />\nAnd Dominionists<br />\nOur silence is their bliss</p>\n<p>Watch out for the rapture right<br />\nThey don’t like the Bill of Rights<br />\nAtheists and humanists<br />\nIt’s time to stand and fight<br />\nTime to stand and fight<br />\nTime to stand and fight<br />\n&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-<br />\n[some alternate verses, mix and match as you please]<br />\nHello Christian right<br />\nWe prefer the Bill of Rights<br />\nBut now we must sing Praise The Lord<br />\nThings don’t look so bright</p>\n<p>Kids must learn abstinence<br />\nTheir tender minds must be cleansed<br />\nOf thoughts of sex forevermore<br />\nThen they’ll forget what it meant</p>\n<p>Abortion is a dirty word<br />\nThe dirtiest they’ve ever heard<br />\nBut don’t expect too much from them<br />\nThe right to life ends at birth</p>\n<p>Delights of a honeymoon<br />\nAre strictly for a bride and groom<br />\nBut groom and groom or bride and bride<br />\nWill surely bring our doom</p>\n",
     "tune": "Bye Bye Birdie",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28321,6 +28321,7 @@
       "New York City Metro"
     ],
     "issues": [
+      "Education",
       "Government & Power"
     ],
     "key_or_starting_note": "",
@@ -28341,7 +28342,7 @@
     "original_wp_id": 462,
     "title": "War Crimes",
     "slug": "war-crimes",
-    "lyrics": "<p>If someone bombs a neighborhood<br />\nIt has to be understood</p>\n<p>That civilians will be in the path</p>\n<p>Of their bombs,</p>\n<p>Their firebombs,</p>\n<p>Their cluster bombs,</p>\n<p>Their deadly bombs,</p>\n<p>Those civilians will die</p>\n<p>From those bombs</p>\n<p>In ’45, from Nuremburg</p>\n<p>Around the world this vow was heard</p>\n<p>Never again to close our eyes, to war crimes</p>\n<p>War crimes</p>\n<p>War crimes  <b>    </b></p>\n<p>To everyone this law applies</p>\n<p>Never again to close our eyes<b> </b></p>\n<p>To war crimes</p>\n<p>We’re telling you this is the time</p>\n<p>For human rights in Palestine</p>\n<p>Checkpoints, siege, and a-part-heid</p>\n<p>Can’t go on</p>\n<p>President Obama, please</p>\n<p>Don’t keep a people on their knees</p>\n<p>Never again means every single</p>\n<p>Human being</p>\n",
+    "lyrics": "<p>If someone bombs a neighborhood<br />\nIt has to be understood<br />\nThat civilians will be in the path<br />\nOf their bombs,<br />\nTheir firebombs,<br />\nTheir cluster bombs,<br />\nTheir deadly bombs,<br />\nThose civilians will die<br />\nFrom those bombs</p>\n<p>In ’45, from Nuremburg<br />\nAround the world this vow was heard<br />\nNever again to close our eyes, to war crimes<br />\nWar crimes<br />\nWar crimes  <b>    </b></p>\n<p>To everyone this law applies<br />\nNever again to close our eyes<b> </b><br />\nTo war crimes<br />\nWe’re telling you this is the time<br />\nFor human rights in Palestine<br />\nCheckpoints, siege, and a-part-heid<br />\nCan’t go on</p>\n<p>President <em>Obama</em>, please<br />\nDon’t keep a people on their knees<br />\nNever again means every single<br />\nHuman being</p>\n",
     "tune": "500 Miles",
     "songwriter": "Nora Freeman",
     "songwriters": [
@@ -28385,6 +28386,7 @@
       "Metro Detroit"
     ],
     "issues": [
+      "Grannies",
       "War & Peace"
     ],
     "key_or_starting_note": "",
@@ -28405,7 +28407,7 @@
     "original_wp_id": 460,
     "title": "Realize the Dream (March on Washington)",
     "slug": "realize-the-dream-march-on-washington",
-    "lyrics": "<p>We’re the Raging Grannies and it’s turning our hair grayTo think that men in suits are taking all our rights away.<br />\nWe fought this fight before and now we fight again today!<br />\nNot one step back! No way!</p>\n<p>They want to take us back in time when bigots ruled the land,<br />\nWhen women, blacks, and poor folks from the voting booths were banned.<br />\nBut this is our democracy and this is our demand:<br />\nNot one step back! No way!</p>\n<p>No more citizens arrested!<br />\nFor 50 years now we&#8217;ve protested<br />\nTo realize the dream and gain democracy for all!<br />\nNot one step back! No way!</p>\n<p>Do they think that we don’t know just what their scheming laws have done?<br />\nHow redistricting is how they got the votes they say they won?<br />\nNow they&#8217;re passing voting laws that make it hard for everyone.<br />\nNot one step back! No way!</p>\n<p>We’ve voted all our lives; there&#8217;s not a struggle we have missed;<br />\nBut they want to just ignore us and pretend we don&#8217;t exist.<br />\nOnce again our rights are threatened and we’re seriously pissed!<br />\nNot one step back! No way!</p>\n<p>No more citizens arrested!<br />\nFor 50 years now we&#8217;ve protested<br />\nTo gain a true democracy with equal rights for all!<br />\nNot one step back! No way!</p>\n<p>We’ve got to get together, young and old and black and white,<br />\nThe unemployed and union folks, and work with all our might,<br />\nTo realize the dream and fight to keep our hard-earned rights.<br />\nNot one step back! No way!</p>\n<p>No more citizens arrested!<br />\nFor 50 years now we&#8217;ve protested<br />\nTo gain a true democracy with equal rights for all!<br />\nNot one step back! No way!</p>\n",
+    "lyrics": "<p>We’re the Raging Grannies and it’s turning our hair gray<br />\nTo think that men in suits are taking all our rights away.<br />\nWe fought this fight before and now we fight again today!<br />\nNot one step back! No way!</p>\n<p>They want to take us back in time when bigots ruled the land,<br />\nWhen women, blacks, and poor folks from the voting booths were banned.<br />\nBut this is our democracy and this is our demand:<br />\nNot one step back! No way!</p>\n<p>No more citizens arrested!<br />\nFor 50 years now we&#8217;ve protested<br />\nTo realize the dream and gain democracy for all!<br />\nNot one step back! No way!</p>\n<p>Do they think that we don’t know just what their scheming laws have done?<br />\nHow redistricting is how they got the votes they say they won?<br />\nNow they&#8217;re passing voting laws that make it hard for everyone.<br />\nNot one step back! No way!</p>\n<p>We’ve voted all our lives; there&#8217;s not a struggle we have missed;<br />\nBut they want to just ignore us and pretend we don&#8217;t exist.<br />\nOnce again our rights are threatened and we’re seriously pissed!<br />\nNot one step back! No way!</p>\n<p>No more citizens arrested!<br />\nFor 50 years now we&#8217;ve protested<br />\nTo gain a true democracy with equal rights for all!<br />\nNot one step back! No way!</p>\n<p>We’ve got to get together, young and old and black and white,<br />\nThe unemployed and union folks, and work with all our might,<br />\nTo realize the dream and fight to keep our hard-earned rights.<br />\nNot one step back! No way!</p>\n<p>No more citizens arrested!<br />\nFor 50 years now we&#8217;ve protested<br />\nTo gain a true democracy with equal rights for all!<br />\nNot one step back! No way!</p>\n",
     "tune": "Solidarity Forever",
     "songwriter": "Unknown",
     "songwriters": [
@@ -28417,6 +28419,7 @@
     ],
     "issues": [
       "Elections & Democracy",
+      "Grannies",
       "Human & Civil Rights"
     ],
     "key_or_starting_note": "",
@@ -28437,7 +28440,7 @@
     "original_wp_id": 459,
     "title": "Song for the Homeless",
     "slug": "song-for-the-homeless",
-    "lyrics": "<p>We <b>stand</b> upon the corner but the <b>cars</b> go right on by<br />\nWe <b>see</b> the people looking watching us but <b>they</b> avoid our eyes</p>\n<p>We <b>hold</b> out signs, hope <b>for</b> a coin, for <b>food</b> and for supplies</p>\n<p>But the <b>people</b> think we lie.</p>\n<p>I’m <b>not</b> afraid to work, you see;  I’ve <b>worked</b> most of my life.</p>\n<p>But I <b>fell</b> upon some hard times and now <b>all</b> I know is strife</p>\n<p>The <b>doors</b> keep <b>closing</b> in my face; I <b>haven’t</b> got a chance</p>\n<p>To hold <b>up</b> my head with <b>pride</b></p>\n<p>CHORUS:</p>\n<p>Glory, Glory Hallelujah</p>\n<p><b>We</b> know how to stick it <b>to</b> you</p>\n<p>We’ll <b>take</b> all your possessions and we’ll <b>drive</b> you all away</p>\n<p>And <b>you’ll</b> just disappear.</p>\n<p>I’m <b>worried</b> about my family; my <b>kids</b> live in a <b>car</b></p>\n<p>My <b>wife</b> cries every <b>day</b> and night; no money in the <b>jar.</b></p>\n<p>We <b>live</b> on change and handouts from some <b>people</b> we don’t know</p>\n<p>And we <b>just</b> don’t get very <b>far</b>.</p>\n<p>We stand <b>quietly</b> and wait our turn at <b>soup</b> lines in the park</p>\n<p>We’re <b>grateful</b> for the food and clothes and <b>stay</b> until it’s dark</p>\n<p>And <b>then</b> we turn and <b>slowly</b> make our <b>way</b>back to our tarp</p>\n<p>And we <b>feel</b> that life’s not fair.</p>\n<p>We <b>go</b> to bed each night and lie a<b>wake</b> ‘cuz we can’t sleep</p>\n<p>Not <b>knowing</b> if our <b>tents</b>and tarps will be <b>put</b> in the street</p>\n<p>It’s <b>freezing</b> cold, it’s <b>raining</b> hard or<b> sweltering</b> in the heat,</p>\n<p>It’s im<b>poss</b>ible to sleep.</p>\n<p>(Chours)</p>\n<p>Mine <b>eyes</b> have seen the ‘<b>dozers</b> as they <b>come</b> on down the street</p>\n<p>We <b>really</b> can’t be<b>lieve</b> it ‘cuz we’re <b>barely</b> on our feet.</p>\n<p>The <b>dump</b> trucks simply <b>haul</b> away the few things that we <b>own</b>,</p>\n<p>And we’re <b>home</b>less once again.</p>\n<p>We’d <b>like </b>to have a real bed so that <b>we</b> can safely sleep</p>\n<p>A <b>roof </b>to shelter all of us, some <b>water</b> and some heat</p>\n<p>A <b>shower</b> would be wonderful, I <b>wouldn’t</b> feel so beat.</p>\n<p>If I<b> just </b>had a place to call home.</p>\n<p>CHORUS:</p>\n<p><b>We</b> don’t like your Hallelujah!<br />\nAnd <b>we</b> know how to stick it to ya’!<br />\nWe’ll ‘<b>doze</b> you out of office when we’re in the voting booth,<br />\nAnd <b>you’ll</b> just disappear!</p>\n",
+    "lyrics": "<p>We <b>stand</b> upon the corner but the <b>cars</b> go right on by<br />\nWe <b>see</b> the people looking watching us but <b>they</b> avoid our eyes<br />\nWe <b>hold</b> out signs, hope <b>for</b> a coin, for <b>food</b> and for supplies<br />\nBut the <b>people</b> think we lie.</p>\n<p>I’m <b>not</b> afraid to work, you see; I’ve <b>worked</b> most of my life.<br />\nBut I <b>fell</b> upon some hard times and now <b>all</b> I know is strife<br />\nThe <b>doors</b> keep <b>closing</b> in my face; I <b>haven’t</b> got a chance<br />\nTo hold <b>up</b> my head with <b>pride</b></p>\n<p>CHORUS:<br />\nGlory, Glory Hallelujah<br />\n<b>We</b> know how to stick it <b>to</b> you<br />\nWe’ll <b>take</b> all your possessions and we’ll <b>drive</b> you all away<br />\nAnd <b>you’ll</b> just disappear.</p>\n<p>I’m <b>worried</b> about my family; my <b>kids</b> live in a <b>car</b><br />\nMy <b>wife</b> cries every <b>day</b> and night; no money in the <b>jar.</b><br />\nWe <b>live</b> on change and handouts from some <b>people</b> we don’t know<br />\nAnd we <b>just</b> don’t get very <b>far</b>.</p>\n<p>We stand <b>quietly</b> and wait our turn at <b>soup</b> lines in the park<br />\nWe’re <b>grateful</b> for the food and clothes and <b>stay</b> until it’s dark<br />\nAnd <b>then</b> we turn and <b>slowly</b> make our <b>way</b>back to our tarp<br />\nAnd we <b>feel</b> that life’s not fair.</p>\n<p>We <b>go</b> to bed each night and lie a<b>wake</b> ‘cuz we can’t sleep<br />\nNot <b>knowing</b> if our <b>tents</b>and tarps will be <b>put</b> in the street<br />\nIt’s <b>freezing</b> cold, it’s <b>raining</b> hard or<b> sweltering</b> in the heat,<br />\nIt’s im<b>poss</b>ible to sleep.</p>\n<p>(Chorus)</p>\n<p>Mine <b>eyes</b> have seen the ‘<b>dozers</b> as they <b>come</b> on down the street<br />\nWe <b>really</b> can’t be<b>lieve</b> it ‘cuz we’re <b>barely</b> on our feet.<br />\nThe <b>dump</b> trucks simply <b>haul</b> away the few things that we <b>own</b>,<br />\nAnd we’re <b>home</b>less once again.</p>\n<p>We’d <b>like </b>to have a real bed so that <b>we</b> can safely sleep<br />\nA <b>roof </b>to shelter all of us, some <b>water</b> and some heat<br />\nA <b>shower</b> would be wonderful, I <b>wouldn’t</b> feel so beat.<br />\nIf I<b> just </b>had a place to call home.</p>\n<p>CHORUS:<br />\n<b>We</b> don’t like your Hallelujah!<br />\nAnd <b>we</b> know how to stick it to ya’!<br />\nWe’ll ‘<b>doze</b> you out of office when we’re in the voting booth,<br />\nAnd <b>you’ll</b> just disappear!</p>\n",
     "tune": "Solidarity Forever",
     "songwriter": "Kay Pitts and Nancy Hatcher",
     "songwriters": [
@@ -28469,7 +28472,7 @@
     "original_wp_id": 458,
     "title": "Chalked the Sidewalk",
     "slug": "chalked-the-sidewalk",
-    "lyrics": "<p><b>Chalked the Sidewalk</b><i>(Tune: “Clementine”<br />\n</i>Lyrics © by Vicki Ryder</p>\n<p>Chalked the sidewalk (it was washable)<br />\nChalked the sidewalk last night;<br />\nWrote a message to the banksters,<br />\nThat gauging poor folks isn’t right.</p>\n<p>Got arrested, (Can you believe it?)<br />\nGot arrested last night.<br />\nThe po-lice they came and got me,<br />\nGave me quite an awful fright.</p>\n<p>What has happened to the freedoms<br />\nThat they say they’re fighting for?<br />\nWhat’s so wrong with using chalk<br />\nTo stop the banks from gauging more?</p>\n<p>Sidewalk artists and little children<br />\nChalk the sidewalks, that’s no crime.<br />\nBut if you dare write against the banksters<br />\nThen you’ll end up doing time.</p>\n<p>If you think (just as I once did)<br />\nTha-at this can’t happen here,<br />\nStick your head into the sand, and<br />\nSay good-bye to your derriere.</p>\n<p>Our rights and freedoms are disappearing<br />\nJust like chalk on a rainy night,<br />\nSo get out there and chalk the sidewalk<br />\n’Cause for our freedoms we must fight.</p>\n",
+    "lyrics": "<p>Chalked the sidewalk (it was washable)<br />\nChalked the sidewalk last night;<br />\nWrote a message to the banksters,<br />\nThat gauging poor folks isn’t right.</p>\n<p>Got arrested, (Can you believe it?)<br />\nGot arrested last night.<br />\nThe po-lice they came and got me,<br />\nGave me quite an awful fright.</p>\n<p>What has happened to the freedoms<br />\nThat they say they’re fighting for?<br />\nWhat’s so wrong with using chalk<br />\nTo stop the banks from gauging more?</p>\n<p>Sidewalk artists and little children<br />\nChalk the sidewalks, that’s no crime.<br />\nBut if you dare write against the banksters<br />\nThen you’ll end up doing time.</p>\n<p>If you think (just as I once did)<br />\nTha-at this can’t happen here,<br />\nStick your head into the sand, and<br />\nSay good-bye to your derriere.</p>\n<p>Our rights and freedoms are disappearing<br />\nJust like chalk on a rainy night,<br />\nSo get out there and chalk the sidewalk<br />\n’Cause for our freedoms we must fight.</p>\n",
     "tune": "Oh My Darling Clementine",
     "songwriter": "Vicki Ryder",
     "songwriters": [
@@ -28501,15 +28504,15 @@
     "original_wp_id": 1319,
     "title": "The Planet’s Getting Hot",
     "slug": "the-planets-getting-hot",
-    "lyrics": "<p><em><br />\n<em>Santa Cruz, CA, Raging Grannies</em></em></p>\n<p>I kid you not, the planet’s getting hot<br />\nWe might pretend it’s not, but the world is on the spot.<br />\nWe’re really in the soup, and here’s the latest scoop—<br />\nWe’ll soon be under water, ‘cause the planet’s getting hotter<br />\nIt’s true….. Yes, it’s true……..<br />\nWhatever, ever shall we do?<br />\nDoodle-oodle-oodle, Doodle-oodle-oodle, Doodle-oodle-oodle-doo.</p>\n<p>It never snow; there’s no more icy floes<br />\nThe polar bears will weep<br />\nCause there’s no place left to sleep<br />\nThe penguin chicks are cheepin’<br />\nWhile the waters quickly deepen;<br />\nThe Eskimos who shelter in their igloos simply swelter—<br />\nThey’re blue….. skiers too….<br />\nThe planet’s hot, we can’t pretend it’s not<br />\nWhatever, ever shall we do?<br />\nDoodle-oodle-oodle, etc….</p>\n<p>Let’s build an ark in the Lincoln Park<br />\nWe’ll build it in the dark, so we won’t attract a shark<br />\nWe’ll furnish it with sails to withstand the mighty gales<br />\nWe’ll sail it on the water, ‘cause the planet’s getting hotter.<br />\nWe’ll float… In our boat….<br />\nThe planet’s hot; we can’t pretend it’s not.<br />\nWhatever, ever can we do?<br />\nDoodle-oodle-oodle, etc</p>\n<p>Do not despair, there’s still some time to spare<br />\nWe’ll save the ozone layer—We can do it if we dare!<br />\nLet’s make a resolution to BANISH all pollution<br />\nMake a set of rules to dispense with fossil fuels,<br />\nLet’s do… Me and you …..<br />\nThe planet’s hot, we won’t pretend it’s not—<br />\nLet’s go and raise a hullabaloo!<br />\nDoodle-oodle-oodle, etc..</p>\n",
+    "lyrics": "<p>I kid you not, the planet’s getting hot<br />\nWe might pretend it’s not, but the world is on the spot.<br />\nWe’re really in the soup, and here’s the latest scoop—<br />\nWe’ll soon be under water, ‘cause the planet’s getting hotter<br />\nIt’s true….. Yes, it’s true……..<br />\nWhatever, ever shall we do?<br />\nDoodle-oodle-oodle, Doodle-oodle-oodle, Doodle-oodle-oodle-doo.</p>\n<p>It never snow; there’s no more icy floes<br />\nThe polar bears will weep<br />\nCause there’s no place left to sleep<br />\nThe penguin chicks are cheepin’<br />\nWhile the waters quickly deepen;<br />\nThe Eskimos who shelter in their igloos simply swelter—<br />\nThey’re blue….. skiers too….<br />\nThe planet’s hot, we can’t pretend it’s not<br />\nWhatever, ever shall we do?<br />\nDoodle-oodle-oodle, etc….</p>\n<p>Let’s build an ark in the Lincoln Park<br />\nWe’ll build it in the dark, so we won’t attract a shark<br />\nWe’ll furnish it with sails to withstand the mighty gales<br />\nWe’ll sail it on the water, ‘cause the planet’s getting hotter.<br />\nWe’ll float… In our boat….<br />\nThe planet’s hot; we can’t pretend it’s not.<br />\nWhatever, ever can we do?<br />\nDoodle-oodle-oodle, etc</p>\n<p>Do not despair, there’s still some time to spare<br />\nWe’ll save the ozone layer—We can do it if we dare!<br />\nLet’s make a resolution to BANISH all pollution<br />\nMake a set of rules to dispense with fossil fuels,<br />\nLet’s do… Me and you …..<br />\nThe planet’s hot, we won’t pretend it’s not—<br />\nLet’s go and raise a hullabaloo!<br />\nDoodle-oodle-oodle, etc..</p>\n",
     "tune": "I Love You a Bushel and a Peck",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
       "Unlisted Songwriter"
     ],
-    "gaggle": "Seattle",
+    "gaggle": "Santa Cruz",
     "gaggles": [
-      "Seattle"
+      "Santa Cruz"
     ],
     "issues": [
       "Environment & Energy"
@@ -28532,15 +28535,15 @@
     "original_wp_id": 1318,
     "title": "Monsanto Song",
     "slug": "monsanto-song",
-    "lyrics": "<p><em><br />\n<em>San Jose, CA, grannies</em></em></p>\n<p>On top of old Smokey,<br />\nSee how it glows—<br />\nMonsanto has buried<br />\nA bushel of woes.</p>\n<p>The first was potatoes<br />\nGenetically marked,<br />\nSpliced with a jelly-fish<br />\nThey glow in the dark.</p>\n<p>And then came tomatoes,<br />\nSo round and so red –<br />\nBut don’t let them fool you.<br />\nThey’re genetically dear.</p>\n<p>Now comes the saddest,<br />\nWhich we should all mourn,<br />\nOld Round-Up is hidden<br />\nIn each kernel of corn.</p>\n<p>So as you sit eating<br />\nYour veggies today,<br />\nRemember Monsanto<br />\nIs lighting your way!</p>\n",
+    "lyrics": "<p>On top of old Smokey,<br />\nSee how it glows—<br />\nMonsanto has buried<br />\nA bushel of woes.</p>\n<p>The first was potatoes<br />\nGenetically marked,<br />\nSpliced with a jelly-fish<br />\nThey glow in the dark.</p>\n<p>And then came tomatoes,<br />\nSo round and so red –<br />\nBut don’t let them fool you.<br />\nThey’re genetically dear.</p>\n<p>Now comes the saddest,<br />\nWhich we should all mourn,<br />\nOld Round-Up is hidden<br />\nIn each kernel of corn.</p>\n<p>So as you sit eating<br />\nYour veggies today,<br />\nRemember Monsanto<br />\nIs lighting your way!</p>\n",
     "tune": "On Top of Old Smokey",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
       "Unlisted Songwriter"
     ],
-    "gaggle": "Seattle",
+    "gaggle": "San Jose",
     "gaggles": [
-      "Seattle"
+      "San Jose"
     ],
     "issues": [
       "Environment & Energy",
@@ -28596,7 +28599,7 @@
     "original_wp_id": 1316,
     "title": "US Air Force Song",
     "slug": "us-air-force-song",
-    "lyrics": "<p>F-35<br />\nIt is a nuclear weapon<br />\nCosts so high; and climbing higher<br />\nF-35<br />\nFour hundred billion dollars<br />\nContracted with; Lockheed Martin<br />\nF-35<br />\nTheir PAC gave thousands to our<br />\nLeahy and Welch: Over the years<br />\nThe noise, Severe; You Cannot hear<br />\nAnd neither can victims of the Air Force<br />\nIf you please<br />\nWe don’t need nuclear weapons<br />\nIn our state; Yankee’s enough<br />\nIt’s our guard<br />\nAnd we are all good neighbors<br />\nPutting up; With all this stuff<br />\nWe’re concerned<br />\nFor all the health and safety<br />\nOf the folks; in and around<br />\nFor quality of life we’ll fight<br />\nBurlington as a first strike site<br />\n________________________________________</p>\n",
+    "lyrics": "<p>F-35<br />\nIt is a nuclear weapon<br />\nCosts so high; and climbing higher<br />\nF-35<br />\nFour hundred billion dollars<br />\nContracted with; Lockheed Martin<br />\nF-35<br />\nTheir PAC gave thousands to our<br />\nLeahy and Welch: Over the years<br />\nThe noise, Severe; You Cannot hear<br />\nAnd neither can victims of the Air Force</p>\n<p>If you please<br />\nWe don’t need nuclear weapons<br />\nIn our state; Yankee’s enough<br />\nIt’s our guard<br />\nAnd we are all good neighbors<br />\nPutting up; With all this stuff<br />\nWe’re concerned<br />\nFor all the health and safety<br />\nOf the folks; in and around<br />\nFor quality of life we’ll fight<br />\nBurlington as a first strike site<br />\n________________________________________</p>\n",
     "tune": "Wild Blue Yonder",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -28616,7 +28619,7 @@
     "date_published": "2013-06-19",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -28647,7 +28650,7 @@
     "date_published": "2013-06-19",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -28658,7 +28661,7 @@
     "original_wp_id": 1314,
     "title": "Don’t Make War",
     "slug": "dont-make-war",
-    "lyrics": "<p>Don’t make war!<br />\nDon’t make war!<br />\nDon’t invade Iraq!<br />\nUse the money for the poor, not weapons to attack!</p>\n<p> Don’t’ drop bombs!<br />\nDon’t drop bombs!<br />\nInspections are the way<br />\nLet’s spread peace around the world<br />\nNow blow them all away.</p>\n<p>We need healthcare!<br />\nWe need homes,<br />\nOur liberties have to stay<br />\nWe don’t want a war for oil<br />\nIt’s not worth the price we pay.</p>\n",
+    "lyrics": "<p>Don’t make war!<br />\nDon’t make war!<br />\nDon’t invade Iraq!<br />\nUse the money for the poor, not weapons to attack!</p>\n<p>Don’t’ drop bombs!<br />\nDon’t drop bombs!<br />\nInspections are the way<br />\nLet’s spread peace around the world<br />\nNow blow them all away.</p>\n<p>We need healthcare!<br />\nWe need homes,<br />\nOur liberties have to stay<br />\nWe don’t want a war for oil<br />\nIt’s not worth the price we pay.</p>\n",
     "tune": "Jingle Bells",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -28679,7 +28682,7 @@
     "date_published": "2013-06-18",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -28711,7 +28714,7 @@
     "date_published": "2013-06-17",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -28742,7 +28745,7 @@
     "date_published": "2013-06-17",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
