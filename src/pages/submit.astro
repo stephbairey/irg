@@ -152,7 +152,14 @@ const today = new Date().toISOString().slice(0, 10);
               <select name="gaggle" required>
                 <option value="">Choose your gaggle</option>
                 {gaggles.map((g) => <option value={g}>{g}</option>)}
+                <option value="__other__">My gaggle isn't listed</option>
               </select>
+            </label>
+
+            <label class="sf-field hidden" id="sf-gaggle-other-field">
+              <span class="sf-label">Your gaggle's name</span>
+              <input type="text" name="gaggle_other" autocomplete="organization" placeholder="Raging Grannies Niagara" />
+              <span class="sf-hint">The list only shows gaggles with songs already in the library. Type yours and we'll add it.</span>
             </label>
 
             <fieldset class="sf-field sf-issues">
@@ -367,9 +374,25 @@ const today = new Date().toISOString().slice(0, 10);
         }
       });
 
+      // "My gaggle isn't listed" reveals a free-text field. The endpoint
+      // creates unknown gaggle terms on the fly, so no server change needed.
+      const gaggleSelect = form.querySelector('[name="gaggle"]');
+      const gaggleOtherField = document.getElementById("sf-gaggle-other-field");
+      const gaggleOtherInput = form.querySelector('[name="gaggle_other"]');
+      const syncGaggleOther = () => {
+        const other = gaggleSelect?.value === "__other__";
+        gaggleOtherField?.classList.toggle("hidden", !other);
+        if (gaggleOtherInput) {
+          gaggleOtherInput.required = other;
+          if (other) gaggleOtherInput.focus();
+        }
+      };
+      gaggleSelect?.addEventListener("change", syncGaggleOther);
+
       submitAnotherLink?.addEventListener("click", (e) => {
         e.preventDefault();
         form.reset();
+        syncGaggleOther();
         if (editor) editor.commands.clearContent();
         statusEl.textContent = "";
         statusEl.removeAttribute("data-state");
@@ -400,7 +423,11 @@ const today = new Date().toISOString().slice(0, 10);
         const title = (fd.get("title") || "").toString().trim();
         const tune = (fd.get("tune") || "").toString().trim();
         const songwriter = (fd.get("songwriter") || "").toString().trim();
-        const gaggle = (fd.get("gaggle") || "").toString().trim();
+        const gaggleChoice = (fd.get("gaggle") || "").toString().trim();
+        const gaggle =
+          gaggleChoice === "__other__"
+            ? (fd.get("gaggle_other") || "").toString().trim()
+            : gaggleChoice;
         const issuesArr = fd.getAll("issues").map((v) => v.toString());
         const hp = (fd.get("hp") || "").toString();
         const turnstile = HAS_TURNSTILE
