@@ -16468,7 +16468,7 @@
     "original_wp_id": 732,
     "title": "USA Problem",
     "slug": "usa-problem",
-    "lyrics": "<p><b>USA you have got a problem,</b></p>\n<p><b>Your orange blob’s way out of line!</b></p>\n<p><b>Constantly whining,</b></p>\n<p><b>yuge bigly lying!</b></p>\n<p><b>You’ve got to stop the rot this time!</b></p>\n<p><b>We know a fascist when we see one!</b></p>\n<p><b>And yours is out there in plain sight!</b></p>\n<p><b>Puppet of Putin,</b></p>\n<p><b>That’s why we’re booin’</b></p>\n<p><b>And if we must we’ll turn and fight!</b></p>\n<p><b>Our Sovereign Nation will not be yours, and if you try it, we’ll kick you out the door!</b></p>\n<p><b>Oooh….</b></p>\n<p><b>Your Mango Mussolini’s frightning</b></p>\n<p><b>Far right dictatorship’s your plight!</b></p>\n<p><b>You’ve an amendment,</b></p>\n<p><b>To stop this pretendent,</b></p>\n<p><b>And we’ve got elbows up, gloves ready to be dropped,</b></p>\n<p><b>And if we must we’ll clear the bench and fight!</b></p>\n",
+    "lyrics": "<p>USA you have got a problem,<br />\nYour orange blob’s way out of line!<br />\nConstantly whining,<br />\nyuge bigly lying!<br />\nYou’ve got to stop the rot this time!</p>\n<p>We know a fascist when we see one!<br />\nAnd yours is out there in plain sight!<br />\nPuppet of Putin,<br />\nThat’s why we’re booin’<br />\nAnd if we must we’ll turn and fight!</p>\n<p>Our Sovereign Nation will not be yours, and if you try it, we’ll kick you out the door!<br />\nOooh….</p>\n<p>Your Mango Mussolini’s frightning<br />\nFar right dictatorship’s your plight!<br />\nYou’ve an amendment,<br />\nTo stop this pretendent,<br />\nAnd we’ve got elbows up, gloves ready to be dropped,<br />\nAnd if we must we’ll clear the bench and fight!</p>\n",
     "tune": "I'm Getting Married in the Morning",
     "songwriter": "Rebecca Brown",
     "songwriters": [
@@ -16485,7 +16485,7 @@
     "key_or_starting_note": "",
     "youtube_link": "https://www.youtube.com/watch?v=Knzf6bcZGuo",
     "youtube_link_2": "",
-    "date_written_or_updated": "1970-01-01T00:00:00+00:00",
+    "date_written_or_updated": "2026-10-13T00:00:00+00:00",
     "date_published": "2025-04-18",
     "source_notes": "",
     "feature_on_homepage": false,
@@ -16500,7 +16500,7 @@
     "original_wp_id": 731,
     "title": "Chainsaw",
     "slug": "chainsaw",
-    "lyrics": "<p><b>Chainsaw</b><b>by Janet Jordan for the Raging Grannies of Olympia, Washington US</b><br />\nTo the tune <i>Valparaiso In a Rowboat </i>words &amp; music by Zeke Hoskin &amp; copyrighted</p>\n<p>Used by permission</p>\n<p>Chorus</p>\n<p>Chainsaw! Chainsaw!</p>\n<p>They’re taking it down! They’re taking it down.</p>\n<p>Because they hate the gummint</p>\n<p>They are taking it to the ground.</p>\n<p>And there’s never been a program</p>\n<p>To survive a second round.</p>\n<p>They’re taking down the gummint</p>\n<p>with a chainsaw.</p>\n<p>We used to aid small countries that were being left behind</p>\n<p>To help them to be strong and be our partners and allies.</p>\n<p>But Elon thinks that’s crap, they aren’t our friends, and we aren’t theirs</p>\n<p>So we’ve taken back our dough and left them no-wheres.</p>\n<p>Chorus</p>\n<p>Oh the climate’s in a crisis, it’s a real emergency</p>\n<p>But the leaders urge it onward with a Trump insurgency.</p>\n<p>No use voting for the climate, cause your voting rights are gone.</p>\n<p>The only ones with votes are Trump and E-lon.</p>\n<p>Chorus</p>\n<p>And if the program’s popular, they can’t remove it quite.</p>\n<p>They will fire the ones who run it so it strangles in the night.</p>\n<p>Veterans care and healthcare and social security</p>\n<p>Every one will perish in obscurity.</p>\n<p>Chorus</p>\n<p>The department of education’s set to vanish from the scene</p>\n<p>Cause who needs education, just to be a human bean.</p>\n<p>The FBI will disappear, before it investigates</p>\n<p>The many crimes of Donald and his playmates.</p>\n<p>Chorus</p>\n",
+    "lyrics": "<p><strong>Chorus</strong><br />\nChainsaw! Chainsaw!<br />\nThey’re taking it down! They’re taking it down.<br />\nBecause they hate the gummint<br />\nThey are taking it to the ground.<br />\nAnd there’s never been a program<br />\nTo survive a second round.<br />\nThey’re taking down the gummint<br />\nwith a chainsaw.</p>\n<p>We used to aid small countries that were being left behind<br />\nTo help them to be strong and be our partners and allies.<br />\nBut Elon thinks that’s crap, they aren’t our friends, and we aren’t theirs<br />\nSo we’ve taken back our dough and left them no-wheres.</p>\n<p><strong>Chorus</strong></p>\n<p>Oh the climate’s in a crisis, it’s a real emergency<br />\nBut the leaders urge it onward with a Trump insurgency.<br />\nNo use voting for the climate, cause your voting rights are gone.<br />\nThe only ones with votes are Trump and E-lon.</p>\n<p><strong>Chorus</strong></p>\n<p>And if the program’s popular, they can’t remove it quite.<br />\nThey will fire the ones who run it so it strangles in the night.<br />\nVeterans care and healthcare and social security<br />\nEvery one will perish in obscurity.</p>\n<p><strong>Chorus</strong></p>\n<p>The department of education’s set to vanish from the scene<br />\nCause who needs education, just to be a human bean.<br />\nThe FBI will disappear, before it investigates<br />\nThe many crimes of Donald and his playmates.</p>\n<p><strong>Chorus</strong></p>\n",
     "tune": "Valparaiso in a Rowboat",
     "songwriter": "Janet Jordan",
     "songwriters": [
@@ -16513,19 +16513,14 @@
     "issues": [
       "Education",
       "Elections & Democracy",
-      "Environment & Energy",
-      "Gender Issues",
-      "Government & Power",
-      "Healthcare",
-      "Human & Civil Rights",
-      "Soldiers & Veterans"
+      "Government & Power"
     ],
     "key_or_starting_note": "G",
     "youtube_link": "https://www.facebook.com/zoltan.grossman/videos/4014917198724570",
     "youtube_link_2": "",
     "date_written_or_updated": "2025-04-05T00:00:00+00:00",
     "date_published": "2025-04-15",
-    "source_notes": "",
+    "source_notes": "Words &amp; music by Zeke Hoskin &amp; copyrighted.  Used by permission.",
     "feature_on_homepage": false,
     "display_centrally": false,
     "duplicate_of": null,
@@ -16633,7 +16628,7 @@
     "original_wp_id": 727,
     "title": "Angry People",
     "slug": "angry-people",
-    "lyrics": "<p>ANGRY PEOPLE     Tune: Lonely People by America   This is for all the angry peoplewatching the tyranny beginDon’t give up, we got tomarch in the streets togetherand keep on fighting ’til we win   This is for all the worried peoplewatching the news and feeling stunnedDon’t give up until we’ve taken our country backwith equal rights for everyone   We The People say:  We are here to stayand this movement grows every day   This is for all the migrant peopleliving in fear from day to dayDon’t give up, because youhave the support of manywho don’t want you to go away   We The People say:  We are here to stayand this movement grows every day   This is for all the angry peopleseeing democracy done-inDon’t give up until we’ve taken our country backNo, don’t give up until we’vetaken our country backkeep on fighting ’til we win</p>\n",
+    "lyrics": "<p>This is for all the angry peoplewatching the tyranny begin<br />\nDon’t give up, we got to march in the streets together and keep on fighting ’til we win<br />\nThis is for all the worried peoplewatching the news and feeling stunned<br />\nDon’t give up until we’ve taken our country back with equal rights for everyone   </p>\n<p>We The People say:<br />\nWe are here to stay and this movement grows every day<br />\nThis is for all the migrant people living in fear from day to day<br />\nDon’t give up, because you have the support of many who don’t want you to go away   </p>\n<p>We The People say:<br />\nWe are here to stay and this movement grows every day<br />\nThis is for all the angry people seeing democracy done-in<br />\nDon’t give up until we’ve taken our country back<br />\nNo, don’t give up until we’ve taken our country back<br />\nkeep on fighting ’til we win</p>\n",
     "tune": "Lonely People",
     "songwriter": "Chris Harrell and Marcy Matasick",
     "songwriters": [
@@ -16665,7 +16660,7 @@
     "original_wp_id": 726,
     "title": "Battle Hymn of the Donald",
     "slug": "battle-hymn-of-the-donald",
-    "lyrics": "<p>Mine eyes have seen the crime-ingand the sliming of the TrumpHe lost sight of all decency,his head is up his rumpAnd with his team of crooks and liars,sycophants and chumpsThe fraud is marching on  His lawyers are on speed dialand they’re working overtimeto fight off all the lawsuitsand the scandals and the crimeHe tries to shake off Epsteinbut he can’t shake off the slimeThe cover-ups pile on  Lordy! Lordy! How he&#8217;ll screw ya!With his lies he’ll try to fool yaBut, don’t ever let him rule ya!No, we will not back down! Mine ears have heard the smearingand the slander from the rightdefiling truth and honestyand substituting spiteinventing Trumped-up chargesnabbing people day and nightThe hate is marching on  I’ve seen them cut the taxesfor the richest billionairesWhile stealing from the working classand causing great despairAnd now polluters have their waywith all our land and airTheir wreckage will live on  Lordy! Lordy! How they screw ya!With their lies they try to fool yaBut, don’t ever let ’em rule ya!No, we will not back down!</p>\n",
+    "lyrics": "<p>Mine eyes have seen the crime-ing and the sliming of the Trump<br />\nHe lost sight of all decency,his head is up his rump<br />\nAnd with his team of crooks and liars, sycophants and chumps<br />\nThe fraud is marching on!  </p>\n<p>His lawyers are on speed dial and they’re working overtime<br />\nto fight off all the lawsuits and the scandals and the crime<br />\nHe tries to shake off Epstein but he can’t shake off the slime<br />\nThe cover-ups pile on  </p>\n<p>Lordy! Lordy! How he&#8217;ll screw ya!<br />\nWith his lies he’ll try to fool ya<br />\nBut, don’t ever let him rule ya!<br />\nNo, we will not back down! </p>\n<p>Mine ears have heard the smearing and the slander from the right<br />\ndefiling truth and honesty and substituting spite<br />\ninventing Trumped-up charges, nabbing people day and night<br />\nThe hate is marching on  </p>\n<p>I’ve seen them cut the taxes for the richest billionaires<br />\nWhile stealing from the working class and causing great despair<br />\nAnd now polluters have their way with all our land and air<br />\nTheir wreckage will live on  </p>\n<p>Lordy! Lordy! How they screw ya!<br />\nWith their lies they try to fool ya<br />\nBut, don’t ever let ’em rule ya!<br />\nNo, we will not back down!</p>\n",
     "tune": "Battle Hymn of the Republic",
     "songwriter": "Marcy Matasick",
     "songwriters": [
