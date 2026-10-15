@@ -288,6 +288,12 @@
     "url": "https://seattle.raginggrannies.org"
   },
   {
+    "id": 2,
+    "slug": "portland",
+    "name": "Portland",
+    "url": "https://portland.raginggrannies.org"
+  },
+  {
     "id": 17,
     "slug": "maple-ridge",
     "name": "Maple Ridge",
@@ -298,12 +304,6 @@
     "slug": "toronto",
     "name": "Toronto",
     "url": "https://toronto.raginggrannies.org"
-  },
-  {
-    "id": 19,
-    "slug": "vancouver",
-    "name": "Vancouver",
-    "url": "https://vancouver.raginggrannies.org"
   },
   {
     "id": 32,
@@ -384,10 +384,16 @@
     "url": "https://winnipeg.raginggrannies.org"
   },
   {
-    "id": 2,
-    "slug": "portland",
-    "name": "Portland",
-    "url": "https://portland.raginggrannies.org"
+    "id": 19,
+    "slug": "vancouver",
+    "name": "Vancouver",
+    "url": "https://vancouver.raginggrannies.org"
+  },
+  {
+    "id": 69,
+    "slug": "niagara",
+    "name": "Niagara",
+    "url": "https://cms.raginggrannies.international/niagara"
   },
   {
     "id": 47,

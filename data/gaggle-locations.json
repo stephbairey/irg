@@ -153,6 +153,15 @@
     "slug": "south-minneapolis"
   },
   {
+    "name": "Niagara",
+    "region": "Ontario",
+    "country": "Canada",
+    "lat": 43.1594,
+    "lng": -79.2469,
+    "aka": "Raging Grannies Niagara",
+    "slug": "niagara"
+  },
+  {
     "name": "Toronto",
     "region": "Ontario",
     "country": "Canada",
