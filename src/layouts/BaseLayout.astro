@@ -58,9 +58,7 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
       href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Rum+Raisin&display=swap"
       rel="stylesheet"
     />
-    {/* No favicon during the logo-placeholder period (E1/D064): browsers 404
-        on /favicon.ico and fall back to a generic tab icon. Restore a link
-        here when the ranked-choice logo vote concludes. */}
+    <link rel="icon" type="image/svg+xml" href="/logo-cropped.svg" />
     <script is:inline>
       // Apply saved text-zoom level before first paint to avoid flash. The
       // click handler at the bottom of body keeps the visible state in sync.
@@ -80,7 +78,7 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
     <header class="sticky top-0 z-50 border-b-[1.5px] border-rule bg-light-cream" style="backdrop-filter:saturate(1.1)">
       <div class="flex justify-between items-center max-w-[1400px] mx-auto px-8 py-4">
         <a href="/" class="flex items-center gap-3 no-underline text-ink" aria-label="Raging Grannies International, Home">
-          <img src="/logo-placeholder-cropped.svg" alt="" class="w-[100px] h-[100px] object-contain" />
+          <img src="/logo-cropped.svg" alt="" class="w-[100px] h-[100px] object-contain" />
           <div>
             <span class="font-display text-[3em] leading-[1.2em] text-ink block">Raging Grannies</span>
             <span class="font-body font-[800] text-[11px] tracking-[.14em] uppercase text-muted block mt-1">International Disorganization · Est. 1987</span>
@@ -356,10 +354,8 @@ const allSchemas = [...baselineSchemas, ...(pageSchemas as Record<string, unknow
         <!-- Brand column -->
         <div class="mb-2 md:mb-0">
           <div class="flex items-center gap-3 mb-4">
-            {/* Placeholder is drawn in light #ECEAF0 for this dark footer, so
-                the old brightness-0 invert filter (which forced the real logo
-                white) is dropped for the placeholder period. */}
-            <img src="/logo-placeholder-full.svg" alt="" class="h-[125px] opacity-90" />
+            {/* brightness-0 invert renders the purple mark white on the dark footer. */}
+            <img src="/logo-full.svg" alt="" class="h-[125px] brightness-0 invert opacity-90" />
             <span class="font-display text-[3em] leading-[1.2em] text-on-dark">Raging Grannies</span>
           </div>
           <p class="text-[15px] text-ink-lilac leading-relaxed max-w-[340px]">

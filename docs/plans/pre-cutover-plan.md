@@ -238,6 +238,8 @@ frontend, none blocked by curation.
 
 ### E1. Logo placeholder (hub only)
 
+**Superseded 2026-10-15 (D080): the vote kept the original mark; the placeholder was reverted and the favicon restored.**
+
 Assets are already staged, unreferenced, in `public/`:
 `logo-placeholder-cropped.svg` and `logo-placeholder-full.svg`.
 

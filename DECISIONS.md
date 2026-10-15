@@ -838,7 +838,7 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 
 ## D064 — Favicon removed with no replacement
 
-- **Status**: Decided (removal is workstream E1)
+- **Status**: Superseded by D080 (favicon restored 2026-10-15)
 - **Date**: 2026-08-04
 - **Context**: The favicon derives from the mark being retired by the logo vote.
 - **Choice**: Remove the favicon link entirely; browsers 404 on `/favicon.ico` and fall back to a generic tab icon.
@@ -994,3 +994,12 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: a `display_name` text field in Gaggle Settings. Blank keeps the default. When set, `tbl_gaggle_aka()` returns it verbatim, and the hero italicizes "Raging Grannies" wherever it falls in the name. The site title stays the short locator (header brand block, contact-form subject prefix, admin bar), so nothing else changes.
 - **Trade-off**: two places to name a gaggle. Kept deliberately: the locator is what the network uses for slugs, subjects, and the map pin; the full name is presentation.
 - **Revisit if**: gaggles want the header brand block to show the full name too, or the directory `aka` and the subsite full name drift and should sync one way.
+
+## D080 — Logo vote concluded: the original walking-granny mark stays
+
+- **Status**: Decided
+- **Date**: 2026-10-15
+- **Context**: The hub carried a "LOGO COMING SOON" placeholder in the header and footer, with no favicon, while the ranked-choice logo vote ran (E1, D064). Gaggles voted; the original mark won (Edmonton "no change", Davis "keep with musical notes", others as recorded by the Web Granny). Subsites never changed: The Bulletin Local kept `logo-cropped.svg` and `logo-full.svg` throughout.
+- **Choice**: Restore the original mark everywhere on the hub: header `logo-cropped.svg`, footer `logo-full.svg` with the `brightness-0 invert` filter that renders it white on the dark footer, and the SVG favicon. The JSON-LD `logo` property never changed. The placeholder SVGs stay in `public/` as inert files.
+- **Rationale**: One-line reverts of E1; nothing new to design. Keeping the placeholder files avoids 404s for any cached reference.
+- **Revisit if**: a refreshed version of the mark (e.g. the musical-notes variant Davis asked about) is commissioned; then every `logo-*.svg` in `public/` and the theme's `assets/images/` changes together.
