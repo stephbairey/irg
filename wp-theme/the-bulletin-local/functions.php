@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBL_VERSION', '1.29.1' );
+define( 'TBL_VERSION', '1.30.0' );
 define( 'TBL_DIR', get_template_directory() );
 define( 'TBL_URI', get_template_directory_uri() );
 
@@ -34,13 +34,6 @@ function tbl_setup(): void {
 		'style',
 		'script',
 	] );
-	add_theme_support( 'custom-logo', [
-		'height'      => 120,
-		'width'       => 120,
-		'flex-height' => true,
-		'flex-width'  => true,
-	] );
-
 	register_nav_menus( [
 		'primary' => __( 'Primary navigation', 'the-bulletin-local' ),
 	] );
@@ -119,9 +112,26 @@ function tbl_body_classes( array $classes ): array {
 	if ( ! tbl_get_option( 'youtube_channel_url' ) ) {
 		$classes[] = 'tbl-no-videos';
 	}
+	if ( tbl_custom_logo() ) {
+		$classes[] = 'tbl-logo-custom';
+		if ( tbl_get_option( 'logo_has_name' ) ) {
+			$classes[] = 'tbl-logo-has-name';
+		}
+	}
 	return $classes;
 }
 add_filter( 'body_class', 'tbl_body_classes' );
+
+/**
+ * When the favicon comes from the gaggle logo (D081), drop core's site_icon
+ * links so browsers do not get two competing icons.
+ */
+function tbl_maybe_suppress_site_icon(): void {
+	if ( tbl_favicon_is_custom() ) {
+		remove_action( 'wp_head', 'wp_site_icon', 99 );
+	}
+}
+add_action( 'wp', 'tbl_maybe_suppress_site_icon' );
 
 /**
  * Contact form handler. AJAX endpoint, nonce-checked. The recipient is

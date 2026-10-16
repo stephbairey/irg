@@ -240,7 +240,7 @@ Hosting infrastructure details: `docs/infrastructure/irg-hosting.md`.
 ## Phase 2 (deferred)
 
 - **Retire `scripts/snapshot-songs.mjs`.** Once the WP-side exporter and deploy Worker (see `docs/plans/pre-cutover-plan.md`, workstream C) have proven themselves in production, the local manual snapshot script becomes redundant. Kept for now as an escape hatch.
-- **Per-subsite custom logo option** in gaggle settings. Subsites keep the shared mark until then. The network mark is the original walking granny (logo vote concluded 2026-10-15, D080).
+- ~~**Per-subsite custom logo option** in gaggle settings.~~ Shipped 2026-10-16 as theme 1.30.0 (D081): Gaggle Settings → Gaggle logo, plus `scripts/set-gaggle-logo.mjs` for setting one from the command line. The network mark is the original walking granny (logo vote concluded 2026-10-15, D080).
 - **News curation page: restore a deleted item, and manually add an item.** Both are the same write path as the delete flow (workstream F3), so neither needs re-scoping once that exists.
 - **Real photo uploads.** A plugin endpoint using `wp_handle_upload`/`media_handle_sideload` with Turnstile, size and MIME limits, and a considered abuse surface. Until then, photos go to `webgranny@raginggrannies.org` by email (workstream E5).
 - **L4 — MCP server** (D042 to D044). Separate Cloudflare Worker at `mcp.raginggrannies.org`. Design doc valid; pick up post-cutover.

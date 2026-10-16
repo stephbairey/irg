@@ -38,12 +38,15 @@ function tbl_register_options(): void {
 			'type'              => 'array',
 			'sanitize_callback' => 'tbl_sanitize_options',
 			'default'           => [
+				'logo_id'             => 0,
+				'logo_has_name'       => 0,
 				'hero_image_id'       => 0,
 				'display_name'        => '',
 				'youtube_channel_url' => '',
 				'facebook_url'        => '',
 				'tagline'             => '',
 				'show_local_songs'    => 0,
+				'hide_action_images'  => 0,
 			],
 		]
 	);
@@ -55,6 +58,8 @@ function tbl_register_options(): void {
 		TBL_OPTIONS_PAGE
 	);
 
+	add_settings_field( 'logo_id',             'Gaggle logo',                  'tbl_field_logo',              TBL_OPTIONS_PAGE, 'tbl_options_main' );
+	add_settings_field( 'logo_has_name',       'Logo and name',                'tbl_field_logo_has_name',     TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'hero_image_id',       'Hero Image',                   'tbl_field_hero_image',        TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'display_name',        'Full name',                    'tbl_field_display_name',      TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'youtube_channel_url', 'YouTube Channel URL',          'tbl_field_youtube_url',       TBL_OPTIONS_PAGE, 'tbl_options_main' );
@@ -70,6 +75,8 @@ add_action( 'admin_init', 'tbl_register_options' );
  */
 function tbl_sanitize_options( $input ): array {
 	$out = [
+		'logo_id'             => 0,
+		'logo_has_name'       => 0,
 		'hero_image_id'       => 0,
 		'display_name'        => '',
 		'youtube_channel_url' => '',
@@ -84,6 +91,20 @@ function tbl_sanitize_options( $input ): array {
 	if ( isset( $input['hero_image_id'] ) ) {
 		$out['hero_image_id'] = (int) $input['hero_image_id'];
 	}
+	if ( ! empty( $input['logo_id'] ) ) {
+		$logo_id = (int) $input['logo_id'];
+		if ( $logo_id > 0 && wp_attachment_is_image( $logo_id ) ) {
+			$out['logo_id'] = $logo_id;
+		} else {
+			add_settings_error(
+				TBL_OPTIONS_KEY,
+				'tbl_logo_invalid',
+				'The gaggle logo must be an image file (PNG, JPG, WebP or GIF). The network mark will be used instead.',
+				'error'
+			);
+		}
+	}
+	$out['logo_has_name'] = ! empty( $input['logo_has_name'] ) ? 1 : 0;
 	if ( isset( $input['youtube_channel_url'] ) ) {
 		$url = esc_url_raw( trim( (string) $input['youtube_channel_url'] ) );
 		// Light validation: must be a YouTube URL if provided.
@@ -124,6 +145,84 @@ function tbl_sanitize_options( $input ): array {
 }
 
 /* ---- field renderers ---------------------------------------------------- */
+
+/**
+ * Media picker for the gaggle's own logo (D081). Any size or shape; the
+ * front end fits it with CSS. 0 means "use the shared network mark".
+ */
+function tbl_field_logo(): void {
+	$opts = get_option( TBL_OPTIONS_KEY, [] );
+	$id   = isset( $opts['logo_id'] ) ? (int) $opts['logo_id'] : 0;
+	$src  = $id ? wp_get_attachment_image_url( $id, 'medium' ) : '';
+
+	wp_enqueue_media();
+	?>
+	<div class="tbl-logo-field">
+		<input type="hidden" name="<?php echo esc_attr( TBL_OPTIONS_KEY ); ?>[logo_id]" id="tbl_logo_id" value="<?php echo esc_attr( (string) $id ); ?>" />
+		<div class="tbl-logo-preview" style="margin-bottom:10px">
+			<?php if ( $src ) : ?>
+				<img src="<?php echo esc_url( $src ); ?>" alt="" style="max-width:240px;max-height:120px;width:auto;height:auto;border:1px solid #ccc;background:#fff;padding:6px" />
+			<?php else : ?>
+				<em style="color:#666">No gaggle logo set. The shared Raging Grannies mark will be used.</em>
+			<?php endif; ?>
+		</div>
+		<button type="button" class="button" id="tbl_logo_pick">Choose logo</button>
+		<button type="button" class="button" id="tbl_logo_clear" <?php echo $id ? '' : 'style="display:none"'; ?>>Clear</button>
+		<p class="description">Shown in the header and footer of every page. PNG or JPG with a transparent or white background works best. Any shape is fine; the site fits it. Leave empty to keep the shared Raging Grannies mark.</p>
+	</div>
+	<script>
+		(function () {
+			var pick = document.getElementById('tbl_logo_pick');
+			var clear = document.getElementById('tbl_logo_clear');
+			var idEl = document.getElementById('tbl_logo_id');
+			var preview = document.querySelector('.tbl-logo-preview');
+			if (!pick || !idEl || !preview) return;
+
+			var frame;
+			pick.addEventListener('click', function () {
+				if (frame) { frame.open(); return; }
+				frame = wp.media({
+					title: 'Select your gaggle logo',
+					button: { text: 'Use this logo' },
+					library: { type: 'image' },
+					multiple: false
+				});
+				frame.on('select', function () {
+					var att = frame.state().get('selection').first().toJSON();
+					idEl.value = att.id;
+					var src = (att.sizes && att.sizes.medium && att.sizes.medium.url) ? att.sizes.medium.url : att.url;
+					preview.innerHTML = '<img src="' + src + '" alt="" style="max-width:240px;max-height:120px;width:auto;height:auto;border:1px solid #ccc;background:#fff;padding:6px" />';
+					if (clear) clear.style.display = '';
+				});
+				frame.open();
+			});
+			if (clear) clear.addEventListener('click', function () {
+				idEl.value = '0';
+				preview.innerHTML = '<em style="color:#666">No gaggle logo set. The shared Raging Grannies mark will be used.</em>';
+				clear.style.display = 'none';
+			});
+		})();
+	</script>
+	<?php
+}
+
+/**
+ * Checkbox: the uploaded logo already contains the gaggle's name, so hide
+ * the text beside it in the header and footer.
+ */
+function tbl_field_logo_has_name(): void {
+	$opts    = get_option( TBL_OPTIONS_KEY, [] );
+	$checked = ! empty( $opts['logo_has_name'] );
+	?>
+	<label>
+		<input type="checkbox" name="<?php echo esc_attr( TBL_OPTIONS_KEY ); ?>[logo_has_name]" value="1" <?php checked( $checked ); ?> />
+		My logo already includes our name
+	</label>
+	<p class="description">
+		Tick this if the words are part of your logo picture, so the site does not print your name a second time next to it. Only applies when a gaggle logo is set.
+	</p>
+	<?php
+}
 
 function tbl_field_hero_image(): void {
 	$opts = get_option( TBL_OPTIONS_KEY, [] );
@@ -257,7 +356,7 @@ function tbl_render_options_page(): void {
 	?>
 	<div class="wrap">
 		<h1>Gaggle Settings</h1>
-		<p>Three knobs that personalize this subsite. Everything else is wired to the site title and slug.</p>
+		<p>The handful of settings that personalize this subsite. Everything else is wired to the site title and slug.</p>
 		<form action="options.php" method="post">
 			<?php
 			settings_fields( 'tbl_options_group' );

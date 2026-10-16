@@ -830,7 +830,7 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 
 ## D063 — Hub logo hidden during the placeholder period; JSON-LD logo untouched
 
-- **Status**: Decided (swap is workstream E1)
+- **Status**: Decided (swap is workstream E1); per-subsite logo delivered by D081
 - **Date**: 2026-08-04
 - **Context**: A ranked-choice logo vote is underway. The committee wants the current mark off the hub until it concludes.
 - **Choice**: Swap header and footer to the staged placeholder SVGs on the hub only. The JSON-LD `logo` property keeps pointing at `logo-cropped.svg`, which stays in `public/`. Subsites keep the current mark (their JSON-LD declares no logo property, so nothing structured is affected).
@@ -1003,3 +1003,13 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: Restore the original mark everywhere on the hub: header `logo-cropped.svg`, footer `logo-full.svg` with the `brightness-0 invert` filter that renders it white on the dark footer, and the SVG favicon. The JSON-LD `logo` property never changed. The placeholder SVGs stay in `public/` as inert files. Theme 1.29.1 (2026-10-16) restores the pre-1.27.1 SVGs in `assets/images/` and appends `?v=TBL_VERSION` to the favicon link so Cloudflare's cached copy of the placeholder is bypassed without a purge (the Email Routing token cannot purge cache).
 - **Rationale**: One-line reverts of E1; nothing new to design. Keeping the placeholder files avoids 404s for any cached reference.
 - **Revisit if**: a refreshed version of the mark (e.g. the musical-notes variant Davis asked about) is commissioned; then every `logo-*.svg` in `public/` and the theme's `assets/images/` changes together.
+
+## D081 — Gaggles upload their own logo through Gaggle Settings (theme 1.30.0)
+
+- **Status**: Decided
+- **Date**: 2026-10-16
+- **Context**: With the logo vote settled (D080), gaggles that have a mark of their own asked to show it on their subsite. The theme inlined the shared SVG from `assets/images/` with no per-site override, and `functions.php` declared `custom-logo` theme support that nothing read, leaving a dead picker in the Customizer. Uploaded logos will arrive in every size and aspect ratio. The Web Granny also needs to set or swap a gaggle's logo without logging in to that subsite's admin.
+- **Options**: (a) core `custom-logo` via the Customizer; (b) a new field on the existing Gaggle Settings page stored in `tbl_options`; (c) a per-gaggle override file in the theme. (c) ties every logo change to a theme release. (a) sends grannies to a second page the how-to guides never mention.
+- **Choice**: (b). `tbl_options['logo_id']` (attachment ID, 0 = shared mark) and `tbl_options['logo_has_name']` (hide the text beside the picture when the words are already in it). Field cloned from the Hero Image media picker, restricted to images; the sanitizer verifies `wp_attachment_is_image()`. The dead `custom-logo` support is removed. Rendering: `tbl_brand_mark_html()` emits an `<img>` of the `medium` rendition with width/height attributes, and CSS fits any ratio inside a 180×48 header box (140px wide on phones) and a 240×64 footer box. Rasters cannot take the footer's on-dark fill, so a custom logo in the footer sits on a chip coloured `--color-on-dark`, which child themes already retheme. Favicon: a near-square logo (ratio 0.8 to 1.25) replaces the SVG favicon with its 150px thumbnail and core's `site_icon` output is removed to avoid two icons; wide or tall logos keep the network favicon. Subsite JSON-LD gains `logo` when a custom one is set (closing the D063 note). `scripts/set-gaggle-logo.mjs <slug> <image|--id N|--clear|--show> [--has-name]` does the same over SSH and wp-cli for the Web Granny.
+- **Rationale**: One settings page, one option array, one guide. Fit-by-CSS avoids guessing categories of logo in PHP and survives text zoom. The chip is the only treatment that reads on every palette without asking grannies for a second "light" version.
+- **Revisit if**: gaggles want the header to show the Full name (D079) alongside a logo; a gaggle supplies an SVG and wants it inlined (needs an SVG upload path, which the media library blocks); the chip looks wrong for logos designed for dark backgrounds (add a "my logo works on dark" checkbox that drops the chip).

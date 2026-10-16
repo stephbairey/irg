@@ -476,7 +476,7 @@ rather than treating it as a final check.
 Added by this plan, on top of the existing `docs/HANDOFF.md` Phase 2 list:
 
 - Retire `scripts/snapshot-songs.mjs` once the pushed exporter is trusted.
-- Per-subsite custom logo option in gaggle settings.
+- ~~Per-subsite custom logo option in gaggle settings.~~ Shipped 2026-10-16 (D081, theme 1.30.0).
 - Restore a deleted news item from the curation page.
 - Manually add a news item from the curation page.
 - Real photo uploads: a plugin endpoint using

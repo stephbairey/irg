@@ -13,7 +13,8 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="profile" href="https://gmpg.org/xfn/11" />
-	<link rel="icon" type="image/svg+xml" href="<?php echo esc_url( TBL_URI . '/assets/images/logo-cropped.svg?v=' . TBL_VERSION ); ?>" />
+	<?php $tbl_icon = tbl_favicon_url(); ?>
+	<link rel="icon" <?php echo tbl_favicon_is_custom() ? '' : 'type="image/svg+xml" '; ?>href="<?php echo esc_url( $tbl_icon ); ?>" />
 	<script>
 	// Apply saved text-zoom level before first paint to avoid flash. Mirrored
 	// by the click handler in footer.php; both must agree on storage key and
@@ -37,7 +38,7 @@
 <header class="tbl-header" role="banner">
 	<div class="tbl-header-inner">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="tbl-brand" aria-label="<?php echo esc_attr( tbl_gaggle_aka() . ', Home' ); ?>">
-			<span class="tbl-brand-mark" aria-hidden="true"><?php echo tbl_logo_svg( 'cropped' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — local SVG file, content trusted ?></span>
+			<span class="tbl-brand-mark" aria-hidden="true"><?php echo tbl_brand_mark_html( 'header' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — local SVG file or escaped <img>, content trusted ?></span>
 			<span class="tbl-brand-text">
 				<span class="tbl-brand-locator"><?php echo esc_html( tbl_gaggle_name() ); ?></span>
 				<span class="tbl-brand-network">Raging Grannies</span>

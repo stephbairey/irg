@@ -13,7 +13,7 @@ $year = current_time( 'Y' );
 		<div class="tbl-footer-grid">
 			<div class="tbl-footer-brand">
 				<div class="tbl-footer-brand-mark">
-					<span class="tbl-footer-logo" aria-hidden="true"><?php echo tbl_logo_svg( 'full' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — local SVG file, content trusted ?></span>
+					<span class="tbl-footer-logo<?php echo tbl_custom_logo() ? ' tbl-footer-logo--chip' : ''; ?>" aria-hidden="true"><?php echo tbl_brand_mark_html( 'footer' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — local SVG file or escaped <img>, content trusted ?></span>
 					<b class="tbl-footer-wordmark"><?php echo esc_html( tbl_gaggle_aka() ); ?></b>
 				</div>
 				<p class="tbl-footer-tagline">Part of the international disorganization of Raging Grannies.</p>

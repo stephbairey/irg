@@ -270,6 +270,79 @@ function tbl_logo_svg( string $variant = 'cropped' ): string {
 }
 
 /**
+ * The gaggle's own logo from Gaggle Settings (D081), or null when unset or
+ * the attachment is gone. Returns the `medium` rendition (at most 300px) so
+ * the header never loads a multi-megabyte original; the front end fits any
+ * aspect ratio with CSS.
+ *
+ * @return array{id:int,url:string,width:int,height:int,ratio:float}|null
+ */
+function tbl_custom_logo(): ?array {
+	static $cache = false;
+	if ( $cache !== false ) {
+		return $cache;
+	}
+	$id = (int) tbl_get_option( 'logo_id' );
+	if ( $id <= 0 || ! wp_attachment_is_image( $id ) ) {
+		return $cache = null;
+	}
+	$src = wp_get_attachment_image_src( $id, 'medium' );
+	if ( ! $src || empty( $src[0] ) ) {
+		return $cache = null;
+	}
+	$w = (int) $src[1];
+	$h = (int) $src[2];
+	return $cache = [
+		'id'     => $id,
+		'url'    => (string) $src[0],
+		'width'  => $w,
+		'height' => $h,
+		'ratio'  => ( $w > 0 && $h > 0 ) ? $w / $h : 1.0,
+	];
+}
+
+/**
+ * Header or footer brand mark: the uploaded gaggle logo as an <img>, or the
+ * shared network SVG. Callers wrap this in .tbl-brand-mark / .tbl-footer-logo.
+ *
+ * @param string $context 'header' (cropped SVG) or 'footer' (full SVG).
+ */
+function tbl_brand_mark_html( string $context = 'header' ): string {
+	$logo = tbl_custom_logo();
+	if ( $logo ) {
+		$dims = ( $logo['width'] && $logo['height'] )
+			? ' width="' . (int) $logo['width'] . '" height="' . (int) $logo['height'] . '"'
+			: '';
+		return '<img class="tbl-logo-img" src="' . esc_url( $logo['url'] ) . '" alt=""' . $dims . ' decoding="async" />';
+	}
+	return tbl_logo_svg( $context === 'footer' ? 'full' : 'cropped' );
+}
+
+/**
+ * Favicon URL. The shared SVG mark unless a near-square gaggle logo is set,
+ * in which case its 150px thumbnail is used. Wide or tall logos make poor
+ * tab icons, so they keep the network mark.
+ */
+function tbl_favicon_url(): string {
+	$logo = tbl_custom_logo();
+	if ( $logo && $logo['ratio'] >= 0.8 && $logo['ratio'] <= 1.25 ) {
+		$thumb = wp_get_attachment_image_url( $logo['id'], 'thumbnail' );
+		if ( $thumb ) {
+			return $thumb;
+		}
+	}
+	return TBL_URI . '/assets/images/logo-cropped.svg?v=' . TBL_VERSION;
+}
+
+/**
+ * True when the favicon comes from the gaggle logo (so core's site_icon
+ * output should be suppressed to avoid two competing icons).
+ */
+function tbl_favicon_is_custom(): bool {
+	return strpos( tbl_favicon_url(), '/assets/images/logo-cropped.svg' ) === false;
+}
+
+/**
  * Collect every attachment ID used by published Action posts: featured
  * images plus images embedded in post_content (Gutenberg's wp-image-NN
  * class is the most reliable hook). Used by the Photos page.

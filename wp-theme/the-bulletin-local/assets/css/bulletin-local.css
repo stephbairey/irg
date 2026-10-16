@@ -126,6 +126,24 @@ ul { padding-left: 22px; }
 	fill: var(--color-ink);
 	display: block;
 }
+/* Uploaded gaggle logo (D081): any aspect ratio, fitted by CSS. The box
+   grows wide for banner logos but never taller than the text block. */
+body.tbl-logo-custom .tbl-brand-mark {
+	width: auto; height: auto;
+	max-width: 180px; max-height: 48px;
+	display: flex; align-items: center;
+}
+.tbl-brand-mark img.tbl-logo-img {
+	width: auto; height: auto;
+	max-width: 180px; max-height: 48px;
+	object-fit: contain;
+	display: block;
+}
+body.tbl-logo-has-name .tbl-brand-text { display: none; }
+@media (max-width: 767px) {
+	body.tbl-logo-custom .tbl-brand-mark,
+	.tbl-brand-mark img.tbl-logo-img { max-width: 140px; }
+}
 .tbl-brand-text {
 	display: flex; flex-direction: column;
 	line-height: 1.05;
@@ -1477,6 +1495,22 @@ a.tbl-issue-chip:hover, a.tbl-issue-chip:focus-visible {
 	opacity: .9;
 	display: block;
 }
+/* Uploaded gaggle logo in the footer (D081): rasters cannot take the
+   on-dark fill, so sit the logo on a light chip that reads on any palette. */
+.tbl-footer-logo--chip {
+	height: auto;
+	background: var(--color-on-dark);
+	padding: 6px 10px;
+	border-radius: 8px;
+	display: inline-flex; align-items: center;
+}
+.tbl-footer-logo img.tbl-logo-img {
+	width: auto; height: auto;
+	max-width: 240px; max-height: 64px;
+	object-fit: contain;
+	display: block;
+}
+body.tbl-logo-has-name .tbl-footer-wordmark { display: none; }
 .tbl-footer-wordmark {
 	font-family: var(--font-display);
 	font-weight: 400;

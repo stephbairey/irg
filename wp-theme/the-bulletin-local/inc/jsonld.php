@@ -61,7 +61,7 @@ function tbl_local_home(): string {
  */
 function tbl_jsonld_local_org(): array {
 	$home = tbl_local_home();
-	return [
+	$org  = [
 		'@context'           => 'https://schema.org',
 		'@type'              => 'Organization',
 		'@id'                => $home . '#org',
@@ -69,6 +69,12 @@ function tbl_jsonld_local_org(): array {
 		'url'                => $home . '/',
 		'parentOrganization' => [ '@id' => tbl_irg_org_id() ],
 	];
+	$logo = function_exists( 'tbl_custom_logo' ) ? tbl_custom_logo() : null;
+	if ( $logo ) {
+		$full = wp_get_attachment_image_url( $logo['id'], 'full' );
+		$org['logo'] = $full ? $full : $logo['url'];
+	}
+	return $org;
 }
 
 /**
