@@ -10225,9 +10225,10 @@
     "slug": "forward-together",
     "lyrics": "<p><em>Chorus:</em><br />\nForward together! Forward together! Forward together!<br />\nNot one step back!<br />\nForward together! Forward together! Forward together!<br />\nNot one step back!</p>\n<p>Those who went before us fought<br />\nand died for civil rights<br />\nWe’re not gonna let ‘em go<br />\nNot without a fight! So!</p>\n<p><em>Chorus</em></p>\n<p>Those who went before us thought<br />\nhealth care was a human right<br />\nWe’re not gonna let it go<br />\nNot without a fight! So!</p>\n<p><em>Chorus</em></p>\n<p>Those who went before us thought<br />\nclean water was a human right<br />\nWe’re not gonna let it go<br />\nNot without a fight! So!</p>\n<p><em>Chorus</em></p>\n<p>Those who went before us thought<br />\nchoice was a human right<br />\nWe’re not gonna let it go<br />\nNot without a fight! So!</p>\n<p><em>Chorus</em></p>\n<p>Those who went before us thought<br />\nthat voting was a civil right<br />\nWe’re not gonna let it go<br />\nNot without a fight! So</p>\n<p><em>Chorus</em></p>\n<p>We’re still fighting long and hard<br />\nTo build democracy.<br />\nWe’re not gonna let it go<br />\nWe want the world to see! So!</p>\n<p><em>Chorus</em></p>\n",
     "tune": "",
-    "songwriter": "Mary Ray Worley, Wisconsin RGs",
+    "songwriter": "Mary Ray Worley and Wisconsin RGs",
     "songwriters": [
-      "Mary Ray Worley, Wisconsin RGs"
+      "Mary Ray Worley",
+      "Wisconsin RGs"
     ],
     "gaggle": "Seattle",
     "gaggles": [
@@ -10247,7 +10248,7 @@
     "date_published": "2025-09-20",
     "source_notes": "",
     "feature_on_homepage": false,
-    "display_centrally": false,
+    "display_centrally": true,
     "duplicate_of": null,
     "needs_review": false,
     "review_notes": ""
@@ -10258,7 +10259,7 @@
     "original_wp_id": 1492,
     "title": "Now’s the Time to Raise Our Voices 2",
     "slug": "nows-the-time-to-raise-our-voices-2",
-    "lyrics": "<p><em><br />The Raging Grannies Songbook, 1993</em></p>\n<p>Now’s the time to raise our voices!<br />\nNow’s the time to stand up proud!<br />\nNow’s the time to make our choices!<br />\nNow’s the time to shout out loud!</p>\n<p>D.C. folks must have a vote for Congress,<br />\nJust like those in other states.<br />\nThey’re tired of being taxed to get less,<br />\nWith Congress deciding their fate!</p>\n<p><em>change tune: The More We Get Together</em></p>\n<p>Sooo, the more we work together, together, together,<br />\nThe more we work together, the happier we’ll be!<br />\nFor your friends are my friends,<br />\nAnd my friends are your friends,<br />\nThe more we work together, the happier we’ll be!</p>\n",
+    "lyrics": "<p>Now’s the time to raise our voices!<br />\nNow’s the time to stand up proud!<br />\nNow’s the time to make our choices!<br />\nNow’s the time to shout out loud!</p>\n<p>D.C. folks must have a vote for Congress,<br />\nJust like those in other states.<br />\nThey’re tired of being taxed to get less,<br />\nWith Congress deciding their fate!</p>\n<p><em>change tune: The More We Get Together</em></p>\n<p>Sooo, the more we work together, together, together,<br />\nThe more we work together, the happier we’ll be!<br />\nFor your friends are my friends,<br />\nAnd my friends are your friends,<br />\nThe more we work together, the happier we’ll be!</p>\n",
     "tune": "Someone’s in the Kitchen with Dinah",
     "songwriter": "Unlisted Songwriter",
     "songwriters": [
@@ -10277,7 +10278,7 @@
     "youtube_link_2": "",
     "date_written_or_updated": "",
     "date_published": "2025-09-20",
-    "source_notes": "",
+    "source_notes": "The Raging Grannies Songbook, 1993",
     "feature_on_homepage": false,
     "display_centrally": false,
     "duplicate_of": null,
