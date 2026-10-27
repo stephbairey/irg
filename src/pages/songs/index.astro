@@ -185,10 +185,14 @@ const songsJson = JSON.stringify(
     // Filter ALL songs by an arbitrary subset of filter keys. Pass `excluding`
     // to drop one filter from the constraint — used by the cascading
     // dropdowns to compute "what's still selectable".
+    // Fold curly quotes to straight ones so a typed "We're" matches a
+    // title stored as "We’re" (and vice versa), then lowercase.
+    const fold = (str) =>
+      str.toLowerCase().replace(/[\u2018\u2019\u02bc]/g, "'").replace(/[\u201c\u201d]/g, '"');
     function filterSongs(excluding) {
-      const q = filters.q.toLowerCase();
+      const q = fold(filters.q);
       return ALL.filter((s) => {
-        if (q && !s.t.toLowerCase().includes(q) && !s.n.toLowerCase().includes(q)) return false;
+        if (q && !fold(s.t).includes(q) && !fold(s.n).includes(q)) return false;
         if (excluding !== "issue" && filters.issue && !s.i.includes(filters.issue)) return false;
         if (excluding !== "gaggle" && filters.gaggle && s.g !== filters.gaggle) return false;
         if (excluding !== "tune" && filters.tune && s.n !== filters.tune) return false;
