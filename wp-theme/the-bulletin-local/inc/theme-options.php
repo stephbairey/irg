@@ -40,6 +40,7 @@ function tbl_register_options(): void {
 			'default'           => [
 				'logo_id'             => 0,
 				'logo_has_name'       => 0,
+				'footer_logo_id'      => 0,
 				'hero_image_id'       => 0,
 				'display_name'        => '',
 				'youtube_channel_url' => '',
@@ -60,6 +61,7 @@ function tbl_register_options(): void {
 
 	add_settings_field( 'logo_id',             'Gaggle logo',                  'tbl_field_logo',              TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'logo_has_name',       'Logo and name',                'tbl_field_logo_has_name',     TBL_OPTIONS_PAGE, 'tbl_options_main' );
+	add_settings_field( 'footer_logo_id',      'Light logo for the footer',    'tbl_field_footer_logo',       TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'hero_image_id',       'Hero Image',                   'tbl_field_hero_image',        TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'display_name',        'Full name',                    'tbl_field_display_name',      TBL_OPTIONS_PAGE, 'tbl_options_main' );
 	add_settings_field( 'youtube_channel_url', 'YouTube Channel URL',          'tbl_field_youtube_url',       TBL_OPTIONS_PAGE, 'tbl_options_main' );
@@ -77,6 +79,7 @@ function tbl_sanitize_options( $input ): array {
 	$out = [
 		'logo_id'             => 0,
 		'logo_has_name'       => 0,
+		'footer_logo_id'      => 0,
 		'hero_image_id'       => 0,
 		'display_name'        => '',
 		'youtube_channel_url' => '',
@@ -105,6 +108,19 @@ function tbl_sanitize_options( $input ): array {
 		}
 	}
 	$out['logo_has_name'] = ! empty( $input['logo_has_name'] ) ? 1 : 0;
+	if ( ! empty( $input['footer_logo_id'] ) ) {
+		$footer_logo_id = (int) $input['footer_logo_id'];
+		if ( $footer_logo_id > 0 && wp_attachment_is_image( $footer_logo_id ) ) {
+			$out['footer_logo_id'] = $footer_logo_id;
+		} else {
+			add_settings_error(
+				TBL_OPTIONS_KEY,
+				'tbl_footer_logo_invalid',
+				'The light footer logo must be an image file (PNG, JPG, WebP or GIF). The regular logo will be used in the footer instead.',
+				'error'
+			);
+		}
+	}
 	if ( isset( $input['youtube_channel_url'] ) ) {
 		$url = esc_url_raw( trim( (string) $input['youtube_channel_url'] ) );
 		// Light validation: must be a YouTube URL if provided.
@@ -221,6 +237,67 @@ function tbl_field_logo_has_name(): void {
 	<p class="description">
 		Tick this if the words are part of your logo picture, so the site does not print your name a second time next to it. Only applies when a gaggle logo is set.
 	</p>
+	<?php
+}
+
+/**
+ * Media picker for an optional light-coloured version of the gaggle logo,
+ * used only on the dark footer. Without it the regular logo sits on a cream
+ * chip so a dark logo stays visible.
+ */
+function tbl_field_footer_logo(): void {
+	$opts = get_option( TBL_OPTIONS_KEY, [] );
+	$id   = isset( $opts['footer_logo_id'] ) ? (int) $opts['footer_logo_id'] : 0;
+	$src  = $id ? wp_get_attachment_image_url( $id, 'medium' ) : '';
+
+	wp_enqueue_media();
+	?>
+	<div class="tbl-footer-logo-field">
+		<input type="hidden" name="<?php echo esc_attr( TBL_OPTIONS_KEY ); ?>[footer_logo_id]" id="tbl_footer_logo_id" value="<?php echo esc_attr( (string) $id ); ?>" />
+		<div class="tbl-footer-logo-preview" style="margin-bottom:10px">
+			<?php if ( $src ) : ?>
+				<img src="<?php echo esc_url( $src ); ?>" alt="" style="max-width:240px;max-height:120px;width:auto;height:auto;border:1px solid #ccc;background:#422a69;padding:6px" />
+			<?php else : ?>
+				<em style="color:#666">No light logo set. The footer shows your regular logo on a cream chip.</em>
+			<?php endif; ?>
+		</div>
+		<button type="button" class="button" id="tbl_footer_logo_pick">Choose light logo</button>
+		<button type="button" class="button" id="tbl_footer_logo_clear" <?php echo $id ? '' : 'style="display:none"'; ?>>Clear</button>
+		<p class="description">Optional. The footer is dark purple, so a dark logo is shown there on a cream chip. If you have a cream or white version of your logo on a see-through background, choose it here and the footer will use it with no chip. Only applies when a gaggle logo is set.</p>
+	</div>
+	<script>
+		(function () {
+			var pick = document.getElementById('tbl_footer_logo_pick');
+			var clear = document.getElementById('tbl_footer_logo_clear');
+			var idEl = document.getElementById('tbl_footer_logo_id');
+			var preview = document.querySelector('.tbl-footer-logo-preview');
+			if (!pick || !idEl || !preview) return;
+
+			var frame;
+			pick.addEventListener('click', function () {
+				if (frame) { frame.open(); return; }
+				frame = wp.media({
+					title: 'Select the light version of your logo',
+					button: { text: 'Use this logo' },
+					library: { type: 'image' },
+					multiple: false
+				});
+				frame.on('select', function () {
+					var att = frame.state().get('selection').first().toJSON();
+					idEl.value = att.id;
+					var src = (att.sizes && att.sizes.medium && att.sizes.medium.url) ? att.sizes.medium.url : att.url;
+					preview.innerHTML = '<img src="' + src + '" alt="" style="max-width:240px;max-height:120px;width:auto;height:auto;border:1px solid #ccc;background:#422a69;padding:6px" />';
+					if (clear) clear.style.display = '';
+				});
+				frame.open();
+			});
+			if (clear) clear.addEventListener('click', function () {
+				idEl.value = '0';
+				preview.innerHTML = '<em style="color:#666">No light logo set. The footer shows your regular logo on a cream chip.</em>';
+				clear.style.display = 'none';
+			});
+		})();
+	</script>
 	<?php
 }
 

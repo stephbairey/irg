@@ -282,17 +282,43 @@ function tbl_custom_logo(): ?array {
 	if ( $cache !== false ) {
 		return $cache;
 	}
-	$id = (int) tbl_get_option( 'logo_id' );
-	if ( $id <= 0 || ! wp_attachment_is_image( $id ) ) {
+	return $cache = tbl_logo_attachment( (int) tbl_get_option( 'logo_id' ) );
+}
+
+/**
+ * Optional light-coloured logo for the dark footer (footer_logo_id). Null
+ * when unset, when no regular logo is set, or when the attachment is gone.
+ *
+ * @return array{id:int,url:string,width:int,height:int,ratio:float}|null
+ */
+function tbl_footer_logo(): ?array {
+	static $cache = false;
+	if ( $cache !== false ) {
+		return $cache;
+	}
+	if ( ! tbl_custom_logo() ) {
 		return $cache = null;
+	}
+	return $cache = tbl_logo_attachment( (int) tbl_get_option( 'footer_logo_id' ) );
+}
+
+/**
+ * Shared loader for the two logo options: the `medium` rendition plus its
+ * dimensions and aspect ratio, or null when the id is unusable.
+ *
+ * @return array{id:int,url:string,width:int,height:int,ratio:float}|null
+ */
+function tbl_logo_attachment( int $id ): ?array {
+	if ( $id <= 0 || ! wp_attachment_is_image( $id ) ) {
+		return null;
 	}
 	$src = wp_get_attachment_image_src( $id, 'medium' );
 	if ( ! $src || empty( $src[0] ) ) {
-		return $cache = null;
+		return null;
 	}
 	$w = (int) $src[1];
 	$h = (int) $src[2];
-	return $cache = [
+	return [
 		'id'     => $id,
 		'url'    => (string) $src[0],
 		'width'  => $w,
@@ -309,6 +335,9 @@ function tbl_custom_logo(): ?array {
  */
 function tbl_brand_mark_html( string $context = 'header' ): string {
 	$logo = tbl_custom_logo();
+	if ( $logo && $context === 'footer' && tbl_footer_logo() ) {
+		$logo = tbl_footer_logo();
+	}
 	if ( $logo ) {
 		$dims = ( $logo['width'] && $logo['height'] )
 			? ' width="' . (int) $logo['width'] . '" height="' . (int) $logo['height'] . '"'
