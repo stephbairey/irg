@@ -111,7 +111,9 @@ function loadGaggles() {
         g.slug.length > 0 &&
         typeof g.name === "string" &&
         typeof g.lat === "number" &&
-        typeof g.lng === "number",
+        typeof g.lng === "number" &&
+        // Disbanded gaggles (status "historical") get no subsite.
+        g.status !== "historical",
     )
     .map((g) => ({
       slug: g.slug,

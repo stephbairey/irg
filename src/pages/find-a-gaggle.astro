@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FeedbackWidget from "../components/FeedbackWidget.astro";
-import { getActiveGaggleCountLabel } from "../lib/gaggles";
+import { getActiveGaggleCountLabel, isHistorical } from "../lib/gaggles";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -15,15 +15,18 @@ interface Gaggle {
   slug: string;  // subsite slug, e.g. "antigonish"
   website?: string; // optional: gaggle runs its own site outside the multisite;
                     // overrides the subsite link (e.g. Rochester)
+  status?: "historical"; // disbanded: listed under "Sung their last", not mapped
+  statusNote?: string;
 }
 
 const DATA = resolve(process.cwd(), "data/gaggle-locations.json");
 let gaggles: Gaggle[] = [];
+let historical: Gaggle[] = [];
 if (existsSync(DATA)) {
   try {
     const raw = JSON.parse(readFileSync(DATA, "utf8"));
     if (Array.isArray(raw)) {
-      gaggles = (raw as Gaggle[]).filter(
+      const wellFormed = (raw as Gaggle[]).filter(
         (g) =>
           g &&
           typeof g.name === "string" &&
@@ -32,6 +35,10 @@ if (existsSync(DATA)) {
           typeof g.slug === "string" &&
           typeof g.aka === "string",
       );
+      gaggles = wellFormed.filter((g) => !isHistorical(g));
+      historical = wellFormed
+        .filter(isHistorical)
+        .sort((a, b) => a.name.localeCompare(b.name));
     }
   } catch (err) {
     console.warn(`[find-a-gaggle] could not parse ${DATA}: ${(err as Error).message}`);
@@ -214,6 +221,24 @@ const gaggleListSchema = {
         })
       )}
     </section>
+
+    {/* Historical: gaggles that have disbanded. No pins, no links, no count. */}
+    {historical.length > 0 && (
+      <section class="max-w-[1080px] mx-auto mt-14 pt-8 border-t border-muted">
+        <div class="kicker text-muted mb-2">Sung their last</div>
+        <p class="text-[15px] text-text-soft italic max-w-[64ch] mb-4">
+          These gaggles have disbanded. We keep their names here because they raged, and because a new gaggle may yet rise in the same town.
+        </p>
+        <ul class="dir-historical">
+          {historical.map((g) => (
+            <li>
+              <span class="dir-name">{g.aka || g.name}</span>
+              <span class="dir-historical-where">{g.region}, {g.country}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
 
     {/* CTA */}
     <section class="mt-20">
@@ -479,6 +504,24 @@ const gaggleListSchema = {
     }
     .dir-name {
       color: var(--color-text);
+    }
+    .dir-historical {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 28px;
+      font-size: 15px;
+      line-height: 1.45;
+      color: var(--color-text-soft);
+    }
+    .dir-historical-where {
+      margin-left: 8px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-muted);
     }
     .gaggle-popup .gp-contact-soft {
       color: var(--color-muted);

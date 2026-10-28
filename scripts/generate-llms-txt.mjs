@@ -39,7 +39,8 @@ const CENTRAL_HIDDEN = (() => {
 const GAGGLE_COUNT = (() => {
   try {
     const raw = JSON.parse(readFileSync(GAGGLES_PATH, "utf8"));
-    return Array.isArray(raw) ? raw.length : 0;
+    // Disbanded gaggles stay in the file as status "historical"; not counted.
+    return Array.isArray(raw) ? raw.filter((g) => g && g.status !== "historical").length : 0;
   } catch {
     return 0;
   }

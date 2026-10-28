@@ -275,7 +275,7 @@ Whenever a meaningful decision changes, add a new entry. Stable IDs are referenc
 3. Commit + push `data/songs-consolidated.json` and `public/embeddings.json`
 
 **Add a new gaggle (one-off):**
-1. Add the gaggle entry to `data/gaggle-locations.json` (name, region, country, lat, lng, aka, slug)
+1. Add the gaggle entry to `data/gaggle-locations.json` (name, region, country, lat, lng, aka, slug). A gaggle that disbands keeps its entry with `"status": "historical"` (D083); never delete.
 2. Run `node scripts/bulk-create-subsites.mjs <slug>`
 3. Run `node scripts/verify-subsite.mjs <slug>`
 4. Run `node scripts/snapshot-subsites.mjs`, build, commit + push

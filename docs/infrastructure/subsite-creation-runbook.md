@@ -164,6 +164,7 @@ After the deploy finishes (~1-2 minutes):
 
 - DO NOT modify The Bulletin Local theme as part of subsite creation. Theme changes happen in the repo (`wp-theme/the-bulletin-local/`) and ship via `node scripts/deploy-theme.mjs`.
 - DO NOT touch `data/gaggle-locations.json` when creating a subsite. That file is the canonical world-list and is unrelated to which gaggles have sites.
+- A gaggle that has disbanded is NOT removed from `data/gaggle-locations.json`. Set `"status": "historical"` on its entry (D083). The map, directory, count, llms.txt, and the bulk-create script all skip it; its subsite is left alone.
 - DO NOT rebuild the RAG embeddings (`build-rag-index.mjs`) just because you added a subsite. Actions data is not part of the chatbot corpus.
 - DO NOT bulk-create the remaining ~58 subsites until Montreal has been through this runbook end-to-end and we've revised the doc with anything we learned.
 

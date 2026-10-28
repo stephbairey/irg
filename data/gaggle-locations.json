@@ -60,7 +60,9 @@
     "lat": 49.1667,
     "lng": -123.7833,
     "aka": "Gabriola Island Raging Grannies",
-    "slug": "gabriola-island"
+    "slug": "gabriola-island",
+    "status": "historical",
+    "statusNote": "No group remains; confirmed 2026-10-27"
   },
   {
     "name": "Guelph",
@@ -114,7 +116,9 @@
     "lat": 49.2193,
     "lng": -122.5984,
     "aka": "Maple Ridge Raging Grannies",
-    "slug": "maple-ridge"
+    "slug": "maple-ridge",
+    "status": "historical",
+    "statusNote": "Disbanded; confirmed by its last organizer 2026-10-28"
   },
   {
     "name": "Montreal",
@@ -475,7 +479,9 @@
     "lat": 36.9741,
     "lng": -122.0308,
     "aka": "Santa Cruz Raging Grannies",
-    "slug": "santa-cruz"
+    "slug": "santa-cruz",
+    "status": "historical",
+    "statusNote": "Disbanded; reported by a neighbouring gaggle 2026-10-28"
   },
   {
     "name": "Seattle",

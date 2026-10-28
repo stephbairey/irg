@@ -7,6 +7,10 @@ export interface GaggleLocation {
   country: string;
   lat: number;
   lng: number;
+  // "historical": the gaggle has disbanded. Kept in the file so the record
+  // survives, but excluded from the map, the directory, and the count.
+  status?: "historical";
+  statusNote?: string;
 }
 
 const DATA = resolve(process.cwd(), "data/gaggle-locations.json");
@@ -14,7 +18,12 @@ const DATA = resolve(process.cwd(), "data/gaggle-locations.json");
 // Cache one parse per build/dev process. Locations are static between deploys.
 let cached: GaggleLocation[] | null = null;
 
-export function getGaggleLocations(): GaggleLocation[] {
+export function isHistorical(g: { status?: string }): boolean {
+  return g.status === "historical";
+}
+
+// Every well-formed entry in the file, active and historical alike.
+export function getAllGaggleLocations(): GaggleLocation[] {
   if (cached) return cached;
   if (!existsSync(DATA)) {
     cached = [];
@@ -35,6 +44,16 @@ export function getGaggleLocations(): GaggleLocation[] {
     cached = [];
   }
   return cached;
+}
+
+// Active gaggles only. This is what the map, the directory, and the count use.
+export function getGaggleLocations(): GaggleLocation[] {
+  return getAllGaggleLocations().filter((g) => !isHistorical(g));
+}
+
+// Gaggles that have disbanded. Listed, not mapped.
+export function getHistoricalGaggles(): GaggleLocation[] {
+  return getAllGaggleLocations().filter(isHistorical);
 }
 
 export function getActiveGaggleCount(): number {
