@@ -1,9 +1,9 @@
 [
   {
-    "id": 68,
-    "slug": "fox-valley",
-    "name": "Fox Valley",
-    "url": "https://fox-valley.raginggrannies.org"
+    "id": 70,
+    "slug": "north-alabama",
+    "name": "North Alabama",
+    "url": "https://north-alabama.raginggrannies.org"
   },
   {
     "id": 51,
@@ -54,6 +54,12 @@
     "url": "https://olympia.raginggrannies.org"
   },
   {
+    "id": 42,
+    "slug": "santa-fe",
+    "name": "Santa Fe",
+    "url": "https://santa-fe.raginggrannies.org"
+  },
+  {
     "id": 41,
     "slug": "new-haven",
     "name": "New Haven",
@@ -84,12 +90,6 @@
     "url": "https://mendocino.raginggrannies.org"
   },
   {
-    "id": 36,
-    "slug": "manitowoc",
-    "name": "Manitowoc County",
-    "url": "https://manitowoc.raginggrannies.org"
-  },
-  {
     "id": 52,
     "slug": "sonoma",
     "name": "Sonoma County",
@@ -100,6 +100,18 @@
     "slug": "south-florida",
     "name": "South Florida",
     "url": "https://south-florida.raginggrannies.org"
+  },
+  {
+    "id": 54,
+    "slug": "kentuckiana",
+    "name": "Southern Indiana and Louisville",
+    "url": "https://kentuckiana.raginggrannies.org"
+  },
+  {
+    "id": 68,
+    "slug": "fox-valley",
+    "name": "Fox Valley",
+    "url": "https://fox-valley.raginggrannies.org"
   },
   {
     "id": 67,
@@ -180,10 +192,10 @@
     "url": "https://spokane.raginggrannies.org"
   },
   {
-    "id": 54,
-    "slug": "kentuckiana",
-    "name": "Southern Indiana and Louisville",
-    "url": "https://kentuckiana.raginggrannies.org"
+    "id": 36,
+    "slug": "manitowoc",
+    "name": "Manitowoc County",
+    "url": "https://manitowoc.raginggrannies.org"
   },
   {
     "id": 35,
@@ -198,10 +210,10 @@
     "url": "https://humboldt.raginggrannies.org"
   },
   {
-    "id": 33,
-    "slug": "grays-harbor",
-    "name": "Gray's Harbor",
-    "url": "https://grays-harbor.raginggrannies.org"
+    "id": 17,
+    "slug": "maple-ridge",
+    "name": "Maple Ridge",
+    "url": "https://maple-ridge.raginggrannies.org"
   },
   {
     "id": 16,
@@ -288,22 +300,22 @@
     "url": "https://seattle.raginggrannies.org"
   },
   {
-    "id": 2,
-    "slug": "portland",
-    "name": "Portland",
-    "url": "https://portland.raginggrannies.org"
-  },
-  {
-    "id": 17,
-    "slug": "maple-ridge",
-    "name": "Maple Ridge",
-    "url": "https://maple-ridge.raginggrannies.org"
-  },
-  {
     "id": 18,
     "slug": "toronto",
     "name": "Toronto",
     "url": "https://toronto.raginggrannies.org"
+  },
+  {
+    "id": 19,
+    "slug": "vancouver",
+    "name": "Vancouver",
+    "url": "https://vancouver.raginggrannies.org"
+  },
+  {
+    "id": 33,
+    "slug": "grays-harbor",
+    "name": "Gray's Harbor",
+    "url": "https://grays-harbor.raginggrannies.org"
   },
   {
     "id": 32,
@@ -384,22 +396,16 @@
     "url": "https://winnipeg.raginggrannies.org"
   },
   {
-    "id": 19,
-    "slug": "vancouver",
-    "name": "Vancouver",
-    "url": "https://vancouver.raginggrannies.org"
+    "id": 2,
+    "slug": "portland",
+    "name": "Portland",
+    "url": "https://portland.raginggrannies.org"
   },
   {
     "id": 69,
     "slug": "niagara",
     "name": "Niagara",
     "url": "https://cms.raginggrannies.international/niagara"
-  },
-  {
-    "id": 70,
-    "slug": "north-alabama",
-    "name": "North Alabama",
-    "url": "https://cms.raginggrannies.international/north-alabama"
   },
   {
     "id": 47,

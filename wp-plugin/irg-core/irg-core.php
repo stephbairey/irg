@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.26.0
+ * Version: 3.26.1
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -2777,3 +2777,26 @@ add_action( 'load-ms-delete-site.php', static function (): void {
 		wp_die( 'Only the Web Granny can delete a gaggle site. If you want your page taken down or renamed, write to webgranny@raginggrannies.org.', 'Not available', [ 'response' => 403, 'back_link' => true ] );
 	}
 } );
+
+// ---------------------------------------------------------------------------
+// Retired subsite hostnames redirect to their new homes (D085).
+//
+// A renamed gaggle keeps a stub blog on its old hostname so the wildcard
+// vhost still resolves it; this map sends every request on that host to the
+// new hostname with the same path. Add a line per rename.
+// ---------------------------------------------------------------------------
+
+const IRG_HOST_REDIRECTS = [
+	'new-mexico.raginggrannies.org' => 'santa-fe.raginggrannies.org',
+];
+
+function irg_redirect_retired_hosts(): void {
+	$host = strtolower( (string) ( $_SERVER['HTTP_HOST'] ?? '' ) );
+	if ( $host === '' || ! isset( IRG_HOST_REDIRECTS[ $host ] ) ) {
+		return;
+	}
+	$uri = (string) ( $_SERVER['REQUEST_URI'] ?? '/' );
+	wp_redirect( 'https://' . IRG_HOST_REDIRECTS[ $host ] . $uri, 301 );
+	exit;
+}
+add_action( 'init', 'irg_redirect_retired_hosts', 0 );

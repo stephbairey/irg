@@ -1043,3 +1043,13 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: (b), irg-core 3.26.0: `remove_submenu_page('tools.php','ms-delete-site.php')` at `admin_menu` priority 999 plus a `load-ms-delete-site.php` guard that `wp_die`s with a note to write to the Web Granny. Super admins still delete from Network Admin > Sites. The Redirection plugin stays; a bad rule is visible and reversible, whereas a deleted site is invisible.
 - **Rationale**: A keeper trying to rename her site should never be one click from hiding it. Renames and subdomain changes are Web Granny work (see the Santa Fe thread: the `santa-fe` subdomain question is still open).
 - **Revisit if**: keepers keep reaching for redirects to rename; then add a "request a rename" link in Gaggle Settings instead, or remove Redirection from subsites (c).
+
+## D085 — Renaming a gaggle subsite: move the blog, keep a redirect stub on the old host
+
+- **Status**: Decided
+- **Date**: 2026-11-02
+- **Context**: Santa Fe (formerly New Mexico Raging Grannies) wanted `santa-fe.raginggrannies.org`; the keeper had tried to do it herself with a redirect (D084). Maya chose to move the site to the new hostname and keep the old one working.
+- **Options**: (a) duplicate the blog into a new one and redirect the old; (b) re-point the existing blog (D075 flip: `irg_blogs` domain, `home`/`siteurl`/`irg_slug`, `wp search-replace`) and leave a stub blog on the old hostname that irg-core redirects; (c) Cloudflare redirect rule (the API token has no rulesets scope, and the wildcard vhost still needs a blog row for the old host).
+- **Choice**: (b). Blog 42 is now `santa-fe.raginggrannies.org`; its keeper account was renamed `santa-fe` with `santa-fe@raginggrannies.org` (password untouched; the old `new-mexico@` rule still forwards). Stub blog 71 owns `new-mexico.raginggrannies.org` and `IRG_HOST_REDIRECTS` in irg-core 3.26.1 sends every request on a retired host to the new host with the same path (301). The directory slug changed to `santa-fe`; uploads stay under `sites/42`.
+- **Rationale**: One copy of the content, one keeper login, media paths unchanged, old links keep working. Duplicating would have forked uploads into a second `sites/<id>` tree and left two logins.
+- **Revisit if**: a second rename lands (the map is a constant; consider a network option), or the `bulk-create-subsites.mjs` path check (`/<slug>/`) trips on mapped blogs and tries to re-create one.
