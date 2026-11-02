@@ -1,5 +1,36 @@
 [
   {
+    "id": "wp-7586",
+    "source": "wp",
+    "original_wp_id": 7586,
+    "title": "You Took My Sunshine",
+    "slug": "you-took-my-sunshine",
+    "lyrics": "<p>The other night dear, as I lay sleeping,</p>\n<p>I dreamt of clean air and clear skies.</p>\n<p>When I awoke, dear, I was mistaken,</p>\n<p>And I hung my head and cried.</p>\n<p>&nbsp;</p>\n<p>You took my sunshine, my lovely sunshine,</p>\n<p>And now your coal dust fills our skies.</p>\n<p>The rain is dirty, the streets are sooty,</p>\n<p>And I pray your train tracks rust away.</p>\n<p>&nbsp;</p>\n<p>The trains keep coming, the dust keeps spreading,</p>\n<p>And fouls the air throughout our town.</p>\n<p>It coats my garden, our water fountain.</p>\n<p>Please leave the coal in the ground!</p>\n",
+    "tune": "You Are My Sunshine",
+    "songwriter": "Ann Smith",
+    "songwriters": [
+      "Ann Smith"
+    ],
+    "gaggle": "Seattle",
+    "gaggles": [
+      "Seattle"
+    ],
+    "issues": [
+      "Environment & Energy"
+    ],
+    "key_or_starting_note": "",
+    "youtube_link": "",
+    "youtube_link_2": "",
+    "date_written_or_updated": "",
+    "date_published": "2026-11-01",
+    "source_notes": "",
+    "feature_on_homepage": false,
+    "display_centrally": true,
+    "duplicate_of": null,
+    "needs_review": false,
+    "review_notes": ""
+  },
+  {
     "id": "wp-7584",
     "source": "wp",
     "original_wp_id": 7584,
