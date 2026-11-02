@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.25.2
+ * Version: 3.26.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -2754,3 +2754,26 @@ function irg_hide_song_preview_button(): void {
 	echo '<style>#preview-action, #post-preview, .editor-post-preview, .editor-preview-dropdown { display: none !important; }</style>';
 }
 add_action( 'admin_head', 'irg_hide_song_preview_button' );
+
+// ---------------------------------------------------------------------------
+// Gaggle keepers cannot delete their own site.
+//
+// WordPress multisite gives every site admin a Tools > Delete Site screen.
+// A keeper used it on 2026-09-24 (Santa Fe, blog 42) while trying to rename
+// her site, and the page went dark for six weeks. Only super admins ever need
+// that screen, so hide the menu entry and refuse the screen itself for
+// everyone else. Super admins can still delete from Network Admin > Sites.
+// ---------------------------------------------------------------------------
+
+function irg_hide_delete_site_menu(): void {
+	if ( ! is_super_admin() ) {
+		remove_submenu_page( 'tools.php', 'ms-delete-site.php' );
+	}
+}
+add_action( 'admin_menu', 'irg_hide_delete_site_menu', 999 );
+
+add_action( 'load-ms-delete-site.php', static function (): void {
+	if ( ! is_super_admin() ) {
+		wp_die( 'Only the Web Granny can delete a gaggle site. If you want your page taken down or renamed, write to webgranny@raginggrannies.org.', 'Not available', [ 'response' => 403, 'back_link' => true ] );
+	}
+} );
