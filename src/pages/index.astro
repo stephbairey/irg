@@ -80,15 +80,18 @@ function eligibleSongs() {
     return !!s.songDetails?.lyrics;
   });
 }
+// Keeps the blank line between verses (collapsed to one) so the column
+// reads like the song page does; drops leading/trailing blanks.
 function lyricExcerpt(html: string | null | undefined): string {
-  return html
-    ? stripHtml(html)
-        .split("\n")
-        .map((l) => l.trim())
-        .filter(Boolean)
-        .slice(0, 32)
-        .join("\n")
-    : "";
+  if (!html) return "";
+  const lines: string[] = [];
+  for (const raw of stripHtml(html).split("\n")) {
+    const l = raw.trim();
+    if (l) lines.push(l);
+    else if (lines.length && lines[lines.length - 1] !== "") lines.push("");
+  }
+  while (lines.length && lines[lines.length - 1] === "") lines.pop();
+  return lines.slice(0, 32).join("\n");
 }
 const featuredPool = eligibleSongs().map((s) => ({
   slug: s.slug,

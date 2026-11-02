@@ -618,5 +618,14 @@
     "lng": -88.4154,
     "aka": "Fox Valley Raging Grannies",
     "slug": "fox-valley"
+  },
+  {
+    "name": "North Alabama",
+    "region": "Alabama",
+    "country": "United States",
+    "lat": 34.7304,
+    "lng": -86.5861,
+    "aka": "North Alabama Raging Grannies",
+    "slug": "north-alabama"
   }
 ]
