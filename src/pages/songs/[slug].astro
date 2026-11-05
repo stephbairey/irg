@@ -21,6 +21,14 @@ const gaggle = song.gaggles.nodes[0]?.name;
 const tune = song.tunes.nodes[0]?.name;
 const songwriterNames = song.songwriters.nodes.map((w) => w.name).filter(Boolean);
 // "A", "A and B", "A, B, and C": every co-writer, not just the first.
+// One-line usage notice printed under every lyrics card (D086): names the
+// songwriter and gaggle so a copied page carries its own credit.
+const creditGaggle = !gaggle || /^unknown$/i.test(gaggle)
+  ? "the Raging Grannies"
+  : /raging grannies/i.test(gaggle)
+    ? `the ${gaggle}`
+    : `the ${gaggle} Raging Grannies`;
+
 const songwriter =
   songwriterNames.length <= 1
     ? songwriterNames[0]
@@ -302,6 +310,9 @@ if (youtubeEmbed) {
                 </div>
               )}
             </div>
+            <p class="credit-line mt-6 text-[13px] text-muted leading-normal">
+              Free to sing, share, and print with credit to {songwriter ? <>{songwriter} and </> : null}{creditGaggle}. Not for sale. raginggrannies.org
+            </p>
           </div>
         </div>
       </section>

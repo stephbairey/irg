@@ -91,7 +91,7 @@ const TUNE_LH = 14;
 const BODY_LH = 18;
 const META_LH = 12;
 
-const META_RESERVE = META_LH * 4 + 16; // worst case: 4 lines of meta + a gap
+const META_RESERVE = META_LH * 6 + 16; // worst case: 4 lines of meta + 2 lines of credit + a gap
 
 // --- WP fetch --------------------------------------------------------------
 
@@ -346,20 +346,24 @@ function buildMetaLines(song, fonts, size, maxWidth) {
       parts.push(formatted);
     } catch {}
   }
-  if (!parts.length) return [];
   // Pseudo-token list separated by middots; underline disabled for meta.
   const segs = [];
   for (let i = 0; i < parts.length; i++) {
     if (i > 0) segs.push({ text: "  ·  ", bold: false, italic: false, underline: false });
     segs.push({ text: parts[i], bold: false, italic: false, underline: false });
   }
+  const wrap = (tokens) =>
+    wrapTokens(tokens.map((s) => ({ kind: "text", ...s })), fonts, size, maxWidth)
+      .filter((l) => l.kind === "line")
+      .map((l) => l.segments);
   // Reuse wrapping logic by treating these as a single logical line.
-  return wrapTokens(
-    segs.map((s) => ({ kind: "text", ...s })),
-    fonts,
-    size,
-    maxWidth,
-  ).filter((l) => l.kind === "line").map((l) => l.segments);
+  const lines = parts.length ? wrap(segs) : [];
+  // Usage notice (D086): travels with every copied song sheet.
+  const credit =
+    `Free to sing and share with credit to the songwriter and the Raging Grannies. ` +
+    `Not for sale. raginggrannies.org/songs/${song.slug}/`;
+  lines.push(...wrap([{ text: credit, bold: false, italic: true, underline: false }]));
+  return lines;
 }
 
 async function generatePdf(song, fonts) {

@@ -1053,3 +1053,13 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: (b). Blog 42 is now `santa-fe.raginggrannies.org`; its keeper account was renamed `santa-fe` with `santa-fe@raginggrannies.org` (password untouched; the old `new-mexico@` rule still forwards). Stub blog 71 owns `new-mexico.raginggrannies.org` and `IRG_HOST_REDIRECTS` in irg-core 3.26.1 sends every request on a retired host to the new host with the same path (301). The directory slug changed to `santa-fe`; uploads stay under `sites/42`.
 - **Rationale**: One copy of the content, one keeper login, media paths unchanged, old links keep working. Duplicating would have forked uploads into a second `sites/<id>` tree and left two logins.
 - **Revisit if**: a second rename lands (the map is a constant; consider a network option), or the `bulk-create-subsites.mjs` path check (`/<slug>/`) trips on mapped blogs and tries to re-create one.
+
+## D086 — Usage notice on the song library, every song page, and every song sheet
+
+- **Status**: Decided
+- **Date**: 2026-11-05
+- **Context**: The old raginggrannies.net told visitors they were welcome to sing the songs provided they gave credit. The relaunch replaced that with "yours to sing" and nothing else. In October 2026 an Omaha group published Granny songs under its own name with no credit, and an auto-generated YouTube "Topic" channel plus Amazon listings appeared with wrong credits. On the E-Vine, Vicki Ryder asked (2026-10-15) for the former language back; Sandy, Kate Chung, Granny D (Madison), and Ferrilyn Sourdiffe (Piedmont) seconded.
+- **Options**: (a) a Terms of Use page linked from the footer; (b) a one-line notice in the places a song actually travels from; (c) a Creative Commons licence.
+- **Choice**: (b). One sentence on the library page header, one line under every lyrics card naming the songwriter and gaggle, one italic line at the foot of every generated PDF song sheet with the song's URL, and a sentence added to the existing FAQ answer. Wording: "Free to sing, share, and print. Credit the songwriter and the Raging Grannies. Not for sale."
+- **Rationale**: Copies are made from song pages and song sheets, not from a terms page nobody reads. Putting the credit where the copy happens means it travels with the song. A CC licence is a policy the network has not discussed; the notice states the practice the grannies already follow without binding anyone to a legal instrument.
+- **Revisit if**: the network adopts a formal licence at an Intergaggle forum or UnConvention, or songwriters ask for per-song terms.
