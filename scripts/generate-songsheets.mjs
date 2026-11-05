@@ -60,6 +60,7 @@ function loadSongsFromJson() {
           lyrics: r.lyrics || null,
           dateWrittenOrUpdated: r.date_written_or_updated || null,
         },
+        date: r.date_published || null,
         songwriters: { nodes: r.songwriter ? [{ name: r.songwriter }] : [] },
         gaggles: { nodes: r.gaggle ? [{ name: r.gaggle }] : [] },
         tunes: { nodes: r.tune ? [{ name: r.tune }] : [] },
@@ -105,7 +106,7 @@ async function fetchAllSongs() {
       songs(first: 100${after}) {
         pageInfo { hasNextPage endCursor }
         nodes {
-          title slug
+          title slug date
           songDetails {
             lyrics
             dateWrittenOrUpdated
@@ -331,6 +332,30 @@ function drawSegmentLine(page, segments, x, y, size, color) {
   }
 }
 
+// Owner is the songwriter(s); a group effort or unknown writer falls back to
+// the gaggle. Year is the date written when known, else the publish date.
+function copyrightLine(song) {
+  const names = song.songwriters.nodes
+    .map((w) => decodeEntities(w.name || ""))
+    .filter((n) => n && !/^(unknown|anonymous)$/i.test(n));
+  const gg = decodeEntities(song.gaggles.nodes[0]?.name || "").replace(/\s*\(historical\)/i, "");
+  const gaggleOwner = !gg || /^unknown$/i.test(gg)
+    ? "The Raging Grannies"
+    : /raging grannies/i.test(gg) ? `The ${gg}` : `The ${gg} Raging Grannies`;
+  const owner =
+    names.length === 0 ? gaggleOwner
+    : names.length === 1 ? names[0]
+    : names.length === 2 ? `${names[0]} and ${names[1]}`
+    : `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
+  const yearOf = (d) => {
+    if (!d) return null;
+    const y = new Date(d).getFullYear();
+    return Number.isFinite(y) && y > 1986 ? y : null;
+  };
+  const year = yearOf(song.songDetails.dateWrittenOrUpdated) ?? yearOf(song.date);
+  return `Lyrics © ${year ? year + " " : ""}${owner}`;
+}
+
 function buildMetaLines(song, fonts, size, maxWidth) {
   const parts = [];
   const sw = song.songwriters.nodes[0]?.name;
@@ -388,6 +413,11 @@ async function generatePdf(song, fonts) {
   const title = decodeEntities(song.title || "(untitled)");
   page.drawText(title, { x: CONTENT_X, y: y - TITLE_SIZE, size: TITLE_SIZE, font: embedded.bold, color: black });
   y -= TITLE_LH + 6;
+
+  // Copyright line (Vicki, 2026-11-05): "Lyrics © <year> <owner>".
+  const cr = copyrightLine(song);
+  page.drawText(cr, { x: CONTENT_X, y: y - TUNE_SIZE, size: TUNE_SIZE, font: embedded.regular, color: black });
+  y -= TUNE_LH;
 
   // Tune line (italic).
   const tune = song.tunes.nodes[0]?.name;

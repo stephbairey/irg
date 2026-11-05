@@ -29,6 +29,26 @@ const creditGaggle = !gaggle || /^unknown$/i.test(gaggle)
     ? `the ${gaggle}`
     : `the ${gaggle} Raging Grannies`;
 
+// Copyright line under the title (Vicki, 2026-11-05): "Lyrics © <year> <owner>".
+// Owner is the songwriter(s); a group effort or unknown writer falls back to
+// the gaggle. Year is the date written when known, else the publish date.
+const namedWriters = songwriterNames.filter((n) => !/^(unknown|anonymous)$/i.test(n));
+const copyrightOwner =
+  namedWriters.length === 0
+    ? creditGaggle.replace(/^the /, "The ").replace(/\s*\(historical\)/i, "")
+    : namedWriters.length === 1
+      ? namedWriters[0]
+      : namedWriters.length === 2
+        ? `${namedWriters[0]} and ${namedWriters[1]}`
+        : `${namedWriters.slice(0, -1).join(", ")}, and ${namedWriters[namedWriters.length - 1]}`;
+const yearOf = (d: string | null | undefined) => {
+  if (!d) return null;
+  const y = new Date(d).getFullYear();
+  return Number.isFinite(y) && y > 1986 ? y : null;
+};
+const copyrightYear = yearOf(song.songDetails.dateWrittenOrUpdated) ?? yearOf(song.date);
+const copyrightLine = `Lyrics © ${copyrightYear ? copyrightYear + " " : ""}${copyrightOwner}`;
+
 const songwriter =
   songwriterNames.length <= 1
     ? songwriterNames[0]
@@ -130,6 +150,7 @@ if (youtubeEmbed) {
           <h1 class="font-display text-ink leading-[.96] mb-7 tracking-tight" style="font-size:clamp(40px,9vw,92px)">
             {song.title}
           </h1>
+          <p class="copyright-line text-[15px] text-muted leading-normal -mt-4 mb-6">{copyrightLine}</p>
 
           <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-5 sm:gap-y-6 py-6 my-0 border-t border-b border-rule mb-7">
             {tune && (

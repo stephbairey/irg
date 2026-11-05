@@ -1063,3 +1063,13 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: (b). One sentence on the library page header, one line under every lyrics card naming the songwriter and gaggle, one italic line at the foot of every generated PDF song sheet with the song's URL, and a sentence added to the existing FAQ answer. Wording: "Free to sing, share, and print. Credit the songwriter and the Raging Grannies. Not for sale."
 - **Rationale**: Copies are made from song pages and song sheets, not from a terms page nobody reads. Putting the credit where the copy happens means it travels with the song. A CC licence is a policy the network has not discussed; the notice states the practice the grannies already follow without binding anyone to a legal instrument.
 - **Revisit if**: the network adopts a formal licence at an Intergaggle forum or UnConvention, or songwriters ask for per-song terms.
+
+## D087 — Copyright line under every song title
+
+- **Status**: Decided
+- **Date**: 2026-11-05
+- **Context**: After the D086 usage notice shipped, Vicki Ryder asked on the E-Vine (2026-11-05) that every song sheet, printed or on the web, carry a standard copyright notice at the top: song title, "Lyrics © by [lyricist, or gaggle if it was a group effort] and date", then the tune.
+- **Options**: (a) add the notice at the top of song pages and song sheets, generated from existing fields; (b) ask songwriters to type it into each song; (c) leave the D086 footer line as the only credit.
+- **Choice**: (a). One line directly under the title on every song page and at the top of every PDF song sheet: "Lyrics © <year> <owner>". Owner is the songwriter(s) on file; if the writer is blank, "Unknown," or "anonymous," the owner is the gaggle ("The <gaggle> Raging Grannies", or "The Raging Grannies" when no gaggle is on file). Year is the year of the "date written or updated" field when it is set and plausible (after 1986); otherwise the year the song was published to the library. No year prints when neither is usable. The D086 footer line stays.
+- **Rationale**: 1,589 of 1,595 songs already have a songwriter and every song has a publish date, so the notice can be generated for the whole library at once instead of waiting on 1,500 edits. Standard notice form (symbol, year, owner) matches the format Vicki quoted. Songwriters correct a wrong name or year by editing the song.
+- **Revisit if**: songwriters want per-song wording, or the network adopts a formal licence (see D086).
