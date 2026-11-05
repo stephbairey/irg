@@ -1,5 +1,37 @@
 [
   {
+    "id": "wp-7590",
+    "source": "wp",
+    "original_wp_id": 7590,
+    "title": "Oh! America!!",
+    "slug": "oh-america",
+    "lyrics": "<p>Well, <u>we</u> went to the polling place, as hopeful as could be<br />\nWe <u>cast</u> our ballots in good faith&#8211;<u>for</u> democracy</p>\n<p><strong><u>CHORUS:</u></strong><br />\nOh, America, would you look and see<br />\nWe <u>made</u> big change and <u>hope</u> is now a real commodi<u>ty</u></p>\n<p>We <u>all</u> worked hard to <u>get</u> the info <u>out</u> that we all <u>need</u><br />\nTo <u>un</u>derstand what’s valuable, <u>to</u> this great count<u>ry</u><br />\nThe people showed up everywhere, despite the challenges<br />\nThey <u>could</u>n’t stop the <u>ti</u>dal wave of <u>our</u> good common <u>sense</u></p>\n<p><strong>CHORUS</strong></p>\n<p>The USA was founded as a <u>great</u> big melting <u>pot</u><br />\nWe’ll <u>take</u> care of each <u>oth</u>er all, without a second thought<br />\nThere’s <u>more</u> that does un<u>ite</u> us than, <u>there</u> is to di<u>vide</u><br />\nLet’s <u>all</u> play now as <u>one</u> big team, no <u>long</u>er side to <u>side</u></p>\n<p><strong>CHORUS</strong></p>\n<p>There are wrongs that we must right, and <u>right</u> them all we <u>shall</u><br />\n<u>Let’s</u> be kind and <u>tol</u>erant, <u>show</u> our bestest <u>selves</u><br />\nWhen <u>we</u> the people <u>do</u> unite, <u>we</u> can do great <u>things</u><br />\n<u>There’s</u> no keeping <u>us</u> all down, together we all <u>sing</u></p>\n<p><strong>CHORUS, 2x,<em> second time:</em></strong></p>\n<p>Yes, America, would you look and see<br />\nWe made big change and hope is now a real commodity!</p>\n",
+    "tune": "Oh Susanna",
+    "songwriter": "Granny FiFi",
+    "songwriters": [
+      "Granny FiFi"
+    ],
+    "gaggle": "Piedmont",
+    "gaggles": [
+      "Piedmont"
+    ],
+    "issues": [
+      "Elections & Democracy",
+      "Government & Power"
+    ],
+    "key_or_starting_note": "Key of A, Starting note: A",
+    "youtube_link": "",
+    "youtube_link_2": "",
+    "date_written_or_updated": "2026-11-04T00:00:00+00:00",
+    "date_published": "2026-11-04",
+    "source_notes": "",
+    "feature_on_homepage": false,
+    "display_centrally": false,
+    "duplicate_of": null,
+    "needs_review": false,
+    "review_notes": ""
+  },
+  {
     "id": "wp-7586",
     "source": "wp",
     "original_wp_id": 7586,
