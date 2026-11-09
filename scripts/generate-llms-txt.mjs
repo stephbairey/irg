@@ -65,11 +65,6 @@ const PAGES = [
     desc: "How to start a Raging Grannies gaggle in your community: gather a few committed women, pick your issues, write your songs (or borrow ours), put on a hat, and get out there.",
   },
   {
-    path: "/your-gaggle-site/",
-    title: "Keeping Your Gaggle's Site",
-    desc: "Step-by-step guide for the granny who tends a gaggle website on raginggrannies.org: logging in, posting an Action, changing the front-page photo, adding videos, Gaggle Notes, and what to ask the Web Granny for.",
-  },
-  {
     path: "/about/",
     title: "About",
     desc: "Who the Raging Grannies are: women of a certain age subverting the sweet-little-old-lady stereotype to make activist noise about peace, justice, the environment, and human rights.",
