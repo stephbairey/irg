@@ -5,7 +5,10 @@ import icon from "astro-icon";
 
 export default defineConfig({
   site: "https://raginggrannies.org",
-  integrations: [sitemap(), icon()],
+  integrations: [
+    sitemap({ filter: (page) => !page.includes("/your-gaggle-site/") }),
+    icon(),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
