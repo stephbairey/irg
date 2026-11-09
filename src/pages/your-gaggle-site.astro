@@ -1,0 +1,308 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const SITE_URL = Astro.site?.toString().replace(/\/$/, "") ?? "https://raginggrannies.org";
+
+const guideSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "Keeping Your Gaggle's Site",
+  description:
+    "A plain-language guide for the granny who tends a gaggle website on raginggrannies.org: logging in, posting an Action, changing the front-page photo, adding videos, and fixing your pages.",
+  url: `${SITE_URL}/your-gaggle-site/`,
+  publisher: { "@id": `${SITE_URL}#org` },
+  inLanguage: "en",
+};
+
+const toc = [
+  ["login", "Logging in"],
+  ["actions", "Posting an Action"],
+  ["pages", "Updating a page"],
+  ["photo", "Changing your front-page photo"],
+  ["look", "Logo, name, and tagline"],
+  ["videos", "Adding videos"],
+  ["notes", "Gaggle Notes"],
+  ["checkboxes", "The two checkboxes"],
+  ["songs", "Your songs"],
+  ["ask", "Things to ask the Web Granny for"],
+];
+---
+
+<BaseLayout title="Keeping Your Gaggle's Site" structuredData={guideSchema}>
+  <article class="max-w-[1400px] mx-auto px-5 md:px-8 pt-10 md:pt-12 pb-20">
+    {/* Hero */}
+    <header class="text-center pb-8 md:pb-10 border-b border-muted mb-10 md:mb-12">
+      <div class="kicker text-red mb-4">For Site Keepers</div>
+      <h1 class="font-display text-ink leading-[.95] mb-5 tracking-tight" style="font-size:clamp(36px,7.5vw,96px)">
+        Keeping Your Gaggle's Site
+      </h1>
+      <p class="text-[17px] md:text-[20px] text-text-soft italic max-w-[760px] mx-auto leading-snug">
+        Twenty minutes a month keeps a gaggle site lively. Here is where the buttons are.
+      </p>
+    </header>
+
+    <div class="max-w-[720px] mx-auto text-[18px] leading-[1.75] text-text keeper-prose">
+      <p class="mb-5">
+        Every gaggle on raginggrannies.org has its own site, and one or two grannies in each gaggle keep it. If that is you, this page is yours. Your site mostly takes care of itself. The two things worth doing regularly are posting an Action after your gaggle does something and keeping your About and Contact pages true. Everything else here is optional, and nothing you do can break the site. Every change can be undone, and the Web Granny keeps backups.
+      </p>
+
+      <nav class="toc" aria-label="On this page">
+        <div class="kicker text-muted mb-3">On this page</div>
+        <ol>
+          {toc.map(([id, label]) => (
+            <li><a href={`#${id}`}>{label}</a></li>
+          ))}
+        </ol>
+      </nav>
+
+      <figure class="shot">
+        <img src="/how-to/gaggle-home.png" alt="A gaggle front page with a large photo, a tagline, and recent Actions below" width="1200" height="800" loading="lazy" />
+        <figcaption>A gaggle front page. Your Actions and Gaggle Notes appear here on their own. The pages you tend live in the menu across the top.</figcaption>
+      </figure>
+
+      <h2 id="login">1. Logging in</h2>
+      <p class="need">You need: your username and password. The Web Granny sent them when your site was set up and can send a fresh password link any time.</p>
+      <ol class="steps">
+        <li>Go to your site's address and add <code>/wp-admin</code> to the end. For example, <code>calgary.raginggrannies.org/wp-admin</code>. Bookmark it the first time. After that it is one click.</li>
+        <li>Type your username and password, then click <strong>Log In</strong>. You land on your dashboard: a menu down the left side, your site's name at the top.</li>
+      </ol>
+      <p class="tip">Forgot the password? Click <strong>Lost your password?</strong> under the login box. A reset link goes to the email address on your account. If it does not arrive within a few minutes, check your junk folder, then email the Web Granny and she will send one by hand.</p>
+      <figure class="shot">
+        <img src="/how-to/subsite-dashboard.png" alt="A gaggle site dashboard with the WordPress menu down the left side" width="1461" height="645" loading="lazy" />
+        <figcaption>Your dashboard. Actions, Pages, and Appearance are the three menu items you will use.</figcaption>
+      </figure>
+
+      <h2 id="actions">2. Posting an Action</h2>
+      <p class="need">You need: to be logged in. A photo from the event makes the post shine, but it is optional.</p>
+      <ol class="steps">
+        <li>In the left-side menu, click <strong>Actions</strong>, then <strong>Add New</strong>.</li>
+        <li>Click where it says <em>Add title</em> and give the post a headline. Say what happened: "We Sang at the Climate March" beats "March Update".</li>
+        <li>Click below the title and write what your gaggle did. A few sentences is plenty. Write it like you would tell a friend.</li>
+        <li>To add your photo: in the right-hand column, click <strong>Set featured image</strong>, then <strong>Upload files</strong>, and choose the photo from your computer. Click the blue <strong>Set featured image</strong> button to finish.</li>
+        <li>Click the blue <strong>Publish</strong> button at the top right. It asks once more. Click <strong>Publish</strong> again.</li>
+      </ol>
+      <p class="mb-5">The post is now live. It appears on your front page under Recent Actions and in the news feed on the international site. Photos you attach to Actions also gather automatically on your site's Photos page, so the gallery builds itself.</p>
+      <p class="tip">Can't find your post afterwards? It may still be a draft. Go back to <strong>Actions</strong> in the left menu, click the post's title, and press <strong>Publish</strong>.</p>
+      <figure class="shot">
+        <img src="/how-to/adding-action.png" alt="The Edit Action screen with the title, body, and the Set featured image panel on the right" width="1513" height="689" loading="lazy" />
+        <figcaption>The Edit Action screen. The featured image panel is in the right-hand column.</figcaption>
+      </figure>
+
+      <h2 id="pages">3. Updating a page (About, Contact, and friends)</h2>
+      <p class="need">You need: to be logged in.</p>
+      <ol class="steps">
+        <li>In the left-side menu, click <strong>Pages</strong>. You will see a short list: About Us, Contact Us, Photos, and so on.</li>
+        <li>Click the name of the page you want to change.</li>
+        <li>Click into the text and edit it like a letter. Fix a name, update a meeting time, refresh your story.</li>
+        <li>Click the blue <strong>Update</strong> button at the top right. Your changes are live right away.</li>
+      </ol>
+      <figure class="shot">
+        <img src="/how-to/subsite-pages.png" alt="The Pages screen listing About Us, Contact Us, and Photos" width="1464" height="643" loading="lazy" />
+        <figcaption>The Pages screen. Click a title to edit it.</figcaption>
+      </figure>
+
+      <h2 id="photo">4. Changing your front-page photo</h2>
+      <p class="mb-5">The big photo at the top of your front page is called the Hero Image, and it lives with the rest of your site's look under <strong>Gaggle Settings</strong>. Choose a photo of your gaggle in action: hats, banners, mid-song. A phone photo is fine if it is sharp.</p>
+      <p class="need">The best shape: a landscape photo, just a little wider than it is tall. The site trims the photo evenly from the edges to fit its frame, so keep the grannies near the middle and leave breathing room at the sides. Very wide panoramas and tall portrait shots lose too much in the trim.</p>
+      <ol class="steps">
+        <li>In the left-side menu, click <strong>Appearance</strong>, then <strong>Gaggle Settings</strong>.</li>
+        <li>Next to <strong>Hero Image</strong>, click <strong>Choose image</strong>.</li>
+        <li>Click <strong>Upload files</strong> and pick the photo from your computer, or choose one already in your library.</li>
+        <li>Click the blue button to confirm.</li>
+        <li>Scroll to the bottom and click <strong>Save Settings</strong>. Nothing takes effect until you save.</li>
+        <li>Open your site's front page to admire it.</li>
+      </ol>
+      <p class="tip">Want the standard photo back? The <strong>Clear</strong> button next to the image puts it back.</p>
+      <figure class="shot">
+        <img src="/how-to/gaggle-settings.png" alt="The Gaggle Settings screen with the Hero Image, Full name, YouTube Channel URL, and Tagline fields" width="1455" height="771" loading="lazy" />
+        <figcaption>Gaggle Settings, under Appearance. One page holds everything about your site's look.</figcaption>
+      </figure>
+
+      <h2 id="look">5. Logo, name, and tagline</h2>
+      <p class="mb-5">These live on the same <strong>Gaggle Settings</strong> page. Change what you like, leave the rest, and click <strong>Save Settings</strong> at the bottom when you are done.</p>
+      <ul class="bullets">
+        <li><strong>Gaggle logo.</strong> Every site starts with the shared walking-granny mark. If your gaggle has a logo of its own, click <strong>Choose logo</strong> and upload it. Any shape works. The best file is a PNG or JPG with a white or see-through background, at least 300 pixels on its longest side. If your logo already has your name written in it, tick <strong>My logo already includes our name</strong> so the site does not print it twice.</li>
+        <li><strong>Full name.</strong> Your site calls itself "Your Town Raging Grannies", built from the Site Title. If your gaggle goes by something else, such as Raging Grannies Action League, type it into the <strong>Full name</strong> box. Leave the Site Title as your town. The network uses it for the map and your web address.</li>
+        <li><strong>Tagline.</strong> The italic line under your name on the front page. Until you write one, every site shows the shared line about flowered hats. Type your own rallying cry into the <strong>Tagline</strong> box. One or two sentences.</li>
+      </ul>
+
+      <h2 id="videos">6. Adding videos</h2>
+      <p class="mb-5">There are two ways, and you can use both.</p>
+      <ul class="bullets">
+        <li><strong>A Videos page from your YouTube channel.</strong> If your gaggle has a YouTube channel, paste its address into the <strong>YouTube Channel URL</strong> box in Gaggle Settings and save. A Videos page appears in your site's menu, filled from your channel automatically. Upload a new video to YouTube and it shows up on your site on its own. No channel? Leave the box empty and no Videos page shows.</li>
+        <li><strong>A video inside an Action.</strong> While writing an Action, paste the video's YouTube link on a line by itself. The player appears right there in the post when you publish. This works for a video on anyone's channel, not just yours.</li>
+      </ul>
+      <p class="tip">We do not host video files on the site. YouTube does that job far better and for free. If your gaggle has videos but no channel, one granny with a Google account can create one in ten minutes.</p>
+
+      <h2 id="notes">7. Gaggle Notes: a home for the evergreen stuff</h2>
+      <p class="mb-5">Actions are news. They scroll away as new ones arrive. Gaggle Notes are for things that should stay put: your songbook, a resource list, your gaggle's history, standing meeting details. They get their own spot near the top of your front page and never get buried.</p>
+      <ol class="steps">
+        <li>In the left-side menu, click <strong>Actions</strong>, then <strong>Add New</strong>. Yes, the same place news goes. The next step is what makes it a Note.</li>
+        <li>Write your title and content as usual.</li>
+        <li>In the right-hand column, find <strong>Categories</strong> and tick <strong>Gaggle Notes</strong>.</li>
+        <li>Click <strong>Publish</strong>.</li>
+      </ol>
+      <p class="mb-5">It appears on your front page under "From this gaggle" and stays out of the Recent Actions feed. Once you have more than six, the front page shows the newest six and adds an "All Gaggle Notes" link to the rest.</p>
+      <figure class="shot shot-small">
+        <img src="/how-to/gaggle-notes.png" alt="The Categories panel with the Gaggle Notes box ticked" width="299" height="220" loading="lazy" />
+        <figcaption>Ticking this box turns an Action into a Gaggle Note.</figcaption>
+      </figure>
+
+      <h2 id="checkboxes">8. The two checkboxes</h2>
+      <p class="mb-5">Also in Gaggle Settings. Tick or untick, then <strong>Save Settings</strong>.</p>
+      <ul class="bullets">
+        <li><strong>Display songs on this subsite.</strong> Tick this and your site gets its own Songs page showing just your gaggle's songs from the shared library. Leave it unticked and the Songs button points to the full international library. Either way your songs stay in the big library.</li>
+        <li><strong>Hide photos on Action lists.</strong> If most of your Actions have no photos, tick this for a cleaner, text-first look on your front page and Actions list. Photos on individual Action pages still show.</li>
+      </ul>
+
+      <h2 id="songs">9. Your songs</h2>
+      <p class="mb-5">Songs do not live on your gaggle's site. They live in the shared <a href="/songs/" class="sg-link">Song Library</a>, where every gaggle can find and sing them. To add a song, go to <a href="/submit/" class="sg-link">Add a Song</a>. To fix one you already published, go to <a href="/edit-song/" class="sg-link">Edit a Song</a>. Both pages ask for the gaggle password, which the Web Granny will send you. Every song in the library has a printable songsheet, and a copyright line that names the writer or the gaggle.</p>
+
+      <h2 id="ask">10. Things to ask the Web Granny for</h2>
+      <p class="mb-5">A few jobs are done centrally so that every gaggle's site stays findable and nothing goes dark by accident. Email <a href="mailto:webgranny@raginggrannies.org" class="sg-link">webgranny@raginggrannies.org</a> for any of these:</p>
+      <ul class="bullets">
+        <li>A new login for a second keeper, or a password link if yours has gone missing.</li>
+        <li>Renaming your gaggle or changing your web address. Please do not try a redirect plugin for this. Your old address will keep working after the move.</li>
+        <li>Your gaggle's contact address on the <a href="/find-a-gaggle/" class="sg-link">Find a Gaggle</a> map, or a <code>yourtown@raginggrannies.org</code> address that forwards to your gaggle.</li>
+        <li>A site for a gaggle that does not have one yet.</li>
+        <li>Anything on this page that does not match what you see on your screen. The guide is only useful if it is right.</li>
+      </ul>
+    </div>
+
+    {/* CTA */}
+    <section class="max-w-[1080px] mx-auto mt-20">
+      <div class="cta-card">
+        <div>
+          <div class="kicker text-mustard mb-2">Stuck? Lost a password? Broke nothing but think you did?</div>
+          <h3 class="font-display text-on-dark text-[34px] leading-tight mb-3">
+            That is what the Web Granny is for.
+          </h3>
+          <p class="text-on-dark/85 leading-relaxed max-w-[56ch]">
+            Write to webgranny@raginggrannies.org or use the contact form. Every message gets read and answered by a real granny.
+          </p>
+        </div>
+        <a href="/contact/" class="cta-btn">
+          Get in touch <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </article>
+
+  <style>
+    .keeper-prose h2 {
+      font-family: var(--font-display);
+      color: var(--color-ink);
+      font-size: 34px;
+      line-height: 1.15;
+      margin: 56px 0 16px;
+      scroll-margin-top: 96px;
+    }
+    .keeper-prose em { color: var(--color-ink-soft); }
+    .keeper-prose code {
+      font-size: 0.9em;
+      background: var(--color-pale-lavender);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .keeper-prose .sg-link {
+      color: var(--color-red);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--color-red);
+      font-weight: 600;
+    }
+    .keeper-prose .sg-link:hover {
+      background: var(--color-red);
+      color: var(--color-on-dark);
+    }
+
+    .toc {
+      margin: 32px 0 40px;
+      padding: 22px 26px;
+      background: var(--color-pale-lavender);
+      border-radius: 12px;
+    }
+    .toc ol {
+      columns: 2;
+      column-gap: 28px;
+      margin: 0;
+      padding-left: 22px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .toc li { margin: 0 0 6px; break-inside: avoid; }
+    .toc a { color: var(--color-ink); text-decoration: none; font-weight: 600; }
+    .toc a:hover { color: var(--color-red); }
+    @media (max-width: 560px) { .toc ol { columns: 1; } }
+
+    .need, .tip {
+      padding: 14px 18px;
+      border-left: 4px solid var(--color-mustard);
+      background: var(--color-card);
+      border-radius: 0 10px 10px 0;
+      margin: 0 0 20px;
+      font-size: 16.5px;
+      line-height: 1.6;
+    }
+    .tip { border-left-color: var(--color-ink-lilac); }
+
+    .steps, .bullets {
+      margin: 0 0 20px;
+      padding-left: 28px;
+    }
+    .steps li, .bullets li { margin-bottom: 12px; }
+    .steps li::marker {
+      font-weight: 800;
+      color: var(--color-red);
+    }
+    .bullets li::marker { color: var(--color-ink-lilac); }
+
+    .shot {
+      margin: 24px 0 36px;
+    }
+    .shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--color-paper-2);
+      border-radius: 10px;
+      box-shadow: 0 6px 24px rgba(66, 42, 105, 0.12);
+    }
+    .shot-small img { width: auto; max-width: 100%; }
+    .shot figcaption {
+      margin-top: 10px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--color-text-soft);
+      font-style: italic;
+    }
+
+    .cta-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: center;
+      padding: 36px 40px;
+      background: var(--color-ink);
+      color: var(--color-on-dark);
+      border-radius: 14px;
+    }
+    @media (max-width: 720px) {
+      .cta-card { grid-template-columns: 1fr; gap: 20px; padding: 28px 24px; }
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: var(--color-red);
+      color: var(--color-on-dark);
+      font: 800 15px/1 var(--font-body);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .cta-btn:hover { background: #c82022; }
+  </style>
+</BaseLayout>

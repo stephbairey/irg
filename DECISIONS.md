@@ -1073,3 +1073,13 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: (a). One line directly under the title on every song page and at the top of every PDF song sheet: "Lyrics © <year> <owner>". Owner is the songwriter(s) on file; if the writer is blank, "Unknown," or "anonymous," the owner is the gaggle ("The <gaggle> Raging Grannies", or "The Raging Grannies" when no gaggle is on file). Year is the year of the "date written or updated" field when it is set and plausible (after 1986); otherwise the year the song was published to the library. No year prints when neither is usable. The D086 footer line stays.
 - **Rationale**: 1,589 of 1,595 songs already have a songwriter and every song has a publish date, so the notice can be generated for the whole library at once instead of waiting on 1,500 edits. Standard notice form (symbol, year, owner) matches the format Vicki quoted. Songwriters correct a wrong name or year by editing the song.
 - **Revisit if**: songwriters want per-song wording, or the network adopts a formal licence (see D086).
+
+## D088 — Keeper guide published on the site
+
+- **Status**: Decided
+- **Date**: 2026-11-09
+- **Context**: Three gaggle keepers (Santa Fe, Winnipeg, Tucson) asked within two weeks how to change their front-page photo, post updates, or add videos, and each got the same steps typed into an email. The how-to guides written for keepers in October (`docs/how-to/*.html`, with Maya's screenshots) were only ever sent as attachments, so nobody could find them again.
+- **Options**: (a) keep answering by email; (b) publish the guides as PDFs for download; (c) a public page on raginggrannies.org that folds the two site-keeping guides into one, linked from the footer, FAQ, and Start a Gaggle.
+- **Choice**: (c). `/your-gaggle-site/` ("Keeping Your Gaggle's Site"): logging in, posting an Action, updating a page, changing the hero photo, logo/name/tagline, videos (channel URL and pasted links), Gaggle Notes, the two checkboxes, songs, and what to ask the Web Granny for. Screenshots moved to `public/how-to/`. No passwords on the page; the songs password is still sent by hand. The songs guide stays as a document because `/submit/` and `/edit-song/` already explain themselves.
+- **Rationale**: A page can be linked from a reply in one line and found again from the footer. Keeping it public costs nothing because nothing on it is secret, and search engines pointing a granny straight to it is a feature. Folding the two guides into one page keeps a single thing to update when the theme changes.
+- **Revisit if**: the theme's admin screens change enough that the screenshots mislead, or keepers ask for a printable version (then generate a PDF from the same page).
