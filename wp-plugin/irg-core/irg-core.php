@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.26.1
+ * Version: 3.27.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -2800,3 +2800,31 @@ function irg_redirect_retired_hosts(): void {
 	exit;
 }
 add_action( 'init', 'irg_redirect_retired_hosts', 0 );
+
+// ---------------------------------------------------------------------------
+// Gaggles that run their own site elsewhere (D089).
+//
+// The subsite stays in the network (login, media, directory slug all intact)
+// but every public request on its hostname goes to the gaggle's own site.
+// Admin and login paths are left alone so the Web Granny and the keeper can
+// still get in. The target is a full URL; the path is not carried over
+// because the other site has its own structure.
+// ---------------------------------------------------------------------------
+
+const IRG_EXTERNAL_REDIRECTS = [
+	'madison.raginggrannies.org' => 'http://raginggrannies.madisonwi.us/',
+];
+
+function irg_redirect_external_sites(): void {
+	$host = strtolower( (string) ( $_SERVER['HTTP_HOST'] ?? '' ) );
+	if ( $host === '' || ! isset( IRG_EXTERNAL_REDIRECTS[ $host ] ) ) {
+		return;
+	}
+	$uri = (string) ( $_SERVER['REQUEST_URI'] ?? '/' );
+	if ( preg_match( '#^/(wp-admin|wp-login\.php|wp-json|xmlrpc\.php|wp-cron\.php)#', $uri ) ) {
+		return;
+	}
+	wp_redirect( IRG_EXTERNAL_REDIRECTS[ $host ], 301 );
+	exit;
+}
+add_action( 'init', 'irg_redirect_external_sites', 0 );

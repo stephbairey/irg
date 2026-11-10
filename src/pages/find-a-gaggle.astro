@@ -75,7 +75,7 @@ if (existsSync(SUBSITES_PATH)) {
 // A gaggle that keeps its own site outside the multisite links there instead
 // of to its (unused) subsite.
 for (const g of gaggles) {
-  if (typeof g.website === "string" && /^https:\/\//.test(g.website)) {
+  if (typeof g.website === "string" && /^https?:\/\//.test(g.website)) {
     subsiteUrls.set(g.slug, g.website);
   }
 }
