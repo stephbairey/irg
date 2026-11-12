@@ -1,5 +1,40 @@
 [
   {
+    "id": "wp-7594",
+    "source": "wp",
+    "original_wp_id": 7594,
+    "title": "My Least Favorite Things",
+    "slug": "my-least-favorite-things-2",
+    "lyrics": "<p>VERSE 1<br />\nLiars, and bullies, and grifters, and cheaters<br />\nICE goons arresting and killing our people<br />\nBillionaires raking in mountains of bling<br />\nThese are a few of my least favorite things ⇓&#x1f3b5;</p>\n<p>CHORUS<br />\nWhen we all join<br />\nTo defeat them<br />\nWe will all be glad<br />\nDemocracy’s coming for one and for all<br />\nAnd MAGA will pay,<br />\nToo Bad!!!</p>\n<p>VERSE 2<br />\nRFK, Hegseth, and Lutnick and Miller<br />\nMaking the rest of us poorer and sicker<br />\nMeasles and high costs unhappiness brings<br />\nThese are a few of my least favorite things ⇧&#x1f3b5;</p>\n<p>CHORUS<br />\nWhen we all join<br />\nTo defeat them<br />\nWe will all be glad<br />\nDemocracy’s coming for one and for all<br />\nAnd MAGA will pay,<br />\nSo Sad!!!</p>\n",
+    "tune": "\"My Favorite Things\" from the \"Sound of Music\"",
+    "songwriter": "Lise Spangenthal",
+    "songwriters": [
+      "Lise Spangenthal"
+    ],
+    "gaggle": "Grant County",
+    "gaggles": [
+      "Grant County"
+    ],
+    "issues": [
+      "Government & Power",
+      "Healthcare",
+      "Human & Civil Rights",
+      "Immigration",
+      "Racism & Social Justice"
+    ],
+    "key_or_starting_note": "Key: E minor / Start on E",
+    "youtube_link": "",
+    "youtube_link_2": "",
+    "date_written_or_updated": "2026-09-18T00:00:00+00:00",
+    "date_published": "2026-11-12",
+    "source_notes": "",
+    "feature_on_homepage": false,
+    "display_centrally": false,
+    "duplicate_of": null,
+    "needs_review": false,
+    "review_notes": ""
+  },
+  {
     "id": "wp-7652",
     "source": "wp",
     "original_wp_id": 7652,
