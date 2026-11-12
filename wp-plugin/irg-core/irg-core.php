@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.28.0
+ * Version: 3.28.1
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -2873,3 +2873,33 @@ add_action( 'wp_before_admin_bar_render', static function (): void {
 		$wp_admin_bar->remove_node( 'comments' );
 	}
 } );
+
+// ---------------------------------------------------------------------------
+// Emoji in lyrics.
+//
+// The database tables are utf8 (three-byte), so a character outside the
+// Basic Multilingual Plane (every emoji, some music symbols) makes WordPress
+// refuse the whole meta write. The song then lands as a draft with no lyrics
+// and nobody is told. Storing those characters as numeric HTML entities
+// keeps them: lyrics are rendered as HTML, so the entity shows as the emoji.
+// Hooked on the ACF field itself so the submit form, the edit form, the bulk
+// endpoint, and the admin editor are all covered.
+// ---------------------------------------------------------------------------
+
+function irg_encode_astral_chars( $value ) {
+	if ( ! is_string( $value ) || $value === '' ) {
+		return $value;
+	}
+	$encoded = preg_replace_callback(
+		'/[\x{10000}-\x{10FFFF}]/u',
+		static function ( array $m ): string {
+			// Decode the four UTF-8 bytes by hand; mbstring is not guaranteed.
+			$b  = array_values( unpack( 'C4', $m[0] ) );
+			$cp = ( ( $b[0] & 0x07 ) << 18 ) | ( ( $b[1] & 0x3f ) << 12 ) | ( ( $b[2] & 0x3f ) << 6 ) | ( $b[3] & 0x3f );
+			return '&#x' . dechex( $cp ) . ';';
+		},
+		$value
+	);
+	return is_string( $encoded ) ? $encoded : $value;
+}
+add_filter( 'acf/update_value/key=field_irg_lyrics', 'irg_encode_astral_chars', 5 );
