@@ -116,16 +116,16 @@ const songsJson = JSON.stringify(songs);
             <Combobox
               id="edit-search-input"
               options={allSongwriters}
-              placeholder="Type your name…"
+              placeholder="Type your name or the song title…"
               inputClass="w-full px-4 py-3 text-[16px] bg-card text-ink border-[1.5px] border-muted rounded-lg focus:outline-none focus:border-red"
             />
             <p class="text-[13px] text-text-soft mt-3">
-              Type the songwriter's name to filter the list. Pick a song to edit it.
+              Type the songwriter's name or a few words of the song title. The list is in alphabetical order. Pick a song to edit it.
             </p>
           </div>
           <div id="edit-search-results"></div>
           <p id="edit-search-empty" class="hidden text-center text-text-soft italic py-6">
-            No songs found for that songwriter. Try a different spelling.
+            No songs found for that name or title. Try a different spelling.
           </p>
         </section>
 
@@ -271,6 +271,7 @@ const songsJson = JSON.stringify(songs);
       const $ = (s) => document.querySelector(s);
       const SS_KEY = "irg-edit-unlocked";
       const SS_PW_KEY = "irg-edit-pw"; // entered password kept in session for resubmits
+      const LS_LAST_QUERY = "irg-edit-last-query"; // last name/title typed, so a returning granny lands on her list
 
       const cfg = $("#edit-config");
       const PW_HASH = cfg?.dataset.pwHash || "";
@@ -370,14 +371,25 @@ const songsJson = JSON.stringify(songs);
           searchEmpty.classList.add("hidden");
           return;
         }
+        // Match on songwriter name or song title. A prolific songwriter has
+        // hundreds of songs, so typing a few words of the title is the fast
+        // way to one of them. The list is alphabetical by title (build-time
+        // sort); the cap only guards against a one-letter query.
         const matches = songs
-          .filter((s) =>
-            s.songwriter
-              .split(",")
-              .map((n) => n.trim().toLowerCase())
-              .some((n) => n.includes(q)),
+          .filter(
+            (s) =>
+              s.title.toLowerCase().includes(q) ||
+              s.songwriter
+                .split(",")
+                .map((n) => n.trim().toLowerCase())
+                .some((n) => n.includes(q)),
           )
-          .slice(0, 100);
+          .slice(0, 600);
+        try {
+          localStorage.setItem(LS_LAST_QUERY, query.trim());
+        } catch {
+          /* storage blocked: the search still works */
+        }
 
         if (!matches.length) {
           searchEmpty.classList.remove("hidden");
@@ -427,9 +439,25 @@ const songsJson = JSON.stringify(songs);
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
+      // Bring back the last search so a returning granny sees her songs
+      // without retyping her name.
+      function restoreLastQuery() {
+        let last = "";
+        try {
+          last = localStorage.getItem(LS_LAST_QUERY) || "";
+        } catch {
+          /* storage blocked */
+        }
+        if (last && searchInput && !searchInput.value) {
+          searchInput.value = last;
+          renderResults(last);
+        }
+      }
+
       // Resume unlocked state from session.
       if (sessionStorage.getItem(SS_KEY) === "1") {
         showStage("search");
+        restoreLastQuery();
       }
 
       pwForm.addEventListener("submit", async (e) => {
@@ -442,6 +470,7 @@ const songsJson = JSON.stringify(songs);
           sessionStorage.setItem(SS_KEY, "1");
           sessionStorage.setItem(SS_PW_KEY, entered);
           showStage("search");
+          restoreLastQuery();
           searchInput.focus();
         } else {
           pwError.classList.remove("hidden");

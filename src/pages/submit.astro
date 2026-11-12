@@ -93,6 +93,12 @@ const today = new Date().toISOString().slice(0, 10);
 
         {/* Submission form */}
         <section id="submit-form-section" class="hidden">
+          {/* Shown only past the password gate: the edit page is not
+              advertised publicly, but a granny who is already in should not
+              have to remember a second address. */}
+          <p class="px-6 py-4 mb-6 bg-paper-2 border border-muted rounded-[12px] text-[16px] text-ink">
+            Fixing a song that's already in the library? <a href="/edit-song/" class="submit-inline-link">Edit a song</a> instead.
+          </p>
           <form id="submit-form" class="submit-form" novalidate>
             <div class="sf-field">
               <label class="sf-label" for="submit-title">Song title</label>
@@ -276,7 +282,17 @@ const today = new Date().toISOString().slice(0, 10);
           .join("");
       }
 
+      // Unlocking here also unlocks /edit-song/ for this tab (same password,
+      // same server-side check), so the "Edit a song" link goes straight in.
+      function shareUnlockWithEdit() {
+        const pw = sessionStorage.getItem(SS_PW_KEY);
+        if (!pw) return;
+        sessionStorage.setItem("irg-edit-unlocked", "1");
+        sessionStorage.setItem("irg-edit-pw", pw);
+      }
+
       function showForm() {
+        shareUnlockWithEdit();
         gateSection.classList.add("hidden");
         formSection.classList.remove("hidden");
         successSection.classList.add("hidden");
