@@ -3,7 +3,7 @@
  * Plugin Name: IRG Core
  * Plugin URI: https://linguainkmedia.com
  * Description: Custom post types, taxonomies, and ACF fields for the International Raging Grannies multisite.
- * Version: 3.27.0
+ * Version: 3.28.0
  * Author: Lingua Ink Media
  * Author URI: https://linguainkmedia.com
  * Network: true
@@ -2828,3 +2828,48 @@ function irg_redirect_external_sites(): void {
 	exit;
 }
 add_action( 'init', 'irg_redirect_external_sites', 0 );
+
+// ---------------------------------------------------------------------------
+// Comments, trackbacks, and pingbacks are off on every site (D090).
+//
+// The per-site defaults above only cover new posts on subsites. These
+// filters are the hard stop: nothing on any site in the network, main site
+// included, accepts or shows a comment or a ping, whatever an individual
+// post's own discussion setting says. Old comments stay in the database.
+// ---------------------------------------------------------------------------
+
+add_filter( 'comments_open', '__return_false', 20 );
+add_filter( 'pings_open', '__return_false', 20 );
+add_filter( 'comments_array', '__return_empty_array', 20 );
+add_filter( 'feed_links_show_comments_feed', '__return_false' );
+
+add_filter( 'xmlrpc_methods', static function ( array $methods ): array {
+	unset( $methods['pingback.ping'], $methods['pingback.extensions.getPingbacks'] );
+	return $methods;
+} );
+
+add_filter( 'wp_headers', static function ( array $headers ): array {
+	unset( $headers['X-Pingback'] );
+	return $headers;
+} );
+
+add_action( 'init', static function (): void {
+	foreach ( get_post_types() as $type ) {
+		remove_post_type_support( $type, 'comments' );
+		remove_post_type_support( $type, 'trackbacks' );
+	}
+}, 100 );
+
+// With nothing to moderate, the Comments screen and its admin-bar bubble are
+// noise for keepers. The screen itself still answers at edit-comments.php.
+add_action( 'admin_menu', static function (): void {
+	remove_menu_page( 'edit-comments.php' );
+	remove_submenu_page( 'options-general.php', 'options-discussion.php' );
+}, 999 );
+
+add_action( 'wp_before_admin_bar_render', static function (): void {
+	global $wp_admin_bar;
+	if ( $wp_admin_bar instanceof WP_Admin_Bar ) {
+		$wp_admin_bar->remove_node( 'comments' );
+	}
+} );

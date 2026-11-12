@@ -1093,3 +1093,13 @@ Format: `Dxxx — Title` · status · date · context · options · choice · ra
 - **Choice**: (b). irg-core 3.27.0 adds `IRG_EXTERNAL_REDIRECTS` (hostname to full URL, 301, path not carried over) beside the D085 host map. Admin, login, REST, cron, and xmlrpc paths are exempt so the site stays administrable and the keeper login keeps working. `website` in the locations data now accepts http as well as https, and Madison's entry carries their URL. The placeholder post was set to draft so it cannot leak into the hub news feed.
 - **Rationale**: Nothing is deleted (D084 spirit): if the external site dies, one line removed brings the subsite back with its login, media, and slug intact. The directory and the hostname now agree on where Madison lives. Allowing http is Madison's call; the link is labelled plainly and the directory does not vouch for the target.
 - **Revisit if**: more gaggles do this (then move the map to a Gaggle Settings field so it needs no plugin release), or Madison gets https (update the URL).
+
+## D090 — Comments, trackbacks, and pingbacks off on every site
+
+- **Status**: Decided
+- **Date**: 2026-11-12
+- **Context**: The subsite defaults already closed discussion on new posts, but posts that existed before the defaults ran (79 on Portland, imported from the old site, plus one or two on most other subsites) still accepted comments and pings. Portland had collected 3,428 unmoderated items, nearly all spam, and WordPress kept emailing "please moderate" notices. No gaggle uses comments; inquiries go through the contact forms.
+- **Options**: (a) close the remaining open posts by hand and keep relying on per-post settings; (b) enforce it in irg-core for the whole network, whatever a post's own setting says; (c) install a disable-comments plugin.
+- **Choice**: (b). irg-core 3.28.0 forces `comments_open` and `pings_open` to false on every site, main site included, removes the pingback XML-RPC methods and the X-Pingback header, drops comment and trackback support from all post types, hides existing comments from templates, and removes the Comments and Discussion screens from the admin menu. A one-off pass also set every existing post to closed. Portland's pending queue was moved to spam, not deleted; the 8 approved comments stay in the database, unseen.
+- **Rationale**: A filter cannot drift the way a per-post setting can, so imports and keepers cannot reopen the door by accident. No third-party plugin to keep updated. Nothing was deleted (D084 spirit), so a real comment caught in the spam move can still be recovered at `edit-comments.php`.
+- **Revisit if**: a gaggle asks for comments on their Actions (then make it a per-site Gaggle Settings switch), or the spam table is worth emptying for good.
