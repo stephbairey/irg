@@ -70,6 +70,13 @@ async function fetchSubsites() {
     }));
 }
 
+// True for hostnames that belong to the multisite itself (the CMS host, the
+// public domain, and their subdomains).
+function isNetworkHost(hostname) {
+  const own = [new URL(WP_URL).hostname, "raginggrannies.org", "raginggrannies.international"];
+  return own.some((h) => hostname === h || hostname.endsWith(`.${h}`));
+}
+
 async function fetchActionsForSubsite(site) {
   const endpoint = `${site.url}/graphql`;
   const query = `{
@@ -80,11 +87,21 @@ async function fetchActionsForSubsite(site) {
       }
     }
   }`;
-  const res = await fetch(endpoint, {
-    method: "POST",
-    headers: HEADERS,
-    body: JSON.stringify({ query }),
-  });
+  const request = { method: "POST", headers: HEADERS, body: JSON.stringify({ query }) };
+  let res = await fetch(endpoint, { ...request, redirect: "manual" });
+  if (res.status >= 300 && res.status < 400) {
+    // A gaggle that runs its own site elsewhere (D089) redirects every public
+    // path on its hostname, /graphql included. That is not a failure: the
+    // subsite simply has no actions for the hub feed.
+    const location = res.headers.get("location") || "";
+    let target = null;
+    try { target = new URL(location, endpoint).hostname; } catch { /* fall through */ }
+    if (target && !isNetworkHost(target)) {
+      console.log(`  ${site.slug.padEnd(20)} redirects to ${target}, no actions taken from it`);
+      return [];
+    }
+    res = await fetch(endpoint, request);
+  }
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   const json = await res.json();
   if (json.errors) throw new Error(`GraphQL errors: ${JSON.stringify(json.errors)}`);
