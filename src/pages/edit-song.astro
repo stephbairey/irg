@@ -442,9 +442,11 @@ const songsJson = JSON.stringify(songs);
       // Bring back the last search so a returning granny sees her songs
       // without retyping her name.
       function restoreLastQuery() {
-        let last = "";
+        // A link like /edit-song/?songwriter=Lee%20Stanfield wins over the
+        // remembered search, so a granny can be handed a link to her own list.
+        let last = (new URLSearchParams(window.location.search).get("songwriter") || "").trim();
         try {
-          last = localStorage.getItem(LS_LAST_QUERY) || "";
+          if (!last) last = localStorage.getItem(LS_LAST_QUERY) || "";
         } catch {
           /* storage blocked */
         }
