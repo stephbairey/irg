@@ -1,5 +1,37 @@
 [
   {
+    "id": "wp-7687",
+    "source": "wp",
+    "original_wp_id": 7687,
+    "title": "Our Blue Heaven",
+    "slug": "our-blue-heaven",
+    "lyrics": "<p>The voters have called and changes are nigh.<br />\nI’m happy in my Blue Heaven.<br />\nA turn from the right, a little blue light,<br />\nHas led us to our Blue Heaven.</p>\n<p>You’ll see that since this race, a woman’s place is in the dome.<br />\nWide open space where Texans now can feel at home.</p>\n<p>A turn to the left, now MAGA’s bereft.<br />\nThere’s room here in our blue heaven.</p>\n<p>We worked hard for years<br />\nThrough blood, sweat, and tears.<br />\nWe’re finally in our blue heaven.<br />\nThere’s still work to do for me and for you<br />\nTo stay true to our blue heaven.</p>\n<p>Only a faithful few knew this day would ever come.<br />\nFor heaven’s sake our new lawmakers aren’t so dumb.</p>\n<p>If Molly were here with us she would cheer<br />\nAnd welcome in our Blue Heaven!</p>\n",
+    "tune": "My Blue Heaven",
+    "songwriter": "Lisa Rogers",
+    "songwriters": [
+      "Lisa Rogers"
+    ],
+    "gaggle": "Austin",
+    "gaggles": [
+      "Austin"
+    ],
+    "issues": [
+      "Elections & Democracy",
+      "Government & Power"
+    ],
+    "key_or_starting_note": "",
+    "youtube_link": "",
+    "youtube_link_2": "",
+    "date_written_or_updated": "",
+    "date_published": "2026-11-17",
+    "source_notes": "",
+    "feature_on_homepage": false,
+    "display_centrally": false,
+    "duplicate_of": null,
+    "needs_review": false,
+    "review_notes": ""
+  },
+  {
     "id": "wp-7685",
     "source": "wp",
     "original_wp_id": 7685,
