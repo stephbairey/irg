@@ -13,6 +13,7 @@
 // unchanged. New: each record carries an explicit `slug` field.
 
 import { readFileSync, writeFileSync } from "node:fs";
+import { stanzaifyLyrics } from "./stanzaify-lyrics.mjs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -111,7 +112,7 @@ function toRecord(node) {
     original_wp_id: node.databaseId,
     title: node.title ?? "",
     slug: node.slug ?? "",
-    lyrics: sd.lyrics ?? "",
+    lyrics: stanzaifyLyrics(sd.lyrics ?? ""),
     tune: joinNodes(node.tunes, " / "),
     songwriter: joinNodes(node.songwriters, " and "),
     // Raw term lists. The joined strings above predate multi-term cleanup
